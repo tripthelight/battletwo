@@ -1,0 +1,55 @@
+{
+  "name": "battletwo",
+  "version": "1.0.0",
+  "description": "\"# battletwo\"",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "webpack --watch --mode production",
+    "serve": "webpack serve --mode development --no-cache"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tripthelight/battletwo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tripthelight/battletwo/issues"
+  },
+  "homepage": "https://github.com/tripthelight/battletwo#readme",
+  "devDependencies": {
+    "@babel/core": "^7.26.9",
+    "@babel/preset-env": "^7.26.9",
+    "@reduxjs/toolkit": "^2.6.0",
+    "autoprefixer": "^10.4.20",
+    "babel-loader": "^10.0.0",
+    "babel-plugin-module-resolver": "^5.0.2",
+    "clean-webpack-plugin": "^4.0.0",
+    "cluster": "^0.7.7",
+    "copy-webpack-plugin": "^13.0.0",
+    "css-loader": "^7.1.2",
+    "css-minimizer-webpack-plugin": "^7.0.0",
+    "dotenv": "^16.4.7",
+    "file-loader": "^6.2.0",
+    "html-loader": "^5.1.0",
+    "html-webpack-plugin": "^5.6.3",
+    "image-webpack-loader": "^8.0.1",
+    "lit": "^3.2.1",
+    "mini-css-extract-plugin": "^2.9.2",
+    "postcss": "^8.5.3",
+    "postcss-discard-comments": "^7.0.3",
+    "postcss-loader": "^8.1.1",
+    "postcss-preset-env": "^10.1.5",
+    "redux": "^5.0.1",
+    "sass": "^1.85.1",
+    "sass-loader": "^16.0.5",
+    "style-loader": "^4.0.0",
+    "terser-webpack-plugin": "^5.3.12",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.0"
+  }
+}
