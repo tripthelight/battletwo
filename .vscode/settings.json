@@ -17,5 +17,11 @@
     "files.trimTrailingWhitespace": false // Markdown 파일은 끝 공백 제거하지 않음
   },
   "files.trimFinalNewlines": true, // 파일 끝에 불필요한 줄바꿈 제거
-  "files.insertFinalNewline": true // 파일 끝에 항상 새 줄 추가
+  "files.insertFinalNewline": true, // 파일 끝에 항상 새 줄 추가
+  "files.associations": {
+    "*.scss": "scss"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  }
 }

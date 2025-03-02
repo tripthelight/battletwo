@@ -1,7 +1,6 @@
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import PAGES from '@/client/js/webpack/pages.js';
-// import PAGES from './pages';
-// import PAGES from './pages.js';
+// import PAGES from '@/client/js/webpack/pages';
+import PAGES from './pages.js';
 
 const pageMappings = {
   index: {

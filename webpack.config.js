@@ -15,13 +15,15 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const MODE = process.env.MODE === 'development';
 
+console.log("✅ Webpack Alias:", path.resolve(__dirname, 'src'));
+
 const webpackConfig = {
   mode: process.env.MODE, // development | production
-  resolve: {
+  resolve: { // webpack과 관련해 import 하는 파일은 @ 경로 사용 불가
     alias: {
-      '@': path.resolve(__dirname, './src'), // '@'를 'src/' 경로로 매핑
+      '@': path.resolve(__dirname, 'src'), // @를 src 디렉토리로 설정
     },
-    extensions: ['.js', '.json'],
+    extensions: ['.js', '.scss'], // 확장자 생략 가능
   },
   devtool: MODE ? 'source-map' : false,
   entry: multipleJsPlugins,
@@ -82,7 +84,7 @@ const webpackConfig = {
             loader: 'file-loader',
             options: {
               name: '[path][name].[ext]',
-              context: 'src/client/',
+              context: 'src/',
             },
           },
           {
@@ -116,7 +118,7 @@ const webpackConfig = {
             loader: 'file-loader',
             options: {
               name: '[path][name].[ext]',
-              context: 'src/client/',
+              context: 'src/',
             },
           },
         ],

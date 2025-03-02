@@ -1,5 +1,5 @@
-import PAGES from '@/client/js/webpack/pages.js';
-// import PAGES from './pages.js';
+// import PAGES from '@/client/js/webpack/pages';
+import PAGES from './pages.js';
 
 // 공통 경로 설정
 const BASE_JS_PATH = './src/client/js/';
