@@ -15,11 +15,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const MODE = process.env.MODE === 'development';
 
-console.log("✅ Webpack Alias:", path.resolve(__dirname, 'src'));
-
 const webpackConfig = {
   mode: process.env.MODE, // development | production
-  resolve: { // webpack과 관련해 import 하는 파일은 @ 경로 사용 불가
+  resolve: {
+    // webpack과 관련해 import 하는 파일은 @ 경로 사용 불가
     alias: {
       '@': path.resolve(__dirname, 'src'), // @를 src 디렉토리로 설정
     },
@@ -131,6 +130,9 @@ const webpackConfig = {
     new MiniCssExtractPlugin({
       linkType: 'text/css',
       filename: 'css/[name]/[name].css',
+    }),
+    new webpack.DefinePlugin({
+      'process.env.SOCKET_HOST': JSON.stringify(process.env.SOCKET_HOST),
     }),
   ].concat(multipleHtmlPlugins),
   optimization: {
