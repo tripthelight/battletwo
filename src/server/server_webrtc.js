@@ -1,9 +1,11 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import Redis from 'ioredis';
 import { v4 as uuidv4 } from 'uuid';
 import { WebSocketServer } from 'ws';
 
 // WebSocket 서버 생성
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.RTC_PORT || 8081;
 const WSS = new WebSocketServer({ port: PORT });
 const REDIS = new Redis(); // 6379 단일 redis server
 const ROOMS_MAP = {}; // room name과 WebSocket 인스턴스를 매핑할 Map

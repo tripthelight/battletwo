@@ -4,7 +4,7 @@
   - npm install dotenv --save-dev  
   - npm install lit --save-dev  
 - server :  
-  - npm install cluster redux @reduxjs/toolkit --save-dev
+  - npm install cluster redux @reduxjs/toolkit ioredis uuid --save-dev
 
 ## VSCODE EXTENSION
 - todo highlight
@@ -60,3 +60,9 @@ battletwo
 ├─ package.json  
 ├─ package-lock.json  
 └─ webpack.config.js  
+
+## 진행상황
+- rtcConn.js에서 onDataChannel, dataChannel을 taptap.js로 보내기 성공
+- rtcConn.js 외부에서 peer간 메시지는 주고 받을 수 있음
+- rtcConn.js와 taptap.js에서 reject일 경우 처리 필요
+- 이제 시작 count, taptap 게임 js들 붙여야함

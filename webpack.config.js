@@ -133,6 +133,8 @@ const webpackConfig = {
     }),
     new webpack.DefinePlugin({
       'process.env.SOCKET_HOST': JSON.stringify(process.env.SOCKET_HOST),
+      'process.env.SOCKET_PORT': JSON.stringify(process.env.SOCKET_PORT),
+      'process.env.RTC_PORT': JSON.stringify(process.env.RTC_PORT),
     }),
   ].concat(multipleHtmlPlugins),
   optimization: {
@@ -181,7 +183,7 @@ const server = new webpackDevServer(
         { from: /^\/selectGame$/, to: '/views/selectGame.html' },
         { from: /^\/game\/taptap$/, to: '/views/game/taptap.html' },
         { from: /^\/game\/indianPocker$/, to: '/views/game/indianPocker.html' },
-        { from: /^\/game\/blackAndWhite$/, to: '/views/game/blackAndWhite.html' },
+        { from: /^\/game\/blackAndWhite1$/, to: '/views/game/blackAndWhite1.html' },
         { from: /^\/game\/findTheSamePicture$/, to: '/views/game/findTheSamePicture.html' },
       ],
     },

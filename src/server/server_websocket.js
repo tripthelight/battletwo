@@ -1,8 +1,10 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import { WebSocketServer } from 'ws';
 import Redis from 'ioredis';
 import { v4 as uuidv4 } from 'uuid';
 
-const port = process.env.PORT || 8082;
+const port = process.env.SOCKET_PORT || 8082;
 const WSS = new WebSocketServer({ port });
 
 const users = new Map(); // clientId를 key로 사용자 WebSocket 및 userId 정보 저장

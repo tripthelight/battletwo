@@ -15,27 +15,30 @@ const pageMappings = {
     template: './src/client/views/game/taptap.html',
     filename: 'views/game/taptap.html',
   },
-  blackandwhite1: {
-    template: './src/client/views/game/blackandwhite1.html',
-    filename: 'views/game/blackandwhite1.html',
+  blackAndWhite1: {
+    template: './src/client/views/game/blackAndWhite1.html',
+    filename: 'views/game/blackAndWhite1.html',
   },
-  indianpoker: {
-    template: './src/client/views/game/indianpoker.html',
-    filename: 'views/game/indianpoker.html',
+  indianPocker: {
+    template: './src/client/views/game/indianPocker.html',
+    filename: 'views/game/indianPocker.html',
   },
-  findsamepicture: {
-    template: './src/client/views/game/findsamepicture.html',
-    filename: 'views/game/findsamepicture.html',
+  findTheSamePicture: {
+    template: './src/client/views/game/findTheSamePicture.html',
+    filename: 'views/game/findTheSamePicture.html',
   },
 };
 
 const multipleHtmlPlugins = PAGES.html
   .filter((name) => pageMappings[name]) // 존재하는 페이지만 처리
-  .map((name) => new HtmlWebpackPlugin({
-    template: pageMappings[name].template,
-    filename: pageMappings[name].filename,
-    chunks: [name],
-  }));
+  .map(
+    (name) =>
+      new HtmlWebpackPlugin({
+        template: pageMappings[name].template,
+        filename: pageMappings[name].filename,
+        chunks: [name],
+      }),
+  );
 
 export default multipleHtmlPlugins;
 

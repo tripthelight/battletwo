@@ -1,0 +1,23 @@
+@use './_keyframes' as anim;
+
+.interaction {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 50%;
+  top: 50%;
+  width: 600px;
+  height: 600px;
+  border-radius: 600px;
+  margin: -300px 0 0 -300px;
+  text-align: center;
+  background-color: rgba(255, 0, 0, 0.5);
+  @include anim.animation(interactionAnimation, 0.6s, 1);
+  span {
+    display: inline-block;
+    font-size: 100px;
+    line-height: 100px;
+    color: #fff;
+  }
+}
