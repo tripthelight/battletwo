@@ -7,8 +7,10 @@ import { setInnerHeight } from '@/client/js/module/appHeight';
 import { deviceCheck } from '@/client/js/module/deviceCheck';
 import '@/client/js/common/gesture';
 import '@/client/js/common/resize';
+import initNickName from '@/client/js/functions/initNickName';
 
 clearStorage(window.location.pathname);
 storageEvent();
 setInnerHeight();
 deviceCheck();
+// initNickName();

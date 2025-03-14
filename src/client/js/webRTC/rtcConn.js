@@ -1,5 +1,6 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import addNickname from '@/client/js/functions/addNickname';
+import initNickName from '@/client/js/functions/initNickName';
 
 export default function webRTC(gameName) {
   return new Promise(async (resolve, reject) => {
@@ -210,6 +211,11 @@ export default function webRTC(gameName) {
      * execution
      */
     try {
+      // 게임화면에 직접 진입 했을 경우,
+      // localStorage에 localPlayer 가 없을 경우
+      // localPlayer를 만들 때 까지 wait
+      await initNickName();
+
       storageMethod('s', 'SET_ITEM', 'gameName', gameName);
 
       signalingSocket = new WebSocket(`${process.env.SOCKET_HOST}:${process.env.RTC_PORT}`);

@@ -11,9 +11,10 @@ document.onreadystatechange = async () => {
   } else if (state === 'complete') {
     try {
       console.log('taptap init');
-      addNickname('localPlayer');
 
       const { onDataChannel, dataChannel } = await webRTC('taptap');
+
+      addNickname('localPlayer');
 
       const BODY_EL = document.body;
       if (!BODY_EL) return;

@@ -66,3 +66,6 @@ battletwo
 - rtcConn.js 외부에서 peer간 메시지는 주고 받을 수 있음
 - rtcConn.js와 taptap.js에서 reject일 경우 처리 필요
 - 이제 시작 count, taptap 게임 js들 붙여야함
+
+## 공통 수정사항
+- firefox에서 localStorage, sessionStorage 삭제됨
