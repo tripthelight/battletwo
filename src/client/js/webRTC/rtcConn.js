@@ -45,7 +45,7 @@ export default function webRTC(gameName) {
         );
       } catch (error) {
         otherLeavesComn();
-        reject(error);
+        reject({ component: 'signalingSocket', event: 'send', message: 'Failed to send message', errorDetails: error });
       }
     }
 
@@ -87,6 +87,7 @@ export default function webRTC(gameName) {
           if (peerConnection) {
             if (peerConnection.iceConnectionState === 'disconnected') {
               // LOADING_EVENT.show(msg_str('left_user'));
+              reject({ component: 'peerConnection', event: 'oniceconnectionstatechange', message: 'ICE connection state is disconnected', errorDetails: event });
             }
           }
         };
@@ -95,6 +96,7 @@ export default function webRTC(gameName) {
           if (peerConnection) {
             if (peerConnection.connectionState === 'disconnected' || peerConnection.connectionState === 'failed') {
               // LOADING_EVENT.show(msg_str('left_user'));
+              reject({ component: 'peerConnection', event: 'onconnectionstatechange', message: `Peer connection state is ${peerConnection.connectionState}`, errorDetails: event });
             }
           }
         };
@@ -121,14 +123,16 @@ export default function webRTC(gameName) {
 
         dataChannel.onclose = () => {
           // console.log("dataChannel is closed!");
+          reject({ component: 'dataChannel', event: 'onclose', message: 'DataChannel is closed' });
         };
 
         dataChannel.onerror = (error) => {
           // console.log("DataChannel error: ", error);
+          reject({ component: 'dataChannel', event: 'onerror', message: 'DataChannel encountered an error', errorDetails: error });
         };
       } catch (error) {
         otherLeavesComn();
-        reject(error);
+        reject({ component: 'initConnect', event: 'catch', message: 'Unexpected error in initConnect', errorDetails: error });
       }
     }
 
@@ -148,7 +152,7 @@ export default function webRTC(gameName) {
         console.log('offer 보냄');
       } catch (error) {
         otherLeavesComn();
-        reject(error);
+        reject({ component: 'peerConnection', event: 'createOffer', message: 'Failed to create or set offer', errorDetails: error });
       }
     }
 
@@ -198,7 +202,7 @@ export default function webRTC(gameName) {
         }
       } catch (error) {
         otherLeavesComn();
-        reject(error);
+        reject({ component: 'messageHandler', event: 'handleMessage', message: 'Error handling signaling message', errorDetails: error });
       }
     }
 
@@ -224,17 +228,17 @@ export default function webRTC(gameName) {
       signalingSocket.onerror = (event) => {
         // WebSocket 연결 오류
         otherLeavesComn();
-        reject(new Error('WebSocket 연결 오류'));
+        reject({ component: 'signalingSocket', event: 'onerror', message: 'Signaling socket error occurred', errorDetails: event });
       };
 
       signalingSocket.onclose = (event) => {
         // WebSocket 연결이 닫힘
         otherLeavesComn();
-        reject(new Error('WebSocket 연결이 닫힘'));
+        reject({ component: 'signalingSocket', event: 'onclose', message: 'Signaling socket connection closed', errorDetails: event });
       };
     } catch (error) {
       otherLeavesComn();
-      reject(error);
+      reject({ ...error, errCase: 'webRTC' });
     }
   });
 }

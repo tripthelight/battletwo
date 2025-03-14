@@ -2,6 +2,7 @@ import '@/client/assets/scss/game/taptap/common';
 import '@/client/js/common/common';
 import addNickname from '@/client/js/functions/addNickname';
 import webRTC from '@/client/js/webRTC/rtcConn';
+import { errorManagement } from '@/client/js/module/errorManagement';
 
 // onMounted
 document.onreadystatechange = async () => {
@@ -13,9 +14,6 @@ document.onreadystatechange = async () => {
       addNickname('localPlayer');
 
       const { onDataChannel, dataChannel } = await webRTC('taptap');
-
-      console.log('connect sucess onDataChannel :::: ', onDataChannel);
-      console.log('connect sucess dataChannel :::::: ', dataChannel);
 
       const BODY_EL = document.body;
       if (!BODY_EL) return;
@@ -39,7 +37,7 @@ document.onreadystatechange = async () => {
         }
       };
     } catch (error) {
-      console.error('error >>>>>>>>> ', error);
+      errorManagement(error);
     }
   }
 };

@@ -1,7 +1,7 @@
 import createModal from '@/client/components/popup/modal/createModal';
 import msg_str from '@/client/js/functions/msg_str';
 
-export default function errorModal() {
+export default function errorModal(str) {
   const MODAL_POPUP = document.querySelector('.error-modal');
   if (MODAL_POPUP) return;
 
@@ -16,7 +16,7 @@ export default function errorModal() {
 
   const CONTEXT_EL = document.createElement('div');
 
-  CONTEXT_EL.innerHTML = msg_str('error_text');
+  CONTEXT_EL.innerHTML = msg_str(str ? str : 'error_text');
 
   MODAL_FROM_WRAP.appendChild(CONTEXT_EL);
   BODY_EL.appendChild(MODAL_FROM_WRAP);
