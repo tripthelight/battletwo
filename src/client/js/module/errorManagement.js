@@ -37,8 +37,10 @@ function handleRecovery(component, event) {
   if (component === 'peerConnection' && event.includes('connectionstatechange')) {
     console.log('재연결 시도 가능');
     // 필요 시 재연결 로직 추가
+    errorModal(text.leaveRoom);
   } else if (component === 'signalingSocket' && event === 'onclose') {
     console.log('Signaling 서버 재접속 로직 가능');
+    errorModal(text.networkLost);
     // 재접속 시도 가능
   }
 }
@@ -52,6 +54,10 @@ function sendErrorLogToServer(errorData) {
   }).catch((err) => console.error('오류 로그 전송 실패:', err));
 }
 
+/**
+ * error 관리 모듈
+ * @param {*} errData
+ */
 export function errorManagement(errData) {
   const { component, event, message, errorDetails = null, errCase } = errData;
   const errorMessage = `[Error] ${component} - ${event}: ${message}`;
@@ -64,7 +70,7 @@ export function errorManagement(errData) {
   showErrorNotification(errorMessage, component, errCase);
 
   // 3. 특정 오류 대응 (자동 복구, 재연결)
-  handleRecovery(component, event);
+  // handleRecovery(component, event);
 
   // 4. 서버에 오류 로그 전송 (선택 사항)
   //  * 25.03.14 - 개인프로젝트에서 서버 과부하 이슈로 닫음

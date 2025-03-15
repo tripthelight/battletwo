@@ -1,4 +1,4 @@
-import { OFFLINE_STATE } from "@/client/components/offline";
+import { OFFLINE_STATE } from '@/client/components/popup/full/offline';
 
 /**
  * NETWORK : ONLINE || OFFLONE

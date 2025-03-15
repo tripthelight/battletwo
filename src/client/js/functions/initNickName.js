@@ -3,8 +3,17 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 import { text } from '@/client/js/functions/language';
 import getUnicodePoints from '@/client/js/module/unicode/getUnicodePoints';
 import errorNameEvent from '@/client/js/functions/errorNameEvent';
+import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 
-export default function initNickName() {
+/**
+ * 닉네임 입력 팝업
+ * localStorage의 localPlayer 로 저장
+ * 닉네임 입력 팝업 닫은 후 띄울 팝업이 있을 수 있음
+ * @param {string} afterPopup | 닉네임 입력 팝업 닫은 후 띄울 팝업 종류 ex) 'loading'
+ * @param {string | null | undefined} afterStr | 닉네임 입력 팝업 닫은 후 띄울 팝업 문구
+ * @returns
+ */
+export default function initNickName(afterPopup, afterStr) {
   return new Promise((resolve, reject) => {
     // localStorage의 nickname은 string[] 로 저장됨
     const NICK_NAME = localStorage.getItem('localPlayer');
@@ -54,12 +63,20 @@ export default function initNickName() {
 
       MODAL_OK.addEventListener('click', () => {
         if (IPT_EL.value === '') {
-          errorNameEvent(BODY_EL, text.nickErr20);
+          errorNameEvent(BODY_EL, text.nickErr0);
         } else {
           // Unicode 배열 형식으로 변환
           const RESULT = getUnicodePoints(IPT_EL.value.replace(/\s+/g, ''));
           storageMethod('l', 'SET_ITEM', 'localPlayer', RESULT);
           MODAL_POP_WRAP.remove();
+
+          // 닉네임 입력 팝업 닫은 후 띄울 팝업 체크
+          if (afterPopup) {
+            if (afterPopup === 'loading') {
+              LOADING_EVENT.show(afterStr ?? null);
+            }
+          }
+
           resolve();
         }
       });
