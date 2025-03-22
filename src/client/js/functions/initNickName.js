@@ -11,7 +11,7 @@ import { LOADING_EVENT } from '@/client/components/popup/full/loading';
  * 닉네임 입력 팝업 닫은 후 띄울 팝업이 있을 수 있음
  * @param {string} afterPopup | 닉네임 입력 팝업 닫은 후 띄울 팝업 종류 ex) 'loading'
  * @param {string | null | undefined} afterStr | 닉네임 입력 팝업 닫은 후 띄울 팝업 문구
- * @returns
+ * @returns resolve
  */
 export default function initNickName(afterPopup, afterStr) {
   return new Promise((resolve, reject) => {

@@ -115,7 +115,7 @@ export default function webRTC(gameName) {
             addNickname('remotePlayer');
 
             // 두 peer가 연결이 되어야 resolve 시켜야 함
-            resolve({ onDataChannel, dataChannel });
+            resolve({ peerConnection, onDataChannel, dataChannel });
           }
         };
 
@@ -208,8 +208,6 @@ export default function webRTC(gameName) {
      * execution
      */
     try {
-      storageMethod('s', 'SET_ITEM', 'gameName', gameName);
-
       signalingSocket = new WebSocket(`${process.env.SOCKET_HOST}:${process.env.RTC_PORT}`);
 
       signalingSocket.onopen = async () => {

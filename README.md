@@ -69,4 +69,4 @@ battletwo
 
 ## 공통 수정사항
 - firefox에서 localStorage, sessionStorage 삭제됨
-- 새로고침 이벤트 만들어라
+- 새로고침 이벤트 만들어라 - pageAccessedByReload.js 참고

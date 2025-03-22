@@ -2,7 +2,7 @@ import errorModal from '@/client/components/popup/modal/errorModal';
 import { text } from '@/client/js/functions/language';
 
 // UI 알림 표시 함수
-function showErrorNotification(message, component, errCase) {
+function showErrorNotification(errCase, component, message) {
   // CASE : webRTC error
   if (errCase === 'webRTC') {
     switch (component) {
@@ -29,6 +29,8 @@ function showErrorNotification(message, component, errCase) {
       default:
         break;
     }
+  } else if (errCase === 'errorComn') {
+    alert(message ? message : text.err);
   }
 }
 
@@ -63,11 +65,11 @@ export function errorManagement(errData) {
   const errorMessage = `[Error] ${component} - ${event}: ${message}`;
 
   // 1. 콘솔에 오류 출력
-  console.error(errorMessage);
-  if (errorDetails) console.error('Error Details:', errorDetails);
+  // console.error(errorMessage);
+  // if (errorDetails) console.error('Error Details:', errorDetails);
 
   // 2. 사용자에게 오류 알림 (UI 메시지)
-  showErrorNotification(errorMessage, component, errCase);
+  showErrorNotification(errCase, component, message);
 
   // 3. 특정 오류 대응 (자동 복구, 재연결)
   // handleRecovery(component, event);

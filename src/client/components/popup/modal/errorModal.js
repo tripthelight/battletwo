@@ -2,8 +2,6 @@ import createModal from '@/client/components/popup/modal/createModal';
 import { text } from '@/client/js/functions/language';
 
 export default function errorModal(str) {
-  console.log('str :: ', str);
-
   const MODAL_POPUP = document.querySelector('.error-modal');
   if (MODAL_POPUP) return;
 

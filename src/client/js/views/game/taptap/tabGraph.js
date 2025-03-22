@@ -1,6 +1,5 @@
-// import gameResult from './gameResult.js';
 import taptapGameState from '@/client/js/gameState/taptap';
-// import taptapRes from './taptapRes.js';
+import { request } from '@/client/js/communication/taptap/request';
 
 export default {
   tap: () => {
@@ -22,12 +21,10 @@ export default {
         if (tHeight <= 0 || bHeight <= 0) {
           taptapGameState.gameOver();
           if (tHeight <= 0) {
-            // taptapRes.gameOver('win');
-            // gameResult(true);
+            request('gameOver', false); // 내가 이김 - 내 결과: true | 상대방 결과: false
           }
           if (bHeight <= 0) {
-            // taptapRes.gameOver('die');
-            // gameResult(false);
+            request('gameOver', true);
           }
         }
       }

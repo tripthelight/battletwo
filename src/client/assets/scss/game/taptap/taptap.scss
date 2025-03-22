@@ -11,8 +11,8 @@
   -webkit-tap-highlight-color: transparent;
   overflow: hidden;
   outline: none;
-  font-family: "gf", "Malgun Gothic", "dotum";
-  _font-family: "gf", "Malgun Gothic", "dotum";
+  font-family: 'gf', 'Malgun Gothic', 'dotum';
+  _font-family: 'gf', 'Malgun Gothic', 'dotum';
 }
 html,
 body {
@@ -21,7 +21,7 @@ body {
   position: relative;
   overflow: hidden;
 }
-input[type="text"] {
+input[type='text'] {
   border: 0 none;
   border-radius: 0;
   background-color: transparent;
@@ -59,6 +59,7 @@ input[type="text"] {
     text-align: center;
     border: 0 none;
     background-color: transparent;
+    cursor: pointer;
   }
   .tap-top {
     top: 0;

@@ -1,12 +1,8 @@
 import '@/client/assets/scss/game/taptap/common';
 import '@/client/js/common/common';
-import addNickname from '@/client/js/functions/addNickname';
-import webRTC from '@/client/js/webRTC/rtcConn';
+import rtcPeer from '@/client/js/webRTC/rtcPeer';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorManagement';
-import { LOADING_EVENT } from '@/client/components/popup/full/loading';
-import initNickName from '@/client/js/functions/initNickName';
-import waitPeer from '@/client/js/functions/waitPeer';
-import findNickname from '@/client/js/functions/findNickname';
 import taptapGameState from '@/client/js/gameState/taptap';
 import cowndown from '@/client/js/views/game/taptap/cowndown';
 import countStyle from '@/client/js/views/game/taptap/countStyle';
@@ -21,32 +17,20 @@ document.onreadystatechange = async () => {
     try {
       console.log('taptap init');
 
-      LOADING_EVENT.show();
+      // gameName을 sessionStorage에 저장
+      storageMethod('s', 'SET_ITEM', 'gameName', 'taptap');
 
-      /**
-       * 게임화면에 직접 진입 했는데,
-       * localStorage에 localPlayer 가 없을 경우,
-       * localPlayer를 만들 때 까지 대기 후 webRTC 연결
-       */
-      await initNickName();
+      // webRTC 공통
+      await rtcPeer('taptap');
 
-      // STEP1) waitEnemy
-      taptapGameState.waitEnemy();
-      waitPeer(1, findNickname('localPlayer'));
-      const { onDataChannel, dataChannel } = await webRTC('taptap');
-      // onDataChannel, dataChannel을 전역으로 저장
-      window.rtcChannels = {
-        onDataChannel,
-        dataChannel,
-      };
+      // taptap dataChannel message 전송
       response();
-      waitPeer(2);
 
-      // STEP2) count
+      // count
       taptapGameState.count();
       await cowndown.show(countStyle);
 
-      // STEP3) playing
+      // playing
       taptapGameState.playing();
       screenClickEvent.tap();
     } catch (error) {
