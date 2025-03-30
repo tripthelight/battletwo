@@ -20,14 +20,14 @@ export default async function rtcPeer(gameName) {
     // waitEnemy
     taptapGameState.waitEnemy();
     waitPeer(1, findNickname('localPlayer'));
-    const { peerConnection, onDataChannel, dataChannel } = await webRTC(gameName);
-    // onDataChannel, dataChannel을 전역으로 저장
-    window.rtcChannels = {
-      peerConnection,
-      onDataChannel,
-      dataChannel,
-    };
-    commErr();
+
+    if (!window.rtcChannels) {
+      window.rtcChannels = {};
+    }
+
+    await webRTC(gameName);
+
+    // commErr();
     waitPeer(2);
     resolve();
   });

@@ -7,7 +7,10 @@ import taptapGameState from '@/client/js/gameState/taptap';
 import cowndown from '@/client/js/views/game/taptap/cowndown';
 import countStyle from '@/client/js/views/game/taptap/countStyle';
 import screenClickEvent from '@/client/js/views/game/taptap/screenClickEvent';
+import { request } from '@/client/js/communication/taptap/request';
 import { response } from '@/client/js/communication/taptap/response';
+import reload from '@/client/js/module/reload';
+import commErr from '@/client/js/communication/commErr';
 
 // onMounted
 document.onreadystatechange = async () => {
@@ -24,7 +27,14 @@ document.onreadystatechange = async () => {
       await rtcPeer('taptap');
 
       // taptap dataChannel message 전송
-      response();
+      // response();
+
+      if (reload) {
+        request('localReload', true);
+      }
+
+      // peerConnection/dataChannel error 감시
+      commErr();
 
       // count
       taptapGameState.count();

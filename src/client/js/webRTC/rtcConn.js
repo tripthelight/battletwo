@@ -1,5 +1,6 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import addNickname from '@/client/js/functions/addNickname';
+import { response } from '@/client/js/communication/taptap/response';
 
 export default function webRTC(gameName) {
   return new Promise(async (resolve, reject) => {
@@ -52,8 +53,10 @@ export default function webRTC(gameName) {
     function initConnect(channelName) {
       try {
         peerConnection = new RTCPeerConnection(servers);
+        window.rtcChannels.peerConnection = peerConnection;
         peerConnection.ondatachannel = (event) => {
           onDataChannel = event.channel;
+          window.rtcChannels.onDataChannel = onDataChannel;
 
           // 내 nickName 상대방에게 전송
           if (onDataChannel && onDataChannel.readyState === 'open') {
@@ -103,6 +106,7 @@ export default function webRTC(gameName) {
 
         // dataChannel = peerConnection.createDataChannel('sendChannel');
         dataChannel = peerConnection.createDataChannel(channelName);
+        window.rtcChannels.dataChannel = dataChannel;
 
         dataChannel.onopen = () => {
           // console.log("dataChannel is onopen!");
@@ -114,8 +118,12 @@ export default function webRTC(gameName) {
             storageMethod('s', 'SET_ITEM', 'remotePlayer', message.nickname);
             addNickname('remotePlayer');
 
+            // dataChannel message 전송
+            response();
+
             // 두 peer가 연결이 되어야 resolve 시켜야 함
-            resolve({ peerConnection, onDataChannel, dataChannel });
+            // resolve({ peerConnection, onDataChannel, dataChannel });
+            resolve();
           }
         };
 
@@ -173,6 +181,11 @@ export default function webRTC(gameName) {
         if (msgData.type === 'offer') {
           console.log('offer 받음 ::: ', JSON.parse(msgData.data).offer);
           const offer = JSON.parse(msgData.data).offer;
+          // 새로고침 시 여기서 에러남
+          console.log('peerConnection >>>>> ', peerConnection);
+          if (!peerConnection) {
+            initConnect(`${gameName}-${window.sessionStorage.getItem('roomName')}-Channel`);
+          }
           await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
           const answer = await peerConnection.createAnswer();
           await peerConnection.setLocalDescription(answer);

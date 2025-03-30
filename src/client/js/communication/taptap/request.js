@@ -27,6 +27,14 @@ export function request(k, v) {
           }),
         );
         break;
+      case 'localReload':
+        onDataChannel.send(
+          JSON.stringify({
+            type: 'remoteReload',
+            value: v,
+          }),
+        );
+        break;
       default:
         break;
     }

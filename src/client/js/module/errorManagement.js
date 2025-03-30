@@ -11,10 +11,12 @@ function showErrorNotification(errCase, component, message) {
         errorModal(text.networkLost);
         break;
       case 'peerConnection':
+        // 상대방이 새로고침하면 나는 여기를 두번째로 탐
         // rtc remote peer left
         errorModal(text.leaveRoom);
         break;
       case 'dataChannel':
+        // 상대방이 새로고침하면 나는 여기를 첫번째로 탐
         // channel error
         errorModal(text.leaveRoom);
         break;
