@@ -1,6 +1,7 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import addNickname from '@/client/js/functions/addNickname';
 import { response } from '@/client/js/communication/taptap/response';
+import reload from '@/client/js/module/reload';
 
 export default function webRTC(gameName) {
   return new Promise(async (resolve, reject) => {
@@ -60,12 +61,14 @@ export default function webRTC(gameName) {
 
           // 내 nickName 상대방에게 전송
           if (onDataChannel && onDataChannel.readyState === 'open') {
-            onDataChannel.send(
-              JSON.stringify({
-                type: 'sharedData',
-                nickname: localStorage.getItem('localPlayer'),
-              }),
-            );
+            const sharedParams = {
+              type: 'sharedData',
+              nickname: localStorage.getItem('localPlayer'),
+            };
+            if (reload) {
+              sharedParams.reload = true;
+            }
+            onDataChannel.send(JSON.stringify(sharedParams));
           }
         };
 
@@ -117,6 +120,11 @@ export default function webRTC(gameName) {
           if (message.type === 'sharedData') {
             storageMethod('s', 'SET_ITEM', 'remotePlayer', message.nickname);
             addNickname('remotePlayer');
+
+            // 상대방이 새로고침 후 재연결이라면
+            if (message.reload) {
+              storageMethod('s', 'SET_ITEM', 'remoteReload', message.reload.toString());
+            }
 
             // dataChannel message 전송
             response();

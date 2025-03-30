@@ -11,6 +11,7 @@ import { request } from '@/client/js/communication/taptap/request';
 import { response } from '@/client/js/communication/taptap/response';
 import reload from '@/client/js/module/reload';
 import commErr from '@/client/js/communication/commErr';
+import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 
 // onMounted
 document.onreadystatechange = async () => {
@@ -26,23 +27,36 @@ document.onreadystatechange = async () => {
       // webRTC 공통
       await rtcPeer('taptap');
 
-      // taptap dataChannel message 전송
-      // response();
-
-      if (reload) {
-        request('localReload', true);
-      }
-
       // peerConnection/dataChannel error 감시
       commErr();
 
-      // count
-      taptapGameState.count();
-      await cowndown.show(countStyle);
+      if (reload) {
+        // 새로 고침 후 재연결인 경우
+        switch (window.sessionStorage.getItem('gameState')) {
+          case 'waitEnemy':
+            // 이 단게에서 waitEnemy는 있을 수 없음
+            break;
+          case 'count':
+            LOADING_EVENT.show();
+            break;
+          case 'playing':
+            screenClickEvent.tap();
+            break;
+          case 'gameOver':
+            // 결과 화면 다시 그려야 됨
+            break;
+          default:
+            break;
+        }
+      } else {
+        // count
+        taptapGameState.count();
+        await cowndown.show(countStyle);
 
-      // playing
-      taptapGameState.playing();
-      screenClickEvent.tap();
+        // playing
+        taptapGameState.playing();
+        screenClickEvent.tap();
+      }
     } catch (error) {
       errorManagement(error);
     }

@@ -5,11 +5,18 @@ import tabGraph from '@/client/js/views/game/taptap/tabGraph';
 
 export default {
   tap: () => {
+    const onDataChannel = window.rtcChannels.onDataChannel;
+    const dataChannel = window.rtcChannels.dataChannel;
+
     const TAP_AREA = document.getElementById('gameScene');
     if (TAP_AREA) {
       const TAP_BOTTOM_COUNT = TAP_AREA.querySelector('.tap-bottom .tap-count');
       if (TAP_BOTTOM_COUNT) {
         TAP_AREA.addEventListener('click', (e) => {
+          console.log('onDataChannel : ', onDataChannel);
+          console.log('dataChannel : ', dataChannel);
+          if (!onDataChannel || !dataChannel) return;
+
           screenTap(TAP_BOTTOM_COUNT);
           touchDot(e);
           tabGraph.tap();

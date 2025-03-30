@@ -1,3 +1,4 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { text } from '@/client/js/functions/language';
 
@@ -10,34 +11,57 @@ export default function commErr() {
     return;
   }
 
+  /**
+   * webRTC로 연결된 상태에서,
+   * 상대방이 새로고침 or 방이탈 순간,
+   * 여기를 1번째로 탐
+   */
   dataChannel.onerror = (error) => {
-    console.log('remoteReload >>> ', window.sessionStorage.getItem('remoteReload'));
-
-    // 상대방이 새로고침하면 나는 여기를 1번째로 탐
-    errorManagement({ errCase: 'webRTC', component: 'dataChannel', event: 'onerror', message: 'DataChannel encountered an error', errorDetails: error });
+    // errorManagement({ errCase: 'webRTC', component: 'dataChannel', event: 'onerror', message: 'DataChannel encountered an error', errorDetails: error });
   };
 
+  /**
+   * webRTC로 연결된 상태에서,
+   * 상대방이 새로고침 or 방이탈 순간,
+   * 여기를 2번째로 탐
+   */
   dataChannel.onclose = () => {
-    // 상대방이 새로고침하면 나는 여기를 2번째로 탐
-    errorManagement({ errCase: 'webRTC', component: 'dataChannel', event: 'onclose', message: 'DataChannel is closed' });
+    // errorManagement({ errCase: 'webRTC', component: 'dataChannel', event: 'onclose', message: 'DataChannel is closed' });
   };
 
+  /**
+   * webRTC로 연결된 상태에서,
+   * 상대방이 새로고침 or 방이탈 약 5초 후
+   * 여기를 1번째로 탐
+   * 새로고침, 방이탈 모두 'disconnected'
+   */
   peerConnection.oniceconnectionstatechange = (event) => {
-    // 상대방이 새로고침하면 나는 여기를 3번째로 탐
     if (peerConnection) {
       if (peerConnection.iceConnectionState === 'disconnected') {
-        // 상대방이 방을 나감
-        errorManagement({ errCase: 'webRTC', component: 'peerConnection', event: 'oniceconnectionstatechange', message: 'ICE connection state is disconnected', errorDetails: event });
+        if (window.sessionStorage.getItem('remoteReload')) {
+          // 상대방 새고로침 후 재연결함
+          storageMethod('s', 'REMOVE_ITEM', 'remoteReload');
+        } else {
+          // 상대방이 방을 나감
+          errorManagement({ errCase: 'webRTC', component: 'peerConnection', event: 'oniceconnectionstatechange', message: 'ICE connection state is disconnected', errorDetails: event });
+        }
       }
     }
   };
 
+  /**
+   * webRTC로 연결된 상태에서,
+   * 상대방이 새로고침 or 방이탈 약 5초 후
+   * 여기를 2번째로 탐
+   * 새로고침, 방이탈 모두 'disconnected' 후 약 3초 후 'failed'
+   */
   peerConnection.onconnectionstatechange = (event) => {
-    // 상대방이 새로고침하면 나는 여기를 4번째로 탐
     if (peerConnection) {
       if (peerConnection.connectionState === 'disconnected' || peerConnection.connectionState === 'failed') {
+        console.log('peerConnection.connectionState ::::: ', peerConnection.connectionState);
+
         // 상대방이 방을 나감
-        errorManagement({ errCase: 'webRTC', component: 'peerConnection', event: 'onconnectionstatechange', message: `Peer connection state is ${peerConnection.connectionState}`, errorDetails: event });
+        // errorManagement({ errCase: 'webRTC', component: 'peerConnection', event: 'onconnectionstatechange', message: `Peer connection state is ${peerConnection.connectionState}`, errorDetails: event });
       }
     }
   };

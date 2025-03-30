@@ -18,7 +18,9 @@ export default async function rtcPeer(gameName) {
     await initNickName();
 
     // waitEnemy
-    taptapGameState.waitEnemy();
+    if (!window.sessionStorage.getItem('gameState')) {
+      taptapGameState.waitEnemy();
+    }
     waitPeer(1, findNickname('localPlayer'));
 
     if (!window.rtcChannels) {
