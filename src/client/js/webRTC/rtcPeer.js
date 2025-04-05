@@ -21,7 +21,10 @@ export default async function rtcPeer(gameName) {
     if (!window.sessionStorage.getItem('gameState')) {
       taptapGameState.waitEnemy();
     }
-    waitPeer(1, findNickname('localPlayer'));
+
+    if (window.sessionStorage.getItem('gameState') === 'waitEnemy') {
+      waitPeer(1, findNickname('localPlayer'));
+    }
 
     if (!window.rtcChannels) {
       window.rtcChannels = {};
@@ -30,7 +33,9 @@ export default async function rtcPeer(gameName) {
     await webRTC(gameName);
 
     // commErr();
-    waitPeer(2);
+    if (window.sessionStorage.getItem('gameState') === 'waitEnemy') {
+      waitPeer(2);
+    }
     resolve();
   });
 }

@@ -124,6 +124,9 @@ export default function webRTC(gameName) {
             // 상대방이 새로고침 후 재연결이라면
             if (message.reload) {
               storageMethod('s', 'SET_ITEM', 'remoteReload', message.reload.toString());
+              // tabtab 에서 count 일 때 상대의 새로고침 상태 확인 필요
+              // if (window.sessionStorage.getItem('gameName') === 'taptap' && window.sessionStorage.getItem('gameState') === 'count') {
+              // }
             }
 
             // dataChannel message 전송

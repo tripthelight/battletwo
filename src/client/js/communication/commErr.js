@@ -40,7 +40,7 @@ export default function commErr() {
       if (peerConnection.iceConnectionState === 'disconnected') {
         if (window.sessionStorage.getItem('remoteReload')) {
           // 상대방 새고로침 후 재연결함
-          storageMethod('s', 'REMOVE_ITEM', 'remoteReload');
+          // storageMethod('s', 'REMOVE_ITEM', 'remoteReload');
         } else {
           // 상대방이 방을 나감
           errorManagement({ errCase: 'webRTC', component: 'peerConnection', event: 'oniceconnectionstatechange', message: 'ICE connection state is disconnected', errorDetails: event });

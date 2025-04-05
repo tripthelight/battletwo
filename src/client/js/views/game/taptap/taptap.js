@@ -12,6 +12,7 @@ import { response } from '@/client/js/communication/taptap/response';
 import reload from '@/client/js/module/reload';
 import commErr from '@/client/js/communication/commErr';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
+import { text } from '@/client/js/functions/language';
 
 // onMounted
 document.onreadystatechange = async () => {
@@ -20,9 +21,13 @@ document.onreadystatechange = async () => {
   } else if (state === 'complete') {
     try {
       console.log('taptap init');
+      console.log('reload >>> ', reload);
 
       // gameName을 sessionStorage에 저장
-      storageMethod('s', 'SET_ITEM', 'gameName', 'taptap');
+      const GAME_NAME = window.sessionStorage.getItem('gameName');
+      if (!GAME_NAME || GAME_NAME !== 'taptap') {
+        storageMethod('s', 'SET_ITEM', 'gameName', 'taptap');
+      }
 
       // webRTC 공통
       await rtcPeer('taptap');
@@ -32,14 +37,24 @@ document.onreadystatechange = async () => {
 
       if (reload) {
         // 새로 고침 후 재연결인 경우
+
         switch (window.sessionStorage.getItem('gameState')) {
           case 'waitEnemy':
-            // 이 단게에서 waitEnemy는 있을 수 없음
+            // count
+            taptapGameState.count();
+            await cowndown.show(countStyle);
+
+            // playing
+            taptapGameState.playing();
+            screenClickEvent.tap();
             break;
           case 'count':
-            LOADING_EVENT.show();
+            LOADING_EVENT.show(text.penalty);
+            storageMethod('s', 'SET_ITEM', 'waitCount', 'true');
+            request('waitCount', true);
             break;
           case 'playing':
+            LOADING_EVENT.hide();
             screenClickEvent.tap();
             break;
           case 'gameOver':

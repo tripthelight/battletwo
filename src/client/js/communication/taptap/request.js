@@ -22,19 +22,27 @@ export function request(k, v) {
           }),
         );
         break;
+      case 'waitCount':
+        onDataChannel.send(
+          JSON.stringify({
+            type: 'enemyWaitCount',
+            count: v,
+          }),
+        );
+        break;
+      case 'tapCountEnd':
+        onDataChannel.send(
+          JSON.stringify({
+            type: 'enemyCountEnd',
+            count: v,
+          }),
+        );
+        break;
       case 'gameOver':
         onDataChannel.send(
           JSON.stringify({
             type: 'gameOver',
             count: v,
-          }),
-        );
-        break;
-      case 'localReload':
-        onDataChannel.send(
-          JSON.stringify({
-            type: 'remoteReload',
-            value: v,
           }),
         );
         break;

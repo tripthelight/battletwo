@@ -1,3 +1,4 @@
+import { request } from '@/client/js/communication/taptap/request.js';
 import cowndown from './cowndown.js';
 import { timeInterval_1000, timeInterval_2000, timeInterval_3000, timeInterval_4000 } from '@/client/js/functions/variable.js';
 import storageMethod from '@/client/js/module/storage/storageMethod.js';
@@ -28,6 +29,9 @@ export default (innerEl) => {
       window.sessionStorage.removeItem('count');
       cowndown.hide(document.querySelector('.count'));
       storageMethod('s', 'REMOVE_ITEM', 'count');
+
+      request('tapCountEnd', true);
+
       resolve();
     }, timeInterval_4000);
   });

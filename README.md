@@ -66,7 +66,8 @@ battletwo
 - rtcConn.js 외부에서 peer간 메시지는 주고 받을 수 있음
 - rtcConn.js와 taptap.js에서 reject일 경우 처리 필요
 - 이제 시작 count, taptap 게임 js들 붙여야함
+- taptap 카운트 새로고침 수정 함
+- TODO: 둘 중에 한명이 뒤로가기 후 방을 나가면, 상대는 그걸 체크 못함
 
 ## 공통 수정사항
 - firefox에서 localStorage, sessionStorage 삭제됨
-- 새로고침 이벤트 만들어라 - pageAccessedByReload.js 참고
