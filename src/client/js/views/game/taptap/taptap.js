@@ -50,6 +50,7 @@ document.onreadystatechange = async () => {
             break;
           case 'count':
             LOADING_EVENT.show(text.penalty);
+            // 카운트 중 내가 새로고침 하면 나는 'waitCount'
             storageMethod('s', 'SET_ITEM', 'waitCount', 'true');
             request('waitCount', true);
             break;

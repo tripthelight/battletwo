@@ -33,6 +33,7 @@ export function response() {
             request('tapCountEnd', true);
 
             storageMethod('s', 'REMOVE_ITEM', 'count');
+            storageMethod('s', 'REMOVE_ITEM', 'waitCount');
             LOADING_EVENT.hide();
             // playing
             taptapGameState.playing();
@@ -42,11 +43,13 @@ export function response() {
         case 'enemyCountEnd':
           // 상대가 카운트 중 새로고침 해서 waitCount 상태 일 때,
           // 상대는 카운트 중 새고로침 안해서 나에게 tapCountEnd를 보냄
-          storageMethod('s', 'REMOVE_ITEM', 'count');
-          LOADING_EVENT.hide();
-          // playing
-          taptapGameState.playing();
-          screenClickEvent.tap();
+          if (window.sessionStorage.getItem('waitCount')) {
+            storageMethod('s', 'REMOVE_ITEM', 'count');
+            LOADING_EVENT.hide();
+            // playing
+            taptapGameState.playing();
+            screenClickEvent.tap();
+          }
           break;
         case 'enemyCount':
           // 내가 카운트 중 마구마구 새로고침 해서 waitCount 상태 일 때,
@@ -54,6 +57,7 @@ export function response() {
           if (window.sessionStorage.getItem('gameState') === 'count') {
             // 그런데 나는 마구마구 아직 count 상태 일 때,
             storageMethod('s', 'REMOVE_ITEM', 'count');
+            storageMethod('s', 'REMOVE_ITEM', 'waitCount');
             LOADING_EVENT.hide();
             // playing
             taptapGameState.playing();
