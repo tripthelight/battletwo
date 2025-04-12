@@ -1,6 +1,6 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import addNickname from '@/client/js/functions/addNickname';
-import { response } from '@/client/js/communication/taptap/response';
+import { responseComn } from '@/client/js/communication/responseComn';
 import reload from '@/client/js/module/reload';
 
 export default function webRTC(gameName) {
@@ -124,13 +124,10 @@ export default function webRTC(gameName) {
             // 상대방이 새로고침 후 재연결이라면
             if (message.reload) {
               storageMethod('s', 'SET_ITEM', 'remoteReload', message.reload.toString());
-              // tabtab 에서 count 일 때 상대의 새로고침 상태 확인 필요
-              // if (window.sessionStorage.getItem('gameName') === 'taptap' && window.sessionStorage.getItem('gameState') === 'count') {
-              // }
             }
 
             // dataChannel message 전송
-            response();
+            responseComn();
 
             // 두 peer가 연결이 되어야 resolve 시켜야 함
             // resolve({ peerConnection, onDataChannel, dataChannel });

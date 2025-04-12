@@ -14,6 +14,7 @@ import commErr from '@/client/js/communication/commErr';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import { text } from '@/client/js/functions/language';
 import reDrawPlaying from '@/client/js/views/game/taptap/reDraw/playing';
+import reDrawGameResult from '@/client/js/views/game/taptap/reDraw/gameResult';
 
 // onMounted
 document.onreadystatechange = async () => {
@@ -38,7 +39,6 @@ document.onreadystatechange = async () => {
 
       if (reload) {
         // 새로 고침 후 재연결인 경우
-
         switch (window.sessionStorage.getItem('gameState')) {
           case 'waitEnemy':
             // count
@@ -61,7 +61,10 @@ document.onreadystatechange = async () => {
             screenClickEvent.tap();
             break;
           case 'gameOver':
+            LOADING_EVENT.hide();
+            reDrawPlaying();
             // 결과 화면 다시 그려야 됨
+            reDrawGameResult();
             break;
           default:
             break;

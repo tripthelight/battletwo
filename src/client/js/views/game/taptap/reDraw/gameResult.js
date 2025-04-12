@@ -2,11 +2,12 @@ import { text, comnText } from '@/client/js/functions/language.js';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 
-export default (_result) => {
-  // _result: true => 이김
-  // _result: false => 짐
+export default () => {
+  const RESULT = window.sessionStorage.getItem('taptap');
+  if (!RESULT) errorManagement({ errCase: 'errorComn', message: text.err });
+
   const GAME_RESULT_POPUP = document.querySelector('.game-result-popup');
-  if (GAME_RESULT_POPUP) return;
+  if (GAME_RESULT_POPUP) errorManagement({ errCase: 'errorComn', message: text.err });
   const POPUP = document.createElement('div');
   const BG = document.createElement('div');
   const INNER = document.createElement('span');
@@ -24,7 +25,7 @@ export default (_result) => {
   BTN_REPLAY.innerHTML = 'REPLAY';
   BTN_HOME.setAttribute('title', 'move page');
   BTN_REPLAY.setAttribute('title', 'move page');
-  INNER.innerHTML = _result ? comnText.win : comnText.die;
+  INNER.innerHTML = JSON.parse(RESULT) ? comnText.win : comnText.die;
   BTN_WRAP.appendChild(BTN_REPLAY);
   BTN_WRAP.appendChild(BTN_HOME);
   POPUP.appendChild(BG);
@@ -33,8 +34,6 @@ export default (_result) => {
   const CONTAINER = document.getElementById('container');
   if (!CONTAINER) errorManagement({ errCase: 'errorComn', message: text.err });
   CONTAINER.appendChild(POPUP);
-
-  storageMethod('s', 'SET_ITEM', 'taptap', _result);
 
   BTN_HOME.onclick = () => {
     storageMethod('s', 'REMOVE_ALL');
