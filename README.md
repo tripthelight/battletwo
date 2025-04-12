@@ -68,6 +68,7 @@ battletwo
 - 이제 시작 count, taptap 게임 js들 붙여야함
 - taptap 카운트 새로고침 수정 함
 - TODO: 둘 중에 한명이 뒤로가기 후 방을 나가면, 상대는 그걸 체크 못함
+- TODO: 둘 중에 한명이 뒤로가기 후 방을 나간 후, 상대가 새로고침 하면 연결 안됨
 
 ## 공통 수정사항
 - firefox에서 localStorage, sessionStorage 삭제됨

@@ -8,7 +8,6 @@ import cowndown from '@/client/js/views/game/taptap/cowndown';
 import countStyle from '@/client/js/views/game/taptap/countStyle';
 import screenClickEvent from '@/client/js/views/game/taptap/screenClickEvent';
 import { request } from '@/client/js/communication/taptap/request';
-import { response } from '@/client/js/communication/taptap/response';
 import reload from '@/client/js/module/reload';
 import commErr from '@/client/js/communication/commErr';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';

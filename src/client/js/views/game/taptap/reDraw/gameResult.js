@@ -7,7 +7,7 @@ export default () => {
   if (!RESULT) errorManagement({ errCase: 'errorComn', message: text.err });
 
   const GAME_RESULT_POPUP = document.querySelector('.game-result-popup');
-  if (GAME_RESULT_POPUP) errorManagement({ errCase: 'errorComn', message: text.err });
+  if (GAME_RESULT_POPUP) return;
   const POPUP = document.createElement('div');
   const BG = document.createElement('div');
   const INNER = document.createElement('span');

@@ -11,6 +11,7 @@ export function responseComn() {
       taptapResponse();
       break;
     default:
+      errorManagement({ errCase: 'errorComn', message: text.err });
       break;
   }
 }

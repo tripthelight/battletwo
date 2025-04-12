@@ -37,13 +37,14 @@ export default function commErr() {
    */
   peerConnection.oniceconnectionstatechange = (event) => {
     if (peerConnection) {
+      console.log('peerConnection.iceConnectionState ::::: ', peerConnection.iceConnectionState);
       if (peerConnection.iceConnectionState === 'disconnected') {
         if (window.sessionStorage.getItem('remoteReload')) {
           // 상대방 새고로침 후 재연결함
           // storageMethod('s', 'REMOVE_ITEM', 'remoteReload');
         } else {
           // 상대방이 방을 나감
-          errorManagement({ errCase: 'webRTC', component: 'peerConnection', event: 'oniceconnectionstatechange', message: 'ICE connection state is disconnected', errorDetails: event });
+          // errorManagement({ errCase: 'webRTC', component: 'peerConnection', event: 'oniceconnectionstatechange', message: 'ICE connection state is disconnected', errorDetails: event });
         }
       }
     }
@@ -57,11 +58,21 @@ export default function commErr() {
    */
   peerConnection.onconnectionstatechange = (event) => {
     if (peerConnection) {
-      if (peerConnection.connectionState === 'disconnected' || peerConnection.connectionState === 'failed') {
-        console.log('peerConnection.connectionState ::::: ', peerConnection.connectionState);
+      console.log('peerConnection.connectionState ::::: ', peerConnection.connectionState);
 
+      if (peerConnection.connectionState === 'disconnected' || peerConnection.connectionState === 'failed') {
+        // console.log('peerConnection.connectionState ::::: ', peerConnection.connectionState);
+      }
+
+      if (peerConnection.connectionState === 'failed') {
+        // console.log('peerConnection.connectionState ::::: ', peerConnection.connectionState);
         // 상대방이 방을 나감
         // errorManagement({ errCase: 'webRTC', component: 'peerConnection', event: 'onconnectionstatechange', message: `Peer connection state is ${peerConnection.connectionState}`, errorDetails: event });
+      }
+
+      if (peerConnection.connectionState === 'connected') {
+        // console.log('peerConnection.connectionState ::::: ', peerConnection.connectionState);
+        // console.log("연결 복구됨: peerConnection 상태가 'connected'입니다.");
       }
     }
   };

@@ -4,7 +4,6 @@ import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import initNickName from '@/client/js/functions/initNickName';
 import waitPeer from '@/client/js/functions/waitPeer';
 import findNickname from '@/client/js/functions/findNickname';
-import commErr from '@/client/js/communication/commErr';
 
 export default async function rtcPeer(gameName) {
   return new Promise(async (resolve, reject) => {
