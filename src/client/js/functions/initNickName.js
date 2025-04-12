@@ -28,6 +28,8 @@ export default function initNickName(afterPopup, afterStr) {
 
       const { MODAL_POP_WRAP, IPT_EL, BTN_DEL, MODAL_OK, BODY_EL } = modalInitNickname();
 
+      IPT_EL.focus();
+
       IPT_EL.addEventListener('input', (_event) => {
         const TARGET = _event.target;
         if (TARGET.value.length > 0) {
