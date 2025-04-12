@@ -13,6 +13,7 @@ import reload from '@/client/js/module/reload';
 import commErr from '@/client/js/communication/commErr';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import { text } from '@/client/js/functions/language';
+import reDrawPlaying from '@/client/js/views/game/taptap/reDraw/playing';
 
 // onMounted
 document.onreadystatechange = async () => {
@@ -56,6 +57,7 @@ document.onreadystatechange = async () => {
             break;
           case 'playing':
             LOADING_EVENT.hide();
+            reDrawPlaying();
             screenClickEvent.tap();
             break;
           case 'gameOver':
