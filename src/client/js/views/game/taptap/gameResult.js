@@ -16,8 +16,8 @@ export default (_result) => {
   BTN_WRAP.classList.add('btn-wrap');
   BTN_HOME.classList.add('btn-move-home');
   BTN_REPLAY.classList.add('btn-replay');
-  BTN_HOME.setAttribute('href', 'javascript:viod(0);');
-  BTN_REPLAY.setAttribute('href', 'javascript:viod(0);');
+  BTN_HOME.setAttribute('href', 'javascript:void(0);');
+  BTN_REPLAY.setAttribute('href', 'javascript:void(0);');
   BG.classList.add('bg');
   POPUP.classList.add('game-result-popup');
   BTN_HOME.innerHTML = 'GO HOME';

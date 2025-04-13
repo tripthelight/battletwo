@@ -34,7 +34,7 @@ document.onreadystatechange = async () => {
       await rtcPeer('taptap');
 
       // peerConnection/dataChannel error 감시
-      commErr();
+      // commErr();
 
       if (reload) {
         // 새로 고침 후 재연결인 경우

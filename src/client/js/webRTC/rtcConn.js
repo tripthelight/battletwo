@@ -1,7 +1,11 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import addNickname from '@/client/js/functions/addNickname';
 import { responseComn } from '@/client/js/communication/responseComn';
+import { errorManagement } from '@/client/js/module/errorManagement';
+import { text } from '@/client/js/functions/language';
 import reload from '@/client/js/module/reload';
+
+import commErr from '@/client/js/communication/commErr';
 
 export default function webRTC(gameName) {
   return new Promise(async (resolve, reject) => {
@@ -51,10 +55,9 @@ export default function webRTC(gameName) {
       }
     }
 
-    function initConnect(channelName) {
+    async function initConnect(channelName) {
       try {
         peerConnection = new RTCPeerConnection(servers);
-        window.rtcChannels.peerConnection = peerConnection;
         peerConnection.ondatachannel = (event) => {
           onDataChannel = event.channel;
           window.rtcChannels.onDataChannel = onDataChannel;
@@ -89,22 +92,46 @@ export default function webRTC(gameName) {
           }
         };
 
+        /**
+         * oniceconnectionstatechange는 resolve() 이후 발생
+         * 모든 게임에서 상대방이 방을 나갔는지, 새로고침 했는지는 여기서 체크
+         * 상대방이 방을 나갔으면 'disconnected'
+         * gameOver 상태일 경우 상대방이 방을 나갔는지 판단 할 필요 없음
+         */
         peerConnection.oniceconnectionstatechange = (event) => {
-          if (peerConnection) {
-            if (peerConnection.iceConnectionState === 'disconnected') {
-              // LOADING_EVENT.show(msg_str('left_user'));
-              reject({ component: 'peerConnection', event: 'oniceconnectionstatechange', message: 'ICE connection state is disconnected', errorDetails: event });
-            }
+          // 이 이벤트에서 상대 peer가 방을 나갔을 경우 disconnected는 약 5초 뒤에 발생함
+          const REMOTE_PEER_LEFT = peerConnection && peerConnection.iceConnectionState === 'disconnected' && window.sessionStorage.getItem('gameState') && window.sessionStorage.getItem('gameState') !== 'gameOver';
+          if (REMOTE_PEER_LEFT) {
+            errorManagement({ errCase: 'webRTC', component: 'peerConnection', event: 'oniceconnectionstatechange', message: 'ICE connection state is disconnected', errorDetails: event });
           }
         };
 
+        // onconnectionstatechange는 resolve() 이후 발생
+        // oniceconnectionstatechange에서 disconnected를 먼저 체크하므로 제거
+        /*
         peerConnection.onconnectionstatechange = (event) => {
           if (peerConnection) {
+            // 이 이벤트에서 상대 peer가 방을 나갔을 경우 disconnected는 약 5초 뒤에 발생함
+            // 이 이벤트에서 상대 peer가 방을 나갔을 경우 failed는 약 10초 뒤에 발생함
             if (peerConnection.connectionState === 'disconnected' || peerConnection.connectionState === 'failed') {
+              console.log('peerConnection.connectionState : ', peerConnection.connectionState);
               // LOADING_EVENT.show(msg_str('left_user'));
-              reject({ component: 'peerConnection', event: 'onconnectionstatechange', message: `Peer connection state is ${peerConnection.connectionState}`, errorDetails: event });
+              // errorManagement({ component: 'peerConnection', event: 'onconnectionstatechange', message: `Peer connection state is ${peerConnection.connectionState}`, errorDetails: event });
             }
           }
+        };
+        */
+
+        peerConnection.onsignalingstatechange = () => {
+          console.log('onsignalingstatechange >>>> ', peerConnection.signalingState);
+        };
+
+        peerConnection.onclose = () => {
+          console.log('연결이 종료되었습니다.');
+        };
+
+        peerConnection.onremovetrack = (event) => {
+          console.log('트랙 제거됨:', event);
         };
 
         // dataChannel = peerConnection.createDataChannel('sendChannel');
@@ -128,6 +155,9 @@ export default function webRTC(gameName) {
 
             // dataChannel message 전송
             responseComn();
+
+            // peerConnection/dataChannel error 감시
+            // commErr(peerConnection, dataChannel);
 
             // 두 peer가 연결이 되어야 resolve 시켜야 함
             // resolve({ peerConnection, onDataChannel, dataChannel });
@@ -190,9 +220,8 @@ export default function webRTC(gameName) {
           console.log('offer 받음 ::: ', JSON.parse(msgData.data).offer);
           const offer = JSON.parse(msgData.data).offer;
           // 새로고침 시 여기서 에러남
-          console.log('peerConnection >>>>> ', peerConnection);
           if (!peerConnection) {
-            initConnect(`${gameName}-${window.sessionStorage.getItem('roomName')}-Channel`);
+            await initConnect(`${gameName}-${window.sessionStorage.getItem('roomName')}-Channel`);
           }
           await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
           const answer = await peerConnection.createAnswer();
@@ -218,6 +247,24 @@ export default function webRTC(gameName) {
           console.log('candidate 받음 ::: ', JSON.parse(msgData.data).candidate);
           const candidate = JSON.parse(msgData.data).candidate;
           peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
+        }
+
+        if (msgData.type === 'otherLeaves') {
+          if (window.sessionStorage.getItem('gameState')) {
+            if (window.sessionStorage.getItem('gameState') === 'gameOver') {
+              resolve();
+            } else {
+              if (msgData.msg === 'r2') {
+                // 게임 중 한 명이 나간 상태에서 나머지 한 명이 새로고침
+                errorManagement({ errCase: 'webRTC', component: 'peerConnection' });
+                return;
+              }
+            }
+          } else {
+            errorManagement({ errCase: 'errorComn' });
+            return;
+          }
+          return;
         }
       } catch (error) {
         otherLeavesComn();

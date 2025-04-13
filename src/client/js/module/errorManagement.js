@@ -32,7 +32,7 @@ function showErrorNotification(errCase, component, message) {
         break;
     }
   } else if (errCase === 'errorComn') {
-    alert(message ? message : text.err);
+    errorModal(message ? message : text.err);
   }
 }
 
