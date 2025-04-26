@@ -1,0 +1,86 @@
+#container {
+  &.info-play-pop {
+    #gameScene {
+      background-color: rgba(0, 0, 0, 0.7);
+      background-color: var(--infoBg);
+      .picture-board {
+        .board {
+          border-color: #323232;
+          border-color: var(--infoBoarder);
+          background-color: #fff;
+          background-color: var(--infoBoarderBg);
+        }
+      }
+      .player-block,
+      .enemy-block {
+        ul {
+          li {
+            position: relative;
+            &::after {
+              content: "";
+              display: block;
+              position: absolute;
+              left: 0;
+              top: 0;
+              width: 100%;
+              height: 100%;
+              background-color: rgba(0, 0, 0, 0.7);
+              background-color: var(--infoCardBg);
+            }
+          }
+        }
+      }
+      .player-block {
+        ul {
+          li {
+            &.active-before,
+            &.active-after {
+              &::after {
+                display: none;
+                width: 0;
+                height: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .modal {
+      position: fixed;
+      display: block;
+      background-color: #000;
+      background-color: var(--infoModalBg);
+      color: #fff;
+      color: var(--infoModalColor);
+      font-size: 14px;
+      word-break: keep-all;
+      text-align: center;
+      padding: 12px;
+      box-sizing: border-box;
+      left: 50%;
+      transform: translate(-50%, 15%);
+      opacity: 0;
+      z-index: 9904;
+      &.one-line {
+        width: auto;
+        white-space: nowrap;
+      }
+      &.multi-line {
+        width: calc(100vw - 32px);
+      }
+      &.show,
+      &.hide {
+        transition: transform 0.2s ease-in, opacity 0.2s ease-in;
+      }
+      &.show {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+      &.hide {
+        opacity: 0;
+        transform: translate(-50%, 15%);
+      }
+    }
+  }
+}

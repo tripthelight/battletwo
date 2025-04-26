@@ -1,0 +1,15 @@
+.betting-zone {
+  position: absolute;
+  left: 0;
+  top: 40%;
+  width: 100vw;
+  height: 20%;
+  background-color: #6faaad;
+  border: 10px solid #e7edf0;
+  border-top-width: 4px;
+  border-bottom-width: 4px;
+  box-sizing: border-box;
+  &.over {
+    background-color: #518486;
+  }
+}

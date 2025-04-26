@@ -1,0 +1,18 @@
+.enemy-block {
+  position: relative;
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    li {
+      background-color: #fff;
+      transition: transform 1s ease-in, opacity 1s ease-in;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+      &::after {
+        transition: background-color 0.4s ease-in;
+      }
+    }
+  }
+}

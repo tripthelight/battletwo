@@ -1,0 +1,18 @@
+.round-circle {
+  position: absolute;
+  left: 50%;
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border-radius: 1000px;
+  padding: 10px;
+  box-sizing: border-box;
+  transform: translateX(-50%);
+  span {
+    font-size: 20px;
+    color: #000;
+    font-family: "gf";
+  }
+}

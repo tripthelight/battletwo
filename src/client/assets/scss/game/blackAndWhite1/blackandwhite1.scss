@@ -1,0 +1,25 @@
+* {
+  font-family: "nbg";
+}
+html,
+body {
+  overflow: hidden;
+}
+#gameScene {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #8a1521;
+  overflow: hidden;
+  .enemy-block,
+  .player-block {
+    position: relative;
+    width: 100%;
+  }
+  .enemy-block {
+    height: 40%;
+  }
+  .player-block {
+    height: 60%;
+  }
+}

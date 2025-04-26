@@ -1,0 +1,34 @@
+.enemy-block {
+  top: 0;
+  height: 40%;
+  /* background-color: rgba(0, 0, 0, 0.2); */
+  background-color: #6faaad;
+  box-sizing: border-box;
+  border: 10px solid #e7edf0;
+  border-bottom: 0 none;
+  &.win {
+    border: 10px solid #e7edf0;
+    z-index: 9000;
+    background-color: #ccc;
+    height: 100%;
+    transition: height 0.2s ease-in, background-color 0.2s ease-in;
+    .coins-enemy {
+      animation-name: enemyBlockWin;
+      animation-duration: 1s;
+      animation-timing-function: ease-out;
+      animation-iteration-count: 1;
+      animation-delay: 0.2s;
+    }
+    @keyframes enemyBlockWin {
+      0% {
+        bottom: 0;
+      }
+      60% {
+        bottom: 5%;
+      }
+      100% {
+        bottom: -100%;
+      }
+    }
+  }
+}

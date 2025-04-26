@@ -1,0 +1,31 @@
+.player-block {
+  &.round-end {
+    perspective: 320px;
+    transform-style: preserve-3d;
+    transition: all 0.2s ease-in;
+    .player-card {
+      animation-name: rotateRoundBack;
+      animation-duration: 0.4s;
+      animation-iteration-count: 1;
+      animation-direction: alternate;
+      animation-fill-mode: forwards;
+      animation-timing-function: ease-in;
+    }
+    @keyframes rotateRoundBack {
+      from {
+        transform: translate(-50%, 0) rotateY(0deg);
+      }
+      to {
+        transform: translate(-50%, -50%) rotateY(-180deg);
+      }
+    }
+  }
+  &.round-end {
+    .player-card img.card {
+      bottom: auto;
+      top: 50%;
+      left: 50%;
+      transform: rotateY(-180deg);
+    }
+  }
+}

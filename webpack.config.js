@@ -130,6 +130,7 @@ const webpackConfig = {
     new MiniCssExtractPlugin({
       linkType: 'text/css',
       filename: 'css/[name]/[name].css',
+      // ignoreOrder: true, // CSS 순서 충돌 경고 무시
     }),
     new webpack.DefinePlugin({
       'process.env.SOCKET_HOST': JSON.stringify(process.env.SOCKET_HOST),
@@ -152,6 +153,7 @@ const webpackConfig = {
     ],
     splitChunks: {
       chunks: 'all',
+      name: 'common', // 공통된 코드나 스타일을 'common'으로 묶어줌
       minSize: 0,
       maxSize: 50000, // 50KB로 설정하여, 특정 크기(라인 수)에 도달하면 분할
     },

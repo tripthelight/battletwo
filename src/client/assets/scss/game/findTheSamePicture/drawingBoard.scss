@@ -1,0 +1,144 @@
+$perspective-w: calc(100vw * 3);
+$perspective-h: calc(100vh * 3);
+$picture-card-size-w: calc(100% / 4);
+$picture-card-size-h: calc(100% / 4);
+
+$randomNum2: random(2);
+$randomNum3: random(3);
+$flipArr: 360, 720;
+$flipActiveArr: 180, 540, 900;
+$nth: nth($flipArr, $randomNum2);
+$repeat: 16;
+
+.drawing-board {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  .board {
+    max-width: 600px;
+    max-height: 600px;
+    border: 10px solid #a8a8a8;
+    border: 10px solid var(--boardBorder);
+    box-sizing: border-box;
+    background-color: transparent;
+    // padding: 1px;
+    display: flex;
+    flex-wrap: wrap;
+    // perspective: 600px;
+    background-color: #fff;
+    background-color: var(--boardBackground);
+    .picture-card {
+      // max-width: 142.5px;
+      // max-height: 142.5px;
+      flex-shrink: 1;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      // transition: transform 3s; // random s
+      // transition: transform $randomNum3 ease-in;
+      transform-style: preserve-3d;
+      span {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        width: calc(100% - 2px);
+        height: calc(100% - 2px);
+        backface-visibility: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &.front {
+          background: #000;
+        }
+        &.back {
+          background: #000;
+          transform: rotateY(180deg);
+        }
+      }
+      &.is-flipped {
+        // transform: rotateY(#{$nth}deg);
+        // transform: rotateY(0);
+        // transform: rotateY(0deg); // random deg
+        // transition: opacity .2 ease-in;
+      }
+      &.is-opacity {
+        opacity: 0;
+      }
+    }
+    .active-card {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.4s ease-in;
+      span {
+        position: absolute;
+        width: calc(100% - 2px);
+        height: calc(100% - 2px);
+        left: 1px;
+        top: 1px;
+        color: #fff;
+        background-color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backface-visibility: hidden;
+        transition: all 0.4s ease-in;
+        &.front {
+        }
+        &.back {
+          transform: rotateY(180deg);
+        }
+      }
+    }
+    &.flip-active {
+      // background-color: transparent;
+      transform-style: preserve-3d;
+      .flip {
+        transform: rotateY(540deg);
+        transition: all 0.4s ease-in;
+        span {
+          backface-visibility: hidden;
+          &.front {
+            background: #000;
+          }
+          &.back {
+            background: #000;
+            transform: rotateY(180deg);
+          }
+        }
+      }
+    }
+  }
+  &.type-width {
+    .board {
+      perspective: $perspective-h;
+      width: 100vh;
+      height: 100vh;
+      .picture-card {
+        flex-basis: $picture-card-size-h;
+        width: $picture-card-size-h;
+        height: $picture-card-size-h;
+        font-size: 8vh;
+      }
+    }
+  }
+  &.type-height {
+    .board {
+      perspective: $perspective-w;
+      width: 100vw;
+      height: 100vw;
+      .picture-card {
+        flex-basis: $picture-card-size-w;
+        width: $picture-card-size-w;
+        height: $picture-card-size-w;
+        font-size: 8vw;
+      }
+    }
+  }
+}

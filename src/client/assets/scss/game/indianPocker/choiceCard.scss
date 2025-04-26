@@ -1,0 +1,72 @@
+.choice-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  ul {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    li {
+      width: 8vw;
+      max-width: 100px;
+      &:active {
+        button {
+          transform: scale(1.1);
+          transition: transform 0.2s ease-in;
+        }
+      }
+      &:last-child {
+        width: 50vw;
+        li {
+          align-self: flex-start;
+        }
+      }
+      &:first-child {
+        li {
+          align-self: flex-end;
+        }
+      }
+      button {
+        img {
+          width: 30vw;
+          max-width: 100px;
+        }
+      }
+      &.show {
+        width: 50vw;
+        perspective: 320px;
+        transform-style: preserve-3d;
+        transition: all 0.2s ease-in;
+        button {
+          animation-name: rotateBack;
+          animation-duration: 0.4s;
+          animation-iteration-count: 1;
+          animation-direction: alternate;
+          animation-fill-mode: forwards;
+          animation-timing-function: ease-in;
+          img {
+            background-color: #fff;
+            border-radius: 8px;
+            transform: rotateY(-180deg);
+          }
+          @keyframes rotateBack {
+            from {
+              transform: rotateY(0deg);
+            }
+            to {
+              transform: rotateY(180deg);
+            }
+          }
+        }
+      }
+    }
+  }
+}

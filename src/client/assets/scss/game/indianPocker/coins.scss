@@ -1,0 +1,298 @@
+/*
+@function randomNum($min, $max) {
+  $rand: random();
+  $randNum: $min + floor($rand * (($max - $min) + 1));
+  @return $randNum;
+}
+@function random-decimal($max) {
+  @return random($max) / 10;
+}
+@mixin randomMinuteStart($anim1: randomNum(0, 360)) {
+  transform: translate(-50%, -96%) rotate($anim1 + deg);
+}
+@mixin randomMinuteEnd($anim1: randomNum(0, 360)) {
+  transform: translate(-50%, -96%) rotate(-1turn);
+}
+*/
+.coins {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  li {
+    position: relative;
+    // width: #{randomNum(5, 10)}px;
+    width: calc((100vw - 20px - 20px) / 10);
+    height: calc((100vw - 20px - 20px) / 10);
+    max-width: 40px;
+    max-height: 40px;
+    border-radius: 100%;
+    cursor: default;
+    z-index: 3;
+    &[draggable='false'] {
+      cursor: default;
+    }
+    &[draggable='true'] {
+      cursor: move;
+    }
+    // clock type
+    box-sizing: border-box;
+    span {
+      // span.h 시침
+      // span.m 분침
+      &.m,
+      &.h {
+        position: absolute;
+        display: block;
+        width: 6%;
+        left: 50%;
+        top: 50%;
+        transform-origin: center bottom;
+        border-radius: 1000px;
+        z-index: 1;
+      }
+      &.m {
+        height: 46%;
+        // translateY : -50% - height 46%
+        transform: translate(-50%, -96%) rotate(0);
+      }
+      &.h {
+        height: 36%;
+        // translateY : -50% - height 36%
+        transform: translate(-50%, -86%) rotate(0);
+      }
+    }
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: transparent;
+      border-radius: 100%;
+      z-index: 2;
+    }
+  }
+  &.disabled {
+    li {
+      cursor: default;
+    }
+  }
+}
+.player-block {
+  .coins {
+    top: 0;
+    li {
+      // clock type
+      display: inline-block;
+      background-color: #000;
+      border: 4px solid #000;
+      span {
+        background-color: #fff;
+      }
+      // &::after {
+      //   background-color: #000;
+      // }
+      // clock type
+      // after 시침
+      // before 분침
+      /*
+      &::before,
+      &::after {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 6%;
+        left: 50%;
+        top: 50%;
+        transform-origin: center bottom;
+        background-color: #fff;
+        border-radius: 1000px;
+      }
+      &::before {
+        height: 46%;
+        // translateY : -50% - height 46%
+        transform: translate(-50%, -96%) rotate(0);
+      }
+      &::after {
+        height: 36%;
+        // translateY : -50% - height 36%
+        transform: translate(-50%, -86%) rotate(0);
+      }
+      */
+      // chip type
+      /*
+      box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.5), 0 0 3px 0 rgba(0, 0, 0, 0.4) inset;
+      border-radius: 50%;
+      background-size: 100% 100%;
+      background-position: center center;
+      background-image: linear-gradient(0deg, transparent 0, transparent 40.7%, #fff 44.7%, #fff 57.29%, transparent 57.29%, transparent 100%), linear-gradient(60deg, transparent 0, transparent 45.52%, #fff 45.52%, #fff 56.11%, transparent 56.11%, transparent 100%), linear-gradient(120deg, #222222 0, #222222 45.52%, #fff 45.52%, #fff 56.11%, #222222 56.11%, #222222 100%);
+      &::before {
+        position: absolute;
+        content: "";
+        z-index: 1;
+        width: 77.48344370860927%; // 117
+        height: 77.48344370860927%; // 117
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-size: 100% 100%;
+        background-position: center center;
+        border: 2px solid #222222;
+        box-sizing: border-box;
+        background-image: linear-gradient(0deg, transparent 0, transparent 46.02649%, #ebebeb 46.02649006622517%, #ebebeb 53.97350993377484%, transparent 53.97350993377484%, transparent 100%), linear-gradient(30deg, transparent 0, transparent 44.371126%, #ebebeb 45.37112582781458%, #ebebeb 53.31814569536425%, transparent 53.31814569536425%, transparent 100%), linear-gradient(60deg, transparent 0, transparent 45.37112582781458%, #ebebeb 45.37112582781458%, #ebebeb 53.31814569536425%, transparent 53.31814569536425%, transparent 100%), linear-gradient(90deg, transparent 0, transparent 46.02649%, #ebebeb 45.02649%, #ebebeb 53.97350993377484%, transparent 53.97350993377484%, transparent 100%), linear-gradient(120deg, transparent 0, transparent 45.37112582781458%, #ebebeb 45.37112582781458%, #ebebeb 53.31814569536425%, transparent 53.31814569536425%, transparent 100%),
+          linear-gradient(150deg, #000000 0, #000000 45.37112582781458%, #ebebeb 45.37112582781458%, #ebebeb 53.31814569536425%, #000000 53.31814569536425%, #000000 100%);
+      }
+      &::after {
+        z-index: 2;
+        position: absolute;
+        content: "";
+        text-align: center;
+        width: 60%; // 111
+        height: 60%; // 111
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        text-shadow: -1px -1px 0px rgba(0, 0, 0, 0.3), 1px 1px 0px rgba(255, 255, 255, 0.2);
+        background: #222222;
+        transform: translate(-50%, -50%);
+      }
+      */
+    }
+    &.active {
+      // clock type
+      // li {
+      //   &::before,
+      //   &::after {
+      //     animation-iteration-count: infinite;
+      //   }
+      //   &::before {
+      //     // 30초에 360도 회전
+      //     animation-duration: 30s;
+      //     animation-timing-function: steps(30, end);
+      //   }
+      //   &::after {
+      //     // 30초에 30도 회전 = 360초에 360도 회전
+      //     animation-duration: 360s;
+      //     animation-timing-function: steps(360, end);
+      //   }
+      // }
+      // @for $i from 1 through 40 {
+      //   $startM: randomNum(0, 360);
+      //   $startE: $startM + 359;
+      //   li:nth-child(#{$i}) {
+      //     &::before {
+      //       animation-name: coinRotateMinute_#{$i};
+      //     }
+      //     &::after {
+      //       animation-name: coinRotateHour_#{$i};
+      //     }
+      //   }
+      //   @keyframes coinRotateMinute_#{$i} {
+      //     from {
+      //       // transform: translate(-50%, -96%) rotate(0deg);
+      //       // @include randomMinuteStart();
+      //       transform: translate(-50%, -96%) rotate(#{$startM}deg);
+      //       // transform: translate(-50%, -96%) rotate(0deg);
+      //       // transform: translate(-50%, -96%) rotate(#{10 * $i}deg);
+      //     }
+      //     to {
+      //       transform: translate(-50%, -96%) rotate(#{$startE}deg);
+      //     }
+      //   }
+      //   @keyframes coinRotateHour_#{$i} {
+      //     from {
+      //       transform: translate(-50%, -86%) rotate(0);
+      //     }
+      //     to {
+      //       transform: translate(-50%, -86%) rotate(360deg);
+      //     }
+      //   }
+      // }
+
+      // chip type
+      /*
+      li {
+        animation-name: activeCoins;
+        animation-duration: 2s;
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: infinite;
+      }
+      @keyframes activeCoins {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.6;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+      */
+    }
+  }
+}
+.enemy-block {
+  .coins {
+    bottom: 0;
+    flex-wrap: wrap-reverse;
+    flex-direction: row-reverse;
+    li {
+      // clock type
+      background-color: #fff;
+      border: 4px solid #fff;
+      span {
+        background-color: #000;
+      }
+      // &::after {
+      //   background-color: #fff;
+      // }
+      // chip type
+      // transition: all 0.2s ease-in;
+      // display: inline-block;
+      // box-shadow: 0 0 2px 0px rgba(0, 0, 0, 0.4), 0 0 2px 0 rgba(0, 0, 0, 0.4) inset;
+      // border-radius: 50%;
+      // background-size: 100% 100%;
+      // background-position: center center;
+      // background-image: linear-gradient(0deg, transparent 0, transparent 40.7%, #fff 44.7%, #fff 57.29%, transparent 57.29%, transparent 100%), linear-gradient(60deg, transparent 0, transparent 45.52%, #fff 45.52%, #fff 56.11%, transparent 56.11%, transparent 100%), linear-gradient(120deg, #dddddd 0, #dddddd 45.52%, #fff 45.52%, #fff 56.11%, #dddddd 56.11%, #dddddd 100%);
+      // &::before {
+      //   position: absolute;
+      //   content: "";
+      //   z-index: 1;
+      //   width: 77.48344370860927%; /* 117 */
+      //   height: 77.48344370860927%; /* 117 */
+      //   border-radius: 50%;
+      //   top: 50%;
+      //   left: 50%;
+      //   transform: translate(-50%, -50%);
+      //   background-size: 100% 100%;
+      //   background-position: center center;
+      //   border: 2px solid #dddddd;
+      //   box-sizing: border-box;
+      //   background-image: linear-gradient(0deg, transparent 0, transparent 46.02649%, #ebebeb 46.02649006622517%, #ebebeb 53.97350993377484%, transparent 53.97350993377484%, transparent 100%), linear-gradient(30deg, transparent 0, transparent 44.371126%, #ebebeb 45.37112582781458%, #ebebeb 53.31814569536425%, transparent 53.31814569536425%, transparent 100%), linear-gradient(60deg, transparent 0, transparent 45.37112582781458%, #ebebeb 45.37112582781458%, #ebebeb 53.31814569536425%, transparent 53.31814569536425%, transparent 100%), linear-gradient(90deg, transparent 0, transparent 46.02649%, #ebebeb 45.02649%, #ebebeb 53.97350993377484%, transparent 53.97350993377484%, transparent 100%), linear-gradient(120deg, transparent 0, transparent 45.37112582781458%, #ebebeb 45.37112582781458%, #ebebeb 53.31814569536425%, transparent 53.31814569536425%, transparent 100%),
+      //     linear-gradient(150deg, #c1c1c1 0, #c1c1c1 45.37112582781458%, #ebebeb 45.37112582781458%, #ebebeb 53.31814569536425%, #c1c1c1 53.31814569536425%, #c1c1c1 100%);
+      // }
+      // &::after {
+      //   z-index: 2;
+      //   position: absolute;
+      //   content: "";
+      //   text-align: center;
+      //   width: 60%; /* 111 */
+      //   height: 60%; /* 111 */
+      //   border-radius: 50%;
+      //   top: 50%;
+      //   left: 50%;
+      //   text-shadow: -1px -1px 0px rgba(0, 0, 0, 0.3), 1px 1px 0px rgba(255, 255, 255, 0.2);
+      //   background: #dddddd;
+      //   transform: translate(-50%, -50%);
+      // }
+    }
+  }
+}

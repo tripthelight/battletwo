@@ -1,0 +1,13 @@
+#container,
+#container #gameScene {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+.enemy-block,
+.player-block {
+  position: absolute;
+  left: 0;
+  width: 100%;
+}

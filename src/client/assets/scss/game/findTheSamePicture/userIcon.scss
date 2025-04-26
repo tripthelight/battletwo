@@ -1,0 +1,19 @@
+@import url("./animation.scss");
+.player-icon,
+.enemy-icon {
+  position: absolute;
+  background-color: #000;
+  transition: left 1s ease-in, top 1s ease-in, width 1s ease-in, height 1s ease-in;
+  z-index: 2001;
+  &.move {
+    animation-name: moveUserIcon;
+    animation-duration: 1s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 1;
+  }
+}
+.pc {
+  .player-icon {
+    cursor: move;
+  }
+}

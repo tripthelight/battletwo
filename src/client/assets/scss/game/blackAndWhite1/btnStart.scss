@@ -1,0 +1,29 @@
+.btn-start {
+  position: absolute;
+  left: 20px;
+  bottom: 30px;
+  bottom: calc(30px + var(--safe-bottom));
+  background-color: rgba(255, 255, 255, 0.4);
+  padding: 10px 0;
+  box-sizing: border-box;
+  display: block;
+  width: calc(100% - 40px);
+  border-radius: 1000px;
+  cursor: pointer;
+  &:hover,
+  &:active {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+  span {
+    font-size: 30px;
+    text-align: center;
+    color: #000;
+  }
+  &:disabled {
+    background-color: rgba(255, 255, 255, 0.8);
+    cursor: default;
+    span {
+      font-size: 26px;
+    }
+  }
+}

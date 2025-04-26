@@ -1,0 +1,95 @@
+@import url("./animation.scss");
+$wrapSize_w: 100vw;
+$wrapSize_h: 100vh;
+$boradSize_w: calc(100vw - 20px);
+$boradSize_h: calc(100vh - 20px);
+
+.picture-board {
+  flex-grow: 1;
+  position: relative;
+  width: $wrapSize_w;
+  height: $wrapSize_w;
+  // transform: translate(-50%, -50%);
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .board {
+    position: relative;
+    max-width: 600px;
+    max-height: 600px;
+    border: 10px solid #a8a8a8;
+    border: 10px solid var(--boardBorder);
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1px;
+    background-color: #fff;
+    background-color: var(--boardBackground);
+    transition: background-color 0.4s ease-in, border-color 0.2s ease-in;
+    z-index: 9903;
+    .card {
+      flex: 1 1 25%;
+      background-color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 600px;
+      button {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: calc(100% - 2px);
+        height: calc(100% - 2px);
+        color: #fff;
+        transform: rotateY(0);
+        transition: transform 1s;
+        transform-style: preserve-3d;
+        span {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          backface-visibility: hidden;
+          &.front {
+            background-color: #000;
+            transition: font-size 0.2s ease-in;
+          }
+          &.back {
+            background-color: #fff;
+            transform: rotateY(180deg);
+            img {
+              width: 100%;
+              height: 100%;
+            }
+          }
+        }
+        &.flip {
+          transform: rotateY(180deg);
+        }
+      }
+    }
+    &.select-active {
+      .card {
+        animation-name: boardSelectActive;
+        animation-duration: 4s;
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: infinite;
+        @for $i from 1 to 17 {
+          &:nth-child(#{$i}) {
+            animation-delay: ($i * 0.2s);
+          }
+        }
+        button {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

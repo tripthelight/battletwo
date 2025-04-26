@@ -3,7 +3,7 @@ export default {
     'import/resolver': {
       alias: {
         map: [['@', './src']],
-        extensions: ['.js'],
+        extensions: ['.js', '.scss'],
       },
     },
   },

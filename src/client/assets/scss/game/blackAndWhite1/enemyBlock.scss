@@ -1,0 +1,26 @@
+.enemy-block {
+  ul {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+    li {
+      width: calc(100% / 9);
+      height: 30px;
+      transition: all 0.2s ease-in;
+      &.even {
+        background-color: #000;
+        & + .even {
+          border-left: 1px solid rgba(255, 255, 255, 0.2);
+        }
+      }
+      &.odd {
+        background-color: #fff;
+        & + .odd {
+          border-left: 1px solid rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
+  }
+}

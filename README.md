@@ -3,6 +3,7 @@
   - npm install --save-dev webpack webpack-cli babel-loader @babel/core @babel/preset-env sass sass-loader css-loader style-loader webpack-dev-server html-webpack-plugin html-loader mini-css-extract-plugin clean-webpack-plugin copy-webpack-plugin image-webpack-loader file-loader url-loader postcss-discard-comments css-minimizer-webpack-plugin babel-plugin-module-resolver autoprefixer
   - npm install dotenv --save-dev  
   - npm install lit --save-dev  
+  - npm install postcss-import --save-dev
 - server :  
   - npm install cluster redux @reduxjs/toolkit ioredis uuid --save-dev
 
@@ -60,6 +61,10 @@ battletwo
 ├─ package.json  
 ├─ package-lock.json  
 └─ webpack.config.js  
+
+## SSL 인증서 검사를 우회
+- npm config set strict-ssl false
+- npm cache clean --force
 
 ## 진행상황
 - tabtab은 완료

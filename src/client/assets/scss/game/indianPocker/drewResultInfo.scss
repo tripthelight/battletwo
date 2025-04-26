@@ -1,0 +1,34 @@
+.drew-result-info,
+.drew-result-info span,
+.drew-result-info a.btn-home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "nbg", "Malgun Gothic", "dotum", sans-serif;
+}
+.drew-result-info {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  transform: translateY(-50%);
+  z-index: 9001;
+  flex-direction: column;
+  span {
+    font-size: 90px;
+    color: #fff;
+    text-align: center;
+  }
+  a {
+    &.btn-home {
+      padding: 10px;
+      margin: 20px 0 0 0;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 6px;
+      font-size: 20px;
+      color: #fff;
+    }
+  }
+}

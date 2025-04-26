@@ -1,0 +1,25 @@
+:root {
+  --background: #fff;
+  --boardBorder: #a8a8a8;
+  --boardBackground: #fff;
+  --infoBg: rgba(0, 0, 0, 0.7);
+  --infoModalBg: #000;
+  --infoModalColor: rgba(255, 255, 255, 1);
+  --infoCardBg: rgba(0, 0, 0, 0.7);
+  --infoBoarder: #323232;
+  --infoBoarderBg: #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #141414;
+    --boardBorder: #222222;
+    --boardBackground: #3b3b3b;
+    --infoBg: #000;
+    --infoModalBg: rgba(255, 255, 255, 1);
+    --infoModalColor: rgba(0, 0, 0, 1);
+    --infoCardBg: rgba(0, 0, 0, 0.9);
+    --infoBoarder: #141414;
+    --infoBoarderBg: rgba(255, 255, 255, 0.6);
+  }
+}

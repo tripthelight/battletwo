@@ -1,0 +1,44 @@
+// 세로가 길 때
+.portrait {
+  .enemy-block,
+  .player-block {
+    width: 100vw;
+    height: calc(100vw / 10 * 2);
+    ul {
+      width: 100vw;
+      height: calc(100vw / 10 * 2);
+      li {
+        width: 10vw;
+        height: 10vw;
+      }
+    }
+  }
+  .picture-board {
+    .board {
+      width: 100vw;
+      height: 100vw;
+    }
+  }
+}
+// 가로가 길 때
+.landscape {
+  .enemy-block,
+  .player-block {
+    width: 100vw;
+    height: calc(100vw / 20);
+    ul {
+      width: 100vw;
+      height: calc(100vw / 20);
+      li {
+        width: 5vw;
+        height: 5vw;
+      }
+    }
+  }
+  .picture-board {
+    .board {
+      width: calc(100vh - 16vw);
+      height: calc(100vh - 16vw);
+    }
+  }
+}

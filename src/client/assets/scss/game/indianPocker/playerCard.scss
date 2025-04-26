@@ -1,0 +1,39 @@
+.player-card {
+  position: absolute;
+  left: 50%;
+  bottom: -30%;
+  transform: translateX(-50%);
+  width: auto;
+  height: 80%;
+  background-color: transparent;
+  border-radius: 8px;
+  z-index: 15;
+  img {
+    display: block;
+    width: auto;
+    height: 100%;
+    background-color: #fff;
+    border-radius: 8px;
+  }
+  &.drew-wait-card {
+    cursor: pointer;
+    animation-name: drewWaitCard;
+    animation-duration: 2s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+  @keyframes drewWaitCard {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  &.down-animation {
+    transition: bottom 0.2s ease-in;
+  }
+}
