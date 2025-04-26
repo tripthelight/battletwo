@@ -6,7 +6,7 @@ export default function clearStorage(currentUrl) {
   const ROUTES = {
     taptap: '/game/taptap',
     indianPocker: '/game/indianPocker',
-    blackAndWhite: '/game/blackAndWhite',
+    blackAndWhite1: '/game/blackAndWhite1',
     findTheSamePicture: '/game/findTheSamePicture',
   };
   const routeKey = currentUrl.split('/').pop(); // '/game/...' 게임명을 추출
