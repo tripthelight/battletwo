@@ -1,6 +1,7 @@
-@import url('../../common.scss');
-@import url('./taptap.scss');
-@import url('./count.scss');
-@import url('./touchDot.scss');
-@import url('./interaction.scss');
-@import url('./gameResultPopup.scss');
+@use '../../common.scss' as common;
+@use './_keyframes.scss' as keyframes;
+@use './taptap.scss' as taptap;
+@use './count.scss' as count;
+@use './touchDot.scss' as touchDot;
+@use './interaction.scss' as interaction;
+@use './gameResultPopup.scss' as gameResultPopup;

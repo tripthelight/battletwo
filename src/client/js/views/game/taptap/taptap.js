@@ -1,4 +1,6 @@
+// import scss
 import '@/client/assets/scss/game/taptap/common';
+// import common js
 import '@/client/js/common/common';
 import rtcPeer from '@/client/js/webRTC/rtcPeer';
 import storageMethod from '@/client/js/module/storage/storageMethod';

@@ -1,2 +1,2 @@
-@import url('../common.scss');
-@import url('./selectGame.scss');
+@use '../common.scss' as common;
+@use './selectGame.scss' as selectGame;

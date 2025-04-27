@@ -1,3 +1,2 @@
-@import url('../common.scss');
-@import url('./main.scss');
-@import url('./popupModal.scss');
+@use '../common.scss' as common;
+@use './main.scss' as main;

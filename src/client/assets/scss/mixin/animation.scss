@@ -1,0 +1,15 @@
+@mixin keyframes($animation_name) {
+  @keyframes #{$animation_name} {
+    @content;
+  }
+}
+
+@mixin animation($name, $duration: 0s, $iteration-count: 1, $direction: normal, $fill-mode: none, $timing-function: ease-in, $delay: 0) {
+  animation-name: $name;
+  animation-duration: $duration;
+  animation-iteration-count: $iteration-count;
+  animation-direction: $direction;
+  animation-fill-mode: $fill-mode;
+  animation-timing-function: $timing-function;
+  animation-delay: $delay;
+}

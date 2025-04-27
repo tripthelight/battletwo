@@ -1,4 +1,5 @@
-@import url("./animation.scss");
+@use '../../mixin/animation.scss' as anim;
+
 $wrapSize_w: 100vw;
 $wrapSize_h: 100vh;
 $boradSize_w: calc(100vw - 20px);
@@ -77,10 +78,7 @@ $boradSize_h: calc(100vh - 20px);
     }
     &.select-active {
       .card {
-        animation-name: boardSelectActive;
-        animation-duration: 4s;
-        animation-timing-function: ease-in-out;
-        animation-iteration-count: infinite;
+        @include anim.animation(boardSelectActive, 4s, infinite, normal, none, ease-in-out);
         @for $i from 1 to 17 {
           &:nth-child(#{$i}) {
             animation-delay: ($i * 0.2s);

@@ -1,13 +1,16 @@
+@use 'sass:math'; // math 모듈을 import
+@use 'sass:list'; // list 모듈을 import
+
 $perspective-w: calc(100vw * 3);
 $perspective-h: calc(100vh * 3);
 $picture-card-size-w: calc(100% / 4);
 $picture-card-size-h: calc(100% / 4);
 
-$randomNum2: random(2);
-$randomNum3: random(3);
+$randomNum2: math.random(2);
+$randomNum3: math.random(3);
 $flipArr: 360, 720;
 $flipActiveArr: 180, 540, 900;
-$nth: nth($flipArr, $randomNum2);
+$nth: list.nth($flipArr, $randomNum2);
 $repeat: 16;
 
 .drawing-board {

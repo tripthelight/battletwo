@@ -1,18 +1,6 @@
-@mixin keyframes($animation_name) {
-  @keyframes #{$animation_name} {
-    @content;
-  }
-}
+@use '../../mixin/animation.scss' as anim;
 
-@mixin animation($name, $duration: 0s, $iteration-count: 1, $direction: normal, $fill-mode: none) {
-  animation-name: $name;
-  animation-duration: $duration;
-  animation-iteration-count: $iteration-count;
-  animation-direction: $direction;
-  animation-fill-mode: $fill-mode;
-}
-
-@include keyframes(circleAnimation) {
+@include anim.keyframes(circleAnimation) {
   0% {
     opacity: 0;
     transform: scale(0);
@@ -27,7 +15,7 @@
   }
 }
 
-@include keyframes(readyAnimation) {
+@include anim.keyframes(readyAnimation) {
   0% {
     opacity: 0;
     transform: translate(-50%, -50%) scale(0, 0);
@@ -66,7 +54,7 @@
   }
 }
 
-@include keyframes(interactionAnimation) {
+@include anim.keyframes(interactionAnimation) {
   0% {
     opacity: 0;
     transform: scale(0);

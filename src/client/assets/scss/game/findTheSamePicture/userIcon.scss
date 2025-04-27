@@ -1,4 +1,5 @@
-@import url("./animation.scss");
+@use '../../mixin/animation.scss' as anim;
+
 .player-icon,
 .enemy-icon {
   position: absolute;
@@ -6,10 +7,7 @@
   transition: left 1s ease-in, top 1s ease-in, width 1s ease-in, height 1s ease-in;
   z-index: 2001;
   &.move {
-    animation-name: moveUserIcon;
-    animation-duration: 1s;
-    animation-timing-function: ease-in-out;
-    animation-iteration-count: 1;
+    @include anim.animation(moveUserIcon, 1s, 1, normal, none, ease-in-out);
   }
 }
 .pc {

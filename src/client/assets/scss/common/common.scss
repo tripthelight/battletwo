@@ -1,6 +1,6 @@
-@import url('./loading.scss');
-@import url('./offline.scss');
-@import url('./popupModal.scss');
-@import url('./errorModal.scss');
-@import url('./wait.scss');
-@import url('./nickNameModal.scss');
+@use './loading.scss' as loading;
+@use './offline.scss' as offline;
+@use './popupModal.scss' as popupModal;
+@use './errorModal.scss' as errorModal;
+@use './wait.scss' as wait;
+@use './nickNameModal.scss' as nickNameModal;
