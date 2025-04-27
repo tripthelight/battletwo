@@ -1,4 +1,4 @@
-import touchDotEnd from '@/client/js/views/game/taptap/touchDotEnd';
+import touchDotEnd from '@/client/js/views/game/taptap/fns/touchDotEnd';
 
 // + SCREEN TAP DOT ANIMATION
 export default (e) => {

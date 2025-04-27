@@ -1,7 +1,7 @@
-import screenTap from '@/client/js/views/game/taptap/screenTap';
-import touchDot from '@/client/js/views/game/taptap/touchDot';
-import interaction from '@/client/js/views/game/taptap/interaction';
-import tabGraph from '@/client/js/views/game/taptap/tabGraph';
+import screenTap from '@/client/js/views/game/taptap/fns/screenTap';
+import touchDot from '@/client/js/views/game/taptap/fns/touchDot';
+import interaction from '@/client/js/views/game/taptap/fns/interaction';
+import tabGraph from '@/client/js/views/game/taptap/fns/tabGraph';
 
 export default {
   tap: () => {

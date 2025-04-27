@@ -1,6 +1,6 @@
 import taptapGameState from '@/client/js/gameState/taptap';
 import { request } from '@/client/js/communication/taptap/request';
-import gameResult from '@/client/js/views/game/taptap/gameResult';
+import gameResult from '@/client/js/views/game/taptap/fns/gameResult';
 
 export default {
   tap: () => {

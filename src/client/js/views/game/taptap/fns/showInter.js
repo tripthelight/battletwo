@@ -1,4 +1,4 @@
-import interaction from '@/client/js/views/game/taptap/interaction';
+import interaction from '@/client/js/views/game/taptap/fns/interaction';
 
 export default (interTxt) => {
   if (!document.querySelector('.interaction')) {

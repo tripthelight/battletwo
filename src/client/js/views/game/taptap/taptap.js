@@ -6,16 +6,16 @@ import rtcPeer from '@/client/js/webRTC/rtcPeer';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import taptapGameState from '@/client/js/gameState/taptap';
-import cowndown from '@/client/js/views/game/taptap/cowndown';
-import countStyle from '@/client/js/views/game/taptap/countStyle';
-import screenClickEvent from '@/client/js/views/game/taptap/screenClickEvent';
+import cowndown from '@/client/js/views/game/taptap/fns/cowndown';
+import countStyle from '@/client/js/views/game/taptap/fns/countStyle';
+import screenClickEvent from '@/client/js/views/game/taptap/fns/screenClickEvent';
 import { request } from '@/client/js/communication/taptap/request';
 import reload from '@/client/js/module/reload';
 import commErr from '@/client/js/communication/commErr';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import { text } from '@/client/js/functions/language';
-import reDrawPlaying from '@/client/js/views/game/taptap/reDraw/playing';
-import reDrawGameResult from '@/client/js/views/game/taptap/reDraw/gameResult';
+import reDrawPlaying from '@/client/js/views/game/taptap/fns/reDraw/playing';
+import reDrawGameResult from '@/client/js/views/game/taptap/fns/reDraw/gameResult';
 
 // onMounted
 document.onreadystatechange = async () => {

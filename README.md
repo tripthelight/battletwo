@@ -62,13 +62,25 @@ battletwo
 ├─ package-lock.json  
 └─ webpack.config.js  
 
+## 공통 비고
+- 상대 PEER 방나감은 약 5초후에 확인 가능
+
 ## SSL 인증서 검사를 우회
 - npm config set strict-ssl false
 - npm cache clean --force
 
-## 진행상황
-- tabtab은 완료
-- 상대 PEER 방나감은 약 5초후에 확인 가능
-
 ## 공통 수정사항
 - firefox에서 localStorage, sessionStorage 삭제됨
+
+## 공통 해야할 일
+- battletwo.com ssl 이증된 호스트 구매 필요
+
+## 진행상황
+- indianPocker request/response 재이식 중  
+- battletwo 원본 경로  
+  - request :  
+    - /src/client/js/socket/indianpoker/setSocket.js  
+  - socket server :  
+    - /src/server/socket/indianpoker/indianpoker.js  
+  - response :  
+    - /src/client/js/socket/indianpoker/getSocket.js  

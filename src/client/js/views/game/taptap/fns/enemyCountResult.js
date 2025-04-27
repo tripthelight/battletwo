@@ -1,4 +1,4 @@
-import tabGraph from '@/client/js/views/game/taptap/tabGraph';
+import tabGraph from '@/client/js/views/game/taptap/fns/tabGraph';
 import storageMethod from '@/client/js/module/storage/storageMethod.js';
 
 export default (count) => {
