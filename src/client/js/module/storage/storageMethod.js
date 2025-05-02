@@ -2,7 +2,7 @@ import storageEventStore, { updateStorageEvent } from '@/client/store/storageEve
 import saveLocalStorage from '@/client/js/module/storage/save/saveLocalStorage.js';
 import saveSessionStorage from '@/client/js/module/storage/save/saveSessionStorage';
 
-export default function storageMethod(_storage, _method, _key, _value) {
+export default function storageMethod(_storage, _method, _key, _value, _keys) {
   storageEventStore.dispatch(updateStorageEvent({ value: false }));
   switch (_method) {
     case 'SET_ITEM':
@@ -29,6 +29,15 @@ export default function storageMethod(_storage, _method, _key, _value) {
         saveLocalStorage();
       } else if (_storage === 's') {
         window.sessionStorage.clear();
+        saveSessionStorage();
+      }
+      break;
+    case 'REMOVE_ARR':
+      if (_storage === 'l') {
+        for (let i = 0; i < _keys.length; i++) window.localStorage.removeItem(_keys[i]);
+        saveLocalStorage();
+      } else if (_storage === 's') {
+        for (let i = 0; i < _keys.length; i++) window.sessionStorage.removeItem(_keys[i]);
         saveSessionStorage();
       }
       break;

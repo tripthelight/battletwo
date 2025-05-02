@@ -3,15 +3,22 @@ export function request(k, v) {
 
   if (onDataChannel && onDataChannel.readyState === 'open') {
     switch (k) {
-      case 'bodyClick':
+      case 'choiceFirst':
         onDataChannel.send(
           JSON.stringify({
-            type: 'enemyBodyClick',
-            count: v,
+            type: 'choiceFirst',
+            num: v,
           }),
         );
         break;
-
+      case 'choiceDrewCard':
+        onDataChannel.send(
+          JSON.stringify({
+            type: 'choiceDrewCard',
+            value: v, // true | false
+          }),
+        );
+        break;
       case 'basicBetting':
         onDataChannel.send(
           JSON.stringify({
@@ -34,6 +41,54 @@ export function request(k, v) {
           JSON.stringify({
             type: 'enterPlaying',
             gameState: v,
+          }),
+        );
+        break;
+      case 'cardNum':
+        onDataChannel.send(
+          JSON.stringify({
+            type: 'cardNum',
+            cardNum: v,
+          }),
+        );
+        break;
+      case 'enterDrew':
+        onDataChannel.send(
+          JSON.stringify({
+            type: 'enterDrew',
+            gameState: v,
+          }),
+        );
+        break;
+      case 'enterBasicBet':
+        onDataChannel.send(
+          JSON.stringify({
+            type: 'enterBasicBet',
+            gameState: v,
+          }),
+        );
+        break;
+      case 'nextStep':
+        onDataChannel.send(
+          JSON.stringify({
+            type: 'nextStep',
+            value: v, // true | false
+          }),
+        );
+        break;
+      case 'drewRefresh':
+        onDataChannel.send(
+          JSON.stringify({
+            type: 'drewRefresh',
+            value: v, // true | false
+          }),
+        );
+        break;
+      case 'drewRefreshReturn':
+        onDataChannel.send(
+          JSON.stringify({
+            type: 'drewRefreshReturn',
+            value: v, // true | false
           }),
         );
         break;
