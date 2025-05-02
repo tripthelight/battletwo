@@ -75,12 +75,14 @@ battletwo
 ## 공통 해야할 일
 - battletwo.com ssl 이증된 호스트 구매 필요
 
-## 진행상황
-- indianPocker request/response 재이식 중  
-- battletwo 원본 경로  
+## battletwo 기존 소스에서 통신
+- indianpoker의 경우 원본 경로  
   - request :  
     - /src/client/js/socket/indianpoker/setSocket.js  
   - socket server :  
     - /src/server/socket/indianpoker/indianpoker.js  
   - response :  
     - /src/client/js/socket/indianpoker/getSocket.js  
+
+## 진행상황
+- indianPocker choiceCard 까지 연동

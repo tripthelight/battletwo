@@ -15,8 +15,8 @@ export default () => {
   setTimeout(() => {
     // element | session 변수
     const GAME_SCENE = document.getElementById('gameScene');
-    const elem = document.createElement('div');
-    elem.classList.add('choice-card');
+    const ELEM = document.createElement('div');
+    ELEM.classList.add('choice-card');
     for (let i = 0; i < 2; i++) {
       const innerUL = document.createElement('ul'); // HTML 요소로 생성
       for (let j = 0; j < 10; j++) {
@@ -29,9 +29,9 @@ export default () => {
         choiceCards.appendChild(choiceCardsBtn);
         innerUL.appendChild(choiceCards);
       }
-      elem.appendChild(innerUL);
+      ELEM.appendChild(innerUL);
     }
-    GAME_SCENE.appendChild(elem);
+    GAME_SCENE.appendChild(ELEM);
 
     // 다음 함수 실행
     // 선플레이어 카드 선택 안내 팝업
