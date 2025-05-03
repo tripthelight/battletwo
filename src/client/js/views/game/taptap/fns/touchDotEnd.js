@@ -1,4 +1,4 @@
-import { timeInterval_300 } from '@/client/js/functions/variable.js';
+import { timeInterval_300 } from '@/client/js/functions/variable';
 
 export default (dotEl) => {
   setTimeout(() => {

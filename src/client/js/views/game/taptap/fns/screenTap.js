@@ -1,4 +1,4 @@
-import storageMethod from '@/client/js/module/storage/storageMethod.js';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { request } from '@/client/js/communication/taptap/request';
 
 export default (count) => {

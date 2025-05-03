@@ -1,8 +1,10 @@
-import { timeInterval_1, timeInterval_2 } from '@/client/js/functions/variable.js';
+import { timeInterval_1, timeInterval_2 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
-import choiceCardsClick from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/choiceCardsClick.js';
+import choiceCardsClick from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/choiceCardsClick';
 import drawPickCardInfo from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/drawPickCardInfo';
 import SVG_BACK from '@/client/assets/images/svg/indian_poker/indian_poker_card/back.svg';
+import imgSetCardNum from '@/client/js/views/game/indianPocker/fns/common/images/setCards';
+import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipUserCardCheck';
 
 export default () => {
   // element | seeeion 체크
@@ -36,7 +38,36 @@ export default () => {
     // 다음 함수 실행
     // 선플레이어 카드 선택 안내 팝업
     setTimeout(drawPickCardInfo, timeInterval_1);
-    // 선플레이어가 결정 안되었을 때
-    if (!window.sessionStorage.playerFirstNumber) setTimeout(choiceCardsClick, timeInterval_2);
+
+    // local player가 선택한 카드가 있을 때
+    const localPlayerSelect = window.sessionStorage.ulIndex && window.sessionStorage.liIndex && window.sessionStorage.playerFirstNumber;
+    // remote player가 선택한 카드가 있을 때
+    const remotePlayerSelect = window.sessionStorage.ulIndexEnemy && window.sessionStorage.liIndexEnemy && window.sessionStorage.enemyFirstNumber;
+
+    if (remotePlayerSelect) {
+      const CONTAINER = document.getElementById('container');
+      const GAME_SCENE = CONTAINER.querySelector('#gameScene');
+      const UL_INDEX_ENEMY = GAME_SCENE.querySelectorAll('ul')[window.sessionStorage.ulIndexEnemy];
+      const LI_INDEX_ENEMY = UL_INDEX_ENEMY.querySelectorAll('li')[window.sessionStorage.liIndexEnemy];
+      const TARGET_TAG_NAME = LI_INDEX_ENEMY.querySelector('img');
+      LI_INDEX_ENEMY.classList.add('show');
+      TARGET_TAG_NAME.setAttribute('src', imgSetCardNum(window.sessionStorage.enemyFirstNumber));
+    }
+
+    if (localPlayerSelect) {
+      const CONTAINER = document.getElementById('container');
+      const GAME_SCENE = CONTAINER.querySelector('#gameScene');
+      const UL_INDEX_ENEMY = GAME_SCENE.querySelectorAll('ul')[window.sessionStorage.ulIndex];
+      const LI_INDEX_ENEMY = UL_INDEX_ENEMY.querySelectorAll('li')[window.sessionStorage.liIndex];
+      const TARGET_TAG_NAME = LI_INDEX_ENEMY.querySelector('img');
+      LI_INDEX_ENEMY.classList.add('show');
+      TARGET_TAG_NAME.setAttribute('src', imgSetCardNum(window.sessionStorage.playerFirstNumber));
+    }
+
+    if (remotePlayerSelect && localPlayerSelect) {
+      setTimeout(flipUserCardCheck, timeInterval_2);
+    } else {
+      setTimeout(choiceCardsClick, timeInterval_2);
+    }
   }, timeInterval_1);
 };

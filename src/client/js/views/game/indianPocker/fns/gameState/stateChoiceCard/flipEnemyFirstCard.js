@@ -1,8 +1,8 @@
-import { timeInterval_1, timeInterval_201 } from '@/client/js/functions/variable.js';
+import { timeInterval_1, timeInterval_201 } from '@/client/js/functions/variable';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import randomNumberMinMax from '@/client/js/views/game/indianPocker/fns/common/randomNumberMinMax.js';
+import randomNumberMinMax from '@/client/js/views/game/indianPocker/fns/common/randomNumberMinMax';
 import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipUserCardCheck';
-import imgGetCardNum from '@/client/js/views/game/indianPocker/fns/common/images/getCards.js';
+import imgGetCardNum from '@/client/js/views/game/indianPocker/fns/common/images/getCards';
 
 export default () => {
   // element | seeeion 체크

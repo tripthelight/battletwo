@@ -1,7 +1,7 @@
-import { timeInterval_1 } from '@/client/js/functions/variable.js';
+import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { text } from '@/client/js/functions/language';
-import closePopup from '@/client/js/functions/popup.js';
+import closePopup from '@/client/js/functions/popup';
 
 export default () => {
   // element | seeeion 체크

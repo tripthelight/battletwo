@@ -1,6 +1,6 @@
 import IINTERACTION from '@/client/js/views/game/taptap/fns/IINTERACTION';
-import showInter from '@/client/js/views/game/taptap/fns/showInter.js';
-import { timeInterval_600 } from '@/client/js/functions/variable.js';
+import showInter from '@/client/js/views/game/taptap/fns/showInter';
+import { timeInterval_600 } from '@/client/js/functions/variable';
 
 export default {
   show: (diff) => {

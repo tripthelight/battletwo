@@ -1,7 +1,7 @@
-import { request } from '@/client/js/communication/taptap/request.js';
-import cowndown from './cowndown.js';
-import { timeInterval_1000, timeInterval_2000, timeInterval_3000, timeInterval_4000 } from '@/client/js/functions/variable.js';
-import storageMethod from '@/client/js/module/storage/storageMethod.js';
+import { request } from '@/client/js/communication/taptap/request';
+import cowndown from '@/client/js/views/game/taptap/fns/cowndown';
+import { timeInterval_1000, timeInterval_2000, timeInterval_3000, timeInterval_4000 } from '@/client/js/functions/variable';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 
 export default (innerEl) => {
   return new Promise(async (resolve, reject) => {

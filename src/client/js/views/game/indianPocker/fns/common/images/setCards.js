@@ -1,4 +1,4 @@
-import CRADS from '@/client/js/views/game/indianPocker/fns/common/images/cardLists.js';
+import CRADS from '@/client/js/views/game/indianPocker/fns/common/images/cardLists';
 
 export default (_num) => {
   let num;

@@ -33,13 +33,28 @@ document.onreadystatechange = async () => {
 
       if (reload) {
         // 새로 고침 후 재연결인 경우
+        switch (window.sessionStorage.getItem('gameState')) {
+          case 'waitEnemy':
+            // choiceCard
+            indianPockerGameState.choiceCard();
+            STATE_CHOICE_CARD.main();
+            break;
+          case 'choiceCard':
+            STATE_CHOICE_CARD.main();
+            break;
+          case 'basicBet':
+            //
+            break;
+          default:
+            break;
+        }
       } else {
         // choiceCard
         indianPockerGameState.choiceCard();
         STATE_CHOICE_CARD.main();
       }
 
-      LOADING_EVENT.hide();
+      // LOADING_EVENT.hide();
     } catch (error) {
       errorManagement(error);
     }

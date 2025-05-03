@@ -1,7 +1,7 @@
-import { timeInterval_1 } from '@/client/js/functions/variable.js';
+import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import flipEnemyFirstCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipEnemyFirstCard.js';
+import flipEnemyFirstCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipEnemyFirstCard';
 
 export default (_num) => {
   let promise = new Promise((resolve, reject) => {

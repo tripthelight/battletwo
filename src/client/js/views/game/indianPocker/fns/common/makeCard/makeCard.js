@@ -1,4 +1,4 @@
-import { timeInterval_1 } from '@/client/js/functions/variable.js';
+import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import encryptCardNumber from '@/client/js/views/game/indianPocker/fns/common/makeCard/encryptCardNumber';

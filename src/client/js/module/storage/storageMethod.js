@@ -1,5 +1,5 @@
-import storageEventStore, { updateStorageEvent } from '@/client/store/storageEvent.js';
-import saveLocalStorage from '@/client/js/module/storage/save/saveLocalStorage.js';
+import storageEventStore, { updateStorageEvent } from '@/client/store/storageEvent';
+import saveLocalStorage from '@/client/js/module/storage/save/saveLocalStorage';
 import saveSessionStorage from '@/client/js/module/storage/save/saveSessionStorage';
 
 export default function storageMethod(_storage, _method, _key, _value, _keys) {

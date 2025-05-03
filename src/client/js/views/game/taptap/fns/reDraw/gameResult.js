@@ -1,4 +1,4 @@
-import { text, comnText } from '@/client/js/functions/language.js';
+import { text, comnText } from '@/client/js/functions/language';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 

@@ -1,7 +1,7 @@
-import { timeInterval_1 } from '@/client/js/functions/variable.js';
+import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { text } from '@/client/js/functions/language';
-import stateResultBetting from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/stateResultBetting.js';
+import stateResultBetting from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/stateResultBetting';
 
 export default (_state) => {
   // element | seeeion 체크

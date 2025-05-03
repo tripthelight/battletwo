@@ -1,0 +1,22 @@
+import { errorManagement } from '@/client/js/module/errorManagement';
+errorManagement({ errCase: 'errorComn', message: '' });
+
+import { LOADING_EVENT } from '@/client/components/popup/full/loading';
+
+import { text } from '@/client/js/functions/language';
+import { comnText } from '@/client/js/functions/language';
+
+
+@/client/js/views/game/indianPocker/fns/
+@/client/js/views/game/indianPocker/fns/common/
+@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/
+@/client/js/views/game/indianPocker/fns/gameState/stateGameover/
+@/client/js/views/game/indianPocker/fns/rule/
+
+
+import { timeInterval_1 } from '@/client/js/functions/variable.js';
+
+
+
+import deviceStateStore from '@/client/store/deviceStateStore.js';
+const deviceState = deviceStateStore.getState().deviceStateState.deviceState;

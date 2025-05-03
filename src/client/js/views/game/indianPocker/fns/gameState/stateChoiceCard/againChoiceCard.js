@@ -1,8 +1,8 @@
-import { timeInterval_1 } from '@/client/js/functions/variable.js';
+import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { request } from '@/client/js/communication/indianPocker/request';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
-import choiceCardsClick from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/choiceCardsClick.js';
+import choiceCardsClick from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/choiceCardsClick';
 import SVG_BACK from '@/client/assets/images/svg/indian_poker/indian_poker_card/back.svg';
 
 export default () => {
