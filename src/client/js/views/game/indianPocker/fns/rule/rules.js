@@ -1,14 +1,14 @@
-import { timeInterval_1 } from '@/client/js/functions/variable.js';
+import { timeInterval_1 } from '@/client/js/functions/variable';
 import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState.js';
 import { comnText } from '@/client/js/functions/language';
 import setSessionMakeZero from '@/client/js/views/game/indianPocker/fns/sessions/setSessionMakeZero.js';
 import playerNumRes from '@/client/js/views/game/indianPocker/fns/common/playerNumRes.js';
 import allInClickEvent from '@/client/js/views/game/indianPocker/fns/common/allInClickEvent.js';
-import btnBettingCallRaiseComn from '../common/btnBettingCallRaiseComn.js';
-import SOCKET_EVENT from './socketEvent.js';
-import { GET_ROUND_END } from '../statePlaying/roundEnd/getRoundEnd.js';
-import { SET_FOLD } from '../statePlaying/fold/setFold.js';
-import stopPlayerTime from '../common/stopPlayerTime.js';
+import btnBettingCallRaiseComn from '@/client/js/views/game/indianPocker/fns/common/btnBettingCallRaiseComn';
+import SOCKET_EVENT from '@/client/js/communication/indianPocker/batting/battingEvent';
+import { GET_ROUND_END } from '@/client/js/views/game/indianPocker/fns/statePlaying/roundEnd/getRoundEnd';
+import { SET_FOLD } from '@/client/js/views/game/indianPocker/fns/statePlaying/fold/setFold';
+import stopPlayerTime from '@/client/js/views/game/indianPocker/fns/common/stopPlayerTime';
 
 export const RULES = {
   COMN: (_state) => {

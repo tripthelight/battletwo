@@ -1,7 +1,6 @@
-import { timeInterval_1 } from '@/client/js/functions/language';
+import { timeInterval_1 } from '@/client/js/functions/variable';
 import pcDraggableCheck from '@/client/js/views/game/indianPocker/fns/common/pcDraggableCheck';
 import deviceStateStore from '@/client/store/deviceStateStore.js';
-
 import removeEventMoveCoin from '@/client/js/views/game/indianPocker/fns/common/removeEventMoveCoin.js';
 
 export default () => {

@@ -16,6 +16,7 @@ export default {
     const CHOICE_CARD_INFO = document.querySelector('.choice-card-info');
     if (CHOICE_CARD_INFO) CHOICE_CARD_INFO.remove();
     LOADING_EVENT.hide();
+
     indianPockerGameState.basicBet();
   },
 };

@@ -6,6 +6,7 @@ import drewReadyCheckResult from '@/client/js/communication/indianPocker/fns/dre
 import receiveEnemyCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/receiveEnemyCard';
 import enterDrewResult from '@/client/js/communication/indianPocker/fns/enterDrewResult';
 import enterPlayingResult from '@/client/js/communication/indianPocker/fns/enterPlayingResult';
+import enterBasicBetResult from '@/client/js/communication/indianPocker/fns/enterBasicBetResult';
 
 export function response() {
   const dataChannel = window.rtcChannels.dataChannel;
@@ -34,19 +35,19 @@ export function response() {
           // basicBettingResult(data);
           break;
         case 'drewReadyCheck':
-          drewReadyCheckResult(data);
+          drewReadyCheckResult(message);
           break;
         case 'enterPlaying':
-          enterPlayingResult(data.gameState);
+          enterPlayingResult(message.gameState);
           break;
         case 'enemyCardNum':
-          receiveEnemyCard(data.cardNum);
+          receiveEnemyCard(message.cardNum);
           break;
         case 'enterDrew':
-          enterDrewResult(data.gameState);
+          enterDrewResult(message.gameState);
           break;
         case 'enterBasicBet':
-          // enterBasicBetResult(data.enterBasicBet);
+          enterBasicBetResult(message.gameState);
           break;
         case 'drewRefresh':
           // drewRefreshResult(data);

@@ -6,7 +6,7 @@ import bettingCoin from '@/client/js/views/game/indianPocker/fns/gameState/state
 import drawBetInfo from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/drawBetInfo';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
-// import REFRESH_STATE_BASIC_BET from "../../../../../refresh/indianpoker/refreshBasicBet/refreshInit";
+import REFRESH_STATE_BASIC_BET from '@/client/js/refresh/indianpoker/refreshBasicBet/refreshInit';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import removeUserCoins from '@/client/js/views/game/indianPocker/fns/common/removeUserCoins';
 
@@ -55,7 +55,7 @@ export default () => {
     setTimeout(() => {
       drawBetInfo();
       setTimeout(() => {
-        // REFRESH_STATE_BASIC_BET.main();
+        REFRESH_STATE_BASIC_BET.main();
         setTimeout(() => {
           bettingCoin();
         }, timeInterval_1);

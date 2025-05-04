@@ -85,4 +85,4 @@ battletwo
     - /src/client/js/socket/indianpoker/getSocket.js  
 
 ## 진행상황
-- indianPocker choiceCard 까지 연동
+- indianPocker basic batting 단계에서 기본 배팅 터치가 안됨

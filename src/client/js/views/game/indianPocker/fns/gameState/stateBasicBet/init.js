@@ -23,7 +23,7 @@ export default {
           setTimeout(sessionInit, timeInterval_1);
           LOADING_EVENT.hide();
         }
-        // request('basicBet');
+        request('enterBasicBet', 'basicBet');
       }
     }
   },

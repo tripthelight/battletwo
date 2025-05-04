@@ -2,7 +2,6 @@ import { timeInterval_1000 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import createBattleCardNum from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/createBattleCardNum';
 import { request } from '@/client/js/communication/indianPocker/request';
-import { setSocketEnterDrewCheck } from '../../../js/socket/indianpoker/setSocket.js';
 import { RF_END_DREW } from '@/client/js/refresh/indianpoker/refreshPlaying/refreshRoundEndDrew/refreshDrewInit';
 
 export default (_data) => {
@@ -23,28 +22,26 @@ export default (_data) => {
             const ROUND_END_RELOAD = window.sessionStorage.roundEndReload;
             if (ROUND_END_RELOAD && ROUND_END_RELOAD === 'true') {
               request('enterDrew', true); // *** 서로 새로고침 하면 없어야 됨
-              // setSocketEnterDrewCheck(true); // *** 서로 새로고침 하면 없어야 됨
             } else if (ROUND_END_RELOAD && ROUND_END_RELOAD === 'false') {
             }
             window.sessionStorage.removeItem('betResulting');
             window.sessionStorage.removeItem('roundEndReload');
             // setSocketEnterDrewCheck(true);
             setTimeout(() => {
-              if (!window.sessionStorage.drewReady || window.sessionStorage.drewReady !== 'true') setSocketEnterDrewCheck(false);
+              if (!window.sessionStorage.drewReady || window.sessionStorage.drewReady !== 'true') request('enterDrew', false);
               if (window.sessionStorage.drewReady && window.sessionStorage.drewReady === 'true') {
                 if (window.sessionStorage.betUser === 'true') createBattleCardNum();
               }
             }, 102);
           }, 101);
         } else {
-          if (!window.sessionStorage.drewReady || window.sessionStorage.drewReady !== 'true') setSocketEnterDrewCheck(false);
+          if (!window.sessionStorage.drewReady || window.sessionStorage.drewReady !== 'true') request('enterDrew', false);
           if (window.sessionStorage.drewReady && window.sessionStorage.drewReady === 'true') {
             if (window.sessionStorage.betUser === 'true') createBattleCardNum();
           }
         }
       }, 100);
     } else if (!_data) {
-      // setTimeout(setSocketEnterDrewCheck, timeInterval_1000, true);
       setTimeout(() => {
         request('enterDrew', true);
       }, timeInterval_1000);
