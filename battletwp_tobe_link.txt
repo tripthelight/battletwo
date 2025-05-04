@@ -13,6 +13,7 @@ import { comnText } from '@/client/js/functions/language';
 @/client/js/views/game/indianPocker/fns/gameState/statePlaying/
 @/client/js/views/game/indianPocker/fns/gameState/stateGameover/
 @/client/js/views/game/indianPocker/fns/rule/
+@/client/js/refresh/indianpoker/refreshPlaying/refreshRoundEndDrew/
 
 
 import { timeInterval_1 } from '@/client/js/functions/variable';
@@ -23,3 +24,14 @@ import deviceStateStore from '@/client/store/deviceStateStore.js';
 const deviceState = deviceStateStore.getState().deviceStateState.deviceState;
 
 import { request } from '@/client/js/communication/indianPocker/request';
+
+import SVG_BACK from '@/client/assets/images/svg/indian_poker/indian_poker_card/back.svg';
+
+
+
+import setSessionDelete
+import storageMethod from '@/client/js/module/storage/storageMethod';
+storageMethod('s', 'REMOVE_ARR', '', '', D_ARR);
+
+
+
