@@ -3,7 +3,7 @@ import PlayerBlockMoveBattingZone from '@/client/js/views/game/indianPocker/fns/
 import BattingZoneMovePlayerBlock from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMovePlayerBlock.js';
 import BettingZoneMoveAllin from '@/client/js/views/game/indianPocker/fns/common/BettingZoneMoveAllin.js';
 import { RULES } from '@/client/js/views/game/indianPocker/fns/rule/rules.js';
-import SOCKET_EVENT from '@/client/js/views/game/indianPocker/fns/rule/socketEvent.js';
+import SOCKET_EVENT from '@/client/js/communication/indianPocker/batting/battingEvent';
 
 export default () => {
   const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet;

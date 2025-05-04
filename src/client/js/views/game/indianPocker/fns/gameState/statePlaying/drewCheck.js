@@ -2,7 +2,7 @@ import { timeInterval_1, timeInterval_2 } from '@/client/js/functions/variable.j
 import { errorManagement } from '@/client/js/module/errorManagement';
 import pcDraggableCheck from '@/client/js/views/game/indianPocker/fns/common/pcDraggableCheck.js';
 import disabledMoveCoins from '@/client/js/views/game/indianPocker/fns/common/disabledMoveCoins.js';
-import drewCheckInfo from './drewCheckInfo.js';
+import drewCheckInfo from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/drewCheckInfo.js';
 
 export default () => {
   const DREW_CHECK = window.sessionStorage.drewState;

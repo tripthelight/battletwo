@@ -1,9 +1,9 @@
-import { timeInterval_1 } from '@/client/js/functions/variable.js';
+import { timeInterval_1 } from '@/client/js/functions/variable';
 import { comnText } from '@/client/js/functions/language';
 import { errorManagement } from '@/client/js/module/errorManagement';
-import EnemyBlockMoveBattingZone from '@/client/js/views/game/indianPocker/fns/common/EnemyBlockMoveBattingZone.js';
-import saveBetCoinSession from '@/client/js/views/game/indianPocker/fns/common/saveBetCoinSession.js';
-import betUserCheck from '../../gameState/statePlaying/betUserCheck.js';
+import EnemyBlockMoveBattingZone from '@/client/js/views/game/indianPocker/fns/common/EnemyBlockMoveBattingZone';
+import saveBetCoinSession from '@/client/js/views/game/indianPocker/fns/common/saveBetCoinSession';
+import betUserCheck from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/betUserCheck';
 
 export const GET_BETTING = {
   sessionExtraBet: (_data) => {

@@ -1,12 +1,12 @@
-import { LOADING_EVENT } from '@/client/components/popup/full/loading';
-import { text } from '@/client/js/functions/language';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
-import btnCallRaiseEventBefore from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/btnCallRaiseEventBefore';
+import LOADING from '../../../common/loading.js';
+import { text } from '../../../common/language.js';
+import btnCallRaiseEventBefore from './btnCallRaiseEventBefore.js';
 
 export default () => {
   const PLAYER_BLOCK = document.querySelector('.player-block');
-  if (!PLAYER_BLOCK) return errorManagement({ errCase: 'errorComn', message: 'drew 상태에서 .player-block 엘리먼트가 없습니다 22 11' });
+  if (!PLAYER_BLOCK) return errorManagement({ errCase: 'errorComn', message: 'drew 상태에서 .player-block 엘리먼트가 없습니다 22 22' });
   const PLAYER_CARD = PLAYER_BLOCK.querySelector('.player-card');
   if (!PLAYER_CARD) return errorManagement({ errCase: 'errorComn', message: 'drew 상태에서 .player-card 엘리먼트가 없습니다 22' });
   const CHECH_DREW_INFO = document.querySelector('.check-drew-info');

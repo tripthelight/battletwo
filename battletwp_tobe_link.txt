@@ -10,13 +10,16 @@ import { comnText } from '@/client/js/functions/language';
 @/client/js/views/game/indianPocker/fns/
 @/client/js/views/game/indianPocker/fns/common/
 @/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/
+@/client/js/views/game/indianPocker/fns/gameState/statePlaying/
 @/client/js/views/game/indianPocker/fns/gameState/stateGameover/
 @/client/js/views/game/indianPocker/fns/rule/
 
 
-import { timeInterval_1 } from '@/client/js/functions/variable.js';
+import { timeInterval_1 } from '@/client/js/functions/variable';
 
 
 
 import deviceStateStore from '@/client/store/deviceStateStore.js';
 const deviceState = deviceStateStore.getState().deviceStateState.deviceState;
+
+import { request } from '@/client/js/communication/indianPocker/request';

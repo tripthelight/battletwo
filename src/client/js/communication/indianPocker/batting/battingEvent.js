@@ -1,16 +1,16 @@
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { comnText } from '@/client/js/functions/language';
-import { GET_BETTING } from '../statePlaying/betting/getBetting.js';
-import { GET_ALLIN } from '../statePlaying/allin/getAllin.js';
-import { GET_CALL } from '../statePlaying/call/getCall.js';
-import { GET_RAISE } from '../statePlaying/raise/getRaise.js';
-import { GET_FOLD } from '../statePlaying/fold/getFold.js';
+import { GET_BETTING } from '@/client/js/views/game/indianPocker/fns/statePlaying/betting/getBetting';
+import { GET_ALLIN } from '@/client/js/views/game/indianPocker/fns/statePlaying/allin/getAllin';
+import { GET_CALL } from '@/client/js/views/game/indianPocker/fns/statePlaying/call/getCall';
+import { GET_RAISE } from '@/client/js/views/game/indianPocker/fns/statePlaying/raise/getRaise';
+import { GET_FOLD } from '@/client/js/views/game/indianPocker/fns/statePlaying/fold/getFold';
+import { requestBatting } from '@/client/js/communication/indianPocker/batting/requestBatting';
 
 export default {
   SET: {
     FIRST_EXT_BET: () => {
-      namespace.emit('firstExtBet', {
-        room: window.sessionStorage.roomName,
+      requestBatting('firstExtBet', {
         coinCount: Number(window.sessionStorage.coinsPlayer),
         coinBet: Number(window.sessionStorage.coinsPlayerBet),
         extBet: Number(window.sessionStorage.coinsPlayerExtBet),
@@ -19,39 +19,35 @@ export default {
       // window.sessionStorage.setItem("coinsPlayerExtBet", 0);
     },
     ALL_IN: () => {
-      namespace.emit('allInBet', {
-        room: window.sessionStorage.roomName,
+      requestBatting('allInBet', {
         coinCount: Number(window.sessionStorage.coinsPlayer),
         coinBet: Number(window.sessionStorage.coinsPlayerBet),
         extBet: Number(window.sessionStorage.coinsPlayerExtBet),
       });
     },
     CALL: () => {
-      namespace.emit('call', {
-        room: window.sessionStorage.roomName,
+      requestBatting('call', {
         coinCount: Number(window.sessionStorage.coinsPlayer),
         coinBet: Number(window.sessionStorage.coinsPlayerBet),
         extBet: Number(window.sessionStorage.coinsPlayerExtBet),
       });
     },
     RAISE: () => {
-      namespace.emit('raise', {
-        room: window.sessionStorage.roomName,
+      requestBatting('raise', {
         coinCount: Number(window.sessionStorage.coinsPlayer),
         coinBet: Number(window.sessionStorage.coinsPlayerBet),
         extBet: Number(window.sessionStorage.coinsPlayerExtBet),
       });
     },
     FOLD: (_penalty) => {
-      namespace.emit('foldSend', {
-        room: window.sessionStorage.roomName,
+      requestBatting('foldSend', {
         penalty: Number(_penalty) === 10 ? true : false,
       });
     },
   },
   GET: {
     FIRST_EXT_BET_RESULT: (_data) => {
-      let promise = new Promise((resolve, reject) => {
+      const promise = new Promise((resolve, reject) => {
         resolve(_data);
       });
       promise

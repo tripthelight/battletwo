@@ -47,7 +47,7 @@ export function request(k, v) {
       case 'cardNum':
         onDataChannel.send(
           JSON.stringify({
-            type: 'cardNum',
+            type: 'enemyCardNum',
             cardNum: v,
           }),
         );

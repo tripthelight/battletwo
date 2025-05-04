@@ -1,12 +1,12 @@
 import { timeInterval_1, timeInterval_2, timeInterval_3, timeInterval_4 } from '@/client/js/functions/variable';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import { errorManagement } from '@/client/js/module/errorManagement';
-import moveCoins from '@/client/js/views/game/indianPocker/fns/common/moveCoins.js';
-import disabledMoveCoins from '@/client/js/views/game/indianPocker/fns/common/disabledMoveCoins.js';
-import drewCheck from './drewCheck.js';
-import coinOneCheck from './coinOneCheck.js';
-import { BTN_STATE } from '../../rule/btnState.js';
-import timeDraw from '../../common/timeDraw.js';
+import moveCoins from '@/client/js/views/game/indianPocker/fns/common/moveCoins';
+import disabledMoveCoins from '@/client/js/views/game/indianPocker/fns/common/disabledMoveCoins';
+import drewCheck from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/drewCheck';
+import coinOneCheck from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/coinOneCheck';
+import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState';
+import timeDraw from '@/client/js/views/game/indianPocker/fns/common/timeDraw';
 
 export default () => {
   // element | seeeion 체크
