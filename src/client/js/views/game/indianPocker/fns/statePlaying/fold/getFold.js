@@ -1,15 +1,15 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
+import { errorManagement } from '@/client/js/module/errorManagement';
+import { text } from '@/client/js/functions/language';
+import { timeInterval_1, timeInterval_1000, timeInterval_2000, timeInterval_3201, timeInterval_5000 } from '@/client/js/functions/variable';
+import { bottomSheet } from '@/client/components/popup/bottomSheet/bottomSheet';
 import flipPlayerCardComn from '@/client/js/views/game/indianPocker/fns/common/flipPlayerCardComn';
 import flipPlayerCard from '@/client/js/views/game/indianPocker/fns/common/flipPlayerCard';
 import playerNumRes from '@/client/js/views/game/indianPocker/fns/common/playerNumRes';
 import BattingZoneMovePlayerBlock from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMovePlayerBlock';
 import BettingZoneMoveComn from '@/client/js/views/game/indianPocker/fns/common/BettingZoneMoveComn';
 import foldSendResultComn from '@/client/js/views/game/indianPocker/fns/common/foldSendResultComn';
-import { bottomSheet } from '@/client/components/popup/bottomSheet/bottomSheet';
-import { text } from '@/client/js/functions/language';
-import { timeInterval_1, timeInterval_1000, timeInterval_2000, timeInterval_3201, timeInterval_5000 } from '@/client/js/functions/variable';
 import EnemyBlockMovePlayerBlock from '@/client/js/views/game/indianPocker/fns/common/EnemyBlockMovePlayerBlock';
-import { errorManagement } from '@/client/js/module/errorManagement';
-import storageMethod from '@/client/js/module/storage/storageMethod';
 import cardHideAnimationComn from '@/client/js/views/game/indianPocker/fns/common/cardHideAnimationComn';
 import { GET_ROUND_END } from '@/client/js/views/game/indianPocker/fns/statePlaying/roundEnd/getRoundEnd';
 import resultTxtInnerHtml from '@/client/js/views/game/indianPocker/fns/common/resultTxtInnerHtml.js';
@@ -28,9 +28,9 @@ export const GET_FOLD = {
             const COINS_PLAYER = window.sessionStorage.coinsPlayer;
             const PLAYER_BET = window.sessionStorage.coinsPlayerBet;
             const ENEMY_BET = window.sessionStorage.coinsEnemyBet;
-            window.sessionStorage.setItem('coinsPlayer', Number(COINS_PLAYER) + Number(PLAYER_BET) + Number(ENEMY_BET));
+            storageMethod('s', 'SET_ITEM', 'coinsPlayer', Number(COINS_PLAYER) + Number(PLAYER_BET) + Number(ENEMY_BET));
             foldSendResultComn();
-            window.sessionStorage.setItem('betUser', true);
+            storageMethod('s', 'SET_ITEM', 'betUser', true);
             if (_data.penalty) {
               // 상대 카드가 10일 때
               bottomSheet.show(text.indianpocker.benefit, timeInterval_5000);

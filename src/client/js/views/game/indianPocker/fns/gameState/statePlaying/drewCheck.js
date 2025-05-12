@@ -1,3 +1,4 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1, timeInterval_2 } from '@/client/js/functions/variable.js';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import pcDraggableCheck from '@/client/js/views/game/indianPocker/fns/common/pcDraggableCheck.js';
@@ -33,7 +34,7 @@ export default () => {
     if (!BET_USER_FIRST_RES && BET_USER_RES) return;
 
     if (Number(COINS_ENEMY_EXT_BET) === 0 && (Number(COINS_ENEMY) === 0 || Number(COINS_PLAYER) === 0)) {
-      window.sessionStorage.setItem('drewFlipCardMode', true);
+      storageMethod('s', 'SET_ITEM', 'drewFlipCardMode', true);
       ENEMY_CARD.classList.add('disabled');
       PLAYER_BLOCK.classList.remove('disabled');
       PLAYER_CARD.classList.add('drew-wait-card');

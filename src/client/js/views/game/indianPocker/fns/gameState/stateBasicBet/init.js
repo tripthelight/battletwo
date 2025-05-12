@@ -1,14 +1,15 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
-import basicBetMainCheck from '@/client/js/views/game/indianPocker/fns/common/basicBetMainCheck';
 import { request } from '@/client/js/communication/indianPocker/request';
 import gameEnd from '@/client/js/views/game/indianPocker/fns/common/gameEnd';
 import sessionInit from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/sessionInit';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
+import basicBetMainCheck from '@/client/js/views/game/indianPocker/fns/common/basicBetMainCheck';
 
 export default {
   main: () => {
-    window.sessionStorage.removeItem('betResulting');
+    storageMethod('s', 'REMOVE_ITEM', 'betResulting');
     if (basicBetMainCheck()) {
       return gameEnd();
     } else {
@@ -19,7 +20,7 @@ export default {
       } else {
         LOADING_EVENT.show();
         if (window.sessionStorage.basicBetReady && window.sessionStorage.basicBetReady === 'false') {
-          window.sessionStorage.setItem('roundEnd', false);
+          storageMethod('s', 'SET_ITEM', 'roundEnd', false);
           setTimeout(sessionInit, timeInterval_1);
           LOADING_EVENT.hide();
         }

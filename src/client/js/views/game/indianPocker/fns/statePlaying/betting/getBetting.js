@@ -1,3 +1,4 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { comnText } from '@/client/js/functions/language';
 import { errorManagement } from '@/client/js/module/errorManagement';
@@ -12,11 +13,11 @@ export const GET_BETTING = {
     });
     promise
       .then((_data) => {
-        // window.sessionStorage.setItem("betUser", Boolean(_data.bet));
-        window.sessionStorage.setItem('betUser', true);
-        window.sessionStorage.setItem('coinsEnemy', _data.coinCount);
-        window.sessionStorage.setItem('coinsEnemyBet', _data.coinBet);
-        window.sessionStorage.setItem('coinsEnemyExtBet', _data.extBet);
+        // storageMethod('s', 'SET_ITEM', 'betUser', Boolean(_data.bet));
+        storageMethod('s', 'SET_ITEM', 'betUser', true);
+        storageMethod('s', 'SET_ITEM', 'coinsEnemy', _data.coinCount);
+        storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', _data.coinBet);
+        storageMethod('s', 'SET_ITEM', 'coinsEnemyExtBet', _data.extBet);
         GET_BETTING.drawExtEnemyBet(_data);
       })
       .catch((error) => {

@@ -1,3 +1,4 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import EnemyBlockMoveBattingZone from '@/client/js/views/game/indianPocker/fns/common/EnemyBlockMoveBattingZone';
@@ -8,7 +9,7 @@ import { GET_ROUND_END } from '@/client/js/views/game/indianPocker/fns/statePlay
 export const GET_CALL = {
   receiveCallBet: (_data) => {
     if (document.querySelector('.check-drew-info')) document.querySelector('.check-drew-info').remove();
-    window.sessionStorage.setItem('extFirstBet', true);
+    storageMethod('s', 'SET_ITEM', 'extFirstBet', true);
     GET_CALL.sessionCallBet(_data);
   },
   sessionCallBet: (_data) => {
@@ -17,10 +18,10 @@ export const GET_CALL = {
     });
     promise
       .then((_data) => {
-        window.sessionStorage.setItem('betUser', true);
-        window.sessionStorage.setItem('coinsEnemy', _data.coinCount);
-        window.sessionStorage.setItem('coinsEnemyBet', _data.coinBet);
-        window.sessionStorage.setItem('coinsEnemyExtBet', _data.extBet);
+        storageMethod('s', 'SET_ITEM', 'betUser', true);
+        storageMethod('s', 'SET_ITEM', 'coinsEnemy', _data.coinCount);
+        storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', _data.coinBet);
+        storageMethod('s', 'SET_ITEM', 'coinsEnemyExtBet', _data.extBet);
         GET_CALL.drawCallEnemyBet(_data);
       })
       .catch((error) => {

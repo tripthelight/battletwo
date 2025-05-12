@@ -1,3 +1,4 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { request } from '@/client/js/communication/indianPocker/request';
@@ -17,7 +18,7 @@ export default (_host, _num) => {
         comnArray = JSON.parse(window.sessionStorage.battleCardNum);
       }
       comnArray.push(activeCard);
-      window.sessionStorage.setItem('battleCardNum', JSON.stringify(comnArray));
+      storageMethod('s', 'SET_ITEM', 'battleCardNum', JSON.stringify(comnArray));
       activeCard = {};
       comnArray = [];
 

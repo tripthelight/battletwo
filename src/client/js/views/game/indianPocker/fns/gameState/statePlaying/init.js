@@ -1,3 +1,4 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import { request } from '@/client/js/communication/indianPocker/request';
@@ -12,12 +13,12 @@ export const STATE_PLAYING = {
     setTimeout(sessionInitPlaying, timeInterval_1);
   },
   drew: () => {
-    // window.sessionStorage.removeItem("betResulting");
+    // storageMethod('s', 'REMOVE_ITEM', 'betResulting');
     // if (window.sessionStorage.drewReady && window.sessionStorage.drewReady === "true") return refreshDrawDrew(); // refresh
     if (window.sessionStorage.drewFlipCardMode && window.sessionStorage.drewFlipCardMode === 'true') return refreshDrawDrew();
     LOADING_EVENT.show();
-    window.sessionStorage.removeItem('dropState');
-    window.sessionStorage.setItem('drewReady', true);
+    storageMethod('s', 'REMOVE_ITEM', 'dropState');
+    storageMethod('s', 'SET_ITEM', 'drewReady', true);
     request('enterDrew', true);
   },
   nextStep: () => {

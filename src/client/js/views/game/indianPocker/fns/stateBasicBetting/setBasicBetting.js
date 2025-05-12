@@ -1,15 +1,16 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
+import { errorManagement } from '@/client/js/module/errorManagement';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import removeCoinActive from '@/client/js/views/game/indianPocker/fns/common/removeCoinActive';
 import playerCoinsData from '@/client/js/views/game/indianPocker/fns/common/playerCoinsData';
 import STATE_BASIC_BET from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/init';
-import { errorManagement } from '@/client/js/module/errorManagement';
 import pcDraggableCheck from '@/client/js/views/game/indianPocker/fns/common/pcDraggableCheck';
 import sendCoinsPlayer from '@/client/js/views/game/indianPocker/fns/common/sendCoinsPlayer';
 import stopEnemyTime from '@/client/js/views/game/indianPocker/fns/common/stopEnemyTime';
 
 export const SET_BASIC_BETTING = {
   setBasicBetting: (_event) => {
-    window.sessionStorage.setItem('basicBettingState', true);
+    storageMethod('s', 'SET_ITEM', 'basicBettingState', true);
     if (window.sessionStorage.basicBettingState === 'true') {
       _event.target.classList.add('active');
       setTimeout(() => {
@@ -52,7 +53,7 @@ export const SET_BASIC_BETTING = {
           for (let i = 0; i < COIN_BET_ARR.length; i++) {
             COIN_BET_ARR[i].betState = 'end';
           }
-          window.sessionStorage.setItem('betCoin', JSON.stringify(COIN_BET_ARR));
+          storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(COIN_BET_ARR));
         }
       }
       // 기본배팅 일 때만 실행

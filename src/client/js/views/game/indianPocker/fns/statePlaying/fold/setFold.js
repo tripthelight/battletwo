@@ -20,8 +20,8 @@ export const SET_FOLD = {
     });
     promise
       .then((_numRes) => {
-        window.sessionStorage.setItem('betUser', false);
-        window.sessionStorage.removeItem('drewState');
+        storageMethod('s', 'SET_ITEM', 'betUser', false);
+        storageMethod('s', 'REMOVE_ITEM', 'drewState');
         flipPlayerCardComn(flipPlayerCard, _numRes);
         // 1. YOU FOLD NEXT 문구 출력
         // 2. 배팅이 끝난 코인은 enemy block으로 이동
@@ -29,7 +29,7 @@ export const SET_FOLD = {
         SET_FOLD.roundResultDisplay();
         BattingZoneMoveEnemyBlock('fold').then((_state) => {
           BettingZoneMoveComnFold().then(() => {
-            // window.sessionStorage.setItem("coinsEnemy", Number(window.sessionStorage) + _numRes);
+            // storageMethod('s', 'SET_ITEM', 'coinsEnemy', Number(window.sessionStorage) + _numRes);
             const COINS_ENEMY = window.sessionStorage.coinsEnemy;
             const COINS_PLAYER = window.sessionStorage.coinsPlayer;
             const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
@@ -41,8 +41,8 @@ export const SET_FOLD = {
             const FOLD_CPB = COINS_PLAYER_BET && Number(COINS_PLAYER_BET) >= 0 ? Number(COINS_PLAYER_BET) : 0;
             const FOLD_CPEB = COINS_PLAYER_EXT_BET && Number(COINS_PLAYER_EXT_BET) >= 0 ? Number(COINS_PLAYER_EXT_BET) : 0;
             const RES_E = Number(FOLD_CEB + FOLD_CPB - FOLD_CPEB);
-            window.sessionStorage.setItem('coinsEnemy', FOLD_CE + RES_E);
-            window.sessionStorage.setItem('coinsPlayer', FOLD_CP + FOLD_CPEB);
+            storageMethod('s', 'SET_ITEM', 'coinsEnemy', FOLD_CE + RES_E);
+            storageMethod('s', 'SET_ITEM', 'coinsPlayer', FOLD_CP + FOLD_CPEB);
             if (_num === 10) {
               bottomSheet.show(text.indianpocker.penalty, timeInterval_5000);
               PlayerBlockMoveEnemyBlock().then(() => {

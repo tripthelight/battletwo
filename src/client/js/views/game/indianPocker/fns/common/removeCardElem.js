@@ -1,3 +1,4 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import BattingZoneMovePlayerBlock from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMovePlayerBlock.js';
 import BattingZoneMoveEnemyBlock from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMoveEnemyBlock.js';
@@ -22,8 +23,8 @@ export default () => {
       BattingZoneMovePlayerBlock('win').then((_state) => {
         BettingZoneMoveComn(_state).then(() => {
           removeCardElemComn(ENEMY_CARD, PLAYER_CARD, BOTTOM_BUTTONS, BET_USER_RES).then(() => {
-            window.sessionStorage.setItem('coinsPlayer', Number(window.sessionStorage.coinsPlayer) + 2);
-            window.sessionStorage.setItem('coinsEnemy', 0);
+            storageMethod('s', 'SET_ITEM', 'coinsPlayer', Number(window.sessionStorage.coinsPlayer) + 2);
+            storageMethod('s', 'SET_ITEM', 'coinsEnemy', 0);
             resolve();
           });
         });
@@ -32,8 +33,8 @@ export default () => {
       BattingZoneMoveEnemyBlock('lose').then((_state) => {
         BettingZoneMoveComn(_state).then(() => {
           removeCardElemComn(ENEMY_CARD, PLAYER_CARD, BOTTOM_BUTTONS, BET_USER_RES).then(() => {
-            window.sessionStorage.setItem('coinsEnemy', Number(window.sessionStorage.coinsEnemy) + 2);
-            window.sessionStorage.setItem('coinsPlayer', 0);
+            storageMethod('s', 'SET_ITEM', 'coinsEnemy', Number(window.sessionStorage.coinsEnemy) + 2);
+            storageMethod('s', 'SET_ITEM', 'coinsPlayer', 0);
             resolve();
           });
         });

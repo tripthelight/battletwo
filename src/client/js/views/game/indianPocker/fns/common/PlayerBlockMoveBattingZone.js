@@ -1,3 +1,4 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { getStyle } from '@/client/js/functions/comnExport';
 import { allInintrtval } from '@/client/js/views/game/indianPocker/fns/common/variable.js';
@@ -54,7 +55,7 @@ export default (_coins, _coinsRes, _coinsDelete) => {
       let betCoin = window.sessionStorage.betCoin;
       let betCoinArr = JSON.parse(betCoin);
       betCoinArr.push(DATA);
-      window.sessionStorage.setItem('betCoin', JSON.stringify(betCoinArr));
+      storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(betCoinArr));
       xyArr.push({ x: x, y: y });
     }
     setTimeout(() => {
@@ -82,7 +83,7 @@ export default (_coins, _coinsRes, _coinsDelete) => {
         let betCoinPos = window.sessionStorage.betCoinPos;
         let betCoinPosArr = JSON.parse(betCoinPos);
         betCoinPosArr.push(POS_DATA);
-        window.sessionStorage.setItem('betCoinPos', JSON.stringify(betCoinPosArr));
+        storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(betCoinPosArr));
         moveCoin.remove();
         appendIdx += 1;
         if (i === _coins) resolve({ ep: _coins, epeb: _coinsRes, rc: _coinsDelete });

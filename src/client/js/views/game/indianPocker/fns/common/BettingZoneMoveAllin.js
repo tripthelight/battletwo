@@ -1,5 +1,7 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import roundEndBetMoveEnd from '@/client/js/views/game/indianPocker/fns/common/roundEndBetMoveEnd.js';
 import roundEndBetEnemyMoveXY from '@/client/js/views/game/indianPocker/fns/common/roundEndBetEnemyMoveXY.js';
+
 export default (_removeCoins) => {
   return new Promise((resolve, reject) => {
     if (_removeCoins.rc < 1) return resolve(_removeCoins);
@@ -48,8 +50,8 @@ export default (_removeCoins) => {
             if (window.sessionStorage.betCoinPos) arrPos = JSON.parse(window.sessionStorage.betCoinPos);
             arr.pop();
             arrPos.pop();
-            window.sessionStorage.setItem('betCoin', JSON.stringify(arr));
-            window.sessionStorage.setItem('betCoinPos', JSON.stringify(arrPos));
+            storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(arr));
+            storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(arrPos));
             if (i === _removeCoins.rc - 1) return resolve(_removeCoins);
           }, Number(aniTime));
         });

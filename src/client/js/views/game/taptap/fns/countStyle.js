@@ -26,7 +26,7 @@ export default (innerEl) => {
       innerEl.innerText = 'TAP!';
     }, timeInterval_3000);
     setTimeout(() => {
-      window.sessionStorage.removeItem('count');
+      storageMethod('s', 'REMOVE_ITEM', 'count');
       cowndown.hide(document.querySelector('.count'));
       storageMethod('s', 'REMOVE_ITEM', 'count');
 

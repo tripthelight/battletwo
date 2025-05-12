@@ -24,8 +24,8 @@ export default (_data) => {
               request('enterDrew', true); // *** 서로 새로고침 하면 없어야 됨
             } else if (ROUND_END_RELOAD && ROUND_END_RELOAD === 'false') {
             }
-            window.sessionStorage.removeItem('betResulting');
-            window.sessionStorage.removeItem('roundEndReload');
+            storageMethod('s', 'REMOVE_ITEM', 'betResulting');
+            storageMethod('s', 'REMOVE_ITEM', 'roundEndReload');
             // setSocketEnterDrewCheck(true);
             setTimeout(() => {
               if (!window.sessionStorage.drewReady || window.sessionStorage.drewReady !== 'true') request('enterDrew', false);

@@ -1,3 +1,4 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1, timeInterval_1001 } from '@/client/js/functions/variable.js';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import EnemyBlockMoveBattingZone from '@/client/js/views/game/indianPocker/fns/common/EnemyBlockMoveBattingZone.js';
@@ -9,12 +10,12 @@ import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState
 
 export const GET_ALLIN = {
   receiveAllinBet: (_data) => {
-    window.sessionStorage.setItem('betUser', true);
-    window.sessionStorage.setItem('extFirstBet', true);
-    window.sessionStorage.setItem('coinsEnemy', _data.coinCount);
-    window.sessionStorage.setItem('coinsEnemyBet', _data.coinBet);
-    window.sessionStorage.setItem('coinsEnemyExtBet', _data.extBet);
-    window.sessionStorage.setItem('coinsPlayerExtBet', 0);
+    storageMethod('s', 'SET_ITEM', 'betUser', true);
+    storageMethod('s', 'SET_ITEM', 'extFirstBet', true);
+    storageMethod('s', 'SET_ITEM', 'coinsEnemy', _data.coinCount);
+    storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', _data.coinBet);
+    storageMethod('s', 'SET_ITEM', 'coinsEnemyExtBet', _data.extBet);
+    storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 0);
     // all in text
     GET_ALLIN.roundResultDisplay();
     // emeny coins animation

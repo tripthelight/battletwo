@@ -1,3 +1,4 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_201 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
 
@@ -15,7 +16,7 @@ export default () => {
   PLAYER_BLOCK.classList.add('round-fin');
   ENEMY_BLOCK.classList.add('round-fin');
   setTimeout(() => {
-    window.sessionStorage.setItem('battleCardNum', []);
+    storageMethod('s', 'SET_ITEM', 'battleCardNum', []);
     PLAYER_CARD.remove();
     ENEMY_CARD.remove();
     ENEMY_COINS.classList.remove('disabled');

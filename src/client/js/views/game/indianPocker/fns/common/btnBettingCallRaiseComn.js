@@ -1,3 +1,4 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { comnText } from '@/client/js/functions/language';
 import disabledMoveCoins from '@/client/js/views/game/indianPocker/fns/common/disabledMoveCoins';
 import disabledSubtractMoveCoin from '@/client/js/views/game/indianPocker/fns/common/disabledSubtractMoveCoin';
@@ -16,11 +17,13 @@ export default (_state) => {
   document.querySelector('.coins-player').classList.add('disabled');
   document.querySelector('.betting-zone').classList.add('disabled');
 
-  window.sessionStorage.setItem('betUser', false);
-  window.sessionStorage.setItem('extFirstBet', true);
+  storageMethod('s', 'SET_ITEM', 'betUser', false);
+  storageMethod('s', 'SET_ITEM', 'extFirstBet', true);
   // 배팅된 칩의 betState: 'end'
   if (_state === comnText.fold) return;
-  window.sessionStorage.setItem(
+  storageMethod(
+    's',
+    'SET_ITEM',
     'betCoin',
     JSON.stringify(
       JSON.parse(window.sessionStorage.betCoin).map((item) => {

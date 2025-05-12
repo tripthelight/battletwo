@@ -1,3 +1,4 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { comnText } from '@/client/js/functions/language';
 import { GET_BETTING } from '@/client/js/views/game/indianPocker/fns/statePlaying/betting/getBetting';
@@ -16,7 +17,7 @@ export default {
         extBet: Number(window.sessionStorage.coinsPlayerExtBet),
         state: comnText.betting,
       });
-      // window.sessionStorage.setItem("coinsPlayerExtBet", 0);
+      // storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 0);
     },
     ALL_IN: () => {
       requestBatting('allInBet', {
@@ -52,7 +53,7 @@ export default {
       });
       promise
         .then((_data) => {
-          window.sessionStorage.setItem('extFirstBet', true);
+          storageMethod('s', 'SET_ITEM', 'extFirstBet', true);
           GET_BETTING.sessionExtraBet(_data);
         })
         .catch((error) => {

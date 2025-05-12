@@ -1,3 +1,4 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import sessionInit from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/sessionInit';
@@ -9,10 +10,10 @@ export default (_data) => {
   PROMISE.then((_data) => {
     if (_data === 'basicBet') {
       if (window.sessionStorage.gameState === 'basicBet') {
-        window.sessionStorage.setItem('roundEnd', false);
+        storageMethod('s', 'SET_ITEM', 'roundEnd', false);
         setTimeout(sessionInit, timeInterval_1);
       } else if (window.sessionStorage.gameState !== 'basicBet') {
-        window.sessionStorage.setItem('basicBetReady', false);
+        storageMethod('s', 'SET_ITEM', 'basicBetReady', false);
       }
     }
   }).catch((error) => {

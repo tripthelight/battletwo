@@ -1,3 +1,4 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import sendCoinsPlayer from '@/client/js/views/game/indianPocker/fns/common/sendCoinsPlayer';
 import { SET_BASIC_BETTING } from '@/client/js/views/game/indianPocker/fns/stateBasicBetting/setBasicBetting';
@@ -21,7 +22,7 @@ export default (_host, _x, _y) => {
       arr = JSON.parse(window.sessionStorage.betCoinPos);
     }
     arr.push(POS_COIN);
-    window.sessionStorage.setItem('betCoinPos', JSON.stringify(arr));
+    storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(arr));
 
     if (window.sessionStorage.betState === 'basicBetting') setTimeout(SET_BASIC_BETTING.betCoinStateAddEnd, timeInterval_1, _host);
     else setTimeout(sendCoinsPlayer, timeInterval_1);

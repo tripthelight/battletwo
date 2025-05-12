@@ -1,3 +1,5 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
+
 export default (_session) => {
-  window.sessionStorage.setItem(_session, 0);
+  storageMethod('s', 'SET_ITEM', _session, 0);
 };

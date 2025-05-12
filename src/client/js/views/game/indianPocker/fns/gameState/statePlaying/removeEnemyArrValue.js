@@ -1,3 +1,4 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import P1 from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/P1';
@@ -21,7 +22,7 @@ export default (_enum) => {
         return P3(NUM);
       })
       .then((_cardNumList) => {
-        window.sessionStorage.setItem('cardNum', JSON.stringify(_cardNumList));
+        storageMethod('s', 'SET_ITEM', 'cardNum', JSON.stringify(_cardNumList));
       })
       .catch((error) => {
         errorManagement({ errCase: 'errorComn', message: 'P1함수 error :: ' });

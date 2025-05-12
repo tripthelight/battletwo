@@ -1,3 +1,4 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { request } from '@/client/js/communication/indianPocker/request';
@@ -16,13 +17,13 @@ export default () => {
 
   // 명령
   setTimeout(() => {
-    window.sessionStorage.removeItem('enemyFirstNumber');
-    window.sessionStorage.removeItem('playerFirstNumber');
-    window.sessionStorage.removeItem('betUser');
-    window.sessionStorage.removeItem('liIndex');
-    window.sessionStorage.removeItem('ulIndex');
-    window.sessionStorage.removeItem('liIndexEnemy');
-    window.sessionStorage.removeItem('ulIndexEnemy');
+    storageMethod('s', 'REMOVE_ITEM', 'enemyFirstNumber');
+    storageMethod('s', 'REMOVE_ITEM', 'playerFirstNumber');
+    storageMethod('s', 'REMOVE_ITEM', 'betUser');
+    storageMethod('s', 'REMOVE_ITEM', 'liIndex');
+    storageMethod('s', 'REMOVE_ITEM', 'ulIndex');
+    storageMethod('s', 'REMOVE_ITEM', 'liIndexEnemy');
+    storageMethod('s', 'REMOVE_ITEM', 'ulIndexEnemy');
     for (let i = 0; i < CHOICE_CARDS.length; i++) {
       CHOICE_CARDS[i].querySelector('img').setAttribute('src', SVG_BACK);
       CHOICE_CARDS[i].classList.remove('show');

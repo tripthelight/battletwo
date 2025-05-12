@@ -1,7 +1,8 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
+import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { text } from '@/client/js/functions/language';
 import closePopup from '@/client/js/functions/popup';
-import { timeInterval_1 } from '@/client/js/functions/variable';
 
 export default () => {
   // sesstionStorage: basicBetInfoPopup 체크해서 true면 안보임
@@ -29,7 +30,7 @@ export default () => {
     spanEl.innerHTML = text.indianpocker.basicBet;
     btnClose.onclick = () => {
       closePopup(btnClose);
-      window.sessionStorage.setItem('basicBetInfoPopup', true);
+      storageMethod('s', 'SET_ITEM', 'basicBetInfoPopup', true);
     };
 
     btnClose.classList.add('close-popup');

@@ -1,3 +1,4 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1, timeInterval_1000, timeInterval_2000, timeInterval_202, timeInterval_3201, timeInterval_3202, timeInterval_401, timeInterval_402 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
@@ -18,13 +19,13 @@ import encryptCardNumber from '@/client/js/views/game/indianPocker/fns/common/ma
 
 export const GET_ROUND_END = {
   receiveRoundEnd: () => {
-    window.sessionStorage.setItem('betResulting', true); // refresh check
-    window.sessionStorage.removeItem('drewFlipCardMode');
-    window.sessionStorage.removeItem('drewReady');
-    window.sessionStorage.removeItem('dropState');
+    storageMethod('s', 'SET_ITEM', 'betResulting', true); // refresh check
+    storageMethod('s', 'REMOVE_ITEM', 'drewFlipCardMode');
+    storageMethod('s', 'REMOVE_ITEM', 'drewReady');
+    storageMethod('s', 'REMOVE_ITEM', 'dropState');
     if (window.sessionStorage.drewCardReady) {
       LOADING_EVENT.hide();
-      window.sessionStorage.removeItem('drewCardReady');
+      storageMethod('s', 'REMOVE_ITEM', 'drewCardReady');
     }
     setTimeout(GET_ROUND_END.stopBetUser, timeInterval_1);
   },
@@ -73,16 +74,16 @@ export const GET_ROUND_END = {
     let result = '';
     if (Number(_playerNumRes) > Number(enemyNumRes)) {
       result = 'win';
-      window.sessionStorage.removeItem('drewState');
+      storageMethod('s', 'REMOVE_ITEM', 'drewState');
     } else if (Number(_playerNumRes) < Number(enemyNumRes)) {
       result = 'lose';
-      window.sessionStorage.removeItem('drewState');
+      storageMethod('s', 'REMOVE_ITEM', 'drewState');
     } else if (Number(_playerNumRes) == Number(enemyNumRes)) {
       result = 'drew';
-      window.sessionStorage.setItem('betUser', window.sessionStorage.betUserFirst);
-      window.sessionStorage.setItem('drewState', true);
-      window.sessionStorage.setItem('roundEnd', false);
-      window.sessionStorage.setItem('extFirstBet', false);
+      storageMethod('s', 'SET_ITEM', 'betUser', window.sessionStorage.betUserFirst);
+      storageMethod('s', 'SET_ITEM', 'drewState', true);
+      storageMethod('s', 'SET_ITEM', 'roundEnd', false);
+      storageMethod('s', 'SET_ITEM', 'extFirstBet', false);
     } else {
       errorManagement({ errCase: 'errorComn' });
     }
@@ -106,20 +107,20 @@ export const GET_ROUND_END = {
     const PNUM = Number(COINS_PLAYER_BET);
     const ENUM = Number(COINS_ENEMY_BET);
     const RESULT = Number(PNUM) + Number(ENUM);
-    if (_result !== 'drew') window.sessionStorage.setItem('coinsPlayerBet', 0);
-    if (_result !== 'drew') window.sessionStorage.setItem('coinsEnemyBet', 0);
-    window.sessionStorage.setItem('coinsPlayerExtBet', 0);
-    window.sessionStorage.setItem('coinsEnemyExtBet', 0);
+    if (_result !== 'drew') storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', 0);
+    if (_result !== 'drew') storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', 0);
+    storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 0);
+    storageMethod('s', 'SET_ITEM', 'coinsEnemyExtBet', 0);
     // 새로고침 을 위해 roundEnd seeeion 추가
-    window.sessionStorage.setItem('roundEnd', true);
+    storageMethod('s', 'SET_ITEM', 'roundEnd', true);
     switch (_result) {
       case 'win':
-        window.sessionStorage.setItem('betUser', true);
-        window.sessionStorage.setItem('coinsPlayer', Number(COINS_PLAYER) + RESULT);
+        storageMethod('s', 'SET_ITEM', 'betUser', true);
+        storageMethod('s', 'SET_ITEM', 'coinsPlayer', Number(COINS_PLAYER) + RESULT);
         break;
       case 'lose':
-        window.sessionStorage.setItem('betUser', false);
-        window.sessionStorage.setItem('coinsEnemy', Number(COINS_ENEMY) + RESULT);
+        storageMethod('s', 'SET_ITEM', 'betUser', false);
+        storageMethod('s', 'SET_ITEM', 'coinsEnemy', Number(COINS_ENEMY) + RESULT);
         break;
       case 'drew':
         break;
@@ -209,7 +210,7 @@ export const GET_ROUND_END = {
     });
     encryptCardNumbers
       .then((numArr) => {
-        window.sessionStorage.setItem('cardNum', JSON.stringify(numArr));
+        storageMethod('s', 'SET_ITEM', 'cardNum', JSON.stringify(numArr));
         if (_result === 'drew') STATE_PLAYING.drew();
         if (_result !== 'drew') indianPockerGameState.basicBet();
       })
@@ -239,9 +240,9 @@ export const GET_ROUND_END = {
     for (let k = 0; k < ENEMY_COINS.length; k++) ENEMY_COINS[k].remove();
     for (let l = 0; l < ENUM; l++) CPINS_ENEMY.appendChild(document.createElement('li'));
     BET_COINS.remove();
-    window.sessionStorage.setItem('betCoin', []);
-    window.sessionStorage.setItem('betCoinPos', []);
-    window.sessionStorage.setItem('basicBettingState', false);
+    storageMethod('s', 'SET_ITEM', 'betCoin', []);
+    storageMethod('s', 'SET_ITEM', 'betCoinPos', []);
+    storageMethod('s', 'SET_ITEM', 'basicBettingState', false);
     setTimeout(GET_ROUND_END.goNextRound, timeInterval_402, _result);
   },
 };

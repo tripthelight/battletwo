@@ -1,3 +1,4 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import INDIANPOCKER_RULES from '@/client/js/views/game/indianPocker/fns/rules/rules.js';
 import PlayerBlockMoveBattingZone from '@/client/js/views/game/indianPocker/fns/common/PlayerBlockMoveBattingZone.js';
 import BattingZoneMovePlayerBlock from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMovePlayerBlock.js';
@@ -20,9 +21,9 @@ export default () => {
         const CP_RES = Number(COINS_PLAYER_RES) - _aiCoinsRes.ep + _aiCoinsRes.rc;
         const COINS_PLAYER_BET_RES = window.sessionStorage.coinsPlayerBet;
         const CPB_RES = COINS_PLAYER_BET_RES && Number(COINS_PLAYER_BET_RES) > 0 ? Number(COINS_PLAYER_BET_RES) : 0;
-        window.sessionStorage.setItem('coinsPlayer', Number(CP_RES));
-        window.sessionStorage.setItem('coinsPlayerBet', Number(CPB_RES) + _aiCoinsRes.ep - _aiCoinsRes.rc);
-        window.sessionStorage.setItem('coinsPlayerExtBet', _aiCoinsRes.epeb);
+        storageMethod('s', 'SET_ITEM', 'coinsPlayer', Number(CP_RES));
+        storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', Number(CPB_RES) + _aiCoinsRes.ep - _aiCoinsRes.rc);
+        storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', '_aiCoinsRes.epeb');
         if (Number(window.sessionStorage.coinsPlayerBet) === Number(window.sessionStorage.coinsEnemyBet)) {
           // ENEMY 올인을 받고, PLAYER도 올인
           RULES.CALL();

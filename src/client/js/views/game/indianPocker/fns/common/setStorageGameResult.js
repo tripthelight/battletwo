@@ -9,18 +9,18 @@ export default (_gameName, _result) => {
   let data = new Object();
 
   // 완전 처음 data
-  if (_gameName === "blackandwhite1") {
+  if (_gameName === 'blackandwhite1') {
     // drew 가 있는 게임일 경우
     let drewCaseResultW = 0;
     let drewCaseResultD = 0;
     let drewCaseResultL = 0;
-    if (_result === "win") {
+    if (_result === 'win') {
       drewCaseResultW = 1;
     }
-    if (_result === "drew") {
+    if (_result === 'drew') {
       drewCaseResultD = 1;
     }
-    if (_result === "lose") {
+    if (_result === 'lose') {
       drewCaseResultL = 1;
     }
     firstData = {
@@ -38,22 +38,22 @@ export default (_gameName, _result) => {
   if (!GAME_RESULTS) {
     // 완전 처음
     // 내가 지금 한 게임이 taptap 일 때
-    if (_gameName === "taptap") {
+    if (_gameName === 'taptap') {
       data = { taptap: firstData };
     }
     // 내가 지금 한 게임이 blackandwhite1 일 때
-    if (_gameName === "blackandwhite1") {
+    if (_gameName === 'blackandwhite1') {
       data = { blackandwhite1: firstData };
     }
     // 내가 지금 한 게임이 indianpoker 일 때
-    if (_gameName === "indianpoker") {
+    if (_gameName === 'indianpoker') {
       data = { indianpoker: firstData };
     }
     // 내가 지금 한 게임이 findsamepicture 일 때
-    if (_gameName === "findsamepicture") {
+    if (_gameName === 'findsamepicture') {
       data = { findsamepicture: firstData };
     }
-    window.localStorage.setItem("gameResults", JSON.stringify(data));
+    storageMethod('l', 'SET_ITEM', 'gameResults', JSON.stringify(data));
   } else {
     // 다른 게임은 있음
     let gameResultArr = JSON.parse(GAME_RESULTS);
@@ -62,7 +62,7 @@ export default (_gameName, _result) => {
     let l = 0; // lose data
 
     // 내가 지금 한 게임이 taptap 일 때
-    if (_gameName === "taptap") {
+    if (_gameName === 'taptap') {
       if (gameResultArr.taptap) {
         // taptap도 있음
         w = gameResultArr.taptap.win;
@@ -82,19 +82,19 @@ export default (_gameName, _result) => {
     }
 
     // 내가 지금 한 게임이 blackandwhite1 일 때
-    if (_gameName === "blackandwhite1") {
+    if (_gameName === 'blackandwhite1') {
       if (gameResultArr.blackandwhite1) {
         // blackandwhite1도 있음
         w = gameResultArr.blackandwhite1.win;
         d = gameResultArr.blackandwhite1.drew;
         l = gameResultArr.blackandwhite1.lose;
-        if (_result === "win") {
+        if (_result === 'win') {
           w += 1;
         }
-        if (_result === "drew") {
+        if (_result === 'drew') {
           d += 1;
         }
-        if (_result === "lose") {
+        if (_result === 'lose') {
           l += 1;
         }
         data = {
@@ -113,7 +113,7 @@ export default (_gameName, _result) => {
     }
 
     // 내가 지금 한 게임이 indianpoker 일 때
-    if (_gameName === "indianpoker") {
+    if (_gameName === 'indianpoker') {
       if (gameResultArr.indianpoker) {
         // indianpoker도 있음
         w = gameResultArr.indianpoker.win;
@@ -133,7 +133,7 @@ export default (_gameName, _result) => {
     }
 
     // 내가 지금 한 게임이 findsamepicture 일 때
-    if (_gameName === "findsamepicture") {
+    if (_gameName === 'findsamepicture') {
       if (gameResultArr.findsamepicture) {
         // findsamepicture도 있음
         w = gameResultArr.findsamepicture.win;
@@ -153,6 +153,6 @@ export default (_gameName, _result) => {
     }
 
     // 게임 결과를 localStorage에 저장
-    window.localStorage.setItem("gameResults", JSON.stringify(gameResultArr));
+    storageMethod('l', 'SET_ITEM', 'gameResults', JSON.stringify(gameResultArr));
   }
 };

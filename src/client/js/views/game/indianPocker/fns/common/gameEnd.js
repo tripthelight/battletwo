@@ -1,6 +1,7 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
-import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import { errorManagement } from '@/client/js/module/errorManagement';
+import indianPockerGameState from '@/client/js/gameState/indianPocker';
 
 export default () => {
   const COINS_PLAYER = window.sessionStorage.coinsPlayer;
@@ -9,8 +10,8 @@ export default () => {
   if (!COINS_ENEMY) return errorManagement({ errCase: 'errorComn', message: 'gameover 체크에서 coinsEnemy 세션이 없습니다.' });
 
   setTimeout(() => {
-    if (Number(COINS_PLAYER) === 0) window.sessionStorage.setItem('result', false);
-    if (Number(COINS_ENEMY) === 0) window.sessionStorage.setItem('result', true);
+    if (Number(COINS_PLAYER) === 0) storageMethod('s', 'SET_ITEM', 'result', false);
+    if (Number(COINS_ENEMY) === 0) storageMethod('s', 'SET_ITEM', 'result', true);
 
     setTimeout(() => {
       indianPockerGameState.gameOver();

@@ -1,7 +1,8 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { pcActiveEl, selectX, selectY, pcOffsetLeft, pcOffsetTop } from '@/client/js/views/game/indianPocker/fns/common/variable';
 
 export default (event) => {
-  window.sessionStorage.setItem('dropState', true);
+  storageMethod('s', 'SET_ITEM', 'dropState', true);
   pcActiveEl = event;
   selectX = event.clientX;
   selectY = event.clientY;

@@ -1,6 +1,7 @@
-import { getStyle } from '@/client/js/functions/comnExport';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1, timeInterval_1001 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
+import { getStyle } from '@/client/js/functions/comnExport';
 
 export default () => {
   return new Promise((resolve, reject) => {
@@ -60,8 +61,8 @@ export default () => {
     setTimeout(() => {
       const P_RESULT = Number(window.sessionStorage.coinsPlayer) - Number(PENALTY_COINS);
       const E_RESULT = Number(window.sessionStorage.coinsEnemy) + Number(PENALTY_COINS);
-      window.sessionStorage.setItem('coinsPlayer', P_RESULT);
-      window.sessionStorage.setItem('coinsEnemy', E_RESULT);
+      storageMethod('s', 'SET_ITEM', 'coinsPlayer', P_RESULT);
+      storageMethod('s', 'SET_ITEM', 'coinsEnemy', E_RESULT);
       setTimeout(resolve, timeInterval_1);
     }, timeInterval_1001);
   });
