@@ -12,6 +12,7 @@ import moveTouchEnd from '@/client/js/views/game/indianPocker/fns/common/moveTou
 
 export default (el) => {
   const deviceState = deviceStateStore.getState().deviceStateState.deviceState;
+
   switch (deviceState) {
     case 'pc':
       const BATTING_ZONE = document.querySelector('.betting-zone');

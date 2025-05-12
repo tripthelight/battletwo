@@ -1,7 +1,8 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import deviceStateStore from '@/client/store/deviceStateStore';
 import { timeInterval_1 } from '@/client/js/functions/variable';
-import { mTargetIdx } from '@/client/js/views/game/indianPocker/fns/common/variable';
+// import { mTargetIdx } from '@/client/js/views/game/indianPocker/fns/common/variable';
+import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState';
 import moveCoins from '@/client/js/views/game/indianPocker/fns/common/moveCoins';
@@ -13,13 +14,13 @@ export default (event) => {
   if (!POS) return;
   const POS_ARR = JSON.parse(POS);
   if (!POS_ARR || POS_ARR.length <= 0) return;
-  POS_ARR.splice(mTargetIdx, 1);
+  POS_ARR.splice(reactiveState.mTargetIdx, 1);
   storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(POS_ARR));
 
   const BET = window.sessionStorage.betCoin;
   const BET_ARR = JSON.parse(BET);
   if (!BET_ARR || BET_ARR.length <= 0) return;
-  BET_ARR.splice(mTargetIdx, 1);
+  BET_ARR.splice(reactiveState.mTargetIdx, 1);
   storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(BET_ARR));
 
   const BET_COINS = document.querySelector('.bet-coins');
@@ -27,8 +28,8 @@ export default (event) => {
   const BET_COINS_LI = BET_COINS.querySelectorAll('li');
   if (!BET_COINS_LI || BET_COINS_LI.length <= 0) return;
 
-  if (!BET_COINS_LI[mTargetIdx]) return;
-  BET_COINS_LI[mTargetIdx].remove();
+  if (!BET_COINS_LI[reactiveState.mTargetIdx]) return;
+  BET_COINS_LI[reactiveState.mTargetIdx].remove();
   const LI = document.createElement('li');
   const deviceState = deviceStateStore.getState().deviceStateState.deviceState;
   if (deviceState == 'pc') LI.setAttribute('draggable', true);

@@ -2,7 +2,8 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 import deviceStateStore from '@/client/store/deviceStateStore';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
-import { mTargetIdx, mmX, mmY, mtX, mtY, selectX, selectY } from '@/client/js/views/game/indianPocker/fns/common/variable';
+// import { mTargetIdx, mmX, mmY, mtX, mtY, selectX, selectY } from '@/client/js/views/game/indianPocker/fns/common/variable';
+import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState';
 import touchCoinState from '@/client/js/views/game/indianPocker/fns/common/touchCoinState';
 import moveCoins from '@/client/js/views/game/indianPocker/fns/common/moveCoins';
@@ -13,8 +14,8 @@ export default (e) => {
   if (!BET_COIN_POS) return;
   const BET_COIN_ARR = JSON.parse(BET_COIN_POS);
   if (!BET_COIN_ARR || BET_COIN_ARR.length <= 0) return;
-  BET_COIN_ARR[mTargetIdx].translateX = mmX;
-  BET_COIN_ARR[mTargetIdx].translateY = mmY;
+  BET_COIN_ARR[reactiveState.mTargetIdx].translateX = reactiveState.mmX;
+  BET_COIN_ARR[reactiveState.mTargetIdx].translateY = reactiveState.mmY;
   storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(BET_COIN_ARR));
 
   const PLAYER_BLOCK = document.querySelector('.player-block');
@@ -31,16 +32,16 @@ export default (e) => {
   const POS = window.sessionStorage.betCoinPos;
   const POS_ARR = JSON.parse(POS);
   if (!POS_ARR || POS_ARR.length <= 0) return;
-  POS_ARR.splice(mTargetIdx, 1);
+  POS_ARR.splice(reactiveState.mTargetIdx, 1);
   storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(POS_ARR));
 
   const BET = window.sessionStorage.betCoin;
   const BET_ARR = JSON.parse(BET);
   if (!BET_ARR || BET_ARR.length <= 0) return;
-  BET_ARR.splice(mTargetIdx, 1);
+  BET_ARR.splice(reactiveState.mTargetIdx, 1);
   storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(BET_ARR));
 
-  BET_COINS_LI[mTargetIdx].remove();
+  BET_COINS_LI[reactiveState.mTargetIdx].remove();
   const LI = document.createElement('li');
   const deviceState = deviceStateStore.getState().deviceStateState.deviceState;
   if (deviceState == 'pc') LI.setAttribute('draggable', true);
@@ -66,13 +67,13 @@ export default (e) => {
   }
 
   PLAYER_BLOCK.classList.remove('over');
-  mTargetIdx = 0;
-  mtX = 0;
-  mtY = 0;
-  selectX = 0;
-  selectY = 0;
-  mmX = 0;
-  mmY = 0;
+  reactiveState.mTargetIdx = 0;
+  reactiveState.mtX = 0;
+  reactiveState.mtY = 0;
+  reactiveState.selectX = 0;
+  reactiveState.selectY = 0;
+  reactiveState.mmX = 0;
+  reactiveState.mmY = 0;
 
   setTimeout(moveCoins, timeInterval_1);
   setTimeout(BTN_STATE.CHANGE, timeInterval_1);

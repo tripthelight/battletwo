@@ -1,0 +1,27 @@
+import { timeInterval_1, timeInterval_2 } from '@/client/js/functions/variable';
+import { LOADING_EVENT } from '@/client/components/popup/full/loading';
+import { STATE_PLAYING } from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/init';
+import REFRESH_STATE_PLAYING from '@/client/js/refresh/indianpoker/refreshPlaying/refreshInit';
+import reload from '@/client/js/module/reload';
+
+export default () => {
+  setTimeout(() => {
+    const BET_RESULTING = window.sessionStorage.betResulting;
+    if (BET_RESULTING && BET_RESULTING === 'true') {
+      if (reload) {
+        REFRESH_STATE_PLAYING.main();
+      }
+    } else {
+      // if (window.sessionStorage.drewState && window.sessionStorage.drewState === "true") return STATE_PLAYING.drew();
+      console.log('여기를 탔다는 건데....');
+      STATE_PLAYING.main();
+      LOADING_EVENT.show();
+      // refresh event
+      setTimeout(() => {
+        if (reload) {
+          REFRESH_STATE_PLAYING.main();
+        }
+      }, 200);
+    }
+  }, timeInterval_1);
+};

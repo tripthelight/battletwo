@@ -1,6 +1,7 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
-import { pcOffsetLeft, pcOffsetTop } from '@/client/js/views/game/indianPocker/fns/common/variable';
+// import { pcOffsetLeft, pcOffsetTop } from '@/client/js/views/game/indianPocker/fns/common/variable';
+import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import removeMyBetCoin from '@/client/js/views/game/indianPocker/fns/common/removeMyBetCoin';
 
 export default (data) => {
@@ -10,8 +11,8 @@ export default (data) => {
       index: data.activeLi,
       translateX: data.tx,
       translateY: data.ty,
-      offsetLeft: pcOffsetLeft,
-      offsetTop: pcOffsetTop,
+      offsetLeft: reactiveState.pcOffsetLeft,
+      offsetTop: reactiveState.pcOffsetTop,
       tm: data.tm,
       th: data.th,
     };

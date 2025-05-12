@@ -7,6 +7,11 @@ import receiveEnemyCard from '@/client/js/views/game/indianPocker/fns/gameState/
 import enterDrewResult from '@/client/js/communication/indianPocker/fns/enterDrewResult';
 import enterPlayingResult from '@/client/js/communication/indianPocker/fns/enterPlayingResult';
 import enterBasicBetResult from '@/client/js/communication/indianPocker/fns/enterBasicBetResult';
+import basicBettingResult from '@/client/js/communication/indianPocker/fns/basicBettingResult';
+import drewRefreshResult from '@/client/js/communication/indianPocker/fns/drewRefreshResult';
+import drewRefreshReturnResult from '@/client/js/communication/indianPocker/fns/drewRefreshReturnResult';
+
+import { responsetBatting as indianPockerBattingResponse } from '@/client/js/communication/indianPocker/batting/responsetBatting';
 
 export function response() {
   const dataChannel = window.rtcChannels.dataChannel;
@@ -32,7 +37,11 @@ export function response() {
           break;
 
         case 'basicBetting':
-          // basicBettingResult(data);
+          const params = {
+            state: message.state,
+            coinCount: message.coinCount,
+          };
+          basicBettingResult(params);
           break;
         case 'drewReadyCheck':
           drewReadyCheckResult(message);
@@ -50,14 +59,17 @@ export function response() {
           enterBasicBetResult(message.gameState);
           break;
         case 'drewRefresh':
-          // drewRefreshResult(data);
+          drewRefreshResult(message.value);
           break;
         case 'drewRefreshReturn':
-          // drewRefreshReturnResult(data);
+          drewRefreshReturnResult(message.value);
           break;
         default:
           break;
       }
+
+      // Betting 관련 메시지는 분리된 핸들러 함수에서 처리
+      indianPockerBattingResponse(message);
     };
   }
 }

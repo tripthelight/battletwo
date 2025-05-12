@@ -1,11 +1,12 @@
 import SOCKET_EVENT from '@/client/js/communication/indianPocker/batting/battingEvent';
 
-export function responsetBatting() {
+export function responsetBatting(message) {
   const dataChannel = window.rtcChannels.dataChannel;
 
   if (dataChannel) {
     dataChannel.onmessage = (event) => {
-      const message = JSON.parse(event.data);
+      // const message = JSON.parse(event.data);
+      console.log('message.type :::: ', message.type);
 
       switch (message.type) {
         case 'firstExtBet':

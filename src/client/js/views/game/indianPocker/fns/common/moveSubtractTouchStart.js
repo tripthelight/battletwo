@@ -1,5 +1,6 @@
 import { errorManagement } from '@/client/js/module/errorManagement';
-import { mTargetIdx, mtX, mtY, selectX, selectY } from '@/client/js/views/game/indianPocker/fns/common/variable';
+// import { mTargetIdx, mtX, mtY, selectX, selectY } from '@/client/js/views/game/indianPocker/fns/common/variable';
+import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import touchCoinState from '@/client/js/views/game/indianPocker/fns/common/touchCoinState';
 
 export default (e) => {
@@ -10,9 +11,9 @@ export default (e) => {
   if (!BET_COIN_ARR || BET_COIN_ARR.length <= 0) return;
   const BET_COINS = Array.from(e.target.closest('ul').children);
   if (!BET_COINS) return errorManagement({ errCase: 'errorComn' });
-  mTargetIdx = BET_COINS.indexOf(e.target);
-  mtX = BET_COIN_ARR[mTargetIdx].translateX;
-  mtY = BET_COIN_ARR[mTargetIdx].translateY;
-  selectX = e.targetTouches[0].clientX;
-  selectY = e.targetTouches[0].clientY;
+  reactiveState.mTargetIdx = BET_COINS.indexOf(e.target);
+  reactiveState.mtX = BET_COIN_ARR[reactiveState.mTargetIdx].translateX;
+  reactiveState.mtY = BET_COIN_ARR[reactiveState.mTargetIdx].translateY;
+  reactiveState.selectX = e.targetTouches[0].clientX;
+  reactiveState.selectY = e.targetTouches[0].clientY;
 };
