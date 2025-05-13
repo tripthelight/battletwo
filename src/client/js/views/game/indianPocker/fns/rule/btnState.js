@@ -1,3 +1,5 @@
+import { errorManagement } from '@/client/js/module/errorManagement';
+import { timeInterval_1, timeInterval_200 } from '@/client/js/functions/variable';
 import { comnText } from '@/client/js/functions/language';
 import BOTTOM_BUTTONS from '@/client/js/views/game/indianPocker/fns/common/components/bottomButtons';
 import INDIANPOCKER_SESSION from '@/client/js/views/game/indianPocker/fns/rule/indianpockerSession';
@@ -12,6 +14,7 @@ export const BTN_STATE = {
     if (ELEMENT.CHECK('.bottom-buttons', 'find')) return BTN_STATE.INIT();
     BOTTOM_BUTTONS.main();
     BTN_STATE.INIT();
+    BTN_STATE.LAST();
   },
   HIDE: () => {
     // 하단 버튼 삭제
@@ -84,5 +87,48 @@ export const BTN_STATE = {
     BTN_FOLD.onclick = () => RULES.FOLD();
     const BTN_ALLIN = ELEMENT.CHECK('.all-in', 'findCheck');
     BTN_ALLIN.onclick = () => RULES.ALLIN();
+  },
+  LAST: () => {
+    // emeny나 player 중 기본 배팅 후 남은 코인이 없음
+    const BOTTOM_BUTTONS_EL = document.querySelector('.bottom-buttons');
+    if (!BOTTOM_BUTTONS_EL) return;
+
+    const COINS_ENEMY = window.sessionStorage.coinsEnemy ?? 0;
+    const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet ?? 0;
+    const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet ?? 0;
+    const COINS_PLAYER = window.sessionStorage.coinsPlayer ?? 0;
+    const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet ?? 0;
+    const COINS_PLAYER_EXT_BET = window.sessionStorage.coinsPlayerExtBet ?? 0;
+
+    const C_E = Number(COINS_ENEMY);
+    const C_E_B = Number(COINS_ENEMY_BET);
+    const C_E_E_B = Number(COINS_ENEMY_EXT_BET);
+    const P_E = Number(COINS_PLAYER);
+    const P_E_B = Number(COINS_PLAYER_BET);
+    const P_E_E_B = Number(COINS_PLAYER_EXT_BET);
+
+    if (C_E === 0 || P_E === 0) {
+      if (C_E_B === P_E_B) {
+        // emeny or player 가 기본 배팅 후 남은 코인이 없음
+        const BTN_BATTING = BOTTOM_BUTTONS_EL.querySelector('li button.betting');
+        const BTN_CALL = BOTTOM_BUTTONS_EL.querySelector('li button.call');
+        if (BTN_BATTING || BTN_CALL) {
+          if (BTN_BATTING) {
+            BTN_BATTING.removeAttribute('disabled');
+            BTN_BATTING.innerHTML = comnText.call;
+            BTN_BATTING.onclick = () => RULES.CALL();
+          } else if (BTN_CALL) {
+            BTN_CALL.removeAttribute('disabled');
+            BTN_CALL.innerHTML = comnText.call;
+            BTN_CALL.onclick = () => RULES.CALL();
+          }
+        }
+
+        const BTN_ALLIN = BOTTOM_BUTTONS_EL.querySelector('li button.all-in');
+        if (BTN_ALLIN) {
+          BTN_ALLIN.setAttribute('disabled', true);
+        }
+      }
+    }
   },
 };

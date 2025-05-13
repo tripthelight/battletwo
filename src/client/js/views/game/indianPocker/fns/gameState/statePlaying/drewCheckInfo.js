@@ -27,7 +27,7 @@ export default () => {
       const H_RES = PLAYER_BLOCK.offsetTop + PLAYER_CARD.offsetTop - CHECH_DREW_INFO_EL.clientHeight;
       CHECH_DREW_INFO_EL.style.top = H_RES + 'px';
       setTimeout(() => {
-        LOADING.hide();
+        LOADING_EVENT.hide();
         PLAYER_CARD.onclick = () => btnCallRaiseEventBefore();
       }, timeInterval_1);
     }, timeInterval_1);

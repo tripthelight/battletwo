@@ -11,7 +11,6 @@ export const STATE_PLAYING = {
     LOADING_EVENT.show();
 
     request('enterPlaying', 'playing');
-    // TODO: 왜 기본배팅 코인이 1개면 battleCardNum을 못만들지?
     setTimeout(sessionInitPlaying, timeInterval_1);
   },
   drew: () => {

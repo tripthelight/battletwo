@@ -79,7 +79,8 @@ export default () => {
         if (NUMS_ARR.length === 2) {
           LOADING_EVENT.hide();
           setTimeout(drewCheck, timeInterval_1);
-          setTimeout(coinOneCheck, timeInterval_1);
+          // 기본 배팅 후, 남은 코인이 없을 경우
+          // setTimeout(coinOneCheck, timeInterval_1);
         }
       }
     }, timeInterval_4);

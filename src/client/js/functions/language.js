@@ -644,6 +644,7 @@ const comnLanguage = () => {
     raise: 'RAISE',
     fold: 'FOLD',
     allin: 'ALL IN',
+    result: 'RESULT',
   };
 };
 const comnText = comnLanguage();

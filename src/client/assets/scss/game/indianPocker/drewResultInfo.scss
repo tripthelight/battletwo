@@ -1,10 +1,11 @@
 .drew-result-info,
 .drew-result-info span,
-.drew-result-info a.btn-home {
+.drew-result-info a.btn-home,
+.drew-result-info a.btn-replay {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "nbg", "Malgun Gothic", "dotum", sans-serif;
+  font-family: 'nbg', 'Malgun Gothic', 'dotum', sans-serif;
 }
 .drew-result-info {
   position: absolute;
@@ -21,14 +22,28 @@
     color: #fff;
     text-align: center;
   }
-  a {
-    &.btn-home {
-      padding: 10px;
-      margin: 20px 0 0 0;
-      background-color: rgba(0, 0, 0, 0.6);
-      border-radius: 6px;
-      font-size: 20px;
-      color: #fff;
+  .btn-block {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0 0 0;
+    a {
+      &.btn-home,
+      &.btn-replay {
+        width: calc(50% - 20px);
+        padding: 10px;
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 6px;
+        font-size: 20px;
+        color: #fff;
+      }
+      &.btn-home {
+        margin-right: 10px;
+      }
+      &.btn-replay {
+        margin-left: 10px;
+      }
     }
   }
 }

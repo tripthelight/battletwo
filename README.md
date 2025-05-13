@@ -85,5 +85,5 @@ battletwo
     - /src/client/js/socket/indianpoker/getSocket.js  
 
 ## 진행상황
-- 내가 19개 배팅 후 상대가 19개 배팅 하는 순간,
-- EnemyBlockMoveBattingZone.js 의 _case === 'allin'가 아닌 조건에서 COINS와 BETTING_ZONE.clientWidth 못찾음
+- indianPocker 브라우저 새로고침 테스트 필요
+- 코인과 배경의 z-index가 맞지 않음

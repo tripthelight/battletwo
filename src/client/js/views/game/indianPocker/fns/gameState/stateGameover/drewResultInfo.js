@@ -1,6 +1,7 @@
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { comnText } from '@/client/js/functions/language';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 
 export default () => {
   // element | seeeion 체크
@@ -16,22 +17,35 @@ export default () => {
   setTimeout(() => {
     let elem = document.createElement('div');
     let inner = document.createElement('span');
+    let btnBlock = document.createElement('div');
     let btnHome = document.createElement('a');
     let btnReplay = document.createElement('a');
+
+    btnBlock.classList.add('btn-block');
     btnHome.setAttribute('href', '/');
     btnHome.setAttribute('title', 'move home');
     btnHome.classList.add('btn-home');
     btnHome.innerHTML = 'HOME';
-    btnReplay.setAttribute('href', 'javascript:void(0)');
+    // btnReplay.setAttribute('href', '/game/indianPocker');
+    btnReplay.setAttribute('href', 'javascript:void(0);');
     btnReplay.setAttribute('title', 'play again');
     btnReplay.classList.add('btn-replay');
     btnReplay.innerHTML = 'REPLAY';
 
+    btnBlock.appendChild(btnHome);
+    btnBlock.appendChild(btnReplay);
+
     elem.classList.add('drew-result-info');
     inner.innerHTML = RESULT_RES ? comnText.win : comnText.die;
     elem.appendChild(inner);
-    elem.appendChild(btnHome);
+    elem.appendChild(btnBlock);
 
     GAME_SCENE.appendChild(elem);
+
+    btnReplay.onclick = () => {
+      storageMethod('s', 'REMOVE_ALL');
+      const baseUrl = window.location.origin;
+      location.href = baseUrl + '/game/indianPocker';
+    };
   }, timeInterval_1);
 };
