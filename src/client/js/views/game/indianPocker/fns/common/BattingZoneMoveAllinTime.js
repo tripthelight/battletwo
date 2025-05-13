@@ -7,7 +7,7 @@ export default (_removeCoins) => {
     const COINS_ENEMY_WRAP = document.querySelector('.coins-enemy');
     if (!COINS_ENEMY_WRAP) return;
     const COINS_ENEMY = COINS_ENEMY_WRAP.querySelectorAll('li');
-    if (!COINS_ENEMY || COINS_ENEMY.length < 1) return;
+    if (!COINS_ENEMY || COINS_ENEMY.length < 1) return resolve(_removeCoins);
 
     let liEl = new Object();
     let minuteEl = new Object();
@@ -34,7 +34,7 @@ export default (_removeCoins) => {
     const COINS_PLAYER_WRAP = document.querySelector('.coins-player');
     if (!COINS_PLAYER_WRAP) return;
     const COINS_PLAYER = COINS_PLAYER_WRAP.querySelectorAll('li');
-    if (!COINS_PLAYER || COINS_PLAYER.length < 1) return;
+    if (!COINS_PLAYER || COINS_PLAYER.length < 1) return resolve(_removeCoins);
 
     for (let i = 0; i < COINS_PLAYER.length; i++) {
       COINS_PLAYER[i].remove();

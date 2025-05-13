@@ -42,6 +42,8 @@ export default (_case) => {
         y = ENEMY_COIN_WRAP.clientHeight;
         moveCoin.style.transition = 'transform ' + Number(aniTime / 1000) + 's ease-in';
         moveCoin.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+        console.log('1 >>>>>>>>>>>>>>>> ');
+
         const DATA = {
           betState: 'end',
           host: 'enemy',
@@ -51,6 +53,7 @@ export default (_case) => {
           translateX: x,
           translateY: y,
         };
+        console.log('2 >>>>>>>>>>>>>>>> ');
         let betCoin = window.sessionStorage.betCoin;
         let betCoinArr = JSON.parse(betCoin);
         betCoinArr.push(DATA);
@@ -66,7 +69,9 @@ export default (_case) => {
           const ENEMY_COIN_APPEND = ENEMY_BLOCK.querySelector('.coins-enemy');
           const COINS_APPEND = ENEMY_COIN_APPEND.querySelectorAll('li');
           moveCoin = COINS_APPEND[COINS_APPEND.length - 1];
+          console.log('3 >>>>>>>>>>>>>>>> ');
           liX = moveCoin.offsetLeft + moveArr[liIdx].x;
+          console.log('4 >>>>>>>>>>>>>>>> ');
           liY = moveCoin.offsetTop + moveArr[liIdx].y - ENEMY_COIN_WRAP.clientHeight - BBT;
           liEl = document.createElement('li');
 
@@ -116,8 +121,24 @@ export default (_case) => {
       let tm = 0;
       let th = 0;
       for (let i = COINS.length - 1; i > COINS.length - 1 - NUMS; i--) {
-        leftEl = COINS[i].offsetLeft || COINS[i].offsetX;
-        topEl = COINS[i].offsetTop || COINS[i].offsetY;
+        console.log('5 >>>>>>>>>>>>>>>> ');
+        // leftEl = COINS[i].offsetLeft || COINS[i].offsetX;
+        if (COINS[i]?.offsetLeft) {
+          leftEl = COINS[i].offsetLeft;
+        } else if (COINS[i]?.offsetX) {
+          leftEl = COINS[i].offsetX;
+        } else {
+          leftEl = 20;
+        }
+        console.log('6 >>>>>>>>>>>>>>>> ');
+        // topEl = COINS[i].offsetTop || COINS[i].offsetY;
+        if (COINS[i]?.offsetTop) {
+          topEl = COINS[i].offsetTop;
+        } else if (COINS[i]?.offsetY) {
+          topEl = COINS[i].offsetY;
+        } else {
+          topEl = 20;
+        }
         wl = -leftEl - PL;
         wr = BETTING_ZONE.clientWidth - PL - PR - leftEl - COINS[i].clientWidth;
         hl = ENEMY_COIN_WRAP.clientHeight - topEl + PB;
@@ -127,6 +148,7 @@ export default (_case) => {
         tm = getTranslateMH(COINS[i]).m;
         th = getTranslateMH(COINS[i]).h;
         COINS[i].style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+        console.log('7 >>>>>>>>>>>>>>>> ');
         const ACTIVE_COIN = {
           betState: 'end',
           host: 'enemy',
@@ -137,6 +159,7 @@ export default (_case) => {
           tm: tm,
           th: th,
         };
+        console.log('8 >>>>>>>>>>>>>>>> ');
         let arr = [];
         if (window.sessionStorage.betCoin) {
           arr = JSON.parse(window.sessionStorage.betCoin);

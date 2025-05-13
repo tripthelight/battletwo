@@ -85,4 +85,5 @@ battletwo
     - /src/client/js/socket/indianpoker/getSocket.js  
 
 ## 진행상황
-- indianPocker basic batting 단계에서 기본 배팅 터치가 안됨
+- 내가 19개 배팅 후 상대가 19개 배팅 하는 순간,
+- EnemyBlockMoveBattingZone.js 의 _case === 'allin'가 아닌 조건에서 COINS와 BETTING_ZONE.clientWidth 못찾음

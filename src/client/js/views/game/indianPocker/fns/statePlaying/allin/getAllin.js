@@ -1,12 +1,13 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1, timeInterval_1001 } from '@/client/js/functions/variable.js';
 import { errorManagement } from '@/client/js/module/errorManagement';
-import EnemyBlockMoveBattingZone from '@/client/js/views/game/indianPocker/fns/common/EnemyBlockMoveBattingZone.js';
 import { RULES } from '@/client/js/views/game/indianPocker/fns/rule/rules.js';
 import pcDraggableCheck from '@/client/js/views/game/indianPocker/fns/common/pcDraggableCheck.js';
 import moveCoins from '@/client/js/views/game/indianPocker/fns/common/moveCoins.js';
-import subtractMoveCoin from '@/client/js/views/game/indianPocker/fns/common/subtractMoveCoin.js';
 import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState.js';
+import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
+import EnemyBlockMoveBattingZone from '@/client/js/views/game/indianPocker/fns/common/EnemyBlockMoveBattingZone.js';
+import subtractMoveCoin from '@/client/js/views/game/indianPocker/fns/common/subtractMoveCoin.js';
 
 export const GET_ALLIN = {
   receiveAllinBet: (_data) => {
@@ -27,7 +28,6 @@ export const GET_ALLIN = {
           // PLAYER 올인을 받고 ENEMY 올인 함
           RULES.CALL();
         } else {
-          // 상대의 올인을 받고 상대 코인 시간 stop 하고, 내 코인시간 start 해야 됨
           // 상대의 첫 올인을 받음
           const COINS_ENEMY = document.querySelector('.coins-enemy');
           COINS_ENEMY.classList.remove('active');
@@ -46,6 +46,67 @@ export const GET_ALLIN = {
           setTimeout(subtractMoveCoin, timeInterval_1);
           BTN_STATE.SHOW();
         }
+
+        setTimeout(() => {
+          /**
+           * 상대의 올인을 받고 상대 코인 시간 stop 하고, 내 코인시간 start 해야 됨
+           */
+
+          // 상대가 올인한 후 상대의 코인 시간을 멈춰야 함
+          const COINS_ENEMY_WRAP = document.querySelector('.coins-enemy');
+          if (!COINS_ENEMY_WRAP) return;
+          const COINS_ENEMY = COINS_ENEMY_WRAP.querySelectorAll('li');
+          if (!COINS_ENEMY || COINS_ENEMY.length < 1) return;
+
+          COINS_ENEMY.forEach((liElem) => {
+            liElem.querySelectorAll('span.m, span.h').forEach((spanEl) => {
+              spanEl.getAnimations().forEach((animation) => animation.cancel());
+            });
+          });
+
+          // 상대가 올인한 후 나의 코인 시간을 가게 만들어야 함
+          const COINS_PLAYER_WRAP = document.querySelector('.coins-player');
+          if (!COINS_PLAYER_WRAP) return;
+          const COINS_PLAYER = COINS_PLAYER_WRAP.querySelectorAll('li');
+          if (!COINS_PLAYER || COINS_PLAYER.length < 1) return;
+
+          COINS_PLAYER.forEach((liElem) => {
+            const hEl = liElem.querySelector('span.h');
+            const mEl = liElem.querySelector('span.m');
+
+            if (hEl && mEl) {
+              animateClock(hEl, mEl, false);
+            }
+          });
+
+          // 배팅존에 있는 나의 코인 시간 start
+          // 배팅존에 있는 상대 코인 시간 stop
+          const BAT_COINS_WRAP = document.querySelector('.bet-coins');
+          if (!BAT_COINS_WRAP) return;
+          const BAT_COINS = BAT_COINS_WRAP.querySelectorAll('li');
+          if (!BAT_COINS || BAT_COINS.length < 1) return;
+          const PLAYER_BET_COINS = Array.from(BAT_COINS).filter((li) => !li.classList.contains('e'));
+          if (!PLAYER_BET_COINS || PLAYER_BET_COINS.length < 1) return;
+          const ENEMY_BET_COINS = Array.from(BAT_COINS).filter((li) => li.classList.contains('e'));
+          if (!ENEMY_BET_COINS || ENEMY_BET_COINS.length < 1) return;
+
+          // 배팅존에 있는 상대 코인 시간 stop
+          ENEMY_BET_COINS.forEach((liElem) => {
+            liElem.querySelectorAll('span.m, span.h').forEach((spanEl) => {
+              spanEl.getAnimations().forEach((animation) => animation.cancel());
+            });
+          });
+
+          // 배팅존에 있는 나의 코인 시간 start
+          PLAYER_BET_COINS.forEach((liElem) => {
+            const hEl = liElem.querySelector('span.h');
+            const mEl = liElem.querySelector('span.m');
+
+            if (hEl && mEl) {
+              animateClock(hEl, mEl, false);
+            }
+          });
+        }, timeInterval_1);
       });
     }, timeInterval_1);
   },
