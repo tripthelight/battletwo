@@ -85,5 +85,6 @@ battletwo
     - /src/client/js/socket/indianpoker/getSocket.js  
 
 ## 진행상황
+- 상대방이 추가배팅 할 코인이 없을 경우, 버튼은 잘 나오는데, 내 코인들의 시간이 멈춰있음
+- 모바일에서 확인 필요
 - indianPocker 브라우저 새로고침 테스트 필요
-- 코인과 배경의 z-index가 맞지 않음

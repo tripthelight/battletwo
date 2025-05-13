@@ -130,5 +130,7 @@ export const BTN_STATE = {
         }
       }
     }
+
+    // 상대가 배팅할 코인이 없을 경우 player-block의 coins 들은 disabled 되어야 함
   },
 };

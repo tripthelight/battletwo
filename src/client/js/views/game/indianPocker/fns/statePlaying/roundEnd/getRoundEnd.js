@@ -163,6 +163,9 @@ export const GET_ROUND_END = {
     if (!PLAYER_CARD) return errorManagement({ errCase: 'errorComn', message: 'roundResultDisplay 에서 .player-card 엘리먼트가 없습니다.' });
     const BETTING_ZONE = document.querySelector('.betting-zone');
     if (!BETTING_ZONE) return errorManagement({ errCase: 'errorComn', message: 'roundResultDisplay 에서 .betting-zone 엘리먼트가 없습니다.' });
+
+    document.documentElement.style.setProperty('--round-result-height', `${BETTING_ZONE.clientHeight}px`);
+
     let txtArr = [];
     let resultEl = document.createElement('div');
     resultEl.classList.add('round-result');

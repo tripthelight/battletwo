@@ -1,14 +1,21 @@
+:root {
+  --round-result-height: 0;
+}
+
 .round-result {
   position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  height: 60px;
+  height: var(--round-result-height);
   left: 0;
   top: 50%;
   transform: translateY(-50%);
   font-size: 60px;
   line-height: 60px;
   color: #fff;
-  display: block;
   text-align: center;
   z-index: 4;
+  background-color: rgba(0, 0, 0, 0.4);
 }

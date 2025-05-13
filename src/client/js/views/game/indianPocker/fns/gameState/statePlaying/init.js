@@ -11,6 +11,7 @@ export const STATE_PLAYING = {
     LOADING_EVENT.show();
 
     request('enterPlaying', 'playing');
+
     setTimeout(sessionInitPlaying, timeInterval_1);
   },
   drew: () => {
