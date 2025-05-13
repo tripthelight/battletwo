@@ -25,6 +25,7 @@ export default () => {
     elem.classList.add('coins');
     elem.classList.add('coins-player');
     let coinCount = Number(window.sessionStorage.coinsPlayer);
+    // coinCount가 0일 수 있음
     for (let i = 0; i < coinCount; i++) {
       liEl = document.createElement('li');
       minuteEl = document.createElement('span');

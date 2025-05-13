@@ -29,6 +29,8 @@ export const GET_CALL = {
       });
   },
   drawCallEnemyBet: (_data) => {
+    console.log('call >>>>>>>>>>>>> ', _data);
+
     EnemyBlockMoveBattingZone().then(() => {
       GET_CALL.sessionCallCoinPos(_data);
     });

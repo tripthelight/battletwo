@@ -25,6 +25,7 @@ export const GET_BETTING = {
       });
   },
   drawExtEnemyBet: (_data) => {
+    console.log('firstExtBet >>>>>>>>>>>>> ', _data);
     EnemyBlockMoveBattingZone().then(() => {
       GET_BETTING.sessionExtBetCoinPos(_data);
     });

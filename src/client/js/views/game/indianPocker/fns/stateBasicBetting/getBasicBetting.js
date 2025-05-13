@@ -58,23 +58,27 @@ export const GET_BASIC_BETTING = {
               }
             }
             const ENEMY_COINS = Number(window.sessionStorage.coinsEnemy);
-            let coinsElem = new Object();
-            let minuteEl = new Object();
-            let hourEl = new Object();
-            for (let i = 0; i < ENEMY_COINS; i++) {
-              coinsElem = document.createElement('li');
-              minuteEl = document.createElement('span');
-              hourEl = document.createElement('span');
-              minuteEl.classList.add('m');
-              hourEl.classList.add('h');
-              coinsElem.appendChild(minuteEl);
-              coinsElem.appendChild(hourEl);
-              // 기본 배팅이 끝나면 시간이 멈춰야 됨
-              minuteEl.style.transform = `translate(-50%, -96%) rotate(${timeDegArr[i][0]}deg)`;
-              hourEl.style.transform = `translate(-50%, -86%) rotate(${timeDegArr[i][1]}deg)`;
-              ENEMY_COIN_UL.appendChild(coinsElem);
-              // 모두 다시 그리면 다음 함수 실행
-              if (i === ENEMY_COINS - 1) resolve();
+            if (ENEMY_COINS > 0) {
+              let coinsElem = new Object();
+              let minuteEl = new Object();
+              let hourEl = new Object();
+              for (let i = 0; i < ENEMY_COINS; i++) {
+                coinsElem = document.createElement('li');
+                minuteEl = document.createElement('span');
+                hourEl = document.createElement('span');
+                minuteEl.classList.add('m');
+                hourEl.classList.add('h');
+                coinsElem.appendChild(minuteEl);
+                coinsElem.appendChild(hourEl);
+                // 기본 배팅이 끝나면 시간이 멈춰야 됨
+                minuteEl.style.transform = `translate(-50%, -96%) rotate(${timeDegArr[i][0]}deg)`;
+                hourEl.style.transform = `translate(-50%, -86%) rotate(${timeDegArr[i][1]}deg)`;
+                ENEMY_COIN_UL.appendChild(coinsElem);
+                // 모두 다시 그리면 다음 함수 실행
+                if (i === ENEMY_COINS - 1) resolve();
+              }
+            } else {
+              resolve();
             }
           });
           REMOVE_ENEMY_BET_COIN.then(() => {

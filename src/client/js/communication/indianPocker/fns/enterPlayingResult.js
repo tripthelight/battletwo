@@ -12,7 +12,9 @@ export default (_data) => {
       if (_data === 'playing') {
         if (window.sessionStorage.gameState !== 'playing') request('enterPlaying', 'no');
         if (window.sessionStorage.gameState === 'playing') {
-          if (window.sessionStorage.betUser === 'true') createBattleCardNum();
+          if (window.sessionStorage.betUser === 'true') {
+            createBattleCardNum();
+          }
         }
       } else if (_data === 'no') {
         setTimeout(() => {

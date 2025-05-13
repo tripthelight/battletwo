@@ -42,7 +42,6 @@ export default (_case) => {
         y = ENEMY_COIN_WRAP.clientHeight;
         moveCoin.style.transition = 'transform ' + Number(aniTime / 1000) + 's ease-in';
         moveCoin.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
-        console.log('1 >>>>>>>>>>>>>>>> ');
 
         const DATA = {
           betState: 'end',
@@ -53,7 +52,7 @@ export default (_case) => {
           translateX: x,
           translateY: y,
         };
-        console.log('2 >>>>>>>>>>>>>>>> ');
+
         let betCoin = window.sessionStorage.betCoin;
         let betCoinArr = JSON.parse(betCoin);
         betCoinArr.push(DATA);
@@ -69,9 +68,7 @@ export default (_case) => {
           const ENEMY_COIN_APPEND = ENEMY_BLOCK.querySelector('.coins-enemy');
           const COINS_APPEND = ENEMY_COIN_APPEND.querySelectorAll('li');
           moveCoin = COINS_APPEND[COINS_APPEND.length - 1];
-          console.log('3 >>>>>>>>>>>>>>>> ');
           liX = moveCoin.offsetLeft + moveArr[liIdx].x;
-          console.log('4 >>>>>>>>>>>>>>>> ');
           liY = moveCoin.offsetTop + moveArr[liIdx].y - ENEMY_COIN_WRAP.clientHeight - BBT;
           liEl = document.createElement('li');
 
@@ -107,6 +104,7 @@ export default (_case) => {
     return new Promise((resolve, reject) => {
       const NUMS = window.sessionStorage.gameState === 'playing' ? Number(COINS_ENEMY_EXT_BET) || 0 : Number(COINS_ENEMY_BET) || 0;
       if (NUMS === 0) resolve();
+
       const PB = getStyle(ENEMY_COIN_WRAP, 'padding-bottom');
       const PL = getStyle(ENEMY_COIN_WRAP, 'padding-left');
       const PR = getStyle(ENEMY_COIN_WRAP, 'padding-right');
@@ -120,54 +118,81 @@ export default (_case) => {
       let hr = 0;
       let tm = 0;
       let th = 0;
-      for (let i = COINS.length - 1; i > COINS.length - 1 - NUMS; i--) {
-        console.log('5 >>>>>>>>>>>>>>>> ');
-        // leftEl = COINS[i].offsetLeft || COINS[i].offsetX;
-        if (COINS[i]?.offsetLeft) {
-          leftEl = COINS[i].offsetLeft;
-        } else if (COINS[i]?.offsetX) {
-          leftEl = COINS[i].offsetX;
-        } else {
-          leftEl = 20;
+
+      const COINS_LENGTH = COINS.length - 1; // 1, 0
+      const COINS_MAX = COINS.length - 1 - NUMS; // 0, -1 > 0보다 작을 경우가 있음
+
+      if (COINS_LENGTH > 0) {
+        // 기본 배팅 후 남은 코인이 있는 경우
+        for (let i = COINS_LENGTH; i > COINS_MAX; i--) {
+          leftEl = COINS[i].offsetLeft || COINS[i].offsetX;
+          topEl = COINS[i].offsetTop || COINS[i].offsetY;
+          wl = -leftEl - PL;
+          wr = BETTING_ZONE.clientWidth - PL - PR - leftEl - COINS[i].clientWidth;
+          hl = ENEMY_COIN_WRAP.clientHeight - topEl + PB;
+          hr = BETTING_ZONE.clientHeight - COINS[i].clientHeight;
+          x = randomNumberMinMax(wl, wr);
+          y = randomNumberMinMax(hl, hr);
+          tm = getTranslateMH(COINS[i]).m;
+          th = getTranslateMH(COINS[i]).h;
+          COINS[i].style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+
+          const ACTIVE_COIN = {
+            betState: 'end',
+            host: 'enemy',
+            index: COINS.length - 1,
+            translateX: x,
+            translateY: y,
+            offsetLeft: leftEl,
+            tm: tm,
+            th: th,
+          };
+
+          let arr = [];
+          if (window.sessionStorage.betCoin) {
+            arr = JSON.parse(window.sessionStorage.betCoin);
+          }
+          arr.push(ACTIVE_COIN);
+          storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(arr));
+          setTimeout(() => {
+            if (i === COINS.length - NUMS) resolve();
+          }, timeInterval_201);
         }
-        console.log('6 >>>>>>>>>>>>>>>> ');
-        // topEl = COINS[i].offsetTop || COINS[i].offsetY;
-        if (COINS[i]?.offsetTop) {
-          topEl = COINS[i].offsetTop;
-        } else if (COINS[i]?.offsetY) {
-          topEl = COINS[i].offsetY;
-        } else {
-          topEl = 20;
-        }
+      } else {
+        // 기본 배팅 후 남은 코인이 없는 경우
+        const TARGET = COINS[0];
+        leftEl = TARGET.offsetLeft || TARGET.offsetX;
+        topEl = TARGET.offsetTop || TARGET.offsetY;
         wl = -leftEl - PL;
-        wr = BETTING_ZONE.clientWidth - PL - PR - leftEl - COINS[i].clientWidth;
+        wr = BETTING_ZONE.clientWidth - PL - PR - leftEl - TARGET.clientWidth;
         hl = ENEMY_COIN_WRAP.clientHeight - topEl + PB;
-        hr = BETTING_ZONE.clientHeight - COINS[i].clientHeight;
+        hr = BETTING_ZONE.clientHeight - TARGET.clientHeight;
         x = randomNumberMinMax(wl, wr);
         y = randomNumberMinMax(hl, hr);
-        tm = getTranslateMH(COINS[i]).m;
-        th = getTranslateMH(COINS[i]).h;
-        COINS[i].style.transform = 'translate(' + x + 'px, ' + y + 'px)';
-        console.log('7 >>>>>>>>>>>>>>>> ');
+        tm = getTranslateMH(TARGET).m;
+        th = getTranslateMH(TARGET).h;
+        TARGET.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+
         const ACTIVE_COIN = {
           betState: 'end',
           host: 'enemy',
-          index: COINS.length - 1,
+          index: TARGET.length - 1,
           translateX: x,
           translateY: y,
           offsetLeft: leftEl,
           tm: tm,
           th: th,
         };
-        console.log('8 >>>>>>>>>>>>>>>> ');
+
         let arr = [];
         if (window.sessionStorage.betCoin) {
           arr = JSON.parse(window.sessionStorage.betCoin);
         }
         arr.push(ACTIVE_COIN);
         storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(arr));
+
         setTimeout(() => {
-          if (i === COINS.length - NUMS) resolve();
+          resolve();
         }, timeInterval_201);
       }
     });

@@ -18,6 +18,8 @@ export default (_host, _num) => {
         comnArray = JSON.parse(window.sessionStorage.battleCardNum);
       }
       comnArray.push(activeCard);
+      console.log('battleCardNum 값 추가 >>>>>>>>>> ');
+
       storageMethod('s', 'SET_ITEM', 'battleCardNum', JSON.stringify(comnArray));
       activeCard = {};
       comnArray = [];

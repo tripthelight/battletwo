@@ -95,7 +95,7 @@ export default (_state) => {
   if (!ENEMY_COIN_LEN || parseInt(ENEMY_COIN_LEN) < 1) return;
 
   // coins enemy 코인 다시 그리기
-  for (let i = 0; i < parseInt(PLAYER_COIN_LEN); i++) {
+  for (let i = 0; i < parseInt(ENEMY_COIN_LEN); i++) {
     liEl = document.createElement('li');
     minuteEl = document.createElement('span');
     hourEl = document.createElement('span');
