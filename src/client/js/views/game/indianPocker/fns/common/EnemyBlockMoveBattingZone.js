@@ -63,8 +63,6 @@ export default (_case) => {
         let hourEl = new Object();
 
         for (let i = 0; i < MOVE_COINS_LEN; i++) {
-          console.log('상대의 all in 칩을 내 배팅존에 그림 >>>>>>>> ');
-
           const ENEMY_COIN_APPEND = ENEMY_BLOCK.querySelector('.coins-enemy');
           const COINS_APPEND = ENEMY_COIN_APPEND.querySelectorAll('li');
           moveCoin = COINS_APPEND[COINS_APPEND.length - 1];
@@ -79,7 +77,7 @@ export default (_case) => {
           liEl.appendChild(minuteEl);
           liEl.appendChild(hourEl);
           posClock(hourEl, minuteEl);
-          animateClock(hourEl, minuteEl, false);
+          animateClock(hourEl, minuteEl, true);
 
           liEl.style.transform = 'translate(' + liX + 'px, ' + liY + 'px)';
           liEl.classList.add('e');

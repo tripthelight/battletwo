@@ -1,15 +1,17 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
+import { errorManagement } from '@/client/js/module/errorManagement';
 import roundEndBetMoveEnd from '@/client/js/views/game/indianPocker/fns/common/roundEndBetMoveEnd.js';
 import roundEndBetEnemyMoveXY from '@/client/js/views/game/indianPocker/fns/common/roundEndBetEnemyMoveXY.js';
 
 export default (_removeCoins) => {
   return new Promise((resolve, reject) => {
     if (_removeCoins.rc < 1) return resolve(_removeCoins);
+
     const BET_COIN = window.sessionStorage.betCoin;
     const BET_COIN_ARR = JSON.parse(BET_COIN);
     const BET_COINS = document.querySelector('.bet-coins');
     const BET_COINS_LI = BET_COINS.querySelectorAll('li');
-    if (BET_COIN_ARR.length !== BET_COINS_LI.length) return errorComn();
+    if (BET_COIN_ARR.length !== BET_COINS_LI.length) return errorManagement({ errCase: 'errorComn' });
     let aniTime = Number(1000 / _removeCoins.rc);
     let enemyX = 0;
     let enemyY = 0;

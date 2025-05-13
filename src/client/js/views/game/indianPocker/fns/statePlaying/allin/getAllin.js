@@ -27,6 +27,7 @@ export const GET_ALLIN = {
           // PLAYER 올인을 받고 ENEMY 올인 함
           RULES.CALL();
         } else {
+          // 상대의 올인을 받고 상대 코인 시간 stop 하고, 내 코인시간 start 해야 됨
           // 상대의 첫 올인을 받음
           const COINS_ENEMY = document.querySelector('.coins-enemy');
           COINS_ENEMY.classList.remove('active');

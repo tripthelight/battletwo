@@ -1,4 +1,5 @@
 import { timeInterval_1 } from '@/client/js/functions/variable';
+import { errorManagement } from '@/client/js/module/errorManagement';
 import { SET_BASIC_BETTING } from '@/client/js/views/game/indianPocker/fns/stateBasicBetting/setBasicBetting';
 import extraBettingCheck from '@/client/js/views/game/indianPocker/fns/common/extraBettingCheck';
 
@@ -9,7 +10,7 @@ export default () => {
     } else if (window.sessionStorage.betState === 'extraBetting') {
       setTimeout(extraBettingCheck, timeInterval_1);
     } else {
-      return errorComn();
+      return errorManagement({ errCase: 'errorComn' });
     }
   }, timeInterval_1);
 };

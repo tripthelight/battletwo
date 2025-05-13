@@ -1,9 +1,9 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { getStyle } from '@/client/js/functions/comnExport';
-// import { allInintrtval } from '@/client/js/views/game/indianPocker/fns/common/variable.js';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock.js';
+import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 
 export default (_coins, _coinsRes, _coinsDelete) => {
   return new Promise((resolve, reject) => {
@@ -74,13 +74,16 @@ export default (_coins, _coinsRes, _coinsDelete) => {
         liEl.appendChild(minuteEl);
         liEl.appendChild(hourEl);
         posClock(hourEl, minuteEl);
+        animateClock(hourEl, minuteEl, true);
         liEl.style.transform = 'translate(' + liX + 'px, ' + liY + 'px)';
         BET_COINS.appendChild(liEl);
+
         const POS_DATA = {
           host: 'player',
           translateX: liX,
           translateY: liY,
         };
+
         let betCoinPos = window.sessionStorage.betCoinPos;
         let betCoinPosArr = JSON.parse(betCoinPos);
         betCoinPosArr.push(POS_DATA);

@@ -3,6 +3,7 @@ import INDIANPOCKER_RULES from '@/client/js/views/game/indianPocker/fns/rules/ru
 import PlayerBlockMoveBattingZone from '@/client/js/views/game/indianPocker/fns/common/PlayerBlockMoveBattingZone.js';
 import BattingZoneMovePlayerBlock from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMovePlayerBlock.js';
 import BettingZoneMoveAllin from '@/client/js/views/game/indianPocker/fns/common/BettingZoneMoveAllin.js';
+import BattingZoneMoveAllinTime from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMoveAllinTime';
 import { RULES } from '@/client/js/views/game/indianPocker/fns/rule/rules.js';
 import SOCKET_EVENT from '@/client/js/communication/indianPocker/batting/battingEvent';
 
@@ -17,21 +18,23 @@ export default () => {
     // console.log("PLAYER의 올인 모션 끝 :: ", _resultCoins);
     BattingZoneMovePlayerBlock(_resultCoins).then((_aiCoins) => {
       BettingZoneMoveAllin(_aiCoins).then((_aiCoinsRes) => {
-        const COINS_PLAYER_RES = window.sessionStorage.coinsPlayer;
-        const CP_RES = Number(COINS_PLAYER_RES) - _aiCoinsRes.ep + _aiCoinsRes.rc;
-        const COINS_PLAYER_BET_RES = window.sessionStorage.coinsPlayerBet;
-        const CPB_RES = COINS_PLAYER_BET_RES && Number(COINS_PLAYER_BET_RES) > 0 ? Number(COINS_PLAYER_BET_RES) : 0;
-        storageMethod('s', 'SET_ITEM', 'coinsPlayer', Number(CP_RES));
-        storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', Number(CPB_RES) + _aiCoinsRes.ep - _aiCoinsRes.rc);
-        // storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', '_aiCoinsRes.epeb');
-        storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', _aiCoinsRes.epeb);
-        if (Number(window.sessionStorage.coinsPlayerBet) === Number(window.sessionStorage.coinsEnemyBet)) {
-          // ENEMY 올인을 받고, PLAYER도 올인
-          RULES.CALL();
-        } else {
-          // PLAYER의 첫 올인
-          SOCKET_EVENT.SET.ALL_IN();
-        }
+        BattingZoneMoveAllinTime(_aiCoinsRes).then((_aiCoinsRes) => {
+          const COINS_PLAYER_RES = window.sessionStorage.coinsPlayer;
+          const CP_RES = Number(COINS_PLAYER_RES) - _aiCoinsRes.ep + _aiCoinsRes.rc;
+          const COINS_PLAYER_BET_RES = window.sessionStorage.coinsPlayerBet;
+          const CPB_RES = COINS_PLAYER_BET_RES && Number(COINS_PLAYER_BET_RES) > 0 ? Number(COINS_PLAYER_BET_RES) : 0;
+          storageMethod('s', 'SET_ITEM', 'coinsPlayer', Number(CP_RES));
+          storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', Number(CPB_RES) + _aiCoinsRes.ep - _aiCoinsRes.rc);
+          // storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', '_aiCoinsRes.epeb');
+          storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', _aiCoinsRes.epeb);
+          if (Number(window.sessionStorage.coinsPlayerBet) === Number(window.sessionStorage.coinsEnemyBet)) {
+            // ENEMY 올인을 받고, PLAYER도 올인
+            RULES.CALL();
+          } else {
+            // PLAYER의 첫 올인
+            SOCKET_EVENT.SET.ALL_IN();
+          }
+        });
       });
     });
   });
