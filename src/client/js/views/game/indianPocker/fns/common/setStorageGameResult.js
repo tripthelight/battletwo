@@ -1,3 +1,5 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
+
 /**
  * 게임 결과 저장
  * @param {string} _gameName    : 지금 방금 한 게임 이름

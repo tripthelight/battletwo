@@ -23,7 +23,8 @@ export default () => {
         const CPB_RES = COINS_PLAYER_BET_RES && Number(COINS_PLAYER_BET_RES) > 0 ? Number(COINS_PLAYER_BET_RES) : 0;
         storageMethod('s', 'SET_ITEM', 'coinsPlayer', Number(CP_RES));
         storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', Number(CPB_RES) + _aiCoinsRes.ep - _aiCoinsRes.rc);
-        storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', '_aiCoinsRes.epeb');
+        // storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', '_aiCoinsRes.epeb');
+        storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', _aiCoinsRes.epeb);
         if (Number(window.sessionStorage.coinsPlayerBet) === Number(window.sessionStorage.coinsEnemyBet)) {
           // ENEMY 올인을 받고, PLAYER도 올인
           RULES.CALL();

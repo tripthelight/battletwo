@@ -27,6 +27,7 @@ export default (_data) => {
   setTimeout(() => {
     // player 코인을 지우기 전 시간 deg 저장 array 변수 선언
     let timeDegArr = [];
+
     for (let i = 0; i < COINS.length; i++) {
       if (i === _data.index) {
       } else {

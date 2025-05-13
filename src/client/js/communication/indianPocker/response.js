@@ -13,29 +13,37 @@ import drewRefreshReturnResult from '@/client/js/communication/indianPocker/fns/
 
 import { responsetBatting as indianPockerBattingResponse } from '@/client/js/communication/indianPocker/batting/responsetBatting';
 
+import { errorManagement } from '@/client/js/module/errorManagement';
+import { RESPONSE_HANDLERS } from '@/client/js/communication/indianPocker/responseHandlers';
+
 export function response() {
   const dataChannel = window.rtcChannels.dataChannel;
 
   if (dataChannel) {
     dataChannel.onmessage = (event) => {
       const message = JSON.parse(event.data);
+      const handler = RESPONSE_HANDLERS[message.type];
 
+      if (handler) {
+        handler(message);
+      } else {
+        errorManagement({ errCase: 'errorComn', message: message.type + ' : Undefined message type' });
+      }
+
+      /*
       switch (message.type) {
         case 'remoteReload':
           remoteReload(message.value);
           break;
-
         case 'choiceFirst':
           enemyFirstChoice(message.num);
           break;
         case 'choiceDrewCard':
           enemyChoiceCardReady(message.value);
           break;
-
         case 'nextStep':
           nextStepResult(message.value);
           break;
-
         case 'basicBetting':
           const params = {
             state: message.state,
@@ -65,11 +73,11 @@ export function response() {
           drewRefreshReturnResult(message.value);
           break;
         default:
+          // Betting 관련 메시지는 분리된 핸들러 함수에서 처리
+          indianPockerBattingResponse(message);
           break;
       }
-
-      // Betting 관련 메시지는 분리된 핸들러 함수에서 처리
-      indianPockerBattingResponse(message);
+      */
     };
   }
 }

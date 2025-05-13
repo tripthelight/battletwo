@@ -1,5 +1,4 @@
 import { errorManagement } from '@/client/js/module/errorManagement';
-// import { mTargetIdx, mtX, mtY, selectX, selectY } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import touchCoinState from '@/client/js/views/game/indianPocker/fns/common/touchCoinState';
 

@@ -1,5 +1,4 @@
 import { errorManagement } from '@/client/js/module/errorManagement';
-// import { mTargetIdx } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
 
 export default (event) => {

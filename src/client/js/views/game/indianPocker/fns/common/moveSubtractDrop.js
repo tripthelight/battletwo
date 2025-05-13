@@ -1,9 +1,10 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import deviceStateStore from '@/client/store/deviceStateStore';
 import { timeInterval_1 } from '@/client/js/functions/variable';
-// import { mTargetIdx } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
+import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
+import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState';
 import moveCoins from '@/client/js/views/game/indianPocker/fns/common/moveCoins';
 
@@ -30,12 +31,29 @@ export default (event) => {
 
   if (!BET_COINS_LI[reactiveState.mTargetIdx]) return;
   BET_COINS_LI[reactiveState.mTargetIdx].remove();
+  // LI : betting-zone에 넣었다 player-block으로 뺀 코인
   const LI = document.createElement('li');
   const deviceState = deviceStateStore.getState().deviceStateState.deviceState;
   if (deviceState == 'pc') LI.setAttribute('draggable', true);
 
   const COINS_PLAYER = document.querySelector('.coins-player');
   if (!COINS_PLAYER) return errorManagement({ errCase: 'errorComn', message: '.coins-player 엘리먼트를 찾을 수 없습니다.' });
+
+  // S: betting-zone에서  player-block으로 뺀 코인에 시계 그리기
+  const hasH = LI.querySelector('.h');
+  const hasM = LI.querySelector('.m');
+  if (!hasH && !hasM) {
+    let minuteEl = document.createElement('span');
+    let hourEl = document.createElement('span');
+    minuteEl.classList.add('m');
+    hourEl.classList.add('h');
+    LI.appendChild(minuteEl);
+    LI.appendChild(hourEl);
+    posClock(hourEl, minuteEl);
+    animateClock(hourEl, minuteEl, false);
+  }
+  // E: betting-zone에서  player-block으로 뺀 코인에 시계 그리기
+
   COINS_PLAYER.appendChild(LI);
   LI.style.animationDelay = COINS_PLAYER.length * 0.1 + 's';
 

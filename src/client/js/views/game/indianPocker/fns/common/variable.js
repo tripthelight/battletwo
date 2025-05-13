@@ -34,11 +34,13 @@ const state = {
   selectX: 0,
   selectY: 0,
   comnArray: [],
+  allInintrtval: 1000,
+  cardLen: 20,
 };
 
 export const reactiveState = new Proxy(state, {
   set(target, key, value) {
-    console.log(`${String(key)}가 ${target[key]} → ${value}로 변경됨`);
+    // console.log(`${String(key)}가 ${target[key]} → ${value}로 변경됨`);
     target[key] = value;
     return true;
   },

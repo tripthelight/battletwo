@@ -7,11 +7,12 @@ import { GET_CALL } from '@/client/js/views/game/indianPocker/fns/statePlaying/c
 import { GET_RAISE } from '@/client/js/views/game/indianPocker/fns/statePlaying/raise/getRaise';
 import { GET_FOLD } from '@/client/js/views/game/indianPocker/fns/statePlaying/fold/getFold';
 import { requestBatting } from '@/client/js/communication/indianPocker/batting/requestBatting';
+import { request } from '@/client/js/communication/indianPocker/request';
 
 export default {
   SET: {
     FIRST_EXT_BET: () => {
-      requestBatting('firstExtBet', {
+      request('firstExtBet', {
         coinCount: Number(window.sessionStorage.coinsPlayer),
         coinBet: Number(window.sessionStorage.coinsPlayerBet),
         extBet: Number(window.sessionStorage.coinsPlayerExtBet),
@@ -20,28 +21,32 @@ export default {
       // storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 0);
     },
     ALL_IN: () => {
-      requestBatting('allInBet', {
+      console.log('coinCount >>>>>>>> ', window.sessionStorage.coinsPlayer);
+      console.log('coinBet >>>>>>>> ', window.sessionStorage.coinsPlayerBet);
+      console.log('extBet >>>>>>>> ', window.sessionStorage.coinsPlayerExtBet);
+
+      request('allInBet', {
         coinCount: Number(window.sessionStorage.coinsPlayer),
         coinBet: Number(window.sessionStorage.coinsPlayerBet),
         extBet: Number(window.sessionStorage.coinsPlayerExtBet),
       });
     },
     CALL: () => {
-      requestBatting('call', {
+      request('call', {
         coinCount: Number(window.sessionStorage.coinsPlayer),
         coinBet: Number(window.sessionStorage.coinsPlayerBet),
         extBet: Number(window.sessionStorage.coinsPlayerExtBet),
       });
     },
     RAISE: () => {
-      requestBatting('raise', {
+      request('raise', {
         coinCount: Number(window.sessionStorage.coinsPlayer),
         coinBet: Number(window.sessionStorage.coinsPlayerBet),
         extBet: Number(window.sessionStorage.coinsPlayerExtBet),
       });
     },
     FOLD: (_penalty) => {
-      requestBatting('foldSend', {
+      request('foldSend', {
         penalty: Number(_penalty) === 10 ? true : false,
       });
     },
@@ -66,6 +71,8 @@ export default {
       });
       promise
         .then((_data) => {
+          console.log('all in data >>>>>>>>> ', _data);
+
           GET_ALLIN.receiveAllinBet(_data);
         })
         .catch((error) => {

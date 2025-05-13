@@ -1,8 +1,9 @@
 import { timeInterval_1000 } from '@/client/js/functions/variable';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorManagement';
-import createBattleCardNum from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/createBattleCardNum';
 import { request } from '@/client/js/communication/indianPocker/request';
 import { RF_END_DREW } from '@/client/js/refresh/indianpoker/refreshPlaying/refreshRoundEndDrew/refreshDrewInit';
+import createBattleCardNum from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/createBattleCardNum';
 
 export default (_data) => {
   const PROMISE = new Promise((resolve, reject) => {

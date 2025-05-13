@@ -1,7 +1,8 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { getStyle } from '@/client/js/functions/comnExport';
-import { allInintrtval } from '@/client/js/views/game/indianPocker/fns/common/variable.js';
+// import { allInintrtval } from '@/client/js/views/game/indianPocker/fns/common/variable.js';
+import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock.js';
 
 export default (_coins, _coinsRes, _coinsDelete) => {
@@ -19,7 +20,7 @@ export default (_coins, _coinsRes, _coinsDelete) => {
     const BBT = getStyle(BETTING_ZONE, 'border-top-width');
     const CW = COINS_PLAYER_LI.length > 0 ? COINS_PLAYER_LI[0].clientWidth : 0;
     const CY = COINS_PLAYER_LI.length > 0 ? COINS_PLAYER_LI[0].clientHeight : 0;
-    let aniTime = Number(allInintrtval / _coins);
+    let aniTime = Number(reactiveState.allInintrtval / _coins);
     let x = 0;
     let y = 0;
     let xMin = 0;

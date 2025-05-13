@@ -1,6 +1,25 @@
+import { REQUEST_HANDLERS, REQUEST_BATTING_HANDLERS } from '@/client/js/communication/indianPocker/requestHandlers';
+import { errorManagement } from '@/client/js/module/errorManagement';
+
 export function request(k, v) {
   const onDataChannel = window.rtcChannels.onDataChannel;
+  if (!onDataChannel || onDataChannel.readyState !== 'open') return;
 
+  const ALL_TEMPLATES = {
+    ...REQUEST_HANDLERS,
+    ...REQUEST_BATTING_HANDLERS,
+  };
+
+  const templateFn = ALL_TEMPLATES[k];
+
+  if (templateFn) {
+    const message = templateFn(v);
+    onDataChannel.send(JSON.stringify(message));
+  } else {
+    errorManagement({ errCase: 'errorComn', message: k + ' : Undefined message type' });
+  }
+
+  /*
   if (onDataChannel && onDataChannel.readyState === 'open') {
     switch (k) {
       case 'choiceFirst':
@@ -97,4 +116,5 @@ export function request(k, v) {
         break;
     }
   }
+  */
 }

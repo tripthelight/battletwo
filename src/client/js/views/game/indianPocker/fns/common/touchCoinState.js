@@ -1,4 +1,3 @@
-// import { mTargetIdx } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
 
 export default (e) => {

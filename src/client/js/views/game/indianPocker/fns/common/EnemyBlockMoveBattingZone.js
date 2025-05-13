@@ -1,10 +1,12 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { getStyle } from '@/client/js/functions/comnExport';
-import { allInintrtval } from '@/client/js/views/game/indianPocker/fns/common/variable.js';
+import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import { timeInterval_201 } from '@/client/js/functions/variable.js';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import randomNumberMinMax from '@/client/js/views/game/indianPocker/fns/common/randomNumberMinMax.js';
 import getTranslateMH from '@/client/js/views/game/indianPocker/fns/common/getTranslateMH.js';
+import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
+import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 
 export default (_case) => {
   const BETTING_ZONE = document.querySelector('.betting-zone');
@@ -23,7 +25,7 @@ export default (_case) => {
       if (!BET_COINS) return errorManagement({ errCase: 'errorComn', message: '.enemy-block에서 .betting-zone으로 칩을 옯길 때 .bet-coins 엘리먼트가 없습니다' });
       const MOVE_COINS_LEN = Number(COINS_ENEMY_EXT_BET) > 0 ? Number(COINS_ENEMY_EXT_BET) : 0;
       const BBT = getStyle(BETTING_ZONE, 'border-top-width');
-      let aniTime = Number(MOVE_COINS_LEN) > 0 ? Number(allInintrtval / MOVE_COINS_LEN) : 0;
+      let aniTime = Number(MOVE_COINS_LEN) > 0 ? Number(reactiveState.allInintrtval / MOVE_COINS_LEN) : 0;
       let x = 0;
       let y = 0;
       let moveCoin;
@@ -57,15 +59,31 @@ export default (_case) => {
       }
 
       setTimeout(() => {
+        let minuteEl = new Object();
+        let hourEl = new Object();
+
         for (let i = 0; i < MOVE_COINS_LEN; i++) {
+          console.log('상대의 all in 칩을 내 배팅존에 그림 >>>>>>>> ');
+
           const ENEMY_COIN_APPEND = ENEMY_BLOCK.querySelector('.coins-enemy');
           const COINS_APPEND = ENEMY_COIN_APPEND.querySelectorAll('li');
           moveCoin = COINS_APPEND[COINS_APPEND.length - 1];
           liX = moveCoin.offsetLeft + moveArr[liIdx].x;
           liY = moveCoin.offsetTop + moveArr[liIdx].y - ENEMY_COIN_WRAP.clientHeight - BBT;
           liEl = document.createElement('li');
+
+          minuteEl = document.createElement('span');
+          hourEl = document.createElement('span');
+          minuteEl.classList.add('m');
+          hourEl.classList.add('h');
+          liEl.appendChild(minuteEl);
+          liEl.appendChild(hourEl);
+          posClock(hourEl, minuteEl);
+          animateClock(hourEl, minuteEl, false);
+
           liEl.style.transform = 'translate(' + liX + 'px, ' + liY + 'px)';
           liEl.classList.add('e');
+
           BET_COINS.appendChild(liEl);
           const POS_DATA = {
             host: 'enemy',
