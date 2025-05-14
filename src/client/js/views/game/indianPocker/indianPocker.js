@@ -47,7 +47,26 @@ document.onreadystatechange = async () => {
             indianPockerGameState.basicBet();
             break;
           case 'playing':
-            indianPockerGameState.playing();
+            const FOLD_STATE = window.sessionStorage.foldState;
+            if (FOLD_STATE) {
+              // 이전 판에서 FOLD animation 실행중 일 때 새로고침 한 경우
+              if (FOLD_STATE === 'true') {
+                // FOLD를 실행한 PLAYER
+                const FOLD_USER = window.sessionStorage.foldUser;
+
+                if (FOLD_USER) {
+                  if (FOLD_USER === 'true') {
+                    // FOLD를 실행한 PLAY가 새고로침
+                    indianPockerGameState.basicBet('foldLocal');
+                  } else if (FOLD_USER === 'false') {
+                    // FOLD를 받은 PLAY가 새고로침
+                    indianPockerGameState.basicBet('foldRemote');
+                  }
+                }
+              }
+            } else {
+              indianPockerGameState.playing();
+            }
             break;
           case 'gameOver':
             indianPockerGameState.gameOver();

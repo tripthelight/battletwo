@@ -115,5 +115,17 @@ export default {
           return errorManagement({ errCase: 'errorComn' });
         });
     },
+    FOLD_ENEMY: (_data) => {
+      let promise = new Promise((resolve, reject) => {
+        resolve(_data);
+      });
+      promise
+        .then((_data) => {
+          GET_FOLD.sendFoldData(_data);
+        })
+        .catch((error) => {
+          return errorManagement({ errCase: 'errorComn' });
+        });
+    },
   },
 };

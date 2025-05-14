@@ -34,4 +34,5 @@ export const RESPONSE_HANDLERS = {
   call: (msg) => SOCKET_EVENT.GET.CALL_RESULT(msg),
   raise: (msg) => SOCKET_EVENT.GET.RAISE_RESULT(msg),
   foldSend: (msg) => SOCKET_EVENT.GET.FOLD_RESULT(msg),
+  enemyFold: (msg) => SOCKET_EVENT.GET.FOLD_ENEMY(msg),
 };

@@ -1,10 +1,19 @@
 import { timeInterval_1, timeInterval_2 } from '@/client/js/functions/variable';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { STATE_PLAYING } from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/init';
 import REFRESH_STATE_PLAYING from '@/client/js/refresh/indianpoker/refreshPlaying/refreshInit';
 import reload from '@/client/js/module/reload';
 
 export default () => {
+  // 이전 게임에서 FOLD 한 경우 playing 새로 진입 시 모두 제거
+  storageMethod('s', 'REMOVE_ITEM', 'coinsEnemyLocalFold');
+  storageMethod('s', 'REMOVE_ITEM', 'coinsPlayerLocalFold');
+  storageMethod('s', 'REMOVE_ITEM', 'coinsEnemyRemoteFold');
+  storageMethod('s', 'REMOVE_ITEM', 'coinsPlayerRemoteFold');
+  storageMethod('s', 'REMOVE_ITEM', 'foldUser');
+  storageMethod('s', 'REMOVE_ITEM', 'foldState');
+
   setTimeout(() => {
     const BET_RESULTING = window.sessionStorage.betResulting;
     if (BET_RESULTING && BET_RESULTING === 'true') {

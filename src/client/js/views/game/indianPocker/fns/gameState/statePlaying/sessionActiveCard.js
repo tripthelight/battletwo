@@ -7,7 +7,7 @@ import drawPlayerCard from '@/client/js/views/game/indianPocker/fns/gameState/st
 
 export default (_host, _num) => {
   const PROMISE = new Promise((resolve, reject) => {
-    console.log('여기를 중복으로 타냐?? >>>>>> ');
+    console.log('여기를 중복으로 타냐?? >>>>>> ', _host);
     setTimeout(() => {
       let activeCard = {
         host: _host,

@@ -20,4 +20,5 @@ export const REQUEST_BATTING_HANDLERS = {
   call: (v) => ({ type: 'call', ...v }),
   raise: (v) => ({ type: 'raise', ...v }),
   foldSend: (v) => ({ type: 'foldSend', ...v }),
+  enemyFold: (v) => ({ type: 'enemyFold', ...v }),
 };

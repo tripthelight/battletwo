@@ -12,9 +12,9 @@ export default {
     storageMethod('s', 'SET_ITEM', 'gameState', 'choiceCard');
     gameStateChoiceCard();
   },
-  basicBet: () => {
+  basicBet: (reloadState) => {
     storageMethod('s', 'SET_ITEM', 'gameState', 'basicBet');
-    gameStateBasicBet();
+    gameStateBasicBet(reloadState);
   },
   playing: () => {
     storageMethod('s', 'SET_ITEM', 'gameState', 'playing');

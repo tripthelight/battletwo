@@ -86,4 +86,10 @@ export const GET_FOLD = {
       }, timeInterval_1);
     }, timeInterval_1);
   },
+  sendFoldData: (_data) => {
+    storageMethod('s', 'SET_ITEM', 'foldState', true);
+    storageMethod('s', 'SET_ITEM', 'foldUser', false);
+    storageMethod('s', 'SET_ITEM', 'coinsEnemyRemoteFold', _data.coinsEnemyRemoteFold);
+    storageMethod('s', 'SET_ITEM', 'coinsPlayerRemoteFold', _data.coinsPlayerRemoteFold);
+  },
 };

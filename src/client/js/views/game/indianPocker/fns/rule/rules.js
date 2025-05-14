@@ -9,6 +9,7 @@ import SOCKET_EVENT from '@/client/js/communication/indianPocker/batting/batting
 import { GET_ROUND_END } from '@/client/js/views/game/indianPocker/fns/statePlaying/roundEnd/getRoundEnd';
 import { SET_FOLD } from '@/client/js/views/game/indianPocker/fns/statePlaying/fold/setFold';
 import stopPlayerTime from '@/client/js/views/game/indianPocker/fns/common/stopPlayerTime';
+import foldPreCalculation from '@/client/js/views/game/indianPocker/fns/common/foldPreCalculation';
 
 export const RULES = {
   COMN: (_state) => {
@@ -35,8 +36,9 @@ export const RULES = {
     SOCKET_EVENT.SET.RAISE();
   },
   FOLD: () => {
-    RULES.COMN(comnText.fold);
     const P_NUM_RES = playerNumRes();
+    foldPreCalculation(P_NUM_RES);
+    RULES.COMN(comnText.fold);
     SET_FOLD.setFold(P_NUM_RES);
     SOCKET_EVENT.SET.FOLD(P_NUM_RES);
   },
