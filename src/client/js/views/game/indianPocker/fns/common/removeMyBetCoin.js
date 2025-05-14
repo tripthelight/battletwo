@@ -67,6 +67,7 @@ export default (_data) => {
           posClock(hourEl, minuteEl);
         }
       }
+
       PLAYER_COIN_UL.appendChild(liEl);
     }
 

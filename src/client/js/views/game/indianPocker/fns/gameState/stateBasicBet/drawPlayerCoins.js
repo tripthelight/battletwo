@@ -11,6 +11,7 @@ import { errorManagement } from '@/client/js/module/errorManagement';
 import removeUserCoins from '@/client/js/views/game/indianPocker/fns/common/removeUserCoins';
 
 export default () => {
+  // 기본 배팅 후 여기를 탐
   if (gameResultCheck()) return gameEnd();
   // element | seeeion 체크
   const COINS_PLAYER = document.querySelector('.coins-player');
@@ -49,6 +50,7 @@ export default () => {
       BASIC_BETTING_RES ? posClock(hourEl, minuteEl) : animateClock(hourEl, minuteEl, false);
     }
     PLAYER_BLOCK.appendChild(elem);
+
     // 다음 함수 실행
     // 둘 중의 한명의 칩 개수가 0개면 game over
     if (gameResultCheck()) return gameEnd();

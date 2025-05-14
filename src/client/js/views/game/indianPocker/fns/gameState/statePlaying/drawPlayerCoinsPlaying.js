@@ -41,6 +41,7 @@ export default () => {
       BET_STATE ? animateClock(hourEl, minuteEl, false) : posClock(hourEl, minuteEl);
     }
     PLAYER_BLOCK.appendChild(elem);
+
     // 다음 함수 실행
     setTimeout(refreshFindEnemyCardNumber, timeInterval_1);
   }, timeInterval_1);

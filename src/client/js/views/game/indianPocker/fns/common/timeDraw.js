@@ -12,23 +12,32 @@ import timeDrawBettingZone from '@/client/js/views/game/indianPocker/fns/common/
 export default (_state, _playerCoins, _enemyCoins) => {
   const PLAYER_COINS = _playerCoins.querySelectorAll('li');
   const ENEMY_COINS = _enemyCoins.querySelectorAll('li');
+
+  // .enemy-block or .player-block 에 코인이 없더라도 게임 진행을 해야하기 때문에 주석처리
+  /*
   if (!PLAYER_COINS || PLAYER_COINS.length < 1) return;
   if (!ENEMY_COINS || ENEMY_COINS.length < 1) return;
+  */
+
   let liEl = new Object();
   let minuteEl = new Object();
   let hourEl = new Object();
 
-  for (let i = 0; i < PLAYER_COINS.length; i++) {
-    liEl = PLAYER_COINS[i];
-    minuteEl = liEl.querySelector('span.m');
-    hourEl = liEl.querySelector('span.h');
-    _state ? animateClock(hourEl, minuteEl, false) : posClock(hourEl, minuteEl);
+  if (PLAYER_COINS && PLAYER_COINS.length > 0) {
+    for (let i = 0; i < PLAYER_COINS.length; i++) {
+      liEl = PLAYER_COINS[i];
+      minuteEl = liEl.querySelector('span.m');
+      hourEl = liEl.querySelector('span.h');
+      _state ? animateClock(hourEl, minuteEl, false) : posClock(hourEl, minuteEl);
+    }
   }
-  for (let i = 0; i < ENEMY_COINS.length; i++) {
-    liEl = ENEMY_COINS[i];
-    minuteEl = liEl.querySelector('span.m');
-    hourEl = liEl.querySelector('span.h');
-    _state ? posClock(hourEl, minuteEl) : animateClock(hourEl, minuteEl, false);
+  if (ENEMY_COINS && ENEMY_COINS.length > 0) {
+    for (let i = 0; i < ENEMY_COINS.length; i++) {
+      liEl = ENEMY_COINS[i];
+      minuteEl = liEl.querySelector('span.m');
+      hourEl = liEl.querySelector('span.h');
+      _state ? posClock(hourEl, minuteEl) : animateClock(hourEl, minuteEl, false);
+    }
   }
 
   // betting zone check

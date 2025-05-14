@@ -1,6 +1,7 @@
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { timeInterval_1, timeInterval_200 } from '@/client/js/functions/variable';
 import { comnText } from '@/client/js/functions/language';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import BOTTOM_BUTTONS from '@/client/js/views/game/indianPocker/fns/common/components/bottomButtons';
 import INDIANPOCKER_SESSION from '@/client/js/views/game/indianPocker/fns/rule/indianpockerSession';
 import { ELEMENT } from '@/client/js/views/game/indianPocker/fns/rule/element';
@@ -130,7 +131,5 @@ export const BTN_STATE = {
         }
       }
     }
-
-    // 상대가 배팅할 코인이 없을 경우 player-block의 coins 들은 disabled 되어야 함
   },
 };

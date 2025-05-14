@@ -1,6 +1,7 @@
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import pcDraggableCheck from '@/client/js/views/game/indianPocker/fns/common/pcDraggableCheck';
 import coinsActiveAni from '@/client/js/views/game/indianPocker/fns/common/coinsActiveAni';
+import lastBettingCheck from '@/client/js/views/game/indianPocker/fns/common/lastBettingCheck';
 import addEventsMoveCoin from '@/client/js/views/game/indianPocker/fns/common/addEventsMoveCoin';
 
 export default () => {
@@ -12,6 +13,7 @@ export default () => {
     COINS.classList.remove('disabled');
     pcDraggableCheck('coins-player', true);
     coinsActiveAni();
+    lastBettingCheck();
     let moveCoins = COINS.querySelectorAll('li');
     [].forEach.call(moveCoins, (item) => {
       addEventsMoveCoin(item);

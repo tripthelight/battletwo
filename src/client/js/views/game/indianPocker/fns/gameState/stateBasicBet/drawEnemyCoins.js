@@ -33,6 +33,7 @@ export default () => {
     elem.classList.add('coins');
     elem.classList.add('coins-enemy');
     let coinCount = Number(window.sessionStorage.coinsEnemy);
+
     for (let i = 0; i < coinCount; i++) {
       liEl = document.createElement('li');
       minuteEl = document.createElement('span');
