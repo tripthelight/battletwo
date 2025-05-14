@@ -1,4 +1,5 @@
 import { timeInterval_1 } from '@/client/js/functions/variable';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import EnemyBlockMoveBattingZone from '@/client/js/views/game/indianPocker/fns/common/EnemyBlockMoveBattingZone.js';
 import saveBetCoinSession from '@/client/js/views/game/indianPocker/fns/common/saveBetCoinSession';
@@ -15,16 +16,16 @@ export const GET_BASIC_BETTING = {
         if (_data.state) return _data;
       })
       .then((_data) => {
-        window.sessionStorage.setItem('coinsEnemy', _data.coinCount);
+        storageMethod('s', 'SET_ITEM', 'coinsEnemy', _data.coinCount);
         return _data;
       })
       .then((_data) => {
         let enemyBetCoin = window.sessionStorage.coinsEnemyBet;
         if (!enemyBetCoin) {
-          window.sessionStorage.setItem('coinsEnemyBet', 1);
+          storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', 1);
         } else {
           enemyBetCoin = Number(window.sessionStorage.coinsEnemyBet) + 1;
-          window.sessionStorage.setItem('coinsEnemyBet', enemyBetCoin);
+          storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', enemyBetCoin);
         }
         return _data;
       })

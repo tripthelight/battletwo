@@ -32,6 +32,7 @@ import SVG_BACK from '@/client/assets/images/svg/indian_poker/indian_poker_card/
 import setSessionDelete
 import storageMethod from '@/client/js/module/storage/storageMethod';
 storageMethod('s', 'REMOVE_ARR', '', '', D_ARR);
+storageMethod('s', 'SET_ITEM', '', );
 
 
 

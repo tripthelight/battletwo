@@ -20,17 +20,12 @@ export const SET_BASIC_BETTING = {
     }
   },
   basicBetCheck: () => {
-    console.log('여기까지는 타는데..');
-
     const BASIC_BET = window.sessionStorage.betState;
     if (BASIC_BET !== 'basicBetting') return false;
     const PLAY_CHECK = window.sessionStorage.coinsPlayerBet;
     if (!PLAY_CHECK || Number(PLAY_CHECK) !== 1) return false;
     const ENEMY_CHECK = window.sessionStorage.coinsEnemyBet;
     if (!ENEMY_CHECK || Number(ENEMY_CHECK) !== 1) return false;
-
-    console.log('여기를 안타는 듯....');
-
     setTimeout(STATE_BASIC_BET.nextStep, timeInterval_1);
   },
   enemyBetStateCheck: () => {

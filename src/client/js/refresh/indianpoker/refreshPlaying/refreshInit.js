@@ -1,5 +1,6 @@
 import { GET_ROUND_END } from '@/client/js/views/game/indianPocker/fns/statePlaying/roundEnd/getRoundEnd';
 import { request } from '@/client/js/communication/indianPocker/request';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { STATE_PLAYING } from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/init';
 import refreshDrawDrew from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/refreshDrawDrew';
 import refreshDrewFlipCard from '@/client/js/refresh/indianpoker/refreshPlaying/refreshDrewFlipCard/refreshDrewFlipCard';
@@ -29,30 +30,30 @@ export default {
           const COINS_ENEMY = Number(window.sessionStorage.coinsEnemy);
           const RES = Number(coinsEnemyBet) + Number(coinsPlayerBet);
           const C_RES = RESULT ? COINS_PLAYER + RES : COINS_ENEMY + RES;
-          window.sessionStorage.setItem(RESULT ? 'coinsPlayer' : 'coinsEnemy', Number(C_RES));
+          storageMethod('s', 'SET_ITEM', RESULT ? 'coinsPlayer' : 'coinsEnemy', Number(C_RES));
         }
 
-        window.sessionStorage.setItem('betUser', RESULT);
-        window.sessionStorage.setItem('basicBettingState', false);
-        window.sessionStorage.setItem('extFirstBet', false);
-        window.sessionStorage.setItem('coinsPlayerBet', 0);
-        window.sessionStorage.setItem('coinsEnemyBet', 0);
-        window.sessionStorage.setItem('coinsPlayerExtBet', 0);
-        window.sessionStorage.setItem('coinsEnemyBet', 0);
-        window.sessionStorage.setItem('betCoinPos', '');
-        window.sessionStorage.setItem('battleCardNum', '');
-        window.sessionStorage.setItem('betCoin', '');
+        storageMethod('s', 'SET_ITEM', 'betUser', RESULT);
+        storageMethod('s', 'SET_ITEM', 'basicBettingState', false);
+        storageMethod('s', 'SET_ITEM', 'extFirstBet', false);
+        storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', 0);
+        storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', 0);
+        storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 0);
+        storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', 0);
+        storageMethod('s', 'SET_ITEM', 'betCoinPos', '');
+        storageMethod('s', 'SET_ITEM', 'battleCardNum', '');
+        storageMethod('s', 'SET_ITEM', 'betCoin', '');
 
         GET_ROUND_END.goNextRound(RESULT ? 'win' : 'lose');
       } else if (Number(P_NUM) === Number(E_NUM)) {
-        // window.sessionStorage.removeItem("drewReady");
-        window.sessionStorage.setItem('roundEndReload', true);
-        window.sessionStorage.setItem('drewReady', true);
-        window.sessionStorage.setItem('betUser', window.sessionStorage.betUserFirst);
-        window.sessionStorage.setItem('drewState', true);
-        window.sessionStorage.setItem('roundEnd', false);
-        window.sessionStorage.setItem('extFirstBet', false);
-        window.sessionStorage.setItem('battleCardNum', '');
+        // storageMethod('s', 'REMOVE_ITEM', 'drewReady');
+        storageMethod('s', 'SET_ITEM', 'roundEndReload', true);
+        storageMethod('s', 'SET_ITEM', 'drewReady', true);
+        storageMethod('s', 'SET_ITEM', 'betUser', window.sessionStorage.betUserFirst);
+        storageMethod('s', 'SET_ITEM', 'drewState', true);
+        storageMethod('s', 'SET_ITEM', 'roundEnd', false);
+        storageMethod('s', 'SET_ITEM', 'extFirstBet', false);
+        storageMethod('s', 'SET_ITEM', 'battleCardNum', '');
         request('drewRefresh', true);
 
         // GET_ROUND_END.goNextRound("drew");
