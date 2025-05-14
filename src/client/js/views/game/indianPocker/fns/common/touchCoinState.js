@@ -1,9 +1,9 @@
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
 
-export default (e) => {
-  const BET_COINS = Array.from(e.closest('ul').children);
+export default (dragCoin) => {
+  const BET_COINS = Array.from(dragCoin.closest('ul').children);
   if (!BET_COINS) return false;
-  reactiveState.mTargetIdx = BET_COINS.indexOf(e);
+  reactiveState.mTargetIdx = BET_COINS.indexOf(dragCoin);
   const COIN_BET = window.sessionStorage.betCoin;
   if (!COIN_BET) return false;
   const COIN_BET_ARR = JSON.parse(COIN_BET);

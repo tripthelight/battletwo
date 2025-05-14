@@ -1,12 +1,11 @@
 import { errorManagement } from '@/client/js/module/errorManagement';
-// import { mmX, mmY, selectX, selectY, mtX, mtY } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import touchCoinState from '@/client/js/views/game/indianPocker/fns/common/touchCoinState';
 
 export default (e) => {
   if (!touchCoinState(e.target)) return;
-  reactiveState.mmX = -(reactiveState.selectX - e.targetTouches[0].clientX) + mtX;
-  reactiveState.mmY = -(reactiveState.selectY - e.targetTouches[0].clientY) + mtY;
+  reactiveState.mmX = -(reactiveState.selectX - e.targetTouches[0].clientX) + reactiveState.mtX;
+  reactiveState.mmY = -(reactiveState.selectY - e.targetTouches[0].clientY) + reactiveState.mtY;
   e.target.style.zIndex = '3000';
   e.target.style.transform = 'translate(' + reactiveState.mmX + 'px, ' + reactiveState.mmY + 'px)';
   const BETTING_ZONE = document.querySelector('.betting-zone');

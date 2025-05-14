@@ -1,5 +1,4 @@
 import { timeInterval_1 } from '@/client/js/functions/variable';
-// import { selectX, selectY } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import betCoinEndComn from '@/client/js/views/game/indianPocker/fns/common/betCoinEndComn';
 
@@ -13,6 +12,6 @@ export default (e) => {
     BETTING_ZONE.classList.remove('over');
     setTimeout(betCoinEndComn, timeInterval_1, e);
   } else {
-    e.target.style.transform = 'translate(' + selectX + 'px, ' + selectY + 'px)';
+    e.target.style.transform = 'translate(' + reactiveState.selectX + 'px, ' + reactiveState.selectY + 'px)';
   }
 };

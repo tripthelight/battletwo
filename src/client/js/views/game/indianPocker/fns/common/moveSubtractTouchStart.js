@@ -8,9 +8,11 @@ export default (e) => {
   if (!BET_COIN_POS) return;
   const BET_COIN_ARR = JSON.parse(BET_COIN_POS);
   if (!BET_COIN_ARR || BET_COIN_ARR.length <= 0) return;
+
   const BET_COINS = Array.from(e.target.closest('ul').children);
   if (!BET_COINS) return errorManagement({ errCase: 'errorComn' });
   reactiveState.mTargetIdx = BET_COINS.indexOf(e.target);
+
   reactiveState.mtX = BET_COIN_ARR[reactiveState.mTargetIdx].translateX;
   reactiveState.mtY = BET_COIN_ARR[reactiveState.mTargetIdx].translateY;
   reactiveState.selectX = e.targetTouches[0].clientX;

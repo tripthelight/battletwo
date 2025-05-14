@@ -1,9 +1,10 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import deviceStateStore from '@/client/store/deviceStateStore';
 import { timeInterval_1 } from '@/client/js/functions/variable';
-import { errorManagement } from '@/client/js/module/errorManagement';
-// import { mTargetIdx, mmX, mmY, mtX, mtY, selectX, selectY } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
+import { errorManagement } from '@/client/js/module/errorManagement';
+import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
+import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState';
 import touchCoinState from '@/client/js/views/game/indianPocker/fns/common/touchCoinState';
 import moveCoins from '@/client/js/views/game/indianPocker/fns/common/moveCoins';
@@ -45,6 +46,22 @@ export default (e) => {
   const LI = document.createElement('li');
   const deviceState = deviceStateStore.getState().deviceStateState.deviceState;
   if (deviceState == 'pc') LI.setAttribute('draggable', true);
+
+  // S: betting-zone에서  player-block으로 뺀 코인에 시계 그리기
+  const hasH = LI.querySelector('.h');
+  const hasM = LI.querySelector('.m');
+  if (!hasH && !hasM) {
+    let minuteEl = document.createElement('span');
+    let hourEl = document.createElement('span');
+    minuteEl.classList.add('m');
+    hourEl.classList.add('h');
+    LI.appendChild(minuteEl);
+    LI.appendChild(hourEl);
+    posClock(hourEl, minuteEl);
+    animateClock(hourEl, minuteEl, false);
+  }
+  // E: betting-zone에서  player-block으로 뺀 코인에 시계 그리기
+
   COINS_PLAYER.appendChild(LI);
   LI.style.animationDelay = COINS_PLAYER.length * 0.1 + 's';
 
@@ -57,6 +74,8 @@ export default (e) => {
   if (!PLAYER_COINS_BET) return errorManagement({ errCase: 'errorComn', message: 'coinsPlayerBet 세션을 찾을 수 없습니다.' });
   const PLAYER_COINS_BET_NUM = Number(PLAYER_COINS_BET);
   storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', PLAYER_COINS_BET_NUM - 1);
+
+  console.log('모바일 칩빼기 >>>>>>>>>>> ');
 
   if (window.sessionStorage.betState === 'extraBetting') {
     if (window.sessionStorage.coinsPlayerExtBet) {

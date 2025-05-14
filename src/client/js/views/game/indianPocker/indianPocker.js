@@ -9,6 +9,8 @@ import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import makeCard from '@/client/js/views/game/indianPocker/fns/common/makeCard/makeCard';
 
 import STATE_CHOICE_CARD from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/init';
+import STATE_BASIC_BET from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/init';
+import { STATE_PLAYING } from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/init';
 
 // onMounted
 document.onreadystatechange = async () => {
@@ -37,13 +39,18 @@ document.onreadystatechange = async () => {
           case 'waitEnemy':
             // choiceCard
             indianPockerGameState.choiceCard();
-            STATE_CHOICE_CARD.main();
             break;
           case 'choiceCard':
-            STATE_CHOICE_CARD.main();
+            indianPockerGameState.choiceCard();
             break;
           case 'basicBet':
-            //
+            indianPockerGameState.basicBet();
+            break;
+          case 'playing':
+            indianPockerGameState.playing();
+            break;
+          case 'gameOver':
+            indianPockerGameState.gameOver();
             break;
           default:
             break;
@@ -51,10 +58,7 @@ document.onreadystatechange = async () => {
       } else {
         // choiceCard
         indianPockerGameState.choiceCard();
-        STATE_CHOICE_CARD.main();
       }
-
-      // LOADING_EVENT.hide();
     } catch (error) {
       errorManagement(error);
     }

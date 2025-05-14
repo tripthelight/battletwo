@@ -15,10 +15,10 @@
     cursor: default;
     display: inline-block;
     z-index: 4;
-    &[draggable="false"] {
+    &[draggable='false'] {
       cursor: default;
     }
-    &[draggable="true"] {
+    &[draggable='true'] {
       cursor: move;
     }
     // clock type
@@ -51,6 +51,7 @@
     background-color: #000;
     border: 4px solid #000;
     span {
+      pointer-events: none;
       background-color: #fff;
     }
     &.e {
