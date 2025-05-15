@@ -2,6 +2,7 @@
   position: fixed;
   left: 50%;
   /* bottom: -100%; */
+  width: 80%;
   max-width: calc(100vw - 40px);
   display: inline-flex;
   align-items: center;
@@ -30,11 +31,11 @@
   }
   span {
     flex-grow: 1;
-    width: max-content;
+    width: 100%;
     font-size: 16px;
     color: #fff;
     color: var(--bottomSheetColor);
-    font-family: "NanumBarunGothic", "Malgun Gothic", "dotum", sans-serif;
+    font-family: 'NanumBarunGothic', 'Malgun Gothic', 'dotum', sans-serif;
     font-weight: 400;
     text-align: left;
     word-break: keep-all;

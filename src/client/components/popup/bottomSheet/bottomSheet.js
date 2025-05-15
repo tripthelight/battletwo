@@ -9,8 +9,6 @@ import deviceStateStore from '@/client/store/deviceStateStore.js';
  */
 export const bottomSheet = {
   show: (_txt, _delay) => {
-    console.log('내 카드가 10인데 FOLD 일 경우 bottomsheet 노출');
-
     // console.log('bottomSheet show :: ');
     setTimeout(bottomSheetDraw, 1, _txt, _delay);
   },

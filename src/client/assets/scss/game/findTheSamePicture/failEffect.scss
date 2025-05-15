@@ -6,6 +6,7 @@
   top: 0;
   width: 100vw;
   height: 100vh;
+  height: calc(var(--app-height, 1vh) * 100);
   background: radial-gradient(circle, rgba(255, 0, 0, 0) 80%, rgb(255, 0, 0) 100%);
   @include anim.animation(selectCardFailEffect, 0.6s, 1);
 }

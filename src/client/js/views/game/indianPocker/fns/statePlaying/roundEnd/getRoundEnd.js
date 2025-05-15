@@ -201,21 +201,29 @@ export const GET_ROUND_END = {
     }
   },
   goNextRound: (_result) => {
-    let encryptCardNumbers = new Promise((resolve, reject) => {
+    const encryptCardNumbers = new Promise((resolve, reject) => {
+      console.log('1 ************* ', _result);
+
       if (window.sessionStorage.cardNum && JSON.parse(window.sessionStorage.cardNum).length > 0) {
+        console.log('2 ************* ');
         if (_result === 'drew') return STATE_PLAYING.drew();
         if (_result !== 'drew') return indianPockerGameState.basicBet();
       } else {
         setTimeout(() => {
+          console.log('3 ************* ');
           resolve(encryptCardNumber());
         }, timeInterval_1);
       }
     });
     encryptCardNumbers
       .then((numArr) => {
-        storageMethod('s', 'SET_ITEM', 'cardNum', JSON.stringify(numArr));
-        if (_result === 'drew') STATE_PLAYING.drew();
-        if (_result !== 'drew') indianPockerGameState.basicBet();
+        console.log('4 ************* ');
+        if (numArr) {
+          console.log('5 ************* ');
+          storageMethod('s', 'SET_ITEM', 'cardNum', JSON.stringify(numArr));
+          if (_result === 'drew') STATE_PLAYING.drew();
+          if (_result !== 'drew') indianPockerGameState.basicBet();
+        }
       })
       .catch((err) => {
         errorManagement({ errCase: 'errorComn' });

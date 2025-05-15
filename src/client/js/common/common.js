@@ -10,5 +10,7 @@ import '@/client/js/common/resize';
 
 clearStorage(window.location.pathname);
 // storageEvent();
-setInnerHeight();
+// setInnerHeight();
 deviceCheck();
+
+window.addEventListener('load', setInnerHeight);

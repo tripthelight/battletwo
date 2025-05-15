@@ -58,10 +58,12 @@ export default function webRTC(gameName) {
     async function initConnect(channelName) {
       try {
         peerConnection = new RTCPeerConnection(servers);
+        dataChannel = peerConnection.createDataChannel(channelName);
+        window.rtcChannels.dataChannel = dataChannel;
+
         peerConnection.ondatachannel = (event) => {
           onDataChannel = event.channel;
           window.rtcChannels.onDataChannel = onDataChannel;
-
           // 내 nickName 상대방에게 전송
           if (onDataChannel && onDataChannel.readyState === 'open') {
             const sharedParams = {
@@ -135,8 +137,8 @@ export default function webRTC(gameName) {
         };
 
         // dataChannel = peerConnection.createDataChannel('sendChannel');
-        dataChannel = peerConnection.createDataChannel(channelName);
-        window.rtcChannels.dataChannel = dataChannel;
+        // dataChannel = peerConnection.createDataChannel(channelName);
+        // window.rtcChannels.dataChannel = dataChannel;
 
         dataChannel.onopen = () => {
           // console.log("dataChannel is onopen!");

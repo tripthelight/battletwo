@@ -10,7 +10,7 @@ import { request } from '@/client/js/communication/indianPocker/request';
  * FOLD를 실행한 USER만 data가 생성
  * 내가 새로고침 했는지 상대에게 알려야함 - 상대도 동시에 새고고침 할 수 있음
  */
-export default (_num) => {
+export default (myCardNum) => {
   // FOLD 상태 저장
   storageMethod('s', 'SET_ITEM', 'foldState', true);
 
@@ -48,10 +48,10 @@ export default (_num) => {
   };
 
   firstCalc();
-  if (_num === 10) penaltyCalc();
+  if (myCardNum === 10) penaltyCalc();
 
   request('enemyFold', {
-    coinsEnemyRemoteFold: window.sessionStorage.coinsEnemyLocalFold,
-    coinsPlayerRemoteFold: window.sessionStorage.coinsPlayerLocalFold,
+    coinsEnemyRemoteFold: window.sessionStorage.coinsPlayerLocalFold,
+    coinsPlayerRemoteFold: window.sessionStorage.coinsEnemyLocalFold,
   });
 };

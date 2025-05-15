@@ -14,8 +14,50 @@ import { GET_ROUND_END } from '@/client/js/views/game/indianPocker/fns/statePlay
 import cardHideAnimationComn from '@/client/js/views/game/indianPocker/fns/common/cardHideAnimationComn';
 
 export const SET_FOLD = {
+  foldPenaltySessionModify: (_statePenalty) => {
+    const P_COINS = Number(window.sessionStorage.coinsPlayer);
+    const E_COINS = Number(window.sessionStorage.coinsEnemy);
+    const COINS_ENEMY = document.querySelector('.coins-enemy');
+    if (!COINS_ENEMY) errorManagement({ errCase: 'errorComn', message: 'fold ani 완료 후 .coins-enemy 엘리먼트가 없습니다' });
+    const COINS_PLAYER = document.querySelector('.coins-player');
+    if (!COINS_PLAYER) errorManagement({ errCase: 'errorComn', message: 'fold ani 완료 후 .coins-player 엘리먼트가 없습니다' });
+    const COINS_ENEMY_LI = COINS_ENEMY.querySelectorAll('li');
+    const COINS_PLAYER_LI = COINS_PLAYER.querySelectorAll('li');
+    if (COINS_ENEMY_LI.length > 0) for (let i = 0; i < COINS_ENEMY_LI.length; i++) COINS_ENEMY_LI[i].remove();
+    if (Number(E_COINS) > 0) for (let i = 0; i < Number(E_COINS); i++) COINS_ENEMY.appendChild(document.createElement('li'));
+    if (COINS_PLAYER_LI.length > 0) for (let i = 0; i < COINS_PLAYER_LI.length; i++) COINS_PLAYER_LI[i].remove();
+    if (Number(P_COINS) > 0) for (let i = 0; i < Number(P_COINS); i++) COINS_PLAYER.appendChild(document.createElement('li'));
+    const D_ARR = ['coinsEnemyBet', 'coinsPlayerBet', 'coinsEnemyExtBet', 'coinsPlayerExtBet', 'betCoin', 'betCoinPos', 'extFirstBet', 'drewReady', 'drewState'];
+    storageMethod('s', 'REMOVE_ARR', '', '', D_ARR);
+    pcDraggableCheck('coins-player', false);
+    setTimeout(
+      () => {
+        GET_ROUND_END.getWinnerCoinNext('die');
+        cardHideAnimationComn();
+        setTimeout(GET_ROUND_END.goNextRound, timeInterval_1);
+      },
+      _statePenalty ? timeInterval_1000 : 0,
+    );
+  },
+  roundResultDisplay: () => {
+    const BETTING_ZONE = document.querySelector('.betting-zone');
+    if (!BETTING_ZONE) return errorManagement({ errCase: 'errorComn', message: 'fold 에서 .betting-zone 엘리먼트가 없습니다.' });
+
+    document.documentElement.style.setProperty('--round-result-height', `${BETTING_ZONE.clientHeight}px`);
+
+    let txtArr = ['YOU', 'FOLD', 'NEXT'];
+    let resultEl = document.createElement('div');
+    resultEl.classList.add('round-result');
+    resultEl.innerHTML = txtArr[0];
+    BETTING_ZONE.appendChild(resultEl);
+    setTimeout(resultTxtInnerHtml, timeInterval_1000, resultEl, txtArr, 1);
+    setTimeout(resultTxtInnerHtml, timeInterval_2000, resultEl, txtArr, 2);
+    setTimeout(() => {
+      resultEl.remove();
+    }, timeInterval_3201);
+  },
   setFold: (_num) => {
-    let promise = new Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       resolve(_num);
     });
     promise
@@ -57,47 +99,5 @@ export const SET_FOLD = {
       .catch((error) => {
         return errorManagement({ errCase: 'errorComn' });
       });
-  },
-  roundResultDisplay: () => {
-    const BETTING_ZONE = document.querySelector('.betting-zone');
-    if (!BETTING_ZONE) return errorManagement({ errCase: 'errorComn', message: 'fold 에서 .betting-zone 엘리먼트가 없습니다.' });
-
-    document.documentElement.style.setProperty('--round-result-height', `${BETTING_ZONE.clientHeight}px`);
-
-    let txtArr = ['YOU', 'FOLD', 'NEXT'];
-    let resultEl = document.createElement('div');
-    resultEl.classList.add('round-result');
-    resultEl.innerHTML = txtArr[0];
-    BETTING_ZONE.appendChild(resultEl);
-    setTimeout(resultTxtInnerHtml, timeInterval_1000, resultEl, txtArr, 1);
-    setTimeout(resultTxtInnerHtml, timeInterval_2000, resultEl, txtArr, 2);
-    setTimeout(() => {
-      resultEl.remove();
-    }, timeInterval_3201);
-  },
-  foldPenaltySessionModify: (_statePenalty) => {
-    const P_COINS = Number(window.sessionStorage.coinsPlayer);
-    const E_COINS = Number(window.sessionStorage.coinsEnemy);
-    const COINS_ENEMY = document.querySelector('.coins-enemy');
-    if (!COINS_ENEMY) errorManagement({ errCase: 'errorComn', message: 'fold ani 완료 후 .coins-enemy 엘리먼트가 없습니다' });
-    const COINS_PLAYER = document.querySelector('.coins-player');
-    if (!COINS_PLAYER) errorManagement({ errCase: 'errorComn', message: 'fold ani 완료 후 .coins-player 엘리먼트가 없습니다' });
-    const COINS_ENEMY_LI = COINS_ENEMY.querySelectorAll('li');
-    const COINS_PLAYER_LI = COINS_PLAYER.querySelectorAll('li');
-    if (COINS_ENEMY_LI.length > 0) for (let i = 0; i < COINS_ENEMY_LI.length; i++) COINS_ENEMY_LI[i].remove();
-    if (Number(E_COINS) > 0) for (let i = 0; i < Number(E_COINS); i++) COINS_ENEMY.appendChild(document.createElement('li'));
-    if (COINS_PLAYER_LI.length > 0) for (let i = 0; i < COINS_PLAYER_LI.length; i++) COINS_PLAYER_LI[i].remove();
-    if (Number(P_COINS) > 0) for (let i = 0; i < Number(P_COINS); i++) COINS_PLAYER.appendChild(document.createElement('li'));
-    const D_ARR = ['coinsEnemyBet', 'coinsPlayerBet', 'coinsEnemyExtBet', 'coinsPlayerExtBet', 'betCoin', 'betCoinPos', 'extFirstBet', 'drewReady', 'drewState'];
-    storageMethod('s', 'REMOVE_ARR', '', '', D_ARR);
-    pcDraggableCheck('coins-player', false);
-    setTimeout(
-      () => {
-        GET_ROUND_END.getWinnerCoinNext('die');
-        cardHideAnimationComn();
-        setTimeout(GET_ROUND_END.goNextRound, timeInterval_1);
-      },
-      _statePenalty ? timeInterval_1000 : 0,
-    );
   },
 };

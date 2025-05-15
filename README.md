@@ -85,7 +85,4 @@ battletwo
     - /src/client/js/socket/indianpoker/getSocket.js  
 
 ## 진행상황
-- 폴드한 플레이어가 새로고침 후 바로 상대가 새고로침 하면, 기본배팅 화면이나, 플레잉 화면에서 코인 개수가 에러남
-- 내 카드가 10일 때 FOLD 할 경우 상대에게 10개의 칩을 줄 때, 안내 팝업 필요
-- 모바일에서 확인 필요
-- indianPocker 브라우저 새로고침 테스트 필요
+- PC와 mobile에서 webRTC 연결 안됨

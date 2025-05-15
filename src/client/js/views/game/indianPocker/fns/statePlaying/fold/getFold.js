@@ -76,6 +76,7 @@ export const GET_FOLD = {
   nextRound: () => {
     const D_ARR = ['coinsEnemyBet', 'coinsPlayerBet', 'coinsEnemyExtBet', 'coinsPlayerExtBet', 'betCoin', 'betCoinPos', 'extFirstBet', 'drewReady', 'drewState'];
     storageMethod('s', 'REMOVE_ARR', '', '', D_ARR);
+
     setTimeout(() => {
       cardHideAnimationComn();
       setTimeout(() => {

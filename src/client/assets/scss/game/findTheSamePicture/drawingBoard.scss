@@ -16,6 +16,7 @@ $repeat: 16;
 .drawing-board {
   width: 100vw;
   height: 100vh;
+  height: calc(var(--app-height, 1vh) * 100);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -123,6 +124,7 @@ $repeat: 16;
       perspective: $perspective-h;
       width: 100vh;
       height: 100vh;
+      height: calc(var(--app-height, 1vh) * 100);
       .picture-card {
         flex-basis: $picture-card-size-h;
         width: $picture-card-size-h;
