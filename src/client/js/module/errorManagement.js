@@ -24,6 +24,22 @@ function showErrorNotification(errCase, component, message) {
         // peerConnection / dataChannel error
         errorModal(text.leaveRoom);
         break;
+      case 'candidate':
+        // peerConnection / dataChannel error
+        errorModal(text.leaveRoom);
+        break;
+      case 'peerConnectionEvent':
+        // peerConnection / dataChannel error
+        errorModal(text.leaveRoom);
+        break;
+      case 'dataChannelEvent':
+        // peerConnection / dataChannel error
+        errorModal(text.leaveRoom);
+        break;
+      case 'cecandidateEvent':
+        // peerConnection / dataChannel error
+        errorModal(text.leaveRoom);
+        break;
       case 'messageHandler':
         // socket message error - offer/answer/candidate
         errorModal(text.networkLost);
@@ -63,7 +79,7 @@ function sendErrorLogToServer(errorData) {
  * @param {*} errData
  */
 export function errorManagement(errData) {
-  const { component, event, message, errorDetails = null, errCase } = errData;
+  const { component, event, message, errCase } = errData;
   const errorMessage = `[Error] ${component} - ${event}: ${message}`;
 
   // 1. 콘솔에 오류 출력

@@ -1,9 +1,10 @@
-import taptapGameState from '@/client/js/gameState/taptap';
+import { debug } from '@/client/js/module/debug';
 import webRTC from '@/client/js/webRTC/rtcConn';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import initNickName from '@/client/js/functions/initNickName';
 import waitPeer from '@/client/js/functions/waitPeer';
 import findNickname from '@/client/js/functions/findNickname';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 
 export default async function rtcPeer(gameName) {
   return new Promise(async (resolve, reject) => {
@@ -18,7 +19,7 @@ export default async function rtcPeer(gameName) {
 
     // waitEnemy
     if (!window.sessionStorage.getItem('gameState')) {
-      taptapGameState.waitEnemy();
+      storageMethod('s', 'SET_ITEM', 'gameState', 'waitEnemy');
     }
 
     if (window.sessionStorage.getItem('gameState') === 'waitEnemy') {

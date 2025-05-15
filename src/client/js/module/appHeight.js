@@ -3,5 +3,6 @@ export function setInnerHeight() {
   const { innerHeight } = window;
   // document.documentElement.style.setProperty('--app-height', `${innerHeight}px`);
 
-  document.documentElement.style.setProperty('--app-height', `${innerHeight * 0.01}px`);
+  const height = innerHeight * 0.01;
+  document.documentElement.style.setProperty('--app-height', `${height}px`);
 }

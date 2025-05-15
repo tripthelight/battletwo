@@ -1,5 +1,6 @@
 import '@/client/assets/scss/game/indianPocker/common';
 import '@/client/js/common/common';
+import { debug } from '@/client/js/module/debug';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import rtcPeer from '@/client/js/webRTC/rtcPeer';
 import reload from '@/client/js/module/reload';
@@ -20,6 +21,7 @@ document.onreadystatechange = async () => {
     try {
       console.log('indianPocker init');
       console.log('reload >>> ', reload);
+      // window.rtcChannels = {};
 
       // 카드 우선 생성
       makeCard();

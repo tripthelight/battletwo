@@ -1,3 +1,4 @@
+import { debug } from '@/client/js/module/debug';
 import { storageClear } from '@/client/js/module/storage/storageClear';
 import storageEventStore, { updateStorageEvent } from '@/client/store/storageEvent';
 
@@ -10,6 +11,7 @@ export default function clearStorage(currentUrl) {
     findTheSamePicture: '/game/findTheSamePicture',
   };
   const routeKey = currentUrl.split('/').pop(); // '/game/...' 게임명을 추출
+
   if (ROUTES.hasOwnProperty(routeKey)) return;
   storageClear();
   storageEventStore.dispatch(updateStorageEvent({ value: true }));

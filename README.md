@@ -86,3 +86,4 @@ battletwo
 
 ## 진행상황
 - PC와 mobile에서 webRTC 연결 안됨
+- dataChannel과 onDataChannel의 관계를 알아봐라

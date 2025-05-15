@@ -134,6 +134,12 @@ async function refreshDuringGame(data) {
       if (ROOMS_MAP[socket.gameName].get(roomName) && ROOMS_MAP[socket.gameName].get(roomName).length === 2) {
         const DIFF_SOCKET = ROOMS_MAP[socket.gameName].get(roomName).find((ws) => ws !== socket);
         if (DIFF_SOCKET) {
+          socket.send(
+            JSON.stringify({
+              type: 'entryOrder',
+              roomName: socket.roomName,
+            }),
+          );
           DIFF_SOCKET.send(
             JSON.stringify({
               type: 'entryOrder',
@@ -263,6 +269,9 @@ WSS.on('connection', async (socket) => {
       if (standbyMapState) {
         STANDBY_MAP[socket.gameName].delete(socket.socketId);
       }
+
+      // console.log('ROOMS_MAP', JSON.stringify(ROOMS_MAP, null, 2));
+      // console.log('STANDBY_MAP : ', JSON.stringify(STANDBY_MAP, null, 2));
     });
   });
 });

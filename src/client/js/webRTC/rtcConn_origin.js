@@ -26,11 +26,6 @@ export default function webRTC(gameName) {
     let dataChannel = null;
     let onDataChannel = null;
 
-    window.addEventListener('beforeunload', () => {
-      debug.log('뒤로가기 :::');
-      otherLeavesComn();
-    });
-
     /**
      * functions
      */
@@ -44,30 +39,26 @@ export default function webRTC(gameName) {
         signalingSocket.close(); // WebSocket 연결 닫기
         signalingSocket = null; // 소켓 객체 제거
       }
-      signalingSocket = null;
-      peerConnection = null;
-      dataChannel = null;
-      onDataChannel = null;
-      window.rtcChannels = {};
     }
 
-    function initOnopen() {
+    async function connectEvent() {
       try {
-        signalingSocket.send(
-          JSON.stringify({
-            type: 'entryOrder',
-            gameName: sessionStorage.getItem('gameName'),
-            roomName: sessionStorage.getItem('roomName') ?? null,
-          }),
-        );
-      } catch (error) {
-        // otherLeavesComn();
-        reject({ component: 'signalingSocket', event: 'send', message: 'Failed to send message', errorDetails: error });
-      }
-    }
+        peerConnection.ondatachannel = (event) => {
+          onDataChannel = event.channel;
+          window.rtcChannels.onDataChannel = onDataChannel;
+          // 내 nickName 상대방에게 전송
+          if (onDataChannel && onDataChannel.readyState === 'open') {
+            const sharedParams = {
+              type: 'sharedData',
+              nickname: localStorage.getItem('localPlayer'),
+            };
+            if (reload) {
+              sharedParams.reload = true;
+            }
+            onDataChannel.send(JSON.stringify(sharedParams));
+          }
+        };
 
-    async function cecandidateEvent() {
-      try {
         // ICE 후보를 다른 브라우저로 전송 (같은 방 안에서만 전송)
         function sendCandidate(candidate) {
           debug.log('candidate 보냄 :::');
@@ -80,7 +71,7 @@ export default function webRTC(gameName) {
           );
         }
 
-        peerConnection.onicecandidate = (event) => {
+        peerConnection.onicecandidate = async (event) => {
           if (event.candidate) {
             sendCandidate(event.candidate);
           }
@@ -93,38 +84,10 @@ export default function webRTC(gameName) {
          * gameOver 상태일 경우 상대방이 방을 나갔는지 판단 할 필요 없음
          */
         peerConnection.oniceconnectionstatechange = (event) => {
-          // debug.log('oniceconnectionstatechange :::');
-          // debug.log(peerConnection.iceConnectionState);
-          console.log('oniceconnectionstatechange :::', peerConnection.iceConnectionState);
           // 이 이벤트에서 상대 peer가 방을 나갔을 경우 disconnected는 약 5초 뒤에 발생함
-          const REMOTE_PEER_LEFT = peerConnection && (peerConnection.iceConnectionState === 'disconnected' || peerConnection.iceConnectionState === 'failed') && window.sessionStorage.getItem('gameState') && window.sessionStorage.getItem('gameState') !== 'gameOver';
+          const REMOTE_PEER_LEFT = peerConnection && peerConnection.iceConnectionState === 'disconnected' && window.sessionStorage.getItem('gameState') && window.sessionStorage.getItem('gameState') !== 'gameOver';
           if (REMOTE_PEER_LEFT) {
             errorManagement({ errCase: 'webRTC', component: 'peerConnection', event: 'oniceconnectionstatechange', message: 'ICE connection state is disconnected', errorDetails: event });
-          }
-        };
-      } catch (error) {
-        // otherLeavesComn();
-        reject({ component: 'cecandidateEvent', event: 'catch', message: 'Unexpected error in initConnect', errorDetails: error });
-      }
-    }
-
-    async function connectEvent() {
-      try {
-        peerConnection.ondatachannel = (event) => {
-          // onDataChannel은 상대방이 만든 채널을 내가 받은 것
-          onDataChannel = event.channel;
-          window.rtcChannels.onDataChannel = onDataChannel;
-          // 내 nickName 상대방에게 전송
-          if (onDataChannel && onDataChannel.readyState === 'open') {
-            // request
-            const sharedParams = {
-              type: 'sharedData',
-              nickname: localStorage.getItem('localPlayer'),
-            };
-            if (reload) {
-              sharedParams.reload = true;
-            }
-            onDataChannel.send(JSON.stringify(sharedParams));
           }
         };
 
@@ -156,14 +119,16 @@ export default function webRTC(gameName) {
           console.log('트랙 제거됨:', event);
         };
 
+        // dataChannel = peerConnection.createDataChannel('sendChannel');
+        // dataChannel = peerConnection.createDataChannel(channelName);
+        // window.rtcChannels.dataChannel = dataChannel;
+
         dataChannel.onopen = () => {
-          debug.log('dataChannel is onopen! -------------- ');
-          console.log('dataChannel is onopen! --------------');
+          // console.log("dataChannel is onopen!");
         };
 
         dataChannel.onmessage = (event) => {
           const message = JSON.parse(event.data);
-
           if (message.type === 'sharedData') {
             storageMethod('s', 'SET_ITEM', 'remotePlayer', message.nickname);
             addNickname('remotePlayer');
@@ -186,28 +151,42 @@ export default function webRTC(gameName) {
         };
 
         dataChannel.onclose = () => {
-          // reject({ component: 'dataChannel', event: 'onclose', message: 'DataChannel is closed' });
+          reject({ component: 'dataChannel', event: 'onclose', message: 'DataChannel is closed' });
         };
 
         dataChannel.onerror = (error) => {
           reject({ component: 'dataChannel', event: 'onerror', message: 'DataChannel encountered an error', errorDetails: error });
         };
       } catch (error) {
-        // otherLeavesComn();
+        otherLeavesComn();
         reject({ component: 'initConnect', event: 'catch', message: 'Unexpected error in initConnect', errorDetails: error });
+      }
+    }
+
+    function initOnopen() {
+      try {
+        signalingSocket.send(
+          JSON.stringify({
+            type: 'entryOrder',
+            gameName: sessionStorage.getItem('gameName'),
+            roomName: sessionStorage.getItem('roomName') ?? null,
+          }),
+        );
+      } catch (error) {
+        otherLeavesComn();
+        reject({ component: 'signalingSocket', event: 'send', message: 'Failed to send message', errorDetails: error });
       }
     }
 
     async function initConnect(channelName) {
       try {
         peerConnection = new RTCPeerConnection(servers);
-        // dataChannel은 내가 만든 채널
         dataChannel = peerConnection.createDataChannel(channelName);
         window.rtcChannels.dataChannel = dataChannel;
 
         connectEvent();
       } catch (error) {
-        // otherLeavesComn();
+        otherLeavesComn();
         reject({ component: 'initConnect', event: 'catch', message: 'Unexpected error in initConnect', errorDetails: error });
       }
     }
@@ -228,7 +207,7 @@ export default function webRTC(gameName) {
         debug.log('offer 보냄 :::');
         console.log('offer 보냄');
       } catch (error) {
-        // otherLeavesComn();
+        otherLeavesComn();
         reject({ component: 'peerConnection', event: 'createOffer', message: 'Failed to create or set offer', errorDetails: error });
       }
     }
@@ -236,24 +215,16 @@ export default function webRTC(gameName) {
     async function handleMessage(msgData) {
       try {
         if (msgData.type === 'entryOrder') {
-          // 생성된 roomName 으로 channelName 생성
-          initConnect(`${gameName}-${msgData.roomName}-Channel`);
-          storageMethod('s', 'SET_ITEM', 'roomName', msgData.roomName);
-
-          console.log('msgData.setOffer >>>>>> ', msgData.setOffer);
-
-          // 첫번째 접속자
-          if (!msgData.setOffer) {
-            debug.log('첫번째 접속자');
-            console.log('첫번째 접속자');
+          // 나와 매칭된 user를 sessionStorage에 저장
+          if (msgData.roomName) {
+            storageMethod('s', 'SET_ITEM', 'roomName', msgData.roomName);
+            // 생성된 roomName 으로 channelName 생성
+            initConnect(`${gameName}-${msgData.roomName}-Channel`);
           }
-
-          // 두번째 접속자
           if (msgData.setOffer && msgData.setOffer === 'true') {
-            debug.log('두번째 접속자');
-            console.log('두번째 접속자');
             // 두번째 접속한 사람만 offer를 보내야함
-            createOffer();
+            // throw new Error('catch test error');
+            await createOffer();
           }
         }
 
@@ -261,10 +232,13 @@ export default function webRTC(gameName) {
           debug.log('offer 받음 :::');
           console.log('offer 받음 ::: ', JSON.parse(msgData.data).offer);
           const offer = JSON.parse(msgData.data).offer;
+          // 새로고침 시 여기서 에러남
+          if (!peerConnection) {
+            await initConnect(`${gameName}-${window.sessionStorage.getItem('roomName')}-Channel`);
+          }
           await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
           const answer = await peerConnection.createAnswer();
           await peerConnection.setLocalDescription(answer);
-
           // Answer를 signaling 서버를 통해 첫 번째 사용자에게 전달
           signalingSocket.send(
             JSON.stringify({
@@ -282,8 +256,6 @@ export default function webRTC(gameName) {
           console.log('answer 받음 ::: ', JSON.parse(msgData.data).answer);
           const answer = JSON.parse(msgData.data).answer;
           await peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
-
-          cecandidateEvent();
         }
 
         if (msgData.type === 'candidate') {
@@ -300,7 +272,6 @@ export default function webRTC(gameName) {
             } else {
               if (msgData.msg === 'r2') {
                 // 게임 중 한 명이 나간 상태에서 나머지 한 명이 새로고침
-                // debug.log('방나감 팝업 오픈 :::');
                 errorManagement({ errCase: 'webRTC', component: 'peerConnection' });
                 return;
               }
@@ -312,7 +283,7 @@ export default function webRTC(gameName) {
           return;
         }
       } catch (error) {
-        // otherLeavesComn();
+        otherLeavesComn();
         reject({ component: 'messageHandler', event: 'handleMessage', message: 'Error handling signaling message', errorDetails: error });
       }
     }
@@ -323,28 +294,28 @@ export default function webRTC(gameName) {
     try {
       signalingSocket = new WebSocket(`${process.env.SOCKET_HOST}:${process.env.RTC_PORT}`);
 
-      signalingSocket.onopen = () => {
+      signalingSocket.onopen = async () => {
         initOnopen();
       };
 
-      signalingSocket.onmessage = (message) => {
+      signalingSocket.onmessage = async (message) => {
         const msgData = JSON.parse(message.data);
-        handleMessage(msgData);
+        await handleMessage(msgData);
       };
 
       signalingSocket.onerror = (event) => {
         // WebSocket 연결 오류
-        // otherLeavesComn();
+        otherLeavesComn();
         reject({ component: 'signalingSocket', event: 'onerror', message: 'Signaling socket error occurred', errorDetails: event });
       };
 
       signalingSocket.onclose = (event) => {
         // WebSocket 연결이 닫힘
-        // otherLeavesComn();
+        otherLeavesComn();
         reject({ component: 'signalingSocket', event: 'onclose', message: 'Signaling socket connection closed', errorDetails: event });
       };
     } catch (error) {
-      // otherLeavesComn();
+      otherLeavesComn();
       reject({ ...error, errCase: 'webRTC' });
     }
   });
