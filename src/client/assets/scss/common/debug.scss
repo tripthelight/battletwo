@@ -15,6 +15,16 @@ body {
       font-size: 12px;
       color: #000;
       z-index: 9992;
+
+      .btn-close {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        width: 20px;
+        height: 20px;
+        background-color: #ff0000;
+        z-index: 9993;
+      }
     }
   }
 }

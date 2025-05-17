@@ -85,5 +85,6 @@ battletwo
     - /src/client/js/socket/indianpoker/getSocket.js  
 
 ## 진행상황
-- PC와 mobile에서 webRTC 연결 안됨
-- dataChannel과 onDataChannel의 관계를 알아봐라
+- FIXME: 랜선 PC와 wifi mobile에서 webRTC 연결 안됨
+- 랜선사용자와 모바일LTE 사용자간 연결을 위해 TURN 실서버 반드시 구축해야됨
+- coturn 여러 대 구성 예제나 로드밸런서 설정 예제(Nginx/HAProxy) 확인 필요

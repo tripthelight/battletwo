@@ -19,7 +19,7 @@ import { RESPONSE_HANDLERS } from '@/client/js/communication/indianPocker/respon
 export function response() {
   const dataChannel = window.rtcChannels.dataChannel;
 
-  if (dataChannel) {
+  if (dataChannel && dataChannel.readyState === 'open') {
     dataChannel.onmessage = (event) => {
       const message = JSON.parse(event.data);
       const handler = RESPONSE_HANDLERS[message.type];

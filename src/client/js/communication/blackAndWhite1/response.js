@@ -12,15 +12,8 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 
 export function response() {
   const dataChannel = window.rtcChannels.dataChannel;
-  // 상대방이 새로고침 할 경우, dataChannel이 잠깐 끊기는 이유로 제거
-  /*
-  if (!dataChannel) {
-    errorManagement({ errCase: 'errorComn', message: text.networkLost });
-    return;
-  }
-    */
 
-  if (dataChannel) {
+  if (dataChannel && dataChannel.readyState === 'open') {
     dataChannel.onmessage = (event) => {
       const message = JSON.parse(event.data);
 

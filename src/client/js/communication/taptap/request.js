@@ -2,56 +2,43 @@ import { errorManagement } from '@/client/js/module/errorManagement';
 import { text } from '@/client/js/functions/language';
 
 export function request(k, v) {
-  const onDataChannel = window.rtcChannels.onDataChannel;
+  const dataChannel = window.rtcChannels.dataChannel;
 
-  // 상대방이 새로고침 할 경우, onDataChannel이 잠깐 끊기는 이유로 제거
-  /*
-  if (!onDataChannel) {
-    errorManagement({ errCase: 'errorComn', message: text.networkLost });
-    return;
-  }
-    */
-
-  if (onDataChannel && onDataChannel.readyState === 'open') {
-    switch (k) {
-      case 'tapCount':
-        onDataChannel.send(
-          JSON.stringify({
-            type: 'enemyCount',
-            count: v,
-          }),
-        );
-        break;
-      case 'waitCount':
-        onDataChannel.send(
-          JSON.stringify({
-            type: 'enemyWaitCount',
-            count: v,
-          }),
-        );
-        break;
-      case 'tapCountEnd':
-        onDataChannel.send(
-          JSON.stringify({
-            type: 'enemyCountEnd',
-            count: v,
-          }),
-        );
-        break;
-      case 'gameOver':
-        onDataChannel.send(
-          JSON.stringify({
-            type: 'gameOver',
-            count: v,
-          }),
-        );
-        break;
-      default:
-        break;
-    }
-  } else {
-    // 상대방이 새로고침 할 경우, onDataChannel이 잠깐 끊기는 이유로 제거
-    // 상대방이 방을 나감
-    // errorManagement({ component: 'initConnect', event: 'catch', message: 'Unexpected error in initConnect', errorDetails: null, errCase: 'webRTC' });
+  if (!dataChannel || (dataChannel && dataChannel.readyState !== 'open')) return;
+  switch (k) {
+    case 'tapCount':
+      dataChannel.send(
+        JSON.stringify({
+          type: 'enemyCount',
+          count: v,
+        }),
+      );
+      break;
+    case 'waitCount':
+      dataChannel.send(
+        JSON.stringify({
+          type: 'enemyWaitCount',
+          count: v,
+        }),
+      );
+      break;
+    case 'tapCountEnd':
+      dataChannel.send(
+        JSON.stringify({
+          type: 'enemyCountEnd',
+          count: v,
+        }),
+      );
+      break;
+    case 'gameOver':
+      dataChannel.send(
+        JSON.stringify({
+          type: 'gameOver',
+          count: v,
+        }),
+      );
+      break;
+    default:
+      break;
   }
 }

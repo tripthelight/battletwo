@@ -2,8 +2,12 @@ import { REQUEST_HANDLERS, REQUEST_BATTING_HANDLERS } from '@/client/js/communic
 import { errorManagement } from '@/client/js/module/errorManagement';
 
 export function request(k, v) {
-  const onDataChannel = window.rtcChannels.onDataChannel;
-  if (!onDataChannel || onDataChannel.readyState !== 'open') return;
+  // const onDataChannel = window.rtcChannels.onDataChannel;
+  // if (!onDataChannel || onDataChannel.readyState !== 'open') return;
+
+  const dataChannel = window.rtcChannels.dataChannel;
+
+  if (!dataChannel || (dataChannel && dataChannel.readyState !== 'open')) return;
 
   const ALL_TEMPLATES = {
     ...REQUEST_HANDLERS,
@@ -14,7 +18,7 @@ export function request(k, v) {
 
   if (templateFn) {
     const message = templateFn(v);
-    onDataChannel.send(JSON.stringify(message));
+    dataChannel.send(JSON.stringify(message));
   } else {
     errorManagement({ errCase: 'errorComn', message: k + ' : Undefined message type' });
   }
