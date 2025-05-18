@@ -9,9 +9,7 @@ import { errorManagement } from '@/client/js/module/errorManagement';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import makeCard from '@/client/js/views/game/indianPocker/fns/common/makeCard/makeCard';
 
-import STATE_CHOICE_CARD from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/init';
-import STATE_BASIC_BET from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/init';
-import { STATE_PLAYING } from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/init';
+import { BCRYPY_STORAGE } from '@/client/js/module/bcryptStorage';
 
 // onMounted
 document.onreadystatechange = async () => {
@@ -27,6 +25,18 @@ document.onreadystatechange = async () => {
       makeCard();
 
       // gameName을 sessionStorage에 저장
+      const encryptKey = await BCRYPY_STORAGE.encryption(process.env.KEY_GAME_NAME);
+      const encryptValue = await BCRYPY_STORAGE.encryption('indianPocker');
+      storageMethod('s', 'SET_ITEM', encryptKey, encryptValue);
+
+      const decryptKey = await BCRYPY_STORAGE.decryptionKey(process.env.KEY_GAME_NAME);
+      console.log('decryptKey ::::', decryptKey); // $2b$04$anhNEuSKAguuX8vLFJZtqeVALIdVC1YfYCcpYMNCPooGuNxxzjgWm
+      const encryptedValue = sessionStorage.getItem(decryptKey);
+      console.log('encryptedValue ::::', encryptedValue); // $2b$04$xRUvPrCPLYOSJUCKRNsTMu6Y39tJxfogEBm.zUBQ2iA4TXEybyte.
+
+      const decryptValue = await BCRYPY_STORAGE.decryptionVal(encryptedValue, 'GN');
+      console.log('decryptValue :::::: ', decryptValue); // indianPocker
+
       const GAME_NAME = window.sessionStorage.getItem('gameName');
       if (!GAME_NAME || GAME_NAME !== 'indianPocker') {
         storageMethod('s', 'SET_ITEM', 'gameName', 'indianPocker');

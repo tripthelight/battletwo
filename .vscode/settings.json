@@ -23,5 +23,49 @@
   },
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
-  }
+  },
+  "todohighlight.keywords": [
+    {
+      "text": "HACK",
+      "color": "#ffffff",
+      "backgroundColor": "#8BA9F8",
+      "overviewRulerColor": "#8BA9F8"
+    },
+    {
+      "text": "NOTE",
+      "color": "#ffffff",
+      "backgroundColor": "#FF7F00",
+      "overviewRulerColor": "#FF7F00"
+    },
+    {
+      "text": "BUG",
+      "color": "#ffffff",
+      "backgroundColor": "#F44336",
+      "overviewRulerColor": "#F44336"
+    },
+    {
+      "text": "INFO",
+      "color": "#ffffff",
+      "backgroundColor": "#2196F3",
+      "overviewRulerColor": "#2196F3"
+    },
+    {
+      "text": "OPTIMIZE",
+      "color": "#ffffff",
+      "backgroundColor": "#9C27B0",
+      "overviewRulerColor": "#9C27B0"
+    },
+    {
+      "text": "REVIEW",
+      "color": "#FFFFFF",
+      "backgroundColor": "#8AC038",
+      "overviewRulerColor": "#8AC038"
+    },
+    {
+      "text": "TEST",
+      "color": "#ffffff",
+      "backgroundColor": "#ff859b",
+      "overviewRulerColor": "#ff6984"
+    }
+  ]
 }

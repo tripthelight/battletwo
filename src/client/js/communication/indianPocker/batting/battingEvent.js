@@ -62,6 +62,7 @@ export default {
           GET_BETTING.sessionExtraBet(_data);
         })
         .catch((error) => {
+          console.log('error - battingEvent.js - FIRST_EXT_BET_RESULT');
           return errorManagement({ errCase: 'errorComn' });
         });
     },
@@ -76,6 +77,7 @@ export default {
           GET_ALLIN.receiveAllinBet(_data);
         })
         .catch((error) => {
+          console.log('error - battingEvent.js - ALL_IN_BET_RESULT');
           return errorManagement({ errCase: 'errorComn' });
         });
     },
@@ -88,6 +90,7 @@ export default {
           GET_CALL.receiveCallBet(_data);
         })
         .catch((error) => {
+          console.log('error - battingEvent.js - CALL_RESULT');
           return errorManagement({ errCase: 'errorComn' });
         });
     },
@@ -100,6 +103,7 @@ export default {
           GET_RAISE.receiveRaiseBet(_data);
         })
         .catch((error) => {
+          console.log('error - battingEvent.js - RAISE_RESULT');
           return errorManagement({ errCase: 'errorComn' });
         });
     },
@@ -112,6 +116,7 @@ export default {
           GET_FOLD.receivefold(_data);
         })
         .catch((error) => {
+          console.log('error - battingEvent.js - FOLD_RESULT');
           return errorManagement({ errCase: 'errorComn' });
         });
     },
@@ -124,6 +129,7 @@ export default {
           GET_FOLD.sendFoldData(_data);
         })
         .catch((error) => {
+          console.log('error - battingEvent.js - FOLD_ENEMY');
           return errorManagement({ errCase: 'errorComn' });
         });
     },

@@ -4,9 +4,15 @@ import imgGetCardNum from '@/client/js/views/game/indianPocker/fns/common/images
 
 export default (_playerNumRes) => {
   const PLAYER_BLOCK = document.querySelector('.player-block');
-  if (!PLAYER_BLOCK) return errorManagement({ errCase: 'errorComn' });
+  if (!PLAYER_BLOCK) {
+    console.log('error - flipPlayerCard.js - !PLAYER_BLOCK');
+    return errorManagement({ errCase: 'errorComn' });
+  }
   const PLAYER_CARD = PLAYER_BLOCK.querySelector('img.card');
-  if (!PLAYER_CARD) return errorManagement({ errCase: 'errorComn' });
+  if (!PLAYER_CARD) {
+    console.log('error - flipPlayerCard.js - !PLAYER_CARD');
+    return errorManagement({ errCase: 'errorComn' });
+  }
   PLAYER_BLOCK.classList.add('round-end');
   setTimeout(() => {
     // PLAYER_CARD.setAttribute("src", "/images/svg/indian_poker_card/card_" + _playerNumRes + ".svg");

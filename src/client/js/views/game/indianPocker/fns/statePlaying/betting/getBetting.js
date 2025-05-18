@@ -21,6 +21,7 @@ export const GET_BETTING = {
         GET_BETTING.drawExtEnemyBet(_data);
       })
       .catch((error) => {
+        console.log('error GET_BETTING.sessionExtraBet');
         errorManagement({ errCase: 'errorComn' });
       });
   },

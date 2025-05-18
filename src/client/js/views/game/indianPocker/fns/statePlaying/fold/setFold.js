@@ -97,6 +97,7 @@ export const SET_FOLD = {
         });
       })
       .catch((error) => {
+        console.log('error setFold');
         return errorManagement({ errCase: 'errorComn' });
       });
   },

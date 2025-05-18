@@ -10,6 +10,7 @@ export default () => {
     } else if (window.sessionStorage.betState === 'extraBetting') {
       setTimeout(extraBettingCheck, timeInterval_1);
     } else {
+      console.log('error - betStateCheck.js - window.sessionStorage.betState');
       return errorManagement({ errCase: 'errorComn' });
     }
   }, timeInterval_1);

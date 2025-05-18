@@ -36,6 +36,7 @@ export const GET_BASIC_BETTING = {
               resolve();
             })
             .catch((err) => {
+              console.log('error EnemyBlockMoveBattingZone()');
               errorManagement({ errCase: 'errorComn' });
             });
         });
@@ -164,13 +165,16 @@ export const GET_BASIC_BETTING = {
               }
             }, timeInterval_1);
           }).catch((err) => {
+            console.log('error REMOVE_ENEMY_BET_COIN');
             errorManagement({ errCase: 'errorComn' });
           });
         }).catch((err) => {
+          console.log('error ENEMY_MOVE_COIN_INCREASE');
           errorManagement({ errCase: 'errorComn' });
         });
       })
       .catch((err) => {
+        console.log('error receiveBasicBetting');
         errorManagement({ errCase: 'errorComn' });
       });
   },

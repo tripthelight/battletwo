@@ -31,24 +31,39 @@ export const GET_ROUND_END = {
   },
   stopBetUser: () => {
     const PLAYER_BLOCK = document.querySelector('.player-block');
-    if (!PLAYER_BLOCK) return errorManagement({ errCase: 'errorComn' });
+    if (!PLAYER_BLOCK) {
+      console.log('error - getRoundEnd.js - !PLAYER_BLOCK');
+      return errorManagement({ errCase: 'errorComn' });
+    }
     PLAYER_BLOCK.classList.remove('active');
     PLAYER_BLOCK.classList.add('disabled');
     const COINS_PLAYER = PLAYER_BLOCK.querySelector('.coins-player');
-    if (!COINS_PLAYER) return errorManagement({ errCase: 'errorComn' });
+    if (!COINS_PLAYER) {
+      console.log('error - getRoundEnd.js - !COINS_PLAYER');
+      return errorManagement({ errCase: 'errorComn' });
+    }
     COINS_PLAYER.classList.remove('active');
     COINS_PLAYER.classList.add('disabled');
     // disabled enemy block
     const ENEMY_BLOCK = document.querySelector('.enemy-block');
-    if (!ENEMY_BLOCK) return errorManagement({ errCase: 'errorComn' });
+    if (!ENEMY_BLOCK) {
+      console.log('error - getRoundEnd.js - !ENEMY_BLOCK');
+      return errorManagement({ errCase: 'errorComn' });
+    }
     ENEMY_BLOCK.classList.remove('active');
     ENEMY_BLOCK.classList.add('disabled');
     const COINS_ENEMY = ENEMY_BLOCK.querySelector('.coins-enemy');
-    if (!COINS_ENEMY) return errorManagement({ errCase: 'errorComn' });
+    if (!COINS_ENEMY) {
+      console.log('error - getRoundEnd.js - !COINS_ENEMY');
+      return errorManagement({ errCase: 'errorComn' });
+    }
     COINS_ENEMY.classList.remove('active');
     COINS_ENEMY.classList.add('disabled');
     const ENEMY_CARD = ENEMY_BLOCK.querySelector('.enemy-card');
-    if (!ENEMY_CARD) return errorManagement({ errCase: 'errorComn' });
+    if (!ENEMY_CARD) {
+      console.log('error - getRoundEnd.js - !ENEMY_CARD');
+      return errorManagement({ errCase: 'errorComn' });
+    }
     ENEMY_CARD.classList.remove('active');
     ENEMY_CARD.classList.add('disabled');
     // disabled touch move
@@ -67,9 +82,15 @@ export const GET_ROUND_END = {
   },
   cardNumCompare: (_playerNumRes) => {
     const BATTLE_CARD_NUM = window.sessionStorage.battleCardNum;
-    if (!BATTLE_CARD_NUM) return errorManagement({ errCase: 'errorComn' });
+    if (!BATTLE_CARD_NUM) {
+      console.log('error - getRoundEnd.js - !BATTLE_CARD_NUM');
+      return errorManagement({ errCase: 'errorComn' });
+    }
     const BATTLE_CARD_ARR = JSON.parse(BATTLE_CARD_NUM);
-    if (!BATTLE_CARD_ARR || BATTLE_CARD_ARR.length <= 0) return errorManagement({ errCase: 'errorComn' });
+    if (!BATTLE_CARD_ARR || BATTLE_CARD_ARR.length <= 0) {
+      console.log('error - getRoundEnd.js - !BATTLE_CARD_ARR || BATTLE_CARD_ARR.length <= 0');
+      return errorManagement({ errCase: 'errorComn' });
+    }
     let enemyNumRes = playerNum(BATTLE_CARD_ARR, 'enemy');
     let result = '';
     if (Number(_playerNumRes) > Number(enemyNumRes)) {
@@ -85,25 +106,49 @@ export const GET_ROUND_END = {
       storageMethod('s', 'SET_ITEM', 'roundEnd', false);
       storageMethod('s', 'SET_ITEM', 'extFirstBet', false);
     } else {
+      console.log('error - getRoundEnd.js - cardNumCompare !result');
       errorManagement({ errCase: 'errorComn' });
     }
     setTimeout(GET_ROUND_END.savsSessionResult, timeInterval_1, result);
   },
   savsSessionResult: (_result) => {
     const BET_USER = window.sessionStorage.betUser;
-    if (!BET_USER) return errorManagement({ errCase: 'errorComn' });
+    if (!BET_USER) {
+      console.log('error - getRoundEnd.js - !BET_USER');
+      errorManagement({ errCase: 'errorComn' });
+    }
     const COINS_PLAYER = window.sessionStorage.coinsPlayer;
-    if (!COINS_PLAYER) return errorManagement({ errCase: 'errorComn' });
+    if (!COINS_PLAYER) {
+      console.log('error - getRoundEnd.js - !COINS_PLAYER');
+      errorManagement({ errCase: 'errorComn' });
+    }
     const COINS_ENEMY = window.sessionStorage.coinsEnemy;
-    if (!COINS_ENEMY) return errorManagement({ errCase: 'errorComn' });
+    if (!COINS_ENEMY) {
+      console.log('error - getRoundEnd.js - !COINS_ENEMY');
+      errorManagement({ errCase: 'errorComn' });
+    }
     const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet;
-    if (!COINS_PLAYER_BET) return errorManagement({ errCase: 'errorComn' });
+    if (!COINS_PLAYER_BET) {
+      console.log('error - getRoundEnd.js - !COINS_PLAYER_BET');
+      errorManagement({ errCase: 'errorComn' });
+    }
     const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
-    if (!COINS_ENEMY_BET) return errorManagement({ errCase: 'errorComn' });
+    if (!COINS_ENEMY_BET) {
+      console.log('error - getRoundEnd.js - !COINS_ENEMY_BET');
+      errorManagement({ errCase: 'errorComn' });
+    }
+    /*
     const COINS_PLAYER_EXT_BET = window.sessionStorage.coinsPlayerExtBet;
-    if (!COINS_PLAYER_EXT_BET) return errorManagement({ errCase: 'errorComn' });
+    if (!COINS_PLAYER_EXT_BET) {
+      console.log('error - getRoundEnd.js - !COINS_PLAYER_EXT_BET');
+      errorManagement({ errCase: 'errorComn' });
+    }
     const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet;
-    if (!COINS_ENEMY_EXT_BET) return errorManagement({ errCase: 'errorComn' });
+    if (!COINS_ENEMY_EXT_BET) {
+      console.log('error - getRoundEnd.js - !COINS_ENEMY_EXT_BET');
+      errorManagement({ errCase: 'errorComn' });
+    }
+    */
     const PNUM = Number(COINS_PLAYER_BET);
     const ENUM = Number(COINS_ENEMY_BET);
     const RESULT = Number(PNUM) + Number(ENUM);
@@ -125,6 +170,7 @@ export const GET_ROUND_END = {
       case 'drew':
         break;
       default:
+        console.log('error - getRoundEnd.js - savsSessionResult !_result');
         errorManagement({ errCase: 'errorComn' });
         break;
     }
@@ -152,6 +198,7 @@ export const GET_ROUND_END = {
         GET_ROUND_END.getWinnerCoinNext(_result);
         break;
       default:
+        console.log('error - getRoundEnd.js - getWinnerCoin !_result');
         errorManagement({ errCase: 'errorComn' });
         break;
     }
@@ -181,6 +228,7 @@ export const GET_ROUND_END = {
         txtArr = ['WE', 'DREW', 'NEXT'];
         break;
       default:
+        console.log('error - getRoundEnd.js - roundResultDisplay !_result');
         errorManagement({ errCase: 'errorComn' });
         break;
     }
@@ -205,9 +253,11 @@ export const GET_ROUND_END = {
       console.log('1 ************* ', _result);
 
       if (window.sessionStorage.cardNum && JSON.parse(window.sessionStorage.cardNum).length > 0) {
-        console.log('2 ************* ');
+        console.log('2 ************* ', _result);
         if (_result === 'drew') return STATE_PLAYING.drew();
-        if (_result !== 'drew') return indianPockerGameState.basicBet();
+        if (_result !== 'drew') {
+          return indianPockerGameState.basicBet();
+        }
       } else {
         setTimeout(() => {
           console.log('3 ************* ');
@@ -222,10 +272,13 @@ export const GET_ROUND_END = {
           console.log('5 ************* ');
           storageMethod('s', 'SET_ITEM', 'cardNum', JSON.stringify(numArr));
           if (_result === 'drew') STATE_PLAYING.drew();
-          if (_result !== 'drew') indianPockerGameState.basicBet();
+          if (_result !== 'drew') {
+            indianPockerGameState.basicBet();
+          }
         }
       })
       .catch((err) => {
+        console.log('error - getRoundEnd.js - encryptCardNumbers');
         errorManagement({ errCase: 'errorComn' });
       });
   },
@@ -254,6 +307,7 @@ export const GET_ROUND_END = {
     storageMethod('s', 'SET_ITEM', 'betCoin', []);
     storageMethod('s', 'SET_ITEM', 'betCoinPos', []);
     storageMethod('s', 'SET_ITEM', 'basicBettingState', false);
+    storageMethod('s', 'SET_ITEM', 'betState', 'basicBetting');
     setTimeout(GET_ROUND_END.goNextRound, timeInterval_402, _result);
   },
 };

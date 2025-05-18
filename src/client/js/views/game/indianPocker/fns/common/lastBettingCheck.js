@@ -7,13 +7,18 @@ export default () => {
   const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet ?? 0;
   const PLAYER_COINS_BLOCK = document.querySelector('.coins-player');
   const PLAYER_COINS = PLAYER_COINS_BLOCK.querySelectorAll('li');
-
   const C_E_B = Number(COINS_ENEMY_BET);
   const P_E_B = Number(COINS_PLAYER_BET);
 
+  const STATE = BET_USER && BET_USER === 'true' && COINS_ENEMY && Number(COINS_ENEMY) === 0 && C_E_B === P_E_B;
+
+  if (!STATE) return false;
+
+  /*
   if (!BET_USER || (BET_USER && BET_USER === 'false')) return;
   if (!COINS_ENEMY || (COINS_ENEMY && Number(COINS_ENEMY) > 0)) return;
   if (C_E_B !== P_E_B) return;
+  */
 
   // 상대방 추가 배팅 할 코인 없음
   PLAYER_COINS.forEach((liEl) => {
@@ -27,4 +32,6 @@ export default () => {
       spanEl.getAnimations().forEach((animation) => animation.cancel());
     });
   });
+
+  return true;
 };

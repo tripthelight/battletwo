@@ -11,6 +11,7 @@ export default (_data) => {
     })
     .catch((error) => {
       // return errorComn(error);
+      console.log('error - drewReadyCheckResult.js - not drewCardReady');
       return errorManagement({ errCase: 'errorComn' });
     });
 };

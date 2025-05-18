@@ -46,6 +46,7 @@ export const GET_FOLD = {
         });
       })
       .catch((error) => {
+        console.log('error getFold');
         return errorManagement({ errCase: 'errorComn' });
       });
   },

@@ -12,6 +12,7 @@ export const SET_BASIC_BETTING = {
   setBasicBetting: (_event) => {
     storageMethod('s', 'SET_ITEM', 'basicBettingState', true);
     if (window.sessionStorage.basicBettingState === 'true') {
+      if (!_event?.target) return;
       _event.target.classList.add('active');
       setTimeout(() => {
         removeCoinActive();

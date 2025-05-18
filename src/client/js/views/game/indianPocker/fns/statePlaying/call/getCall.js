@@ -25,6 +25,7 @@ export const GET_CALL = {
         GET_CALL.drawCallEnemyBet(_data);
       })
       .catch((error) => {
+        console.log('error setCall');
         return errorManagement({ errCase: 'errorComn' });
       });
   },

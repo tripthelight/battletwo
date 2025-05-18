@@ -15,6 +15,7 @@ export default () => {
       storageMethod('s', 'SET_ITEM', 'cardNum', JSON.stringify(numArr));
     })
     .catch((err) => {
+      console.log('error encryptCardNumbers');
       errorManagement({ errCase: 'errorComn' });
     });
 };

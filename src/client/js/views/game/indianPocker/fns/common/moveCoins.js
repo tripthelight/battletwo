@@ -13,7 +13,11 @@ export default () => {
     COINS.classList.remove('disabled');
     pcDraggableCheck('coins-player', true);
     coinsActiveAni();
-    lastBettingCheck();
+
+    // 상대가 추가배팅할 코인이 없으면 내 코인을 움직여서는 안됨
+    const moveState = lastBettingCheck();
+    if (moveState) return;
+
     let moveCoins = COINS.querySelectorAll('li');
     [].forEach.call(moveCoins, (item) => {
       addEventsMoveCoin(item);

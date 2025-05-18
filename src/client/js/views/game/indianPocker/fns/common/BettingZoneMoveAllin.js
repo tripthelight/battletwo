@@ -11,7 +11,10 @@ export default (_removeCoins) => {
     const BET_COIN_ARR = JSON.parse(BET_COIN);
     const BET_COINS = document.querySelector('.bet-coins');
     const BET_COINS_LI = BET_COINS.querySelectorAll('li');
-    if (BET_COIN_ARR.length !== BET_COINS_LI.length) return errorManagement({ errCase: 'errorComn' });
+    if (BET_COIN_ARR.length !== BET_COINS_LI.length) {
+      console.log('error - BettingZoneMoveAllin.js - BET_COIN_ARR.length !== BET_COINS_LI.length');
+      return errorManagement({ errCase: 'errorComn' });
+    }
     let aniTime = Number(1000 / _removeCoins.rc);
     let enemyX = 0;
     let enemyY = 0;

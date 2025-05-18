@@ -10,6 +10,7 @@ import TerserPlugin from 'terser-webpack-plugin';
 import webpackDevServer from 'webpack-dev-server';
 import multipleHtmlPlugins from './src/client/js/webpack/htmlPage.js';
 import multipleJsPlugins from './src/client/js/webpack/jsPage.js';
+import DefineEnv from './src/client/js/webpack/DefineEnv.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -132,11 +133,7 @@ const webpackConfig = {
       filename: 'css/[name]/[name].css',
       // ignoreOrder: true, // CSS 순서 충돌 경고 무시
     }),
-    new webpack.DefinePlugin({
-      'process.env.SOCKET_HOST': JSON.stringify(process.env.SOCKET_HOST),
-      'process.env.SOCKET_PORT': JSON.stringify(process.env.SOCKET_PORT),
-      'process.env.RTC_PORT': JSON.stringify(process.env.RTC_PORT),
-    }),
+    new webpack.DefinePlugin(DefineEnv),
   ].concat(multipleHtmlPlugins),
   optimization: {
     minimizer: [
