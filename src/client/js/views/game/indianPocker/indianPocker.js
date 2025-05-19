@@ -9,7 +9,7 @@ import { errorManagement } from '@/client/js/module/errorManagement';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import makeCard from '@/client/js/views/game/indianPocker/fns/common/makeCard/makeCard';
 
-import { BCRYPY_STORAGE } from '@/client/js/module/bcryptStorage';
+import { BCRYPT_STORAGE } from '@/client/js/module/bcryptStorage';
 
 // onMounted
 document.onreadystatechange = async () => {
@@ -18,25 +18,61 @@ document.onreadystatechange = async () => {
   } else if (state === 'complete') {
     try {
       console.log('indianPocker init');
-      console.log('reload >>> ', reload);
+      // console.log('reload >>> ', reload);
       // window.rtcChannels = {};
 
       // 카드 우선 생성
       makeCard();
 
-      // gameName을 sessionStorage에 저장
-      const encryptKey = await BCRYPY_STORAGE.encryption(process.env.KEY_GAME_NAME);
-      const encryptValue = await BCRYPY_STORAGE.encryption('indianPocker');
+      // 'GAME_NAME' KEY가 sessionStorage에 있는지 체크
+      const storageGameNameKeyBefore = await BCRYPT_STORAGE.findSessionStorageKey(process.env.KEY_GAME_NAME);
+      console.log('storageGameNameKeyBefore ::: ', storageGameNameKeyBefore);
+
+      // 'GAME_NAME' VALUE가 sessionStorage에 있는지 체크
+      const storageGameNameValBefore = await BCRYPT_STORAGE.findSessionStorageVal(process.env.KEY_GAME_NAME);
+      console.log('storageGameNameValBefore ::: ', storageGameNameValBefore);
+
+      // 'GAME_NAME' KEY 암호화
+      const encryptKeyGameName = await BCRYPT_STORAGE.encryption(process.env.KEY_GAME_NAME);
+      console.log('encryptGameName ::: ', encryptKeyGameName);
+
+      // 'GAME_NAME' 'indianPocker' VALUE 암호화
+      const encryptValGameName = await BCRYPT_STORAGE.encryption('indianPocker');
+      console.log('encryptValGameName ::: ', encryptValGameName);
+
+      // 암호화한 'GAME_NAME' KEY / 'indianPocker' VALUE 를 sessionStorage에 등록
+      storageMethod('s', 'SET_ITEM', encryptKeyGameName, encryptValGameName);
+
+      // 'GAME_NAME' KEY가 sessionStorage에 있는지 다시 체크
+      const storageGameNameDeyAfter = await BCRYPT_STORAGE.findSessionStorageKey(process.env.KEY_GAME_NAME);
+      console.log('storageGameNameDeyAfter ::: ', storageGameNameDeyAfter);
+
+      // 'GAME_NAME' VALUE가 sessionStorage에 있는지 체크
+      const storageGameNameValAfter = await BCRYPT_STORAGE.findSessionStorageVal(process.env.KEY_GAME_NAME);
+      console.log('storageGameNameValAfter ::: ', storageGameNameValAfter);
+
+      // sessionStorage에 있는 'GAME_NAME' KEY가 'indianPocker' 인지 체크
+      const compareKey = await BCRYPT_STORAGE.compareDecryptionKey(window.sessionStorage.getItem(encryptKeyGameName), 'indianPocker');
+      console.log('compareKey ::: ', compareKey);
+
+      // const encryptKey = await BCRYPT_STORAGE.findSessionStorage(process.env.KEY_GAME_NAME);
+      // const compareKey = await BCRYPT_STORAGE.compareDecryptionKey(process.env.KEY_GAME_NAME, encryptKey);
+
+      /*
+      const encryptKey = await BCRYPT_STORAGE.encryption(process.env.KEY_GAME_NAME);
+      const encryptValue = await BCRYPT_STORAGE.encryption('indianPocker');
       storageMethod('s', 'SET_ITEM', encryptKey, encryptValue);
 
-      const decryptKey = await BCRYPY_STORAGE.decryptionKey(process.env.KEY_GAME_NAME);
+      const decryptKey = await BCRYPT_STORAGE.decryptionKey(process.env.KEY_GAME_NAME);
       console.log('decryptKey ::::', decryptKey); // $2b$04$anhNEuSKAguuX8vLFJZtqeVALIdVC1YfYCcpYMNCPooGuNxxzjgWm
       const encryptedValue = sessionStorage.getItem(decryptKey);
       console.log('encryptedValue ::::', encryptedValue); // $2b$04$xRUvPrCPLYOSJUCKRNsTMu6Y39tJxfogEBm.zUBQ2iA4TXEybyte.
 
-      const decryptValue = await BCRYPY_STORAGE.decryptionVal(encryptedValue, 'GN');
+      const decryptValue = await BCRYPT_STORAGE.decryptionVal(encryptedValue, 'GN');
       console.log('decryptValue :::::: ', decryptValue); // indianPocker
+      */
 
+      // gameName을 sessionStorage에 저장
       const GAME_NAME = window.sessionStorage.getItem('gameName');
       if (!GAME_NAME || GAME_NAME !== 'indianPocker') {
         storageMethod('s', 'SET_ITEM', 'gameName', 'indianPocker');
