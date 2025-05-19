@@ -1,3 +1,4 @@
+import gameList from '@/client/js/functions/gameList';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import bcrypt from 'bcryptjs';
 
@@ -10,6 +11,40 @@ async function encryption(_param) {
   const saltRounds = 3;
   const salt = await bcrypt.genSalt(saltRounds);
   return await bcrypt.hash(_param, salt);
+}
+
+/**
+ * 문자열 복호화 함수
+ * @param {string} _decryptStr 비교 대상
+ * @param {string} _encryptStr 암호화된 문자
+ * @returns {boolean} 암호화된 문자와 비교대상이 일치하면 true
+ */
+async function decryption(_decryptStr, _encryptStr) {
+  const match = await bcrypt.compare(_encryptStr, _decryptStr);
+  if (match) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * GAME_NAME 찾는 함수
+ * @param {string} _encryptStr 암호화된 문자
+ * @returns {string|null} 암호화된 문자와 비교대상이 일치하면 true
+ */
+async function decryptionGameName(_encryptStr) {
+  for (const gameName of gameList) {
+    try {
+      const match = await bcrypt.compare(gameName, _encryptStr);
+      if (match) {
+        return gameName; // 일치하는 gameName
+      }
+    } catch (error) {
+      console.error('검증 오류 decryptionGameName :', error);
+      return null;
+    }
+  }
+  return null;
 }
 
 /**
@@ -55,6 +90,28 @@ async function findSessionStorageVal(_envKey) {
 }
 
 /**
+ * 현재 sessionStorage에 파라미터로 받은 _envKey의 value를 리턴
+ * @param {string} _envKey env에 등록한 sessionStorage key name
+ * @returns {string|number|object|null} 일치하는 _envKey키가 있고 키의 value가 있을 경우 value를 리턴
+ */
+async function returnSessionStorageVal(_envKey) {
+  const allKeys = Object.keys(sessionStorage);
+  for (const key of allKeys) {
+    try {
+      const match = await bcrypt.compare(_envKey, key);
+      if (match && window.sessionStorage.getItem(key) !== null) {
+        return window.sessionStorage.getItem(key); // 일치하는 키의 value 를 리턴
+      }
+    } catch (error) {
+      console.error('검증 오류 returnSessionStorageVal :', error);
+      return null;
+    }
+  }
+  // 일치하는 키 없음
+  return null;
+}
+
+/**
  *
  * @param {string} _encryptVal 암호화한 value
  * @param {string} _originVal 비교 대상
@@ -68,11 +125,41 @@ async function compareDecryptionKey(_encryptVal, _originVal) {
   return false;
 }
 
+/**
+ *
+ * @param {string} _originKey 암호화 안된 key
+ * @param {string} _originVal 비교 대상
+ * @returns {boolean} _originKey와 _originVal이 일치하면 true
+ */
+async function compareStorageKeyVal(_originKey, _originVal) {
+  const allKeys = Object.keys(sessionStorage);
+  for (const key of allKeys) {
+    try {
+      const matchKey = await bcrypt.compare(_originKey, key);
+      if (matchKey) {
+        const val = window.sessionStorage.getItem(key);
+        const matchVal = await bcrypt.compare(_originVal, val);
+        if (matchVal) {
+          return true; // 일치하는 key에 일치하는 value 있음
+        }
+      }
+    } catch (error) {
+      console.error('검증 오류 findSessionStorageKey :', error);
+      return false;
+    }
+  }
+  return false;
+}
+
 export const BCRYPT_STORAGE = {
   encryption,
+  decryption,
+  decryptionGameName,
   findSessionStorageKey,
   findSessionStorageVal,
+  returnSessionStorageVal,
   compareDecryptionKey,
+  compareStorageKeyVal,
 };
 
 /*
@@ -172,11 +259,11 @@ export const BCRYPT_STORAGE = {
   },
   // TEST: 암복호화 테스트 코드
   test: async () => {
-    const encryptKey = await BCRYPT_STORAGE.encryption(process.env.KEY_CARD_NUM);
+    const encryptKey = await BCRYPT_STORAGE.encryption(process.env.KEY_INDIAN_POCKER_CARD_NUM);
     const encryptValue = await BCRYPT_STORAGE.encryption('39');
     storageMethod('s', 'SET_ITEM', encryptKey, encryptValue);
 
-    const decryptKey = await BCRYPT_STORAGE.decryptionKey(process.env.KEY_CARD_NUM);
+    const decryptKey = await BCRYPT_STORAGE.decryptionKey(process.env.KEY_INDIAN_POCKER_CARD_NUM);
     console.log('decryptKey >>>>>>>>> ', decryptKey);
 
     const encryptedValue = sessionStorage.getItem(decryptKey);

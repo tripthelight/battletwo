@@ -3,6 +3,7 @@ dotenv.config();
 import Redis from 'ioredis';
 import { v4 as uuidv4 } from 'uuid';
 import { WebSocketServer } from 'ws';
+import { MAKE_STORAGE } from './functions/encryption/makeStorage.js';
 
 // WebSocket 서버 생성
 const PORT = process.env.RTC_PORT || 8081;
@@ -186,13 +187,18 @@ async function handleEntryOrder(data) {
 }
 
 async function offerAnserCandidateDataProcess(resData) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     const { parsedData, socket } = resData;
     if (parsedData && socket) {
       if (socket.gameName && socket.roomName && ROOMS_MAP[socket.gameName] && ROOMS_MAP[socket.gameName].get(socket.roomName) && ROOMS_MAP[socket.gameName].get(socket.roomName).length === 2) {
         const DIFF_SOCKET = ROOMS_MAP[socket.gameName].get(socket.roomName).find((ws) => ws !== socket);
         if (DIFF_SOCKET && DIFF_SOCKET.readyState === WebSocket.OPEN) {
-          DIFF_SOCKET.send(JSON.stringify({ type: parsedData.type, data: parsedData.data }));
+          DIFF_SOCKET.send(
+            JSON.stringify({
+              type: parsedData.type,
+              data: parsedData.data,
+            }),
+          );
         } else {
           reject();
         }
@@ -233,6 +239,20 @@ WSS.on('connection', async (socket) => {
               gameName: parsedData.gameName,
               roomName: parsedData.roomName,
             });
+          }
+
+          if (parsedData.type === 'requestStorage') {
+            console.log('requestStorage 받음 : ', socket.gameName);
+
+            // 각 게임에 필요한 암호화된 sessionStorage 생성
+            const STORAGE_DATA = await MAKE_STORAGE.findGame(socket.gameName);
+
+            socket.send(
+              JSON.stringify({
+                type: 'responseStorage',
+                ...STORAGE_DATA,
+              }),
+            );
           }
 
           if (parsedData.type === 'offer' || parsedData.type === 'answer' || parsedData.type === 'candidate') {

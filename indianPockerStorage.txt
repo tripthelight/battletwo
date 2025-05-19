@@ -1,0 +1,51 @@
+{
+  gameName: 'indianPocker',
+  roomName: '275c828c-c52b-4565-938b-c0b94f0e7d48',
+  gameState: 'waitEnemy', 'choiceCard', 'basicBet', 'playing', 'gameOver'
+
+  remoteReload: 'true'
+  remotePlayer: '62,72,61,76,65',
+  cardNum: [...],
+  enemyCardChoiceReady: 'false',
+  playerFirstNumber: '4',
+  ulIndex: '0',
+  liIndex: '6',
+  enemyFirstNumber: '4',
+  ulIndexEnemy: '0'
+  liIndexEnemy: '4'
+  betUser: 'true',
+  betUserFirst: 'true',
+  myNextStepState: 'true'
+  nextStepChoiceCard: 'true'
+  roundEnd: 'false',
+  betState: 'basicBetting',
+  extFirstBet: 'false'
+  coinsPlayer: '20'
+  coinsEnemy: '20'
+  basicBettingState: 'false'
+  basicBetInfoPopup: 'true'
+  dropState: 'false'
+  betCoin: [{"host":"player","index":7,"translateX":2,"translateY":-68,"offsetLeft":264,"offsetTop":10,"tm":208,"th":81,"betState":"end"}]
+  coinsPlayerBet: '1'
+  betCoinPos: [{"host":"player","translateX":266,"translateY":118}]
+  coinsEnemyBet: '1',
+  battleCardNum: [{"host":"player","num":"$2b$04$sxUNziNCfwi1NX6jDLG0o.60mr126UZlxVS1JGVznbCIFyTyekuDW"},{"host":"enemy","num":"$2b$04$hYVgrJ3Jujit2.3TZ7QHWecsRwMD8zfSwrXhCAcnJCY1Z6qfcbeDS"}]
+  coinsPlayerExtBet: '1'
+  coinsEnemyExtBet: '1'
+  betResulting: 'true'
+  foldState: 'true'
+  foldUser: 'true'
+  coinsEnemyLocalFold: '9'
+  coinsPlayerLocalFold: '1'
+  coinsEnemyRemoteFold: '0'
+  coinsPlayerRemoteFold: '0'
+  drewReady: 'true'
+  drewState: 'true'
+  drewCardReady: 'true'
+  roundEndReload: 'true'
+  basicBetReady: 'true'
+  result: 'true'
+  gameResults: []
+  gameReady: 'true'
+  drewFlipCardMode: 'true'
+}

@@ -24,6 +24,7 @@ document.onreadystatechange = async () => {
       // 카드 우선 생성
       makeCard();
 
+      /*
       // 'GAME_NAME' KEY가 sessionStorage에 있는지 체크
       const storageGameNameKeyBefore = await BCRYPT_STORAGE.findSessionStorageKey(process.env.KEY_GAME_NAME);
       console.log('storageGameNameKeyBefore ::: ', storageGameNameKeyBefore);
@@ -37,7 +38,7 @@ document.onreadystatechange = async () => {
       console.log('encryptGameName ::: ', encryptKeyGameName);
 
       // 'GAME_NAME' 'indianPocker' VALUE 암호화
-      const encryptValGameName = await BCRYPT_STORAGE.encryption('indianPocker');
+      const encryptValGameName = await BCRYPT_STORAGE.encryption(process.env.VAL_INDIAN_POCKER_GAME_NAME);
       console.log('encryptValGameName ::: ', encryptValGameName);
 
       // 암호화한 'GAME_NAME' KEY / 'indianPocker' VALUE 를 sessionStorage에 등록
@@ -52,24 +53,25 @@ document.onreadystatechange = async () => {
       console.log('storageGameNameValAfter ::: ', storageGameNameValAfter);
 
       // sessionStorage에 있는 'GAME_NAME' KEY가 'indianPocker' 인지 체크
-      const compareKey = await BCRYPT_STORAGE.compareDecryptionKey(window.sessionStorage.getItem(encryptKeyGameName), 'indianPocker');
+      const compareKey = await BCRYPT_STORAGE.compareDecryptionKey(window.sessionStorage.getItem(encryptKeyGameName), process.env.VAL_INDIAN_POCKER_GAME_NAME);
       console.log('compareKey ::: ', compareKey);
-
-      // const encryptKey = await BCRYPT_STORAGE.findSessionStorage(process.env.KEY_GAME_NAME);
-      // const compareKey = await BCRYPT_STORAGE.compareDecryptionKey(process.env.KEY_GAME_NAME, encryptKey);
+      */
 
       /*
-      const encryptKey = await BCRYPT_STORAGE.encryption(process.env.KEY_GAME_NAME);
-      const encryptValue = await BCRYPT_STORAGE.encryption('indianPocker');
-      storageMethod('s', 'SET_ITEM', encryptKey, encryptValue);
-
-      const decryptKey = await BCRYPT_STORAGE.decryptionKey(process.env.KEY_GAME_NAME);
-      console.log('decryptKey ::::', decryptKey); // $2b$04$anhNEuSKAguuX8vLFJZtqeVALIdVC1YfYCcpYMNCPooGuNxxzjgWm
-      const encryptedValue = sessionStorage.getItem(decryptKey);
-      console.log('encryptedValue ::::', encryptedValue); // $2b$04$xRUvPrCPLYOSJUCKRNsTMu6Y39tJxfogEBm.zUBQ2iA4TXEybyte.
-
-      const decryptValue = await BCRYPT_STORAGE.decryptionVal(encryptedValue, 'GN');
-      console.log('decryptValue :::::: ', decryptValue); // indianPocker
+      // 'GAME_NAME' key가 sessionStorage에 있는지 체크
+      const storageGameName = await BCRYPT_STORAGE.findSessionStorageKey(process.env.KEY_GAME_NAME);
+      // sessionStorage에 있는 'GAME_NAME' KEY가 'indianPocker' 인지 체크
+      const compareKeyVal = await BCRYPT_STORAGE.compareStorageKeyVal(process.env.KEY_GAME_NAME, process.env.VAL_INDIAN_POCKER_GAME_NAME);
+      // 'GAME_NAME' key가 없거나
+      // 'GAME_NAME' key가 sessionStorage에 있는데 value가 'indianPocker' 가 아닌경우
+      if (!storageGameName || (storageGameName && !compareKeyVal)) {
+        // 'GAME_NAME' KEY 암호화
+        const encryptKeyGameName = await BCRYPT_STORAGE.encryption(process.env.KEY_GAME_NAME);
+        // 'GAME_NAME' 'indianPocker' VALUE 암호화
+        const encryptValGameName = await BCRYPT_STORAGE.encryption(process.env.VAL_INDIAN_POCKER_GAME_NAME);
+        // 암호화한 'GAME_NAME' KEY / 'indianPocker' VALUE 를 sessionStorage에 등록
+        storageMethod('s', 'SET_ITEM', encryptKeyGameName, encryptValGameName);
+      }
       */
 
       // gameName을 sessionStorage에 저장

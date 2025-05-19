@@ -1,4 +1,5 @@
 import { debug } from '@/client/js/module/debug';
+import obfuscationStore, { updateObfuscation } from '@/client/store/ObfuscationStore';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import addNickname from '@/client/js/functions/addNickname';
 import { responseComn } from '@/client/js/communication/responseComn';
@@ -26,10 +27,20 @@ export default function webRTC(gameName) {
     let dataChannel = null;
     let isRemoteDescSet = false;
     const pendingCandidates = [];
+    const STORAGE_DATA = {};
 
     /**
      * functions
      */
+    function insertStorageDate(msgData) {
+      // console.log('msgData >>>>>>>>>> ', msgData);
+      Object.assign(STORAGE_DATA, msgData.storageData);
+      // console.log('STORAGE_DATA >>>>>>> ', STORAGE_DATA);
+      obfuscationStore.dispatch(updateObfuscation({ obfuscation: STORAGE_DATA }));
+      const storeState = obfuscationStore.getState().obfuscationState.obfuscation;
+      console.log('storeState >>>>>>>>> ', storeState);
+    }
+
     function otherLeavesComn() {
       // LOADING_EVENT.show(msg_str('left_user'));
       if (peerConnection) {
@@ -140,6 +151,60 @@ export default function webRTC(gameName) {
       }
     }
 
+    function comnDatachannel() {
+      dataChannel.onopen = () => {
+        debug.log('dataChannel is onopen! -------------- ');
+        console.log('dataChannel is onopen! --------------');
+      };
+
+      dataChannel.onmessage = async (event) => {
+        const message = JSON.parse(event.data);
+
+        if (message.type === 'sharedData' || message.type === 'connectEnd') {
+          storageMethod('s', 'SET_ITEM', 'remotePlayer', message.nickname);
+          addNickname('remotePlayer');
+
+          // 상대방이 새로고침 후 재연결이라면
+          if (message.reload) {
+            storageMethod('s', 'SET_ITEM', 'remoteReload', message.reload.toString());
+          }
+
+          if (message.type === 'sharedData') {
+            const sharedParams = {
+              type: 'connectEnd',
+              nickname: localStorage.getItem('localPlayer'),
+            };
+            if (reload) {
+              sharedParams.reload = true;
+            }
+
+            dataChannel.send(JSON.stringify(sharedParams));
+
+            // dataChannel message 전송
+            await responseComn();
+
+            // 두 peer가 연결이 되어야 resolve 시켜야 함
+            resolve();
+          }
+
+          if (message.type === 'connectEnd') {
+            // dataChannel message 전송
+            await responseComn();
+
+            // 두 peer가 연결이 되어야 resolve 시켜야 함
+            resolve();
+          }
+        }
+      };
+
+      dataChannel.onclose = () => {
+        // reject({ component: 'dataChannel', event: 'onclose', message: 'DataChannel is closed' });
+      };
+
+      dataChannel.onerror = (error) => {
+        reject({ component: 'dataChannel', event: 'onerror', message: 'DataChannel encountered an error', errorDetails: error });
+      };
+    }
     function localDatachannel() {
       comnDatachannel();
     }
@@ -165,57 +230,6 @@ export default function webRTC(gameName) {
         }
       };
     }
-    function comnDatachannel() {
-      dataChannel.onopen = () => {
-        debug.log('dataChannel is onopen! -------------- ');
-        console.log('dataChannel is onopen! --------------');
-      };
-
-      dataChannel.onmessage = (event) => {
-        const message = JSON.parse(event.data);
-
-        if (message.type === 'sharedData' || message.type === 'connectEnd') {
-          storageMethod('s', 'SET_ITEM', 'remotePlayer', message.nickname);
-          addNickname('remotePlayer');
-
-          // 상대방이 새로고침 후 재연결이라면
-          if (message.reload) {
-            storageMethod('s', 'SET_ITEM', 'remoteReload', message.reload.toString());
-          }
-
-          // dataChannel message 전송
-          responseComn();
-
-          if (message.type === 'sharedData') {
-            const sharedParams = {
-              type: 'connectEnd',
-              nickname: localStorage.getItem('localPlayer'),
-            };
-            if (reload) {
-              sharedParams.reload = true;
-            }
-
-            dataChannel.send(JSON.stringify(sharedParams));
-
-            // 두 peer가 연결이 되어야 resolve 시켜야 함
-            resolve();
-          }
-
-          if (message.type === 'connectEnd') {
-            // 두 peer가 연결이 되어야 resolve 시켜야 함
-            resolve();
-          }
-        }
-      };
-
-      dataChannel.onclose = () => {
-        // reject({ component: 'dataChannel', event: 'onclose', message: 'DataChannel is closed' });
-      };
-
-      dataChannel.onerror = (error) => {
-        reject({ component: 'dataChannel', event: 'onerror', message: 'DataChannel encountered an error', errorDetails: error });
-      };
-    }
 
     async function handleMessage(msgData) {
       try {
@@ -224,6 +238,14 @@ export default function webRTC(gameName) {
           const CHANNEL_NAME = `${gameName}-${msgData.roomName}-Channel`;
           storageMethod('s', 'SET_ITEM', 'roomName', msgData.roomName);
           initConnect();
+
+          // debug.log('requestStorage 보냄 :::');
+          // console.log('requestStorage 보냄 ::: ');
+          // signalingSocket.send(
+          //   JSON.stringify({
+          //     type: 'requestStorage',
+          //   }),
+          // );
 
           // 첫번째 접속자
           if (!msgData.setOffer) {
@@ -254,6 +276,7 @@ export default function webRTC(gameName) {
         if (msgData.type === 'offer') {
           debug.log('offer 받음 :::');
           console.log('offer 받음 ::: ', JSON.parse(msgData.data).offer);
+
           const offer = JSON.parse(msgData.data).offer;
           await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
           const answer = await peerConnection.createAnswer();
@@ -274,6 +297,7 @@ export default function webRTC(gameName) {
         if (msgData.type === 'answer') {
           debug.log('answer 받음 :::');
           console.log('answer 받음 ::: ', JSON.parse(msgData.data).answer);
+
           const answer = JSON.parse(msgData.data).answer;
           await peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
           isRemoteDescSet = true;
@@ -291,6 +315,13 @@ export default function webRTC(gameName) {
           } else {
             pendingCandidates.push(candidate);
           }
+        }
+
+        if (msgData.type === 'responseStorage') {
+          debug.log('responseStorage 받음 :::');
+          console.log('responseStorage 받음 ::: ');
+
+          insertStorageDate(msgData);
         }
 
         if (msgData.type === 'otherLeaves') {

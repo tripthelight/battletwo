@@ -1,0 +1,1 @@
+export default [process.env.VAL_TAPTAP_GAME_NAME, process.env.VAL_BLACK_AND_WHITE_1_GAME_NAME, process.env.VAL_INDIAN_POCKER_GAME_NAME, process.env.VAL_FIND_THE_SAME_PICTURE_GAME_NAME];
