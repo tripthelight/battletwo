@@ -11,7 +11,6 @@ import countStyle from '@/client/js/views/game/taptap/fns/countStyle';
 import screenClickEvent from '@/client/js/views/game/taptap/fns/screenClickEvent';
 import { request } from '@/client/js/communication/taptap/request';
 import reload from '@/client/js/module/reload';
-import commErr from '@/client/js/communication/commErr';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import { text } from '@/client/js/functions/language';
 import reDrawPlaying from '@/client/js/views/game/taptap/fns/reDraw/playing';
@@ -34,9 +33,6 @@ document.onreadystatechange = async () => {
 
       // webRTC 공통
       await rtcPeer('taptap');
-
-      // peerConnection/dataChannel error 감시
-      // commErr();
 
       if (reload) {
         // 새로 고침 후 재연결인 경우

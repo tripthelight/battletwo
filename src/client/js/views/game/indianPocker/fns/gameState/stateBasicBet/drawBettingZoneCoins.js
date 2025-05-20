@@ -6,6 +6,7 @@ import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
 export default () => {
   // element | seeeion 체크
   const BET_COIN_POS = window.sessionStorage.betCoinPos;
+
   if (!BET_COIN_POS) return drawPlayerBlock();
   const BETTING_ZONE = document.querySelector('.betting-zone');
   if (!BETTING_ZONE) return errorManagement({ errCase: 'errorComn', message: '.betting-zone 엘리먼트가 없습니다' });

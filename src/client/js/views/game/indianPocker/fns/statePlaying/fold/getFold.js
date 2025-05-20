@@ -16,7 +16,7 @@ import resultTxtInnerHtml from '@/client/js/views/game/indianPocker/fns/common/r
 
 export const GET_FOLD = {
   receivefold: (_data) => {
-    let promise = new Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       resolve(_data);
     });
     promise
@@ -54,8 +54,8 @@ export const GET_FOLD = {
     const COINS_ENEMY_RES = window.sessionStorage.coinsEnemy;
     const ENEMY_COINS = document.querySelector('.coins-enemy');
     const ENEMY_COINS_LI = ENEMY_COINS.querySelectorAll('li');
-    if (ENEMY_COINS_LI.length > 0) for (let i = 0; i < ENEMY_COINS_LI.length; i++) ENEMY_COINS_LI[i].remove();
-    for (let j = 0; j < Number(COINS_ENEMY_RES); j++) ENEMY_COINS.appendChild(document.createElement('li'));
+    // if (ENEMY_COINS_LI.length > 0) for (let i = 0; i < ENEMY_COINS_LI.length; i++) ENEMY_COINS_LI[i].remove();
+    // for (let j = 0; j < Number(COINS_ENEMY_RES); j++) ENEMY_COINS.appendChild(document.createElement('li'));
   },
   roundResultDisplay: () => {
     const BETTING_ZONE = document.querySelector('.betting-zone');
@@ -81,9 +81,10 @@ export const GET_FOLD = {
     setTimeout(() => {
       cardHideAnimationComn();
       setTimeout(() => {
-        GET_ROUND_END.getWinnerCoinNext('win');
+        // GET_ROUND_END.getWinnerCoinNext('win');
         setTimeout(() => {
-          GET_ROUND_END.goNextRound('win');
+          GET_ROUND_END.getWinnerCoinNext('win');
+          // GET_ROUND_END.goNextRound('win');
         }, timeInterval_1);
       }, timeInterval_1);
     }, timeInterval_1);

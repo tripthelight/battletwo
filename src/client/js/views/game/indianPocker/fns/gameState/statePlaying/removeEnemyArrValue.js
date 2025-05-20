@@ -6,7 +6,6 @@ import P2 from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/P
 import P3 from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/P3';
 
 export default (_enum) => {
-  console.log('1 _enum >>>>>>>>>> ', _enum);
   // element | seeeion 체크
   const CARD_NUM = window.sessionStorage.cardNum;
   if (!CARD_NUM) return;
@@ -16,17 +15,13 @@ export default (_enum) => {
   setTimeout(() => {
     P1(_enum)
       .then((_numRes) => {
-        console.log('2 _numRes >>>>>>>>>> ', _numRes);
         return P2(_numRes.join());
       })
       .then((_index) => {
-        console.log('3 _index >>>>>>>>>> ', _index);
         const NUM = JSON.parse(JSON.stringify(_index));
-        console.log('4 NUM >>>>>>>>>> ', NUM);
         return P3(NUM);
       })
       .then((_cardNumList) => {
-        console.log('5 _cardNumList >>>>>>>>>> ', _cardNumList);
         storageMethod('s', 'SET_ITEM', 'cardNum', JSON.stringify(_cardNumList));
       })
       .catch((error) => {

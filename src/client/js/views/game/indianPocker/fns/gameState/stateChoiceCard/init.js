@@ -6,9 +6,6 @@ import indianPockerGameState from '@/client/js/gameState/indianPocker';
 
 export default {
   main: () => {
-    console.log('Choice Card main 진입 >>>>>>>>>> ');
-
-    // request('enterChoiceCard', 'choiceCard');
     drawPickCard();
     LOADING_EVENT.hide();
   },

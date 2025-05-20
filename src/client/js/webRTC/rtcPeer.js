@@ -32,7 +32,6 @@ export default async function rtcPeer(gameName) {
 
     await webRTC(gameName);
 
-    // commErr();
     if (window.sessionStorage.getItem('gameState') === 'waitEnemy') {
       waitPeer(2);
     }

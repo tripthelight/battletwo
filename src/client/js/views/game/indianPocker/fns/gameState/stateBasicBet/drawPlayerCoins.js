@@ -34,6 +34,9 @@ export default () => {
     elem.classList.add('coins');
     elem.classList.add('coins-player');
     let coinCount = Number(window.sessionStorage.coinsPlayer);
+
+    console.log('coinCount PLAYER ============ > ', coinCount);
+
     for (let i = 0; i < coinCount; i++) {
       liEl = document.createElement('li');
       minuteEl = document.createElement('span');

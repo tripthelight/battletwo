@@ -13,7 +13,7 @@ export const GET_CALL = {
     GET_CALL.sessionCallBet(_data);
   },
   sessionCallBet: (_data) => {
-    let promise = new Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       resolve(_data);
     });
     promise
@@ -127,6 +127,7 @@ export const GET_CALL = {
       BET_COINS.appendChild(liEl);
     }
     // setTimeout(roundEnd, timeInterval_1);
+    console.log('CALL GO GET_ROUND_END *****************');
     setTimeout(GET_ROUND_END.receiveRoundEnd, timeInterval_1);
   },
 };

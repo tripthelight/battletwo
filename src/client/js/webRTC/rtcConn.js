@@ -1,5 +1,5 @@
 import { debug } from '@/client/js/module/debug';
-import obfuscationStore, { updateObfuscation } from '@/client/store/ObfuscationStore';
+import obfuscationStore, { updateObfuscation } from '@/client/store/obfuscationStore';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import addNickname from '@/client/js/functions/addNickname';
 import { responseComn } from '@/client/js/communication/responseComn';
@@ -7,8 +7,12 @@ import { errorManagement } from '@/client/js/module/errorManagement';
 import { text } from '@/client/js/functions/language';
 import reload from '@/client/js/module/reload';
 
-import commErr from '@/client/js/communication/commErr';
-
+/*
+ * 일반적으로 peerConnection.iceConnectionState === 'connected'가 먼저 실행되고,
+ * 그 이후에 dataChannel.onopen이 실행됩니다.
+ * 하지만 두 이벤트 간의 차이는 수 밀리초 내외일 수 있고,
+ * 특수한 상황에서는 거의 동시에 발생하는 것으로 보일 수도 있습니다.
+ */
 export default function webRTC(gameName) {
   return new Promise(async (resolve, reject) => {
     /**
@@ -165,7 +169,7 @@ export default function webRTC(gameName) {
       dataChannel.onmessage = async (event) => {
         const message = JSON.parse(event.data);
 
-        if (message.type === 'sharedData' || message.type === 'connectEnd') {
+        if (message.type === 'connectFirst' || message.type === 'connectSecond') {
           storageMethod('s', 'SET_ITEM', 'remotePlayer', message.nickname);
           addNickname('remotePlayer');
 
@@ -174,9 +178,9 @@ export default function webRTC(gameName) {
             storageMethod('s', 'SET_ITEM', 'remoteReload', message.reload.toString());
           }
 
-          if (message.type === 'sharedData') {
+          if (message.type === 'connectFirst') {
             const sharedParams = {
-              type: 'connectEnd',
+              type: 'connectSecond',
               nickname: localStorage.getItem('localPlayer'),
             };
             if (reload) {
@@ -192,9 +196,11 @@ export default function webRTC(gameName) {
             resolve();
           }
 
-          if (message.type === 'connectEnd') {
+          if (message.type === 'connectSecond') {
             // dataChannel message 전송
             await responseComn();
+
+            console.log('gameState >>>>>>> ', window.sessionStorage.gameState);
 
             // 두 peer가 연결이 되어야 resolve 시켜야 함
             resolve();
@@ -203,10 +209,12 @@ export default function webRTC(gameName) {
       };
 
       dataChannel.onclose = () => {
+        console.log('dataChannel.onclose ::::::::: ');
         // reject({ component: 'dataChannel', event: 'onclose', message: 'DataChannel is closed' });
       };
 
       dataChannel.onerror = (error) => {
+        console.log('dataChannel.onerror ::::::::: ');
         // reject({ component: 'dataChannel', event: 'onerror', message: 'DataChannel encountered an error', errorDetails: error });
       };
     }
@@ -223,11 +231,8 @@ export default function webRTC(gameName) {
 
         // 내 nickName 상대방에게 전송
         if (dataChannel && dataChannel.readyState === 'open') {
-          console.log('여기를 안타냐?????????????');
-
-          // request
           const sharedParams = {
-            type: 'sharedData',
+            type: 'connectFirst',
             nickname: localStorage.getItem('localPlayer'),
           };
           if (reload) {
@@ -245,6 +250,7 @@ export default function webRTC(gameName) {
           const CHANNEL_NAME = `${gameName}-${msgData.roomName}-Channel`;
           storageMethod('s', 'SET_ITEM', 'roomName', msgData.roomName);
           initConnect();
+          candidateEvent();
 
           // 첫번째 접속자
           if (!msgData.setOffer) {
@@ -261,32 +267,6 @@ export default function webRTC(gameName) {
               offerState: msgData.setOffer ?? false,
             }),
           );
-
-          /*
-          // 첫번째 접속자
-          if (!msgData.setOffer) {
-            debug.log('첫번째 접속자');
-            console.log('첫번째 접속자');
-
-            dataChannel = peerConnection.createDataChannel(CHANNEL_NAME);
-            window.rtcChannels.dataChannel = dataChannel;
-
-            // 첫번째 접속한 사람만 offer를 보내야함
-            createOffer();
-
-            candidateEvent();
-            localDatachannel();
-          }
-
-          // 두번째 접속자
-          if (msgData.setOffer && msgData.setOffer === 'true') {
-            debug.log('두번째 접속자');
-            console.log('두번째 접속자');
-
-            candidateEvent();
-            remoteOndatachannel();
-          }
-          */
         }
 
         if (msgData.type === 'offer') {
@@ -344,8 +324,6 @@ export default function webRTC(gameName) {
 
             // 첫번째 접속한 사람만 offer를 보내야함
             createOffer();
-
-            candidateEvent();
             localDatachannel();
           }
 
@@ -353,8 +331,6 @@ export default function webRTC(gameName) {
           if (msgData.offerState && msgData.offerState === 'true') {
             debug.log('두번째 접속자');
             console.log('두번째 접속자');
-
-            candidateEvent();
             remoteOndatachannel();
           }
         }

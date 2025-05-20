@@ -253,6 +253,7 @@ export const GET_ROUND_END = {
       console.log('1 ************* ', _result);
 
       if (window.sessionStorage.cardNum && JSON.parse(window.sessionStorage.cardNum).length > 0) {
+        if (!_result) return;
         console.log('2 ************* ', _result);
         if (_result === 'drew') return STATE_PLAYING.drew();
         if (_result !== 'drew') {
@@ -267,13 +268,14 @@ export const GET_ROUND_END = {
     });
     encryptCardNumbers
       .then((numArr) => {
-        console.log('4 ************* ');
+        console.log('4 ************* ', _result);
         if (numArr) {
-          console.log('5 ************* ');
+          if (!_result) return;
+          console.log('5 ************* ', _result);
           storageMethod('s', 'SET_ITEM', 'cardNum', JSON.stringify(numArr));
-          if (_result === 'drew') STATE_PLAYING.drew();
+          if (_result === 'drew') return STATE_PLAYING.drew();
           if (_result !== 'drew') {
-            indianPockerGameState.basicBet();
+            return indianPockerGameState.basicBet();
           }
         }
       })
@@ -299,10 +301,12 @@ export const GET_ROUND_END = {
     const COINS_ENEMY = window.sessionStorage.coinsEnemy;
     if (!COINS_ENEMY) return errorManagement({ errCase: 'errorComn', message: 'call | raise 결과에서 coinsEnemy 세션이 없습니다' });
     const ENUM = Number(COINS_ENEMY);
+    /*
     for (let i = 0; i < PLAYER_COINS.length; i++) PLAYER_COINS[i].remove();
     for (let j = 0; j < PNUM; j++) CPINS_PLAYER.appendChild(document.createElement('li'));
     for (let k = 0; k < ENEMY_COINS.length; k++) ENEMY_COINS[k].remove();
     for (let l = 0; l < ENUM; l++) CPINS_ENEMY.appendChild(document.createElement('li'));
+    */
     BET_COINS.remove();
     storageMethod('s', 'SET_ITEM', 'betCoin', []);
     storageMethod('s', 'SET_ITEM', 'betCoinPos', []);

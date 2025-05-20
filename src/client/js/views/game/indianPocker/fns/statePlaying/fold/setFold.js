@@ -23,10 +23,12 @@ export const SET_FOLD = {
     if (!COINS_PLAYER) errorManagement({ errCase: 'errorComn', message: 'fold ani 완료 후 .coins-player 엘리먼트가 없습니다' });
     const COINS_ENEMY_LI = COINS_ENEMY.querySelectorAll('li');
     const COINS_PLAYER_LI = COINS_PLAYER.querySelectorAll('li');
+    /*
     if (COINS_ENEMY_LI.length > 0) for (let i = 0; i < COINS_ENEMY_LI.length; i++) COINS_ENEMY_LI[i].remove();
     if (Number(E_COINS) > 0) for (let i = 0; i < Number(E_COINS); i++) COINS_ENEMY.appendChild(document.createElement('li'));
     if (COINS_PLAYER_LI.length > 0) for (let i = 0; i < COINS_PLAYER_LI.length; i++) COINS_PLAYER_LI[i].remove();
     if (Number(P_COINS) > 0) for (let i = 0; i < Number(P_COINS); i++) COINS_PLAYER.appendChild(document.createElement('li'));
+    */
     const D_ARR = ['coinsEnemyBet', 'coinsPlayerBet', 'coinsEnemyExtBet', 'coinsPlayerExtBet', 'betCoin', 'betCoinPos', 'extFirstBet', 'drewReady', 'drewState'];
     storageMethod('s', 'REMOVE_ARR', '', '', D_ARR);
     pcDraggableCheck('coins-player', false);
@@ -34,7 +36,7 @@ export const SET_FOLD = {
       () => {
         GET_ROUND_END.getWinnerCoinNext('die');
         cardHideAnimationComn();
-        setTimeout(GET_ROUND_END.goNextRound, timeInterval_1);
+        // setTimeout(GET_ROUND_END.goNextRound, timeInterval_1);
       },
       _statePenalty ? timeInterval_1000 : 0,
     );

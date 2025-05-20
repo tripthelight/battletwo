@@ -16,6 +16,7 @@ export default () => {
     elem.classList.add('coins');
     elem.classList.add('coins-enemy');
     let coinCount = Number(window.sessionStorage.coinsEnemy);
+
     for (let i = 0; i < coinCount; i++) {
       li = document.createElement('li');
       elem.appendChild(li);

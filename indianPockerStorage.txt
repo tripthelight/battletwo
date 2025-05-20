@@ -48,4 +48,5 @@
   gameResults: []
   gameReady: 'true'
   drewFlipCardMode: 'true'
+  playingReloadUser: 'true'
 }

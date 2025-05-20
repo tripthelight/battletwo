@@ -88,7 +88,7 @@ document.onreadystatechange = async () => {
         switch (window.sessionStorage.getItem('gameState')) {
           case 'waitEnemy':
             // choiceCard
-            // indianPockerGameState.choiceCard();
+            indianPockerGameState.choiceCard();
             break;
           case 'choiceCard':
             indianPockerGameState.choiceCard();
@@ -97,6 +97,8 @@ document.onreadystatechange = async () => {
             indianPockerGameState.basicBet();
             break;
           case 'playing':
+            // playing 중 새로고침 한 사용자
+            storageMethod('s', 'SET_ITEM', 'playingReloadUser', true);
             const FOLD_STATE = window.sessionStorage.foldState;
             if (FOLD_STATE) {
               // 이전 판에서 FOLD animation 실행중 일 때 새로고침 한 경우

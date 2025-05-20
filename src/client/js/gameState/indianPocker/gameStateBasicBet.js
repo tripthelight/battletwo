@@ -7,10 +7,11 @@ export default (reloadState) => {
     /**
      * 이전 판에서 FOLD 후 새로고침 해서 기본배팅 화면으로 진입한 경우
      * betState 는 basicBetting이 되어야 함
+     * basicBetReady 는 false 되어야 함
      */
-    // storageMethod('s', 'SET_ITEM', 'betState', 'basicBetting');
-
     if (reloadState === 'foldLocal' || reloadState === 'foldRemote') {
+      // storageMethod('s', 'SET_ITEM', 'betState', 'basicBetting');
+      // storageMethod('s', 'SET_ITEM', 'basicBetReady', false);
       if (reloadState === 'foldLocal') {
         // FOLD를 실행한 PLAY가 새고로침
         storageMethod('s', 'SET_ITEM', 'betUser', false);

@@ -14,10 +14,12 @@ export default {
       return gameEnd();
     } else {
       if (window.sessionStorage.betState && window.sessionStorage.betState === 'basicBetting') {
-        console.log('basicBetting main 진입 >>>>>>>>>> ');
-        // refresh
         setTimeout(sessionInit, timeInterval_1);
         LOADING_EVENT.hide();
+        // 상대가 call, fold 애니메이션 중 새로고침 했고
+        // 나는 새로고침 안했을 경우
+        // 상대를 기본배팅 시키기 위해 request 보내야 됨
+        request('remoteReloadBasicBet', 'basicBet');
       } else {
         LOADING_EVENT.show();
         if (window.sessionStorage.basicBetReady && window.sessionStorage.basicBetReady === 'false') {

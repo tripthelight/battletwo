@@ -124,8 +124,8 @@ export const GET_BASIC_BETTING = {
                     hourEl.classList.add('h');
                     elemLi.appendChild(minuteEl);
                     elemLi.appendChild(hourEl);
-                    minuteEl.style.transform = `translate(-50%, -96%) rotate(${PLAYER_COIN[0].tm}deg)`;
-                    hourEl.style.transform = `translate(-50%, -86%) rotate(${PLAYER_COIN[0].th}deg)`;
+                    minuteEl.style.transform = `translate(-50%, -96%) rotate(${PLAYER_COIN[0]?.tm ?? 0}deg)`;
+                    hourEl.style.transform = `translate(-50%, -86%) rotate(${PLAYER_COIN[0]?.th ?? 0}deg)`;
 
                     if (BET_COIN_LIST[i].host === 'enemy') elemLi.classList.add('e');
                     let xRes = BET_COIN_LIST[i].translateX < 0 ? BET_COIN_LIST[i].translateX + COINS_WIDTH : BET_COIN_LIST[i].translateX;
