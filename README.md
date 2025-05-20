@@ -85,6 +85,8 @@ battletwo
     - /src/client/js/socket/indianpoker/getSocket.js  
 
 ## 진행상황
+- call, fold 에니 진행 중 새로고침 시 재연결 안됨
+- 게임 단계별진입 시 서로의 게임 state(choiceCard, basicBet, playing, gameEnd) 상태를 확인 후 상태가 같으면 다음 단계 진행시키는 로직 적용 필요
 - FIXME: 랜선 PC와 wifi mobile에서 webRTC 연결 안됨
 - 랜선사용자와 모바일LTE 사용자간 연결을 위해 TURN 실서버 반드시 구축해야됨
 - coturn 여러 대 구성 예제나 로드밸런서 설정 예제(Nginx/HAProxy) 확인 필요

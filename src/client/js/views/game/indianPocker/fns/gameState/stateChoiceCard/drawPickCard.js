@@ -11,7 +11,7 @@ export default () => {
   const GAME_SCENE = document.getElementById('gameScene');
   if (!GAME_SCENE) return errorManagement({ errCase: 'errorComn', message: '#gameScene 엘리먼트가 없습니다.' });
   const CHOICE_CARD = GAME_SCENE.querySelector('.choice-card');
-  if (CHOICE_CARD) return errorManagement({ errCase: 'errorComn', message: '.choice-card 엘리먼트가 없습니다.' });
+  if (CHOICE_CARD) return;
 
   // 명령
   setTimeout(() => {

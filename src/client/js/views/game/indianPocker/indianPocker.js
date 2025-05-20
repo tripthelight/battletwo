@@ -88,7 +88,7 @@ document.onreadystatechange = async () => {
         switch (window.sessionStorage.getItem('gameState')) {
           case 'waitEnemy':
             // choiceCard
-            indianPockerGameState.choiceCard();
+            // indianPockerGameState.choiceCard();
             break;
           case 'choiceCard':
             indianPockerGameState.choiceCard();

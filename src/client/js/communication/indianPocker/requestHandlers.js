@@ -1,5 +1,6 @@
 // 일반 메시지
 export const REQUEST_HANDLERS = {
+  enterChoiceCard: (v) => ({ type: 'enterChoiceCard', gameState: v }),
   choiceFirst: (v) => ({ type: 'choiceFirst', num: v }),
   choiceDrewCard: (v) => ({ type: 'choiceDrewCard', value: v }),
   basicBetting: (v) => ({ type: 'basicBetting', state: true, coinCount: v }),

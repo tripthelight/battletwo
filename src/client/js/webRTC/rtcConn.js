@@ -27,18 +27,19 @@ export default function webRTC(gameName) {
     let dataChannel = null;
     let isRemoteDescSet = false;
     const pendingCandidates = [];
-    const STORAGE_DATA = {};
 
     /**
      * functions
      */
-    function insertStorageDate(msgData) {
-      // console.log('msgData >>>>>>>>>> ', msgData);
-      Object.assign(STORAGE_DATA, msgData.storageData);
-      // console.log('STORAGE_DATA >>>>>>> ', STORAGE_DATA);
-      obfuscationStore.dispatch(updateObfuscation({ obfuscation: STORAGE_DATA }));
-      const storeState = obfuscationStore.getState().obfuscationState.obfuscation;
-      console.log('storeState >>>>>>>>> ', storeState);
+    async function insertStorageDate(msgData) {
+      return new Promise((resolve, reject) => {
+        // console.log('msgData >>>>>>>>>> ', msgData);
+        obfuscationStore.dispatch(updateObfuscation({ obfuscation: Object.assign({}, msgData.storageData) }));
+        const storeState = obfuscationStore.getState().obfuscationState.obfuscation;
+        console.log('storeState >>>>>>>>> ', storeState);
+
+        resolve();
+      });
     }
 
     function otherLeavesComn() {
@@ -113,6 +114,10 @@ export default function webRTC(gameName) {
           const REMOTE_PEER_LEFT = peerConnection && (peerConnection.iceConnectionState === 'disconnected' || peerConnection.iceConnectionState === 'failed') && window.sessionStorage.getItem('gameState') && window.sessionStorage.getItem('gameState') !== 'gameOver';
           if (REMOTE_PEER_LEFT) {
             errorManagement({ errCase: 'webRTC', component: 'peerConnection', event: 'oniceconnectionstatechange', message: 'ICE connection state is disconnected', errorDetails: event });
+          }
+
+          if (peerConnection.iceConnectionState === 'connected') {
+            //
           }
         };
       } catch (error) {
@@ -202,7 +207,7 @@ export default function webRTC(gameName) {
       };
 
       dataChannel.onerror = (error) => {
-        reject({ component: 'dataChannel', event: 'onerror', message: 'DataChannel encountered an error', errorDetails: error });
+        // reject({ component: 'dataChannel', event: 'onerror', message: 'DataChannel encountered an error', errorDetails: error });
       };
     }
     function localDatachannel() {
@@ -218,6 +223,8 @@ export default function webRTC(gameName) {
 
         // 내 nickName 상대방에게 전송
         if (dataChannel && dataChannel.readyState === 'open') {
+          console.log('여기를 안타냐?????????????');
+
           // request
           const sharedParams = {
             type: 'sharedData',
@@ -239,14 +246,23 @@ export default function webRTC(gameName) {
           storageMethod('s', 'SET_ITEM', 'roomName', msgData.roomName);
           initConnect();
 
-          // debug.log('requestStorage 보냄 :::');
-          // console.log('requestStorage 보냄 ::: ');
-          // signalingSocket.send(
-          //   JSON.stringify({
-          //     type: 'requestStorage',
-          //   }),
-          // );
+          // 첫번째 접속자
+          if (!msgData.setOffer) {
+            dataChannel = peerConnection.createDataChannel(CHANNEL_NAME);
+            window.rtcChannels.dataChannel = dataChannel;
+          }
 
+          // 서버에 암호화된 sessiongStorage 요청
+          debug.log('requestStorage 보냄 :::');
+          console.log('requestStorage 보냄 ::: ', msgData.setOffer);
+          signalingSocket.send(
+            JSON.stringify({
+              type: 'requestStorage',
+              offerState: msgData.setOffer ?? false,
+            }),
+          );
+
+          /*
           // 첫번째 접속자
           if (!msgData.setOffer) {
             debug.log('첫번째 접속자');
@@ -259,7 +275,6 @@ export default function webRTC(gameName) {
             createOffer();
 
             candidateEvent();
-
             localDatachannel();
           }
 
@@ -271,6 +286,7 @@ export default function webRTC(gameName) {
             candidateEvent();
             remoteOndatachannel();
           }
+          */
         }
 
         if (msgData.type === 'offer') {
@@ -317,11 +333,30 @@ export default function webRTC(gameName) {
           }
         }
 
+        // 서버에서 암호화된 sessiongStorage 받음
         if (msgData.type === 'responseStorage') {
-          debug.log('responseStorage 받음 :::');
-          console.log('responseStorage 받음 ::: ');
+          console.log('responseStorage 받음 ::: ', msgData.offerState);
+          await insertStorageDate(msgData);
 
-          insertStorageDate(msgData);
+          if (!msgData.offerState) {
+            debug.log('첫번째 접속자');
+            console.log('첫번째 접속자');
+
+            // 첫번째 접속한 사람만 offer를 보내야함
+            createOffer();
+
+            candidateEvent();
+            localDatachannel();
+          }
+
+          // 두번째 접속자
+          if (msgData.offerState && msgData.offerState === 'true') {
+            debug.log('두번째 접속자');
+            console.log('두번째 접속자');
+
+            candidateEvent();
+            remoteOndatachannel();
+          }
         }
 
         if (msgData.type === 'otherLeaves') {

@@ -5,6 +5,7 @@ import enemyChoiceCardReady from '@/client/js/communication/indianPocker/fns/ene
 import drewReadyCheckResult from '@/client/js/communication/indianPocker/fns/drewReadyCheckResult';
 import receiveEnemyCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/receiveEnemyCard';
 import enterDrewResult from '@/client/js/communication/indianPocker/fns/enterDrewResult';
+import enterChoiceCardResult from '@/client/js/communication/indianPocker/fns/enterChoiceCardResult';
 import enterPlayingResult from '@/client/js/communication/indianPocker/fns/enterPlayingResult';
 import enterBasicBetResult from '@/client/js/communication/indianPocker/fns/enterBasicBetResult';
 import basicBettingResult from '@/client/js/communication/indianPocker/fns/basicBettingResult';
@@ -16,6 +17,7 @@ import SOCKET_EVENT from '@/client/js/communication/indianPocker/batting/batting
 // 핸들러 객체 매핑
 export const RESPONSE_HANDLERS = {
   remoteReload: (msg) => remoteReload(msg.value),
+  enterChoiceCard: (msg) => enterChoiceCardResult(msg.gameState),
   choiceFirst: (msg) => enemyFirstChoice(msg.num),
   choiceDrewCard: (msg) => enemyChoiceCardReady(msg.value),
   nextStep: (msg) => nextStepResult(msg.value),

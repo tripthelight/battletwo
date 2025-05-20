@@ -8,6 +8,7 @@ import indianPockerGameState from '@/client/js/gameState/indianPocker';
 
 export const STATE_PLAYING = {
   main: () => {
+    console.log('playing main 진입 >>>>>>>>>> ');
     LOADING_EVENT.show();
 
     request('enterPlaying', 'playing');

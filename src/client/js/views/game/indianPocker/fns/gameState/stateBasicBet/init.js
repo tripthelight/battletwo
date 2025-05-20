@@ -14,6 +14,7 @@ export default {
       return gameEnd();
     } else {
       if (window.sessionStorage.betState && window.sessionStorage.betState === 'basicBetting') {
+        console.log('basicBetting main 진입 >>>>>>>>>> ');
         // refresh
         setTimeout(sessionInit, timeInterval_1);
         LOADING_EVENT.hide();

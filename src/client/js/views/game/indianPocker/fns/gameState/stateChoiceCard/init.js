@@ -1,10 +1,14 @@
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
+import { request } from '@/client/js/communication/indianPocker/request';
 import drawPickCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/drawPickCard';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 
 export default {
   main: () => {
+    console.log('Choice Card main 진입 >>>>>>>>>> ');
+
+    // request('enterChoiceCard', 'choiceCard');
     drawPickCard();
     LOADING_EVENT.hide();
   },
