@@ -1,5 +1,4 @@
 import { debug } from '@/client/js/module/debug';
-import obfuscationStore, { updateObfuscation } from '@/client/store/obfuscationStore';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import addNickname from '@/client/js/functions/addNickname';
 import { responseComn } from '@/client/js/communication/responseComn';
@@ -35,16 +34,6 @@ export default function webRTC(gameName) {
     /**
      * functions
      */
-    async function insertStorageDate(msgData) {
-      return new Promise((resolve, reject) => {
-        // console.log('msgData >>>>>>>>>> ', msgData);
-        obfuscationStore.dispatch(updateObfuscation({ obfuscation: Object.assign({}, msgData.storageData) }));
-        const storeState = obfuscationStore.getState().obfuscationState.obfuscation;
-        console.log('storeState >>>>>>>>> ', storeState);
-
-        resolve();
-      });
-    }
 
     function otherLeavesComn() {
       // LOADING_EVENT.show(msg_str('left_user'));
@@ -170,6 +159,8 @@ export default function webRTC(gameName) {
         const message = JSON.parse(event.data);
 
         if (message.type === 'connectFirst' || message.type === 'connectSecond') {
+          console.log('message.type ????????????????? ', message.type);
+
           storageMethod('s', 'SET_ITEM', 'remotePlayer', message.nickname);
           addNickname('remotePlayer');
 
@@ -256,17 +247,18 @@ export default function webRTC(gameName) {
           if (!msgData.setOffer) {
             dataChannel = peerConnection.createDataChannel(CHANNEL_NAME);
             window.rtcChannels.dataChannel = dataChannel;
+
+            // 첫번째 접속한 사람만 offer를 보내야함
+            createOffer();
+            localDatachannel();
           }
 
-          // 서버에 암호화된 sessiongStorage 요청
-          debug.log('requestStorage 보냄 :::');
-          console.log('requestStorage 보냄 ::: ', msgData.setOffer);
-          signalingSocket.send(
-            JSON.stringify({
-              type: 'requestStorage',
-              offerState: msgData.setOffer ?? false,
-            }),
-          );
+          // 두번째 접속자
+          if (msgData.setOffer && msgData.setOffer === 'true') {
+            debug.log('두번째 접속자');
+            console.log('두번째 접속자');
+            remoteOndatachannel();
+          }
         }
 
         if (msgData.type === 'offer') {
@@ -310,28 +302,6 @@ export default function webRTC(gameName) {
             // peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
           } else {
             pendingCandidates.push(candidate);
-          }
-        }
-
-        // 서버에서 암호화된 sessiongStorage 받음
-        if (msgData.type === 'responseStorage') {
-          console.log('responseStorage 받음 ::: ', msgData.offerState);
-          await insertStorageDate(msgData);
-
-          if (!msgData.offerState) {
-            debug.log('첫번째 접속자');
-            console.log('첫번째 접속자');
-
-            // 첫번째 접속한 사람만 offer를 보내야함
-            createOffer();
-            localDatachannel();
-          }
-
-          // 두번째 접속자
-          if (msgData.offerState && msgData.offerState === 'true') {
-            debug.log('두번째 접속자');
-            console.log('두번째 접속자');
-            remoteOndatachannel();
           }
         }
 

@@ -243,12 +243,11 @@ WSS.on('connection', async (socket) => {
 
           if (parsedData.type === 'requestStorage') {
             // 각 게임에 필요한 암호화된 sessionStorage 생성
-            const STORAGE_DATA = await MAKE_STORAGE.findGame(socket.gameName);
+            const STORAGE_DATA = await MAKE_STORAGE.findGame(parsedData.gameName);
 
             socket.send(
               JSON.stringify({
                 type: 'responseStorage',
-                offerState: parsedData.offerState ?? false,
                 ...STORAGE_DATA,
               }),
             );

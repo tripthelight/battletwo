@@ -2,12 +2,14 @@ import '@/client/assets/scss/game/indianPocker/common';
 import '@/client/js/common/common';
 import { debug } from '@/client/js/module/debug';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
-import rtcPeer from '@/client/js/webRTC/rtcPeer';
 import reload from '@/client/js/module/reload';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorManagement';
+import insertStorageDate from '@/client/js/functions/insertStorageDate';
+import rtcPeer from '@/client/js/webRTC/rtcPeer';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import makeCard from '@/client/js/views/game/indianPocker/fns/common/makeCard/makeCard';
+import obfuscationStore from '@/client/store/obfuscationStore';
 
 import { BCRYPT_STORAGE } from '@/client/js/module/bcryptStorage';
 
@@ -18,8 +20,9 @@ document.onreadystatechange = async () => {
   } else if (state === 'complete') {
     try {
       console.log('indianPocker init');
-      // console.log('reload >>> ', reload);
-      // window.rtcChannels = {};
+
+      // 먼저 webSocket에서 암호화된 sessionStorige를 받고,
+      await insertStorageDate();
 
       // 카드 우선 생성
       makeCard();
@@ -57,7 +60,6 @@ document.onreadystatechange = async () => {
       console.log('compareKey ::: ', compareKey);
       */
 
-      /*
       // 'GAME_NAME' key가 sessionStorage에 있는지 체크
       const storageGameName = await BCRYPT_STORAGE.findSessionStorageKey(process.env.KEY_GAME_NAME);
       // sessionStorage에 있는 'GAME_NAME' KEY가 'indianPocker' 인지 체크
@@ -72,7 +74,6 @@ document.onreadystatechange = async () => {
         // 암호화한 'GAME_NAME' KEY / 'indianPocker' VALUE 를 sessionStorage에 등록
         storageMethod('s', 'SET_ITEM', encryptKeyGameName, encryptValGameName);
       }
-      */
 
       // gameName을 sessionStorage에 저장
       const GAME_NAME = window.sessionStorage.getItem('gameName');
@@ -82,6 +83,9 @@ document.onreadystatechange = async () => {
 
       // webRTC 공통
       await rtcPeer('indianPocker');
+
+      const storeState = obfuscationStore.getState().obfuscationState.obfuscation;
+      console.log('KEYS : ', Object.keys(storeState));
 
       if (reload) {
         // 새로 고침 후 재연결인 경우
