@@ -13,8 +13,10 @@ export default (e) => {
   const PLAYER_BLOCK = document.querySelector('.player-block');
   if (!PLAYER_BLOCK) return errorManagement({ errCase: 'errorComn', message: '.player-block 엘리먼트를 찾을 수 없습니다.' });
   if (reactiveState.mmY > BETTING_ZONE.clientHeight) {
+    // player 코인 영역
     PLAYER_BLOCK.classList.add('over');
   } else {
+    // batting zone 코인 영역
     PLAYER_BLOCK.classList.remove('over');
   }
 };

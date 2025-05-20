@@ -86,7 +86,6 @@ battletwo
 
 ## 진행상황
 - indian pocker 통합 테스트(integration testing) 중
-  - 배틴존에 놓았던 코인을 상대 존에 넣을 수 있음, 배팅존에서만 머무를 수 있게 막아야함
 - FIXME: 랜선 PC와 wifi mobile에서 webRTC 연결 안됨
 - 랜선사용자와 모바일LTE 사용자간 연결을 위해 TURN 실서버 반드시 구축해야됨
 - coturn 여러 대 구성 예제나 로드밸런서 설정 예제(Nginx/HAProxy) 확인 필요

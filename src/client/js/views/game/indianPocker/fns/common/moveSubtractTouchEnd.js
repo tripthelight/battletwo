@@ -19,6 +19,23 @@ export default (e) => {
   BET_COIN_ARR[reactiveState.mTargetIdx].translateY = reactiveState.mmY;
   storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(BET_COIN_ARR));
 
+  const onTransitionEnd = () => {
+    e.target.style.removeProperty('transition');
+    e.target.removeEventListener('transitionend', onTransitionEnd);
+  };
+  // 상대 플레이어 자리에 있을 경우
+  if (reactiveState.mmY < 0 - e.target.clientHeight / 2) {
+    e.target.style.transition = 'transform .2s ease-in';
+    e.target.style.transform = 'translate(' + reactiveState.mtX + 'px, ' + reactiveState.mtY + 'px)';
+    e.target.addEventListener('transitionend', onTransitionEnd);
+
+    BET_COIN_ARR[reactiveState.mTargetIdx].translateX = reactiveState.mtX;
+    BET_COIN_ARR[reactiveState.mTargetIdx].translateY = reactiveState.mtY;
+    storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(BET_COIN_ARR));
+  }
+
+  // touch end 했는데 배팅존에 머무를 경우 여기까지 탐
+
   const PLAYER_BLOCK = document.querySelector('.player-block');
   if (!PLAYER_BLOCK) return errorManagement({ errCase: 'errorComn', message: '.player-block 엘리먼트를 찾을 수 없습니다.' });
   const BET_COINS = document.querySelector('.bet-coins');
