@@ -6,9 +6,9 @@ import btnCallRaiseEventBefore from '@/client/js/views/game/indianPocker/fns/gam
 
 export default () => {
   const PLAYER_BLOCK = document.querySelector('.player-block');
-  if (!PLAYER_BLOCK) return errorManagement({ errCase: 'errorComn', message: 'drew 상태에서 .player-block 엘리먼트가 없습니다 22 22' });
+  if (!PLAYER_BLOCK) return errorManagement({ errCase: 'elementLoss', message: 'drew 상태에서 .player-block 엘리먼트가 없습니다 22 22' });
   const PLAYER_CARD = PLAYER_BLOCK.querySelector('.player-card');
-  if (!PLAYER_CARD) return errorManagement({ errCase: 'errorComn', message: 'drew 상태에서 .player-card 엘리먼트가 없습니다 22' });
+  if (!PLAYER_CARD) return errorManagement({ errCase: 'elementLoss', message: 'drew 상태에서 .player-card 엘리먼트가 없습니다 22' });
   const CHECH_DREW_INFO = document.querySelector('.check-drew-info');
   if (CHECH_DREW_INFO) return;
 
@@ -19,11 +19,11 @@ export default () => {
     elem.appendChild(inner);
     elem.classList.add('check-drew-info');
     const GAME_SCENE = document.getElementById('gameScene');
-    if (!GAME_SCENE) return errorManagement({ errCase: 'errorComn', message: 'drew 상태에서 GAME_SCENE 엘리먼트가 없습니다' });
+    if (!GAME_SCENE) return errorManagement({ errCase: 'elementLoss', message: 'drew 상태에서 GAME_SCENE 엘리먼트가 없습니다' });
     GAME_SCENE.appendChild(elem);
     setTimeout(() => {
       const CHECH_DREW_INFO_EL = document.querySelector('.check-drew-info');
-      if (!CHECH_DREW_INFO_EL) return errorManagement({ errCase: 'errorComn', message: 'drew 상태에서 .check-drew-info 엘리먼트가 없습니다' });
+      if (!CHECH_DREW_INFO_EL) return errorManagement({ errCase: 'elementLoss', message: 'drew 상태에서 .check-drew-info 엘리먼트가 없습니다' });
       const H_RES = PLAYER_BLOCK.offsetTop + PLAYER_CARD.offsetTop - CHECH_DREW_INFO_EL.clientHeight;
       CHECH_DREW_INFO_EL.style.top = H_RES + 'px';
       setTimeout(() => {

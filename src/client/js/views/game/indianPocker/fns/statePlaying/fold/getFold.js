@@ -59,7 +59,7 @@ export const GET_FOLD = {
   },
   roundResultDisplay: () => {
     const BETTING_ZONE = document.querySelector('.betting-zone');
-    if (!BETTING_ZONE) return errorManagement({ errCase: 'errorComn', message: 'fold 에서 .betting-zone 엘리먼트가 없습니다.' });
+    if (!BETTING_ZONE) return errorManagement({ errCase: 'elementLoss', message: 'fold 에서 .betting-zone 엘리먼트가 없습니다.' });
 
     document.documentElement.style.setProperty('--round-result-height', `${BETTING_ZONE.clientHeight}px`);
 

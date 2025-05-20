@@ -11,9 +11,9 @@ export default () => {
   const CHOICE_CARD_INFO = document.querySelector('.choice-card-info');
   if (CHOICE_CARD_INFO) CHOICE_CARD_INFO.remove();
   const CHOICE_CARD = document.querySelector('.choice-card');
-  if (!CHOICE_CARD) return errorManagement({ errCase: 'errorComn', message: '.choice-card 엘리먼트가 없습니다.' });
+  if (!CHOICE_CARD) return errorManagement({ errCase: 'elementLoss', message: '.choice-card 엘리먼트가 없습니다.' });
   const CHOICE_CARDS = CHOICE_CARD.querySelectorAll('li');
-  if (!CHOICE_CARDS || CHOICE_CARDS.length <= 0) return errorManagement({ errCase: '.choice-card 의 li가 없거나 length가 0보다 작습니다.' });
+  if (!CHOICE_CARDS || CHOICE_CARDS.length <= 0) return errorManagement({ errCase: 'elementLoss', message: '.choice-card 의 li가 없거나 length가 0보다 작습니다.' });
 
   // 명령
   setTimeout(() => {

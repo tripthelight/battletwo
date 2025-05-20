@@ -8,9 +8,9 @@ export default () => {
   const DREW_RESULT_INFO = document.querySelector('.drew-result-info');
   if (DREW_RESULT_INFO) return;
   const GAME_SCENE = document.getElementById('gameScene');
-  if (!GAME_SCENE) return errorManagement({ errCase: 'errorComn', message: 'game over 상태에서 #gameScene 엘리먼트가 없습니다' });
+  if (!GAME_SCENE) return errorManagement({ errCase: 'elementLoss', message: 'game over 상태에서 #gameScene 엘리먼트가 없습니다' });
   const RESULT = window.sessionStorage.result;
-  if (!RESULT) return errorManagement({ errCase: 'errorComn', message: 'game over 상태에서 결과 출력 중 result 세션이 없습니다' });
+  if (!RESULT) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 결과 출력 중 result 세션이 없습니다' });
   const RESULT_RES = RESULT === 'true' ? true : RESULT === 'false' ? false : errorManagement({ errCase: 'errorComn', message: 'game over 상태에서 result 세션이 true나 false가 아닙니다' });
 
   // 명령

@@ -6,8 +6,8 @@ import drewResultInfo from '@/client/js/views/game/indianPocker/fns/gameState/st
 export default () => {
   // element | seeeion 체크
   const RESULT = window.sessionStorage.result;
-  if (!RESULT) return errorManagement({ errCase: 'errorComn', message: 'game over 상태에서 ani 중 result 세션이 없습니다' });
-  const RESULT_RES = RESULT === 'true' ? true : RESULT === 'false' ? false : errorManagement({ errCase: 'errorComn', message: 'game over 상태에서 result 세션이 true나 false가 아닙니다' });
+  if (!RESULT) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 ani 중 result 세션이 없습니다' });
+  const RESULT_RES = RESULT === 'true' ? true : RESULT === 'false' ? false : errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 result 세션이 true나 false가 아닙니다' });
   const ENEMY_BLOCK = document.querySelector('.enemy-block');
   const PLAYER_BLOCK = document.querySelector('.player-block');
   const COINS_ENEMY = document.querySelector('.coins-enemy');

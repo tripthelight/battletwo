@@ -11,21 +11,21 @@ import timeDraw from '@/client/js/views/game/indianPocker/fns/common/timeDraw';
 export default () => {
   // element | seeeion 체크
   const BET_USER = window.sessionStorage.betUser;
-  if (!BET_USER) return errorManagement({ errCase: 'errorComn', message: 'betUser 세션이 없습니다' });
+  if (!BET_USER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'betUser 세션이 없습니다' });
   const GAME_SCENE = document.getElementById('gameScene');
-  if (!GAME_SCENE) return errorManagement({ errCase: 'errorComn', message: '#gameScene 엘리먼트가 없습니다.' });
+  if (!GAME_SCENE) return errorManagement({ errCase: 'elementLoss', message: '#gameScene 엘리먼트가 없습니다.' });
   const ENEMY_BLOCK = GAME_SCENE.querySelector('.enemy-block');
-  if (!ENEMY_BLOCK) return errorManagement({ errCase: 'errorComn', message: '.enemy-block 엘리먼트가 없습니다.' });
+  if (!ENEMY_BLOCK) return errorManagement({ errCase: 'elementLoss', message: '.enemy-block 엘리먼트가 없습니다.' });
   const PLAYER_BLOCK = GAME_SCENE.querySelector('.player-block');
-  if (!PLAYER_BLOCK) return errorManagement({ errCase: 'errorComn', message: '.player-block 엘리먼트가 없습니다. 222' });
+  if (!PLAYER_BLOCK) return errorManagement({ errCase: 'elementLoss', message: '.player-block 엘리먼트가 없습니다. 222' });
   const ENEMY_CARD = document.querySelector('.enemy-card');
-  if (!ENEMY_CARD) return errorManagement({ errCase: 'errorComn', message: '.enemy-card 엘리먼트가 없습니다.' });
+  if (!ENEMY_CARD) return errorManagement({ errCase: 'elementLoss', message: '.enemy-card 엘리먼트가 없습니다.' });
   const PLAYER_CARD = document.querySelector('.player-card');
-  if (!PLAYER_CARD) return errorManagement({ errCase: 'errorComn', message: '.player-card 엘리먼트가 없습니다.' });
+  if (!PLAYER_CARD) return errorManagement({ errCase: 'elementLoss', message: '.player-card 엘리먼트가 없습니다.' });
   const ENEMY_COINS = document.querySelector('.coins-enemy');
-  if (!ENEMY_COINS) return errorManagement({ errCase: 'errorComn', message: '.coins-enemy 엘리먼트가 없습니다.' });
+  if (!ENEMY_COINS) return errorManagement({ errCase: 'elementLoss', message: '.coins-enemy 엘리먼트가 없습니다.' });
   const PLAYER_COINS = document.querySelector('.coins-player');
-  if (!PLAYER_COINS) return errorManagement({ errCase: 'errorComn', message: '.coins-player 엘리먼트가 없습니다.' });
+  if (!PLAYER_COINS) return errorManagement({ errCase: 'elementLoss', message: '.coins-player 엘리먼트가 없습니다.' });
 
   // 명령
   setTimeout(() => {
@@ -70,7 +70,7 @@ export default () => {
       // setTimeout(disabledMoveCoins, timeInterval_1);
       // setTimeout(BTN_STATE.HIDE, timeInterval_2);
     } else {
-      errorComn('betUser 세션이 true도 아니고 false도 아닙니다');
+      errorManagement({ errCase: 'sessionStorageLoss', message: 'betUser 세션이 true도 아니고 false도 아닙니다' });
     }
     setTimeout(() => {
       const BATTLE_CARD_NUM = window.sessionStorage.battleCardNum;

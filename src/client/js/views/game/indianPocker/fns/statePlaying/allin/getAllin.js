@@ -112,7 +112,7 @@ export const GET_ALLIN = {
   },
   roundResultDisplay: () => {
     const BETTING_ZONE = document.querySelector('.betting-zone');
-    if (!BETTING_ZONE) return errorManagement({ errCase: 'errorComn', message: 'fold 에서 .betting-zone 엘리먼트가 없습니다.' });
+    if (!BETTING_ZONE) return errorManagement({ errCase: 'elementLoss', message: 'fold 에서 .betting-zone 엘리먼트가 없습니다.' });
     let txtArr = ['ALL IN'];
     let resultEl = document.createElement('div');
     resultEl.classList.add('round-result');

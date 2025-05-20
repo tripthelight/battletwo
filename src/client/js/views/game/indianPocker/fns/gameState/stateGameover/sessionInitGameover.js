@@ -7,7 +7,7 @@ import setStorageGameResult from '@/client/js/views/game/indianPocker/fns/common
 export default () => {
   // element | seeeion 체크
   const RESULT = window.sessionStorage.result;
-  if (!RESULT) return errorManagement({ errCase: 'errorComn', message: 'game over 상태에서 result 세션이 없습니다' });
+  if (!RESULT) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 result 세션이 없습니다' });
 
   // 명령
   setTimeout(() => {

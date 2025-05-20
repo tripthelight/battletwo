@@ -18,9 +18,9 @@ export const SET_FOLD = {
     const P_COINS = Number(window.sessionStorage.coinsPlayer);
     const E_COINS = Number(window.sessionStorage.coinsEnemy);
     const COINS_ENEMY = document.querySelector('.coins-enemy');
-    if (!COINS_ENEMY) errorManagement({ errCase: 'errorComn', message: 'fold ani 완료 후 .coins-enemy 엘리먼트가 없습니다' });
+    if (!COINS_ENEMY) errorManagement({ errCase: 'elementLoss', message: 'fold ani 완료 후 .coins-enemy 엘리먼트가 없습니다' });
     const COINS_PLAYER = document.querySelector('.coins-player');
-    if (!COINS_PLAYER) errorManagement({ errCase: 'errorComn', message: 'fold ani 완료 후 .coins-player 엘리먼트가 없습니다' });
+    if (!COINS_PLAYER) errorManagement({ errCase: 'elementLoss', message: 'fold ani 완료 후 .coins-player 엘리먼트가 없습니다' });
     const COINS_ENEMY_LI = COINS_ENEMY.querySelectorAll('li');
     const COINS_PLAYER_LI = COINS_PLAYER.querySelectorAll('li');
     /*
@@ -43,7 +43,7 @@ export const SET_FOLD = {
   },
   roundResultDisplay: () => {
     const BETTING_ZONE = document.querySelector('.betting-zone');
-    if (!BETTING_ZONE) return errorManagement({ errCase: 'errorComn', message: 'fold 에서 .betting-zone 엘리먼트가 없습니다.' });
+    if (!BETTING_ZONE) return errorManagement({ errCase: 'elementLoss', message: 'fold 에서 .betting-zone 엘리먼트가 없습니다.' });
 
     document.documentElement.style.setProperty('--round-result-height', `${BETTING_ZONE.clientHeight}px`);
 

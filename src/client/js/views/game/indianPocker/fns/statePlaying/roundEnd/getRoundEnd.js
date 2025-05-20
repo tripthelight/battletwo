@@ -205,11 +205,11 @@ export const GET_ROUND_END = {
   },
   roundResultDisplay: (_result) => {
     const ENEMY_CARD = document.querySelector('.enemy-card');
-    if (!ENEMY_CARD) return errorManagement({ errCase: 'errorComn', message: 'roundResultDisplay 에서 .enemy-card 엘리먼트가 없습니다.' });
+    if (!ENEMY_CARD) return errorManagement({ errCase: 'elementLoss', message: 'roundResultDisplay 에서 .enemy-card 엘리먼트가 없습니다.' });
     const PLAYER_CARD = document.querySelector('.player-card');
-    if (!PLAYER_CARD) return errorManagement({ errCase: 'errorComn', message: 'roundResultDisplay 에서 .player-card 엘리먼트가 없습니다.' });
+    if (!PLAYER_CARD) return errorManagement({ errCase: 'elementLoss', message: 'roundResultDisplay 에서 .player-card 엘리먼트가 없습니다.' });
     const BETTING_ZONE = document.querySelector('.betting-zone');
-    if (!BETTING_ZONE) return errorManagement({ errCase: 'errorComn', message: 'roundResultDisplay 에서 .betting-zone 엘리먼트가 없습니다.' });
+    if (!BETTING_ZONE) return errorManagement({ errCase: 'elementLoss', message: 'roundResultDisplay 에서 .betting-zone 엘리먼트가 없습니다.' });
 
     document.documentElement.style.setProperty('--round-result-height', `${BETTING_ZONE.clientHeight}px`);
 
@@ -288,18 +288,18 @@ export const GET_ROUND_END = {
     // 동점이 아닐 때
     if (_result === 'drew') return setTimeout(GET_ROUND_END.roundResultDisplay, timeInterval_202, _result, false);
     const BET_COINS = document.querySelector('.bet-coins');
-    if (!BET_COINS) return errorManagement({ errCase: 'errorComn', message: 'call | raise 결과에서 .bet-coins 엘리먼트가 없습니다' });
+    if (!BET_COINS) return errorManagement({ errCase: 'elementLoss', message: 'call | raise 결과에서 .bet-coins 엘리먼트가 없습니다' });
     const CPINS_ENEMY = document.querySelector('.coins-enemy');
-    if (!CPINS_ENEMY) return errorManagement({ errCase: 'errorComn', message: 'call | raise 결과에서 .coins-enemy 엘리먼트가 없습니다' });
+    if (!CPINS_ENEMY) return errorManagement({ errCase: 'elementLoss', message: 'call | raise 결과에서 .coins-enemy 엘리먼트가 없습니다' });
     const ENEMY_COINS = CPINS_ENEMY.querySelectorAll('li');
     const CPINS_PLAYER = document.querySelector('.coins-player');
-    if (!CPINS_PLAYER) return errorManagement({ errCase: 'errorComn', message: 'call | raise 결과에서 .coins-player 엘리먼트가 없습니다' });
+    if (!CPINS_PLAYER) return errorManagement({ errCase: 'elementLoss', message: 'call | raise 결과에서 .coins-player 엘리먼트가 없습니다' });
     const PLAYER_COINS = CPINS_PLAYER.querySelectorAll('li');
     const COINS_PLAYER = window.sessionStorage.coinsPlayer;
-    if (!COINS_PLAYER) return errorManagement({ errCase: 'errorComn', message: 'call | raise 결과에서 coinsPlayer 세션이 없습니다' });
+    if (!COINS_PLAYER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'call | raise 결과에서 coinsPlayer 세션이 없습니다' });
     const PNUM = Number(COINS_PLAYER);
     const COINS_ENEMY = window.sessionStorage.coinsEnemy;
-    if (!COINS_ENEMY) return errorManagement({ errCase: 'errorComn', message: 'call | raise 결과에서 coinsEnemy 세션이 없습니다' });
+    if (!COINS_ENEMY) return errorManagement({ errCase: 'sessionStorageLoss', message: 'call | raise 결과에서 coinsEnemy 세션이 없습니다' });
     const ENUM = Number(COINS_ENEMY);
     /*
     for (let i = 0; i < PLAYER_COINS.length; i++) PLAYER_COINS[i].remove();

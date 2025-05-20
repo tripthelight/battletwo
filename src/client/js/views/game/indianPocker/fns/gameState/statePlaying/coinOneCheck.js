@@ -9,12 +9,12 @@ export default () => {
   const DREW_CHECK = window.sessionStorage.drewState;
   if (DREW_CHECK || DREW_CHECK === 'true') return;
   const COINS_PLAYER = window.sessionStorage.coinsPlayer;
-  if (!COINS_PLAYER) return errorManagement({ errCase: 'errorComn', message: '코인 1 체크 중 coinsPlayer 세션이 없습니다.' });
+  if (!COINS_PLAYER) return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 coinsPlayer 세션이 없습니다.' });
   const COINS_ENEMY = window.sessionStorage.coinsEnemy;
-  if (!COINS_ENEMY) return errorManagement({ errCase: 'errorComn', message: '코인 1 체크 중 coinsEnemy 세션이 없습니다.' });
+  if (!COINS_ENEMY) return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 coinsEnemy 세션이 없습니다.' });
   if (Number(COINS_PLAYER) > 0 && Number(COINS_ENEMY) > 0) return;
   const EXT_FIRST_BET = window.sessionStorage.extFirstBet;
-  if (!EXT_FIRST_BET) return errorManagement({ errCase: 'errorComn', message: '코인 1 체크 중 extFirstBet 세션이 없습니다.' });
+  if (!EXT_FIRST_BET) return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 extFirstBet 세션이 없습니다.' });
   if (EXT_FIRST_BET === 'true') return;
 
   // 명령

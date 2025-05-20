@@ -6,7 +6,7 @@ import drawResultEnemyBlock from '@/client/js/views/game/indianPocker/fns/gameSt
 export default () => {
   // element | seeeion 체크
   const GAME_SCENE = document.getElementById('gameScene');
-  if (!GAME_SCENE) return errorManagement({ errCase: 'errorComn', message: 'game over 상태에서 #gameScene 엘리먼트가 없습니다' });
+  if (!GAME_SCENE) return errorManagement({ errCase: 'elementLoss', message: 'game over 상태에서 #gameScene 엘리먼트가 없습니다' });
   const COINS_ENEMY = document.querySelector('.coins-enemy');
   if (COINS_ENEMY) COINS_ENEMY.classList.remove('active');
   if (COINS_ENEMY) COINS_ENEMY.classList.add('disabled');
@@ -18,8 +18,8 @@ export default () => {
   const PLAYER_BLOCK = document.querySelector('.player-block');
 
   const RESULT = window.sessionStorage.result;
-  if (!RESULT) return errorManagement({ errCase: 'errorComn', message: 'game over 상태에서 결과 출력 중 result 세션이 없습니다' });
-  const RESULT_RES = RESULT === 'true' ? true : RESULT === 'false' ? false : errorManagement({ errCase: 'errorComn', message: 'game over 상태에서 result 세션이 true나 false가 아닙니다' });
+  if (!RESULT) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 결과 출력 중 result 세션이 없습니다' });
+  const RESULT_RES = RESULT === 'true' ? true : RESULT === 'false' ? false : errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 result 세션이 true나 false가 아닙니다' });
   if (PLAYER_BLOCK && !RESULT_RES) return resultAnimation();
   if (PLAYER_BLOCK && RESULT_RES) {
     const COINS = PLAYER_BLOCK.querySelectorAll('li');

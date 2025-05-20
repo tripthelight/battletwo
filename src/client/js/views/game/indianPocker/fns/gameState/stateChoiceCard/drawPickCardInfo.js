@@ -6,7 +6,7 @@ import closePopup from '@/client/js/functions/popup';
 export default () => {
   // element | seeeion 체크
   const CONTAINER = document.getElementById('container');
-  if (!CONTAINER) return errorManagement({ errCase: 'errorComn', message: '#container 엘리먼트가 없습니다.' });
+  if (!CONTAINER) return errorManagement({ errCase: 'elementLoss', message: '#container 엘리먼트가 없습니다.' });
   const CHOICE_CARD_INFO = CONTAINER.querySelector('.choice-card-info');
   if (CHOICE_CARD_INFO) return;
   const ENEMY_CARD_CHOICE_READY = window.sessionStorage.enemyCardChoiceReady;

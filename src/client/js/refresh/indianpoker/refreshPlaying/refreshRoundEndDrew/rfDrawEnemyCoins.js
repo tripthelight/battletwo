@@ -7,7 +7,7 @@ export default () => {
   const COINS_ENEMY = document.querySelector('.coins-enemy');
   if (COINS_ENEMY) return;
   const ENEMY_BLOCK = document.querySelector('.enemy-block');
-  if (!ENEMY_BLOCK) return errorManagement({ errCase: 'errorComn', message: '.enemy-block 엘리먼트가 없습니다' });
+  if (!ENEMY_BLOCK) return errorManagement({ errCase: 'elementLoss', message: '.enemy-block 엘리먼트가 없습니다' });
 
   // 명령
   setTimeout(() => {

@@ -1,4 +1,5 @@
 import deviceStateStore from '@/client/store/deviceStateStore';
+import { errorManagement } from '@/client/js/module/errorManagement';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
@@ -12,7 +13,7 @@ export default () => {
   if (!PLAYER_BLOCK) return;
 
   const BET_USER = window.sessionStorage.betUser;
-  if (!BET_USER) return errorComn('betUser not found');
+  if (!BET_USER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'betUser not found' });
   const BET_STATE = BET_USER === 'true' ? true : false;
 
   // 명령

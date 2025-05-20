@@ -3,13 +3,13 @@ import { errorManagement } from '@/client/js/module/errorManagement';
 
 export default (_cw, _ch, _ty, _state) => {
   const ENEMY_COIN_EL = document.querySelector('.coins-enemy');
-  if (!ENEMY_COIN_EL) return errorManagement({ errCase: 'errorComn', message: 'round end에서 .coins-enemy 엘리먼트가 없습니다' });
+  if (!ENEMY_COIN_EL) return errorManagement({ errCase: 'elementLoss', message: 'round end에서 .coins-enemy 엘리먼트가 없습니다' });
   const ENEMY_COINS_EL = ENEMY_COIN_EL.querySelectorAll('li');
 
   const PLAYER_BLOCK = document.querySelector('.player-block');
-  if (!PLAYER_BLOCK) return errorManagement({ errCase: 'errorComn', message: 'round end에서 .player-block 엘리먼트가 없습니다' });
+  if (!PLAYER_BLOCK) return errorManagement({ errCase: 'elementLoss', message: 'round end에서 .player-block 엘리먼트가 없습니다' });
   const PLAYER_COIN_EL = document.querySelector('.coins-player');
-  if (!PLAYER_COIN_EL) return errorManagement({ errCase: 'errorComn', message: 'round end에서 .coins-player 엘리먼트가 없습니다' });
+  if (!PLAYER_COIN_EL) return errorManagement({ errCase: 'elementLoss', message: 'round end에서 .coins-player 엘리먼트가 없습니다' });
   const PLAYER_COINS_EL = PLAYER_COIN_EL.querySelectorAll('li');
 
   if (_state === 'end' && ENEMY_COINS_EL.length > 0) {

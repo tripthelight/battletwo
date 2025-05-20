@@ -10,10 +10,10 @@ export default () => {
   const BET_COIN_POS = window.sessionStorage.betCoinPos;
   if (!BET_COIN_POS) return drawPlayerBlock();
   const BETTING_ZONE = document.querySelector('.betting-zone');
-  if (!BETTING_ZONE) return errorManagement({ errCase: 'errorComn', message: '.betting-zone 엘리먼트가 없습니다' });
+  if (!BETTING_ZONE) return errorManagement({ errCase: 'elementLoss', message: '.betting-zone 엘리먼트가 없습니다' });
 
   const BET_USER = window.sessionStorage.betUser;
-  if (!BET_USER) return errorManagement({ errCase: 'errorComn', message: 'betUser not found' });
+  if (!BET_USER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'betUser not found' });
   const BET_RES = BET_USER === 'true' ? true : false;
 
   // 명령

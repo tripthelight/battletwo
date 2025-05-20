@@ -25,7 +25,7 @@ export const bottomSheet = {
  */
 function bottomSheetDraw(_txt, _delay) {
   const CONTAINER = document.getElementById('container');
-  if (!CONTAINER) return errorManagement({ errCase: 'errorComn', message: 'bottom sheet를 그리는 중 #container 엘리먼트가 없습니다.' });
+  if (!CONTAINER) return errorManagement({ errCase: 'elementLoss', message: 'bottom sheet를 그리는 중 #container 엘리먼트가 없습니다.' });
 
   setTimeout(function () {
     let elem = document.createElement('div');

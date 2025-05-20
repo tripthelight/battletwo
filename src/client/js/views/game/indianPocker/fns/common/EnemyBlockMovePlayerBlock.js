@@ -6,19 +6,19 @@ import { timeInterval_1, timeInterval_1001 } from '@/client/js/functions/variabl
 export default () => {
   return new Promise((resolve, reject) => {
     const BETTING_ZONE = document.querySelector('.betting-zone');
-    if (!BETTING_ZONE) return errorManagement({ errCase: 'errorComn', message: 'fold 버튼 페널티 받을 시 .betting-zone 엘리먼트가 없습니다' });
+    if (!BETTING_ZONE) return errorManagement({ errCase: 'elementLoss', message: 'fold 버튼 페널티 받을 시 .betting-zone 엘리먼트가 없습니다' });
     const COINS_PLAYER = window.sessionStorage.coinsPlayer;
-    if (!COINS_PLAYER) return errorManagement({ errCase: 'errorComn', message: 'fold 버튼 페널티 받을 시 coinsPlayer 세션이 없습니다' });
+    if (!COINS_PLAYER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'fold 버튼 페널티 받을 시 coinsPlayer 세션이 없습니다' });
     const COINS_ENEMY = window.sessionStorage.coinsEnemy;
-    if (!COINS_ENEMY) return errorManagement({ errCase: 'errorComn', message: 'fold 버튼 페널티 받을 시 coinsEnemy 세션이 없습니다' });
+    if (!COINS_ENEMY) return errorManagement({ errCase: 'sessionStorageLoss', message: 'fold 버튼 페널티 받을 시 coinsEnemy 세션이 없습니다' });
     if (Number(COINS_ENEMY) === 0) return resolve('nextRound'); // 다음 함수 실행
     const COINS_ENEMY_EL = document.querySelector('.coins-enemy');
-    if (!COINS_ENEMY_EL) return errorManagement({ errCase: 'errorComn', message: 'fold 버튼 페널티 받을 시 .coins-enemy 엘리먼트가 없습니다' });
+    if (!COINS_ENEMY_EL) return errorManagement({ errCase: 'elementLoss', message: 'fold 버튼 페널티 받을 시 .coins-enemy 엘리먼트가 없습니다' });
     const ENEMY_COINS = COINS_ENEMY_EL.querySelectorAll('li');
     if (ENEMY_COINS.length === 0) return resolve('nextRound'); // 다음 함수 실행
 
     const COINS_PLAYER_EL = document.querySelector('.coins-player');
-    if (!COINS_PLAYER_EL) return errorManagement({ errCase: 'errorComn', message: 'fold 버튼 페널티 받을 시 .coins-player 엘리먼트가 없습니다' });
+    if (!COINS_PLAYER_EL) return errorManagement({ errCase: 'elementLoss', message: 'fold 버튼 페널티 받을 시 .coins-player 엘리먼트가 없습니다' });
     const PLAYER_COINS = COINS_PLAYER_EL.querySelectorAll('li');
     const LAST_PLAYER_EL = PLAYER_COINS.length > 0 ? PLAYER_COINS[PLAYER_COINS.length - 1] : 0;
 

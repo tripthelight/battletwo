@@ -15,9 +15,9 @@ export default () => {
   const COINS_PLAYER = document.querySelector('.coins-player');
   if (!COINS_PLAYER) return;
   const BET_USER = window.sessionStorage.betUser;
-  if (!BET_USER) return errorManagement({ errCase: 'errorComn', message: 'betUser 세션이 없습니다.' });
+  if (!BET_USER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'betUser 세션이 없습니다.' });
   const BAT_STATE = window.sessionStorage.betState;
-  if (!BAT_STATE) return errorManagement({ errCase: 'errorComn', message: 'betState 세션이 없습니다.' });
+  if (!BAT_STATE) return errorManagement({ errCase: 'sessionStorageLoss', message: 'betState 세션이 없습니다.' });
 
   // 명령
   setTimeout(() => {
@@ -43,7 +43,7 @@ export default () => {
       // 다음 함수 실행
       setTimeout(disabledMoveCoins, timeInterval_1);
     } else {
-      return errorManagement({ errCase: 'errorComn', message: 'betUser 세션이 true나 false가 아닙니다.' });
+      return errorManagement({ errCase: 'sessionStorageLoss', message: 'betUser 세션이 true나 false가 아닙니다.' });
     }
     setTimeout(() => {
       LOADING_EVENT.hide();

@@ -44,7 +44,7 @@ export const SET_BASIC_BETTING = {
   },
   betCoinStateAddEnd: (_host) => {
     const COIN_BET = window.sessionStorage.betCoin;
-    if (!COIN_BET) return errorManagement({ errCase: 'errorComn', message: '기본배팅 할 때 betCoin 세션이 없습니다.' });
+    if (!COIN_BET) return errorManagement({ errCase: 'sessionStorageLoss', message: '기본배팅 할 때 betCoin 세션이 없습니다.' });
     const COIN_BET_ARR = JSON.parse(COIN_BET);
 
     setTimeout(() => {

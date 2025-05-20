@@ -7,10 +7,10 @@ import moveCoins from '@/client/js/views/game/indianPocker/fns/common/moveCoins'
 export default () => {
   // element | seeeion 체크
   const BET_STATE = window.sessionStorage.betState;
-  if (!BET_STATE) return errorManagement({ errCase: 'errorComn', message: 'betState 세션이 없습니다.' });
-  if (BET_STATE !== 'basicBetting') return errorManagement({ errCase: 'errorComn', message: 'basicBetting 세션의 값이 잘못되었습니다.' });
+  if (!BET_STATE) return errorManagement({ errCase: 'sessionStorageLoss', message: 'betState 세션이 없습니다.' });
+  if (BET_STATE !== 'basicBetting') return errorManagement({ errCase: 'sessionStorageLoss', message: 'basicBetting 세션의 값이 잘못되었습니다.' });
   const BASIC_BETTING_STATE = window.sessionStorage.basicBettingState;
-  if (!BASIC_BETTING_STATE) return errorManagement({ errCase: 'errorComn', message: 'basicBettingState 세션이 없습니다.' });
+  if (!BASIC_BETTING_STATE) return errorManagement({ errCase: 'sessionStorageLoss', message: 'basicBettingState 세션이 없습니다.' });
 
   // 명령
   setTimeout(() => {
@@ -20,7 +20,7 @@ export default () => {
     } else if (BASIC_BETTING_STATE === 'false') {
       moveCoins();
     } else {
-      return errorManagement({ errCase: 'errorComn', message: 'BASIC_BETTING_STATE 세션의 값이 잘못되었습니다.' });
+      return errorManagement({ errCase: 'sessionStorageLoss', message: 'BASIC_BETTING_STATE 세션의 값이 잘못되었습니다.' });
     }
     LOADING_EVENT.hide();
   }, timeInterval_1);

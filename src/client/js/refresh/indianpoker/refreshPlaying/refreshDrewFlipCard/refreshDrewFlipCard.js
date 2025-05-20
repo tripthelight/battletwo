@@ -9,12 +9,12 @@ export default () => {
   if (BOTTOM_BUTTONS) BOTTOM_BUTTONS.remove();
 
   const PLAYER_BLOCK = document.querySelector('.player-block');
-  if (!PLAYER_BLOCK) return errorManagement({ errCase: 'errorComn', message: 'drew refresh 중 player-block 엘리먼트가 없습니다.' });
+  if (!PLAYER_BLOCK) return errorManagement({ errCase: 'elementLoss', message: 'drew refresh 중 player-block 엘리먼트가 없습니다.' });
   const PLAYER_CARD = PLAYER_BLOCK.querySelector('.player-card');
-  if (!PLAYER_CARD) return errorManagement({ errCase: 'errorComn', message: 'drew refresh 중  .player-card 엘리먼트가 없습니다' });
+  if (!PLAYER_CARD) return errorManagement({ errCase: 'elementLoss', message: 'drew refresh 중  .player-card 엘리먼트가 없습니다' });
 
   const ENEMY_CARD = document.querySelector('.enemy-block .enemy-card');
-  if (!ENEMY_CARD) return errorManagement({ errCase: 'errorComn', message: 'drew refresh 중 enemy-card 엘리먼트가 없습니다.' });
+  if (!ENEMY_CARD) return errorManagement({ errCase: 'elementLoss', message: 'drew refresh 중 enemy-card 엘리먼트가 없습니다.' });
 
   ENEMY_CARD.classList.add('disabled');
   PLAYER_BLOCK.classList.remove('disabled');

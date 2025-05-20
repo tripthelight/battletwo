@@ -11,7 +11,7 @@ export default () => {
 
   // element | seeeion 체크
   const CONTAINER = document.getElementById('container');
-  if (!CONTAINER) return errorManagement({ errCase: 'errorComn', message: '#container 엘리먼트가 없습니다.' });
+  if (!CONTAINER) return errorManagement({ errCase: 'elementLoss', message: '#container 엘리먼트가 없습니다.' });
   const DRAW_BET_INFO = CONTAINER.querySelector('.draw-bet-info');
   if (DRAW_BET_INFO) return;
   const BASIC_BETTING_STATE = window.sessionStorage.basicBettingState;

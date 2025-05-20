@@ -8,7 +8,7 @@ export default (_state) => {
     let STATE_CASE = ['win', 'lose', 'fold'];
     if (STATE_CASE.filter((item) => _state === item).length) {
       const BET_COINS = document.querySelector('.bet-coins');
-      if (!BET_COINS) return errorManagement({ errCase: 'errorComn', message: '.betting-zone에서 .enemy-block으로 칩을 옯길 때 .bet-coins 엘리먼트가 없습니다' });
+      if (!BET_COINS) return errorManagement({ errCase: 'elementLoss', message: '.betting-zone에서 .enemy-block으로 칩을 옯길 때 .bet-coins 엘리먼트가 없습니다' });
       const BET_COIN_RES_ARR = BattingZoneMoveRt();
       let cw = 0;
       let ch = 0;
@@ -23,9 +23,9 @@ export default (_state) => {
           })
           .then(() => {
             const BET_COIN_EL = document.querySelector('.bet-coins');
-            if (!BET_COIN_EL) return errorManagement({ errCase: 'errorComn', message: 'round end에서 .bet-coins 엘리먼트가 없습니다' });
+            if (!BET_COIN_EL) return errorManagement({ errCase: 'elementLoss', message: 'round end에서 .bet-coins 엘리먼트가 없습니다' });
             const BET_COINS_EL = BET_COIN_EL.querySelectorAll('li');
-            if (!BET_COINS_EL) return errorManagement({ errCase: 'errorComn', message: 'round end에서 .bet-coins li 엘리먼트가 없습니다' });
+            if (!BET_COINS_EL) return errorManagement({ errCase: 'elementLoss', message: 'round end에서 .bet-coins li 엘리먼트가 없습니다' });
 
             const BET_COINS_ELEM = BET_COINS_EL[0];
             cw = BET_COINS_ELEM.clientWidth;

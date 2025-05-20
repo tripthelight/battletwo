@@ -10,11 +10,11 @@ export default (_coins, _coinsRes, _coinsDelete) => {
     if (_coinsDelete > 0) return resolve({ ep: _coins, epeb: _coinsRes, rc: _coinsDelete });
     if (_coins < 1) return resolve({ ep: 0, epeb: Number(window.sessionStorage.coinsPlayerExtBet), rc: _coinsDelete });
     const BETTING_ZONE = document.querySelector('.betting-zone');
-    if (!BETTING_ZONE) return errorManagement({ errCase: 'errorComn', message: 'all in 버튼 클릭 시 .betting-zone 엘리먼트가 없습니다' });
+    if (!BETTING_ZONE) return errorManagement({ errCase: 'elementLoss', message: 'all in 버튼 클릭 시 .betting-zone 엘리먼트가 없습니다' });
     const BET_COINS = BETTING_ZONE.querySelector('.bet-coins');
-    if (!BET_COINS) return errorManagement({ errCase: 'errorComn', message: 'all in 버튼 클릭 시 .bet-coins 엘리먼트가 없습니다' });
+    if (!BET_COINS) return errorManagement({ errCase: 'elementLoss', message: 'all in 버튼 클릭 시 .bet-coins 엘리먼트가 없습니다' });
     const COINS_PLAYER = document.querySelector('.coins-player');
-    if (!COINS_PLAYER) return errorManagement({ errCase: 'errorComn', message: 'all in 버튼 클릭 시 .coins-player 엘리먼트가 없습니다' });
+    if (!COINS_PLAYER) return errorManagement({ errCase: 'elementLoss', message: 'all in 버튼 클릭 시 .coins-player 엘리먼트가 없습니다' });
     const COINS_PLAYER_LI = COINS_PLAYER.querySelectorAll('li');
 
     const BBT = getStyle(BETTING_ZONE, 'border-top-width');

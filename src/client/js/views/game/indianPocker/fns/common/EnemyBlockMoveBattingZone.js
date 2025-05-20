@@ -10,11 +10,11 @@ import animateClock from '@/client/js/views/game/indianPocker/fns/common/animate
 
 export default (_case) => {
   const BETTING_ZONE = document.querySelector('.betting-zone');
-  if (!BETTING_ZONE) return errorManagement({ errCase: 'errorComn', message: '.enemy-block에서 .betting-zone으로 칩을 옯길 때 .betting-zone 엘리먼트가 없습니다' });
+  if (!BETTING_ZONE) return errorManagement({ errCase: 'elementLoss', message: '.enemy-block에서 .betting-zone으로 칩을 옯길 때 .betting-zone 엘리먼트가 없습니다' });
   const ENEMY_BLOCK = document.querySelector('.enemy-block');
-  if (!ENEMY_BLOCK) return errorManagement({ errCase: 'errorComn', message: '.enemy-block에서 .betting-zone으로 칩을 옯길 때 .enemy-block 엘리먼트가 없습니다' });
+  if (!ENEMY_BLOCK) return errorManagement({ errCase: 'elementLoss', message: '.enemy-block에서 .betting-zone으로 칩을 옯길 때 .enemy-block 엘리먼트가 없습니다' });
   const ENEMY_COIN_WRAP = ENEMY_BLOCK.querySelector('.coins-enemy');
-  if (!ENEMY_COIN_WRAP) return errorManagement({ errCase: 'errorComn', message: '.enemy-block에서 .betting-zone으로 칩을 옯길 때 .coins-enemy 엘리먼트가 없습니다' });
+  if (!ENEMY_COIN_WRAP) return errorManagement({ errCase: 'elementLoss', message: '.enemy-block에서 .betting-zone으로 칩을 옯길 때 .coins-enemy 엘리먼트가 없습니다' });
   const COINS = ENEMY_COIN_WRAP.querySelectorAll('li');
   const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
   const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet;
@@ -22,7 +22,7 @@ export default (_case) => {
   if (_case === 'allin') {
     return new Promise((resolve, reject) => {
       const BET_COINS = document.querySelector('.bet-coins');
-      if (!BET_COINS) return errorManagement({ errCase: 'errorComn', message: '.enemy-block에서 .betting-zone으로 칩을 옯길 때 .bet-coins 엘리먼트가 없습니다' });
+      if (!BET_COINS) return errorManagement({ errCase: 'elementLoss', message: '.enemy-block에서 .betting-zone으로 칩을 옯길 때 .bet-coins 엘리먼트가 없습니다' });
       const MOVE_COINS_LEN = Number(COINS_ENEMY_EXT_BET) > 0 ? Number(COINS_ENEMY_EXT_BET) : 0;
       const BBT = getStyle(BETTING_ZONE, 'border-top-width');
       let aniTime = Number(MOVE_COINS_LEN) > 0 ? Number(reactiveState.allInintrtval / MOVE_COINS_LEN) : 0;

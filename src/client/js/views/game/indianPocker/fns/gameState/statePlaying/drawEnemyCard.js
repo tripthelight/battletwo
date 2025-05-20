@@ -8,9 +8,9 @@ export default () => {
   const ENEMY_CARD = document.querySelector('.enemy-card');
   if (ENEMY_CARD) return;
   const GAME_SCENE = document.getElementById('gameScene');
-  if (!GAME_SCENE) return errorManagement({ errCase: 'errorComn', message: '#gameScene 엘리먼트가 없습니다.' });
+  if (!GAME_SCENE) return errorManagement({ errCase: 'elementLoss', message: '#gameScene 엘리먼트가 없습니다.' });
   const ENEMY_BLOCK = GAME_SCENE.querySelector('.enemy-block');
-  if (!ENEMY_BLOCK) return errorManagement({ errCase: 'errorComn', message: '.enemy-block 엘리먼트가 없습니다.' });
+  if (!ENEMY_BLOCK) return errorManagement({ errCase: 'elementLoss', message: '.enemy-block 엘리먼트가 없습니다.' });
   let res;
   const BATTLE_CARD_NUM = JSON.parse(window.sessionStorage.battleCardNum);
   for (let i = 0; i < BATTLE_CARD_NUM.length; i++) {

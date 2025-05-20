@@ -6,18 +6,18 @@ import { getStyle } from '@/client/js/functions/comnExport';
 export default () => {
   return new Promise((resolve, reject) => {
     const COINS_PLAYER = window.sessionStorage.coinsPlayer;
-    if (!COINS_PLAYER) return errorManagement({ errCase: 'errorComn', message: 'fold 버튼 페널티 시 coinsPlayer 세션이 없습니다' });
+    if (!COINS_PLAYER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'fold 버튼 페널티 시 coinsPlayer 세션이 없습니다' });
     if (Number(COINS_PLAYER) === 0) return resolve('nextRound'); // 다음 함수 실행
     const COINS_PLAYER_EL = document.querySelector('.coins-player');
-    if (!COINS_PLAYER_EL) return errorManagement({ errCase: 'errorComn', message: 'fold 버튼 페널티 시 .coins-player 엘리먼트가 없습니다' });
+    if (!COINS_PLAYER_EL) return errorManagement({ errCase: 'elementLoss', message: 'fold 버튼 페널티 시 .coins-player 엘리먼트가 없습니다' });
     const PLAYER_COINS = COINS_PLAYER_EL.querySelectorAll('li');
     if (PLAYER_COINS.length === 0) return resolve('nextRound'); // 다음 함수 실행
     const COINS_ENEMY = window.sessionStorage.coinsEnemy;
-    if (!COINS_ENEMY) return errorManagement({ errCase: 'errorComn', message: 'fold 버튼 페널티 시 coinsEnemy 세션이 없습니다' });
+    if (!COINS_ENEMY) return errorManagement({ errCase: 'sessionStorageLoss', message: 'fold 버튼 페널티 시 coinsEnemy 세션이 없습니다' });
     const BETTING_ZONE = document.querySelector('.betting-zone');
-    if (!BETTING_ZONE) return errorManagement({ errCase: 'errorComn', message: 'fold 버튼 페널티 시 .betting-zone 엘리먼트가 없습니다' });
+    if (!BETTING_ZONE) return errorManagement({ errCase: 'elementLoss', message: 'fold 버튼 페널티 시 .betting-zone 엘리먼트가 없습니다' });
     const COINS_ENEMY_EL = document.querySelector('.coins-enemy');
-    if (!COINS_ENEMY_EL) return errorManagement({ errCase: 'errorComn', message: 'fold 버튼 페널티 시 .coins-enemy 엘리먼트가 없습니다' });
+    if (!COINS_ENEMY_EL) return errorManagement({ errCase: 'elementLoss', message: 'fold 버튼 페널티 시 .coins-enemy 엘리먼트가 없습니다' });
     const ENEMY_COINS = COINS_ENEMY_EL.querySelectorAll('li');
     const PENALTY_COINS = Number(COINS_PLAYER) >= 10 ? 10 : Number(COINS_PLAYER);
     const LAST_ENEMY_EL = ENEMY_COINS.length > 0 ? ENEMY_COINS[ENEMY_COINS.length - 1] : 0;

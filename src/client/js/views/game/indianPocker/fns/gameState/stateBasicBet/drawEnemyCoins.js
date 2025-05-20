@@ -12,7 +12,7 @@ export default () => {
   // enemy 코인 모두 제거
   if (COINS_ENEMY) removeUserCoins(COINS_ENEMY);
   const ENEMY_BLOCK = document.querySelector('.enemy-block');
-  if (!ENEMY_BLOCK) return errorManagement({ errCase: 'errorComn', message: '.enemy-block 엘리먼트가 없습니다' });
+  if (!ENEMY_BLOCK) return errorManagement({ errCase: 'elementLoss', message: '.enemy-block 엘리먼트가 없습니다' });
 
   const BET_COIN_POS = window.sessionStorage.betCoinPos;
   let betCoinPosArr = [];

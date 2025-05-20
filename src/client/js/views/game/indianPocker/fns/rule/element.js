@@ -15,6 +15,6 @@ export const ELEMENT = {
     if (!el && _state === 'find') return false;
     if (el && _state === 'findCheck') return el;
     if (el && _state === 'length') return el.length;
-    return errorManagement({ errCase: 'errorComn', message: _el + ' 엘리먼트가 없습니다' });
+    return errorManagement({ errCase: 'elementLoss', message: _el + ' 엘리먼트가 없습니다' });
   },
 };

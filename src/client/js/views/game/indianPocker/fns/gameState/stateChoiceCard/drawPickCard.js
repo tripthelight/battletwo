@@ -9,7 +9,7 @@ import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState
 export default () => {
   // element | seeeion 체크
   const GAME_SCENE = document.getElementById('gameScene');
-  if (!GAME_SCENE) return errorManagement({ errCase: 'errorComn', message: '#gameScene 엘리먼트가 없습니다.' });
+  if (!GAME_SCENE) return errorManagement({ errCase: 'elementLoss', message: '#gameScene 엘리먼트가 없습니다.' });
   const CHOICE_CARD = GAME_SCENE.querySelector('.choice-card');
   if (CHOICE_CARD) return;
 

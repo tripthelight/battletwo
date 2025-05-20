@@ -47,8 +47,15 @@ function showErrorNotification(errCase, component, message) {
       default:
         break;
     }
+  } else if (errCase === 'elementLoss') {
+    errorModal(text.err);
+    console.log('elementLoss error : ', message);
+  } else if (errCase === 'sessionStorageLoss') {
+    errorModal(text.err);
+    console.log('elementLoss error : ', message);
   } else if (errCase === 'errorComn') {
-    errorModal(message ? message : text.err);
+    errorModal(text.err);
+    console.log('errorComn error : ', message);
   }
 }
 
