@@ -1,3 +1,7 @@
+/**
+ * 원문 데이터를 복호화해서 다시 얻고 싶다면 → bcrypto의 AES 사용 → npm install bcrypto
+ * 사용자 비밀번호 등은 비교만 하면 되고, 복호화는 필요 없다면 → bcryptjs or bcrypt 사용 → npm install bcryptjs
+ */
 import bcrypt from 'bcryptjs';
 
 /**

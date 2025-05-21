@@ -9,9 +9,7 @@ import insertStorageDate from '@/client/js/functions/insertStorageDate';
 import rtcPeer from '@/client/js/webRTC/rtcPeer';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import makeCard from '@/client/js/views/game/indianPocker/fns/common/makeCard/makeCard';
-import obfuscationStore from '@/client/store/obfuscationStore';
-
-import { BCRYPT_STORAGE } from '@/client/js/module/bcryptStorage';
+import encryptionStore from '@/client/store/encryptionStore';
 
 // onMounted
 document.onreadystatechange = async () => {
@@ -27,54 +25,6 @@ document.onreadystatechange = async () => {
       // 카드 우선 생성
       makeCard();
 
-      /*
-      // 'GAME_NAME' KEY가 sessionStorage에 있는지 체크
-      const storageGameNameKeyBefore = await BCRYPT_STORAGE.findSessionStorageKey(process.env.KEY_GAME_NAME);
-      console.log('storageGameNameKeyBefore ::: ', storageGameNameKeyBefore);
-
-      // 'GAME_NAME' VALUE가 sessionStorage에 있는지 체크
-      const storageGameNameValBefore = await BCRYPT_STORAGE.findSessionStorageVal(process.env.KEY_GAME_NAME);
-      console.log('storageGameNameValBefore ::: ', storageGameNameValBefore);
-
-      // 'GAME_NAME' KEY 암호화
-      const encryptKeyGameName = await BCRYPT_STORAGE.encryption(process.env.KEY_GAME_NAME);
-      console.log('encryptGameName ::: ', encryptKeyGameName);
-
-      // 'GAME_NAME' 'indianPocker' VALUE 암호화
-      const encryptValGameName = await BCRYPT_STORAGE.encryption(process.env.VAL_INDIAN_POCKER_GAME_NAME);
-      console.log('encryptValGameName ::: ', encryptValGameName);
-
-      // 암호화한 'GAME_NAME' KEY / 'indianPocker' VALUE 를 sessionStorage에 등록
-      storageMethod('s', 'SET_ITEM', encryptKeyGameName, encryptValGameName);
-
-      // 'GAME_NAME' KEY가 sessionStorage에 있는지 다시 체크
-      const storageGameNameDeyAfter = await BCRYPT_STORAGE.findSessionStorageKey(process.env.KEY_GAME_NAME);
-      console.log('storageGameNameDeyAfter ::: ', storageGameNameDeyAfter);
-
-      // 'GAME_NAME' VALUE가 sessionStorage에 있는지 체크
-      const storageGameNameValAfter = await BCRYPT_STORAGE.findSessionStorageVal(process.env.KEY_GAME_NAME);
-      console.log('storageGameNameValAfter ::: ', storageGameNameValAfter);
-
-      // sessionStorage에 있는 'GAME_NAME' KEY가 'indianPocker' 인지 체크
-      const compareKey = await BCRYPT_STORAGE.compareDecryptionKey(window.sessionStorage.getItem(encryptKeyGameName), process.env.VAL_INDIAN_POCKER_GAME_NAME);
-      console.log('compareKey ::: ', compareKey);
-      */
-
-      // 'GAME_NAME' key가 sessionStorage에 있는지 체크
-      const storageGameName = await BCRYPT_STORAGE.findSessionStorageKey(process.env.KEY_GAME_NAME);
-      // sessionStorage에 있는 'GAME_NAME' KEY가 'indianPocker' 인지 체크
-      const compareKeyVal = await BCRYPT_STORAGE.compareStorageKeyVal(process.env.KEY_GAME_NAME, process.env.VAL_INDIAN_POCKER_GAME_NAME);
-      // 'GAME_NAME' key가 없거나
-      // 'GAME_NAME' key가 sessionStorage에 있는데 value가 'indianPocker' 가 아닌경우
-      if (!storageGameName || (storageGameName && !compareKeyVal)) {
-        // 'GAME_NAME' KEY 암호화
-        const encryptKeyGameName = await BCRYPT_STORAGE.encryption(process.env.KEY_GAME_NAME);
-        // 'GAME_NAME' 'indianPocker' VALUE 암호화
-        const encryptValGameName = await BCRYPT_STORAGE.encryption(process.env.VAL_INDIAN_POCKER_GAME_NAME);
-        // 암호화한 'GAME_NAME' KEY / 'indianPocker' VALUE 를 sessionStorage에 등록
-        storageMethod('s', 'SET_ITEM', encryptKeyGameName, encryptValGameName);
-      }
-
       // gameName을 sessionStorage에 저장
       const GAME_NAME = window.sessionStorage.getItem('gameName');
       if (!GAME_NAME || GAME_NAME !== 'indianPocker') {
@@ -84,7 +34,7 @@ document.onreadystatechange = async () => {
       // webRTC 공통
       await rtcPeer('indianPocker');
 
-      const storeState = obfuscationStore.getState().obfuscationState.obfuscation;
+      const storeState = encryptionStore.getState().encryptionState.compair;
       console.log('KEYS : ', Object.keys(storeState));
 
       if (reload) {
