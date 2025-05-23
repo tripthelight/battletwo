@@ -5,7 +5,7 @@ import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import reload from '@/client/js/module/reload';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorManagement';
-import insertStorageDate from '@/client/js/functions/insertStorageDate';
+import insertStorageWs from '@/client/js/functions/insertStorageWs';
 import rtcPeer from '@/client/js/webRTC/rtcPeer';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import makeCard from '@/client/js/views/game/indianPocker/fns/common/makeCard/makeCard';
@@ -20,7 +20,7 @@ document.onreadystatechange = async () => {
       console.log('indianPocker init');
 
       // 먼저 webSocket에서 암호화된 sessionStorige를 받고,
-      await insertStorageDate();
+      await insertStorageWs();
 
       // 카드 우선 생성
       makeCard();

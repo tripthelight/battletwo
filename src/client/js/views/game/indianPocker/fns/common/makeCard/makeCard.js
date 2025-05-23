@@ -4,15 +4,18 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 import encryptCardNumber from '@/client/js/views/game/indianPocker/fns/common/makeCard/encryptCardNumber';
 
 export default () => {
+  const cardNum = window.sessionStorage.getItem('cardNum');
+  if (cardNum !== null && JSON.parse(cardNum).length > 0) return;
   const encryptCardNumbers = new Promise((resolve, reject) => {
-    if (window.sessionStorage.cardNum && JSON.parse(window.sessionStorage.cardNum).length > 0) return;
     setTimeout(() => {
       resolve(encryptCardNumber());
     }, timeInterval_1);
   });
   encryptCardNumbers
     .then((numArr) => {
-      storageMethod('s', 'SET_ITEM', 'cardNum', JSON.stringify(numArr));
+      if (numArr) {
+        storageMethod('s', 'SET_ITEM', 'cardNum', JSON.stringify(numArr));
+      }
     })
     .catch((err) => {
       console.log('error encryptCardNumbers');

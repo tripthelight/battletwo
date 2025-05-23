@@ -8,13 +8,23 @@ import webpack from 'webpack';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import webpackDevServer from 'webpack-dev-server';
+import { PurgeCSSPlugin } from 'purgecss-webpack-plugin';
+import { globSync } from 'glob';
+import WebpackObfuscator from 'webpack-obfuscator';
 import multipleHtmlPlugins from './src/client/js/webpack/htmlPage.js';
 import multipleJsPlugins from './src/client/js/webpack/jsPage.js';
 import commonEnv from './src/client/js/webpack/env/commonEnv.js';
+// import { createRequire } from 'module';
+// const require = createRequire(import.meta.url);
+// const glob = require('glob');
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const MODE = process.env.MODE === 'development';
+
+const PATHS = {
+  src: path.join(__dirname, 'src'),
+};
 
 const webpackConfig = {
   mode: process.env.MODE, // development | production
@@ -127,22 +137,39 @@ const webpackConfig = {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new CssMinimizerPlugin(),
     new MiniCssExtractPlugin({
       linkType: 'text/css',
       filename: 'css/[name]/[name].css',
       // ignoreOrder: true, // CSS 순서 충돌 경고 무시
     }),
     new webpack.DefinePlugin(commonEnv),
+    ...(MODE
+      ? []
+      : [
+          new PurgeCSSPlugin({
+            paths: globSync(`${PATHS.src}/**/*`, { nodir: true }),
+          }),
+          // production 모드일 경우 build 코드 난독화
+          new WebpackObfuscator(
+            {
+              rotateStringArray: true,
+              stringArray: true,
+              stringArrayEncoding: ['base64'], // 또는 'rc4'
+              stringArrayThreshold: 0.75, // 75%의 문자열을 난독화
+            },
+            ['vendors.*.js'], // 예외 처리할 파일
+          ),
+        ]),
   ].concat(multipleHtmlPlugins),
   optimization: {
+    runtimeChunk: 'single',
+    minimize: true,
     minimizer: [
       new TerserPlugin({
-        // `extractComments`를 제거하거나 올바르게 설정
-        extractComments: false, // 주석 추출 비활성화
+        extractComments: false,
         terserOptions: {
           format: {
-            comments: false, // 모든 주석 제거
+            comments: false,
           },
         },
       }),
@@ -150,10 +177,31 @@ const webpackConfig = {
     ],
     splitChunks: {
       chunks: 'all',
-      name: 'common', // 공통된 코드나 스타일을 'common'으로 묶어줌
-      minSize: 0,
-      maxSize: 50000, // 50KB로 설정하여, 특정 크기(라인 수)에 도달하면 분할
+      minSize: 20000,
+      maxSize: 150000, // 150KB 이상이면 나눔
+      enforceSizeThreshold: 100000, // 100KB 넘으면 강제 분할
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            const pkg = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/);
+            return `vendor.${pkg?.[1]?.replace('@', '') ?? 'misc'}`;
+          },
+          chunks: 'all',
+        },
+        common: {
+          name: 'common',
+          minChunks: 2,
+          priority: -10,
+          reuseExistingChunk: true,
+        },
+      },
     },
+  },
+  performance: {
+    hints: false, // 'warning' 개발/운영 모두에서 경고 끔 (크기 문제만 표시하므로)
+    maxEntrypointSize: 500000,
+    maxAssetSize: 500000,
   },
 };
 

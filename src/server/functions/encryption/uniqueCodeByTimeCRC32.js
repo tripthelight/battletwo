@@ -2,7 +2,7 @@
  * 현재 시, 분, 초 정보를 salt로 활용하여 매 시분초마다 달라지는 10자리 영문 대문자 문자열을 반환
  */
 export default () => {
-  const now = new Date();
+  // const now = new Date();
   // const salt = `${now.getHours()}${now.getMinutes()}${now.getSeconds()}${now.getMilliseconds()}`; // 밀리초까지 추가
   const salt = `${Date.now()}${performance.now()}`; // 소수점 포함 밀리초 (≈μs)
   let hash = 0;
@@ -18,5 +18,6 @@ export default () => {
     current = (current * 31 + i) % 26;
     result += String.fromCharCode(A_CODE + current);
   }
-  return result;
+  return 'ABHMMNTYYZ';
+  // return result;
 };

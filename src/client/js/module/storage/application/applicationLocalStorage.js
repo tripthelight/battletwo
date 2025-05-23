@@ -5,6 +5,8 @@ import saveSessionStorage from '@/client/js/module/storage/save/saveSessionStora
 
 export default function applicationLocalStorage() {
   window.addEventListener('storage', (event) => {
+    console.log('event : ', event);
+
     if (event.storageArea === localStorage) {
       // 브라우저의 Application 탭에서 localStorage 변경
       storageEventStore.dispatch(updateStorageEvent({ value: false }));

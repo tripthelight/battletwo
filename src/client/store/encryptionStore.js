@@ -5,8 +5,8 @@ const encryptionSlice = createSlice({
   name: 'encryptionStore',
   initialState: {
     compair: {},
-    oldpair: '',
     keypair: '',
+    oldpair: '',
   },
 
   reducers: {
