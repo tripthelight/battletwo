@@ -2,6 +2,7 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1, timeInterval_1000, timeInterval_2000, timeInterval_202, timeInterval_3201, timeInterval_3202, timeInterval_401, timeInterval_402 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
+import findCharCode from '@/client/js/functions/findCharCode';
 import disabledMoveCoins from '@/client/js/views/game/indianPocker/fns/common/disabledMoveCoins';
 import playerNumRes from '@/client/js/views/game/indianPocker/fns/common/playerNumRes';
 import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState';
@@ -252,7 +253,11 @@ export const GET_ROUND_END = {
     const encryptCardNumbers = new Promise((resolve, reject) => {
       console.log('1 ************* ', _result);
 
-      if (window.sessionStorage.cardNum && JSON.parse(window.sessionStorage.cardNum).length > 0) {
+      // if (window.sessionStorage.cardNum && JSON.parse(window.sessionStorage.cardNum).length > 0) {
+      // sessionStorage cardNum key 찾기
+      const encryptKey = findCharCode([77, 68, 79, 88, 73, 86, 69, 70, 65, 80]);
+      const decryptVal = window.sessionStorage.getItem(encryptKey);
+      if (decryptVal !== null && JSON.parse(decryptVal).length > 0) {
         if (!_result) return;
         console.log('2 ************* ', _result);
         if (_result === 'drew') return STATE_PLAYING.drew();

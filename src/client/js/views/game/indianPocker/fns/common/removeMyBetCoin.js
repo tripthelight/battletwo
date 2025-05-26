@@ -1,10 +1,11 @@
 import { timeInterval_1 } from '@/client/js/functions/variable';
-import pcDraggableCheck from '@/client/js/views/game/indianPocker/fns/common/pcDraggableCheck';
-import drawMyBetCoin from '@/client/js/views/game/indianPocker/fns/common/drawMyBetCoin';
-import getTranslateMH from '@/client/js/views/game/indianPocker/fns/common/getTranslateMH';
-import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 import { errorManagement } from '@/client/js/module/errorManagement';
+import findCharCode from '@/client/js/functions/findCharCode';
+import pcDraggableCheck from '@/client/js/views/game/indianPocker/fns/common/pcDraggableCheck';
+import getTranslateMH from '@/client/js/views/game/indianPocker/fns/common/getTranslateMH';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
+import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
+import drawMyBetCoin from '@/client/js/views/game/indianPocker/fns/common/drawMyBetCoin';
 
 /**
  * 배팅 후 coins-player의 코인(li) 그리는 단계
@@ -15,8 +16,16 @@ export default (_data) => {
   if (!PLAYER_COIN_UL) return;
   const COINS = PLAYER_COIN_UL.querySelectorAll('li');
 
-  const GAME_STATE = window.sessionStorage.gameState;
-  if (!GAME_STATE) return errorManagement({ errCase: 'errorComn', message: 'gameState not found' });
+  // const GAME_STATE = window.sessionStorage.gameState;
+  // if (!GAME_STATE) return errorManagement({ errCase: 'errorComn', message: 'gameState not found' });
+  // basicBet
+  const encryptVal1 = findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]);
+  // playing
+  const encryptVal2 = findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]);
+  // gameState: sessionStorage.getItem('gameState'),
+  const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]);
+  const decryptVal = window.sessionStorage.getItem(encryptKey);
+  if (!decryptVal) return errorManagement({ errCase: 'errorComn', message: 'decryptVal not found' });
   const BET_USER = window.sessionStorage.betUser;
   if (!BET_USER) return errorManagement({ errCase: 'errorComn', message: 'betUser not found' });
   const BET_STATE = BET_USER === 'true' ? true : false;
@@ -50,13 +59,15 @@ export default (_data) => {
       hourEl.classList.add('h');
       liEl.appendChild(minuteEl);
       liEl.appendChild(hourEl);
-      if (GAME_STATE === 'basicBet') {
+      // if (GAME_STATE === 'basicBet') {
+      if (decryptVal === encryptVal1) {
         // 기본배팅일 경우 -> gameState : basicBet
         // 기본 배팅이 끝나면 시간이 멈춰야 됨
         minuteEl.style.transform = `translate(-50%, -96%) rotate(${timeDegArr[i][0]}deg)`;
         hourEl.style.transform = `translate(-50%, -86%) rotate(${timeDegArr[i][1]}deg)`;
       }
-      if (GAME_STATE === 'playing') {
+      // if (GAME_STATE === 'playing') {
+      if (decryptVal === encryptVal2) {
         // 추가배팅일 경우 -> gameState : playing
         if (BET_STATE) {
           // 추가 배팅이고, 내 차례면 animateClock()

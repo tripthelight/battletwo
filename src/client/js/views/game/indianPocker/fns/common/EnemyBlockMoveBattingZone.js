@@ -3,6 +3,7 @@ import { getStyle } from '@/client/js/functions/comnExport';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import { timeInterval_201 } from '@/client/js/functions/variable.js';
 import { errorManagement } from '@/client/js/module/errorManagement';
+import findCharCode from '@/client/js/functions/findCharCode';
 import randomNumberMinMax from '@/client/js/views/game/indianPocker/fns/common/randomNumberMinMax.js';
 import getTranslateMH from '@/client/js/views/game/indianPocker/fns/common/getTranslateMH.js';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
@@ -102,7 +103,13 @@ export default (_case) => {
     });
   } else {
     return new Promise((resolve, reject) => {
-      const NUMS = window.sessionStorage.gameState === 'playing' ? Number(COINS_ENEMY_EXT_BET) || 0 : Number(COINS_ENEMY_BET) || 0;
+      // const NUMS = window.sessionStorage.gameState === 'playing' ? Number(COINS_ENEMY_EXT_BET) || 0 : Number(COINS_ENEMY_BET) || 0;
+      // gameState: sessionStorage.getItem('gameState'),
+      const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]);
+      const decryptVal = window.sessionStorage.getItem(encryptKey);
+      // playing
+      const encryptVal = findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]);
+      const NUMS = decryptVal === encryptVal ? Number(COINS_ENEMY_EXT_BET) || 0 : Number(COINS_ENEMY_BET) || 0;
       if (NUMS === 0) resolve();
 
       const PB = getStyle(ENEMY_COIN_WRAP, 'padding-bottom');

@@ -151,6 +151,48 @@ async function compareStorageKeyVal(_originKey, _originVal) {
   return false;
 }
 
+/**
+ * 카드번호 테스트
+ */
+async function bcryptCardTest() {
+  const allKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'];
+  const allNumbs = ['e442c0d4', 'd52eebb2', '87e79ad', '1c66315a', '21c0ff12', 'f479d3fc', '7d7dda45', '499adcbe', '59b8324c', '77fdea28'];
+  const allCards = [
+    '$2b$04$fgoFdfwm.UDwTO5DE5/kRO/KhQovbXTIQmaLnnuvRquGOpBuEhxly',
+    '$2b$04$QQpd4IOOtaUMPDeK15.kteKPlzjeZPF8LSP6i.yegwVTLrf0.i34y',
+    '$2b$04$6u6uvurZhhWnpSjbR6DlZu4Q1CYHrjBU5thtaFj0V6/iTUEFj9Rb2',
+    '$2b$04$2WPtlPVIqoo5V7UvnWGX6.o/dKiWgghwX/AWwS9zsSFkenMQBnLa.',
+    '$2b$04$51tvbeJ3KsG5xkm8B2K2TuezT1XZwobY1sXMwD6/LmkJJNWe.n2yy',
+    '$2b$04$T1SBSye3LkcTojAZhtsa5.ZwDFWtIGOohUK0gRQVpS.6Jc/r7qg8O',
+    '$2b$04$T16YrgfwatoWuc6bo0rB6.81KfDqWULYMJnWcSBZrR74GSCgu1hae',
+    '$2b$04$D2ZM3vdTk.pjTlbjVC1zXeyiu4/LwtueQa.PUvzndIiOGJGA5W3pe',
+    '$2b$04$v7U7u6qaASBFUufRFWWvGewdJ1mWL7oHb2P6duG6/pXZH3E5UVM92',
+    '$2b$04$tGbINDuWacEXPPzMD17YnOcsSvjSgqHUW.7nix9xRL0J.xYby/5I2',
+    '$2b$04$EdQlSwGG5kuIdtwK3pG0FOcQUhdUZK1VlZwRLE2ko//oBy3A.MHMW',
+    '$2b$04$m1nMAGop26YafeTdVvGsL.CWKG4fkBD1DhYgwIvtnz900Udul.8rK',
+    '$2b$04$3W4qMR4zMeDHRo3beTt27ev/o1vIewr9tcz1PG7YcyqnPHZtTFj5.',
+    '$2b$04$BfpWFzt.IRcAVW.d1QY2pON0CW3PqN6v9hP1urH6S2by5MS7SNhx6',
+    '$2b$04$mkDauvnfvQlCpWnbXaaxte0rh5x7iOVQJb2E9W7rs57LfxsxIjfxu',
+    '$2b$04$PDTcZievju8cubnPkJIRWuMItuAxMk.Lyt/1y5thVg/4pq4m.qZUa',
+    '$2b$04$ySuRgjMEEkRUbl/nPuHiR.umaC3aqDcZ9kbjdygBrxVScoddrFe8G',
+    '$2b$04$UAwY5kYW.c7PW3OkXyZSIefo5p3glj.iQ8v/EMJsSSOd7/5FZOkR6',
+    '$2b$04$CYtLNE8Eih7Z4x21Uf.y2us5WmE7KMCnY0ApJX/DNEhkYi5YeV/p.',
+    '$2b$04$u4pKisZiCIKNte2ejC6Oqu9PsEFNzedFu2B4ZAnWgh.rSdmEOW80q',
+  ];
+  for (const key of allNumbs) {
+    for (const card of allCards) {
+      try {
+        const match = await bcrypt.compare(key, card);
+        if (match) {
+          console.log('key >>>>>>>>>>>>>> ', key); // 1, 2, 3 ... 10 두번씩 찍힘
+        }
+      } catch (error) {
+        console.error('검증 오류 bcryptCardTest :', error);
+      }
+    }
+  }
+}
+
 export const BCRYPT_STORAGE = {
   encryption,
   decryption,
@@ -160,6 +202,7 @@ export const BCRYPT_STORAGE = {
   returnSessionStorageVal,
   compareDecryptionKey,
   compareStorageKeyVal,
+  bcryptCardTest,
 };
 
 /*

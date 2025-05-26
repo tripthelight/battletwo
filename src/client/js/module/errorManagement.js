@@ -53,6 +53,9 @@ function showErrorNotification(errCase, component, message) {
   } else if (errCase === 'sessionStorageLoss') {
     errorModal(text.err);
     console.log('elementLoss error : ', message);
+  } else if (errCase === 'cardNum') {
+    errorModal(text.error_text);
+    console.log('cardNum error : ', message);
   } else if (errCase === 'errorComn') {
     errorModal(text.err);
     console.log('errorComn error : ', message);

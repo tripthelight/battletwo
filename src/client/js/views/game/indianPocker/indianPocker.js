@@ -9,7 +9,8 @@ import insertStorageWs from '@/client/js/functions/insertStorageWs';
 import rtcPeer from '@/client/js/webRTC/rtcPeer';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import makeCard from '@/client/js/views/game/indianPocker/fns/common/makeCard/makeCard';
-import encryptionStore from '@/client/store/encryptionStore';
+import findCharCode from '@/client/js/functions/findCharCode';
+import { BCRYPT_STORAGE } from '@/client/js/module/bcryptStorage';
 
 // onMounted
 document.onreadystatechange = async () => {
@@ -25,32 +26,49 @@ document.onreadystatechange = async () => {
       // 카드 우선 생성
       makeCard();
 
+      // await BCRYPT_STORAGE.bcryptCardTest();
+
       // gameName을 sessionStorage에 저장
+      const encryptKey = findCharCode([66, 86, 68, 73, 69, 65, 73, 66, 75, 69]);
+      const encryptVal = findCharCode([68, 74, 69, 77, 70, 75, 76, 86, 68, 69]);
+
+      const decryptVal = window.sessionStorage.getItem(encryptKey);
+      if (decryptVal === null || (decryptVal !== null && decryptVal !== encryptVal)) {
+        // sessionStorage gameName이 없음
+        storageMethod('s', 'SET_ITEM', encryptKey, encryptVal);
+      }
+
+      /*
       const GAME_NAME = window.sessionStorage.getItem('gameName');
       if (!GAME_NAME || GAME_NAME !== 'indianPocker') {
         storageMethod('s', 'SET_ITEM', 'gameName', 'indianPocker');
       }
+      */
 
       // webRTC 공통
       await rtcPeer('indianPocker');
 
-      const storeState = encryptionStore.getState().encryptionState.compair;
-      console.log('KEYS : ', Object.keys(storeState));
-
       if (reload) {
+        const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]);
+        const decryptVal = window.sessionStorage.getItem(encryptKey);
         // 새로 고침 후 재연결인 경우
-        switch (window.sessionStorage.getItem('gameState')) {
-          case 'waitEnemy':
+        // switch (window.sessionStorage.getItem('gameState')) {
+        switch (decryptVal) {
+          // case 'waitEnemy':
+          case findCharCode([74, 75, 71, 90, 87, 79, 85, 69, 65, 88]):
             // choiceCard
             indianPockerGameState.choiceCard();
             break;
-          case 'choiceCard':
+          // case 'choiceCard':
+          case findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82]):
             indianPockerGameState.choiceCard();
             break;
-          case 'basicBet':
+          // case 'basicBet':
+          case findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]):
             indianPockerGameState.basicBet();
             break;
-          case 'playing':
+          // case 'playing':
+          case findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]):
             // playing 중 새로고침 한 사용자
             storageMethod('s', 'SET_ITEM', 'playingReloadUser', true);
             const FOLD_STATE = window.sessionStorage.foldState;
@@ -74,7 +92,8 @@ document.onreadystatechange = async () => {
               indianPockerGameState.playing();
             }
             break;
-          case 'gameOver':
+          // case 'gameOver':
+          case findCharCode([65, 70, 79, 73, 76, 85, 88, 87, 86, 75]):
             indianPockerGameState.gameOver();
             break;
           default:

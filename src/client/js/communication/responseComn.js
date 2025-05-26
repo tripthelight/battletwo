@@ -1,4 +1,4 @@
-import { BCRYPT_STORAGE } from '@/client/js/module/bcryptStorage';
+import findCharCode from '@/client/js/functions/findCharCode';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { text } from '@/client/js/functions/language';
 import { response as taptapResponse } from '@/client/js/communication/taptap/response';
@@ -7,22 +7,19 @@ import { response as blackAndWhite1Response } from '@/client/js/communication/bl
 import { response as findTheSamePictureResponse } from '@/client/js/communication/findTheSamePicture/response';
 
 export async function responseComn() {
-  // sessionStorage에서 'GAME_NAME' VALUE를 리턴
-  // const storageGameNameValue = await BCRYPT_STORAGE.returnSessionStorageVal(process.env.KEY_GAME_NAME);
-  // if (!storageGameNameValue) errorManagement({ errCase: 'errorComn', message: text.err });
+  // sessionStorage gameName key 찾기
+  const encryptKey = findCharCode([66, 86, 68, 73, 69, 65, 73, 66, 75, 69]);
 
-  // const GAME_APPELLATION = await BCRYPT_STORAGE.decryptionGameName(storageGameNameValue);
-
-  // console.log('GAME_APPELLATION >>>>>>>>>>> ', GAME_APPELLATION);
-
-  const GAME_NAME = window.sessionStorage.getItem('gameName');
-  if (!GAME_NAME) errorManagement({ errCase: 'errorComn', message: text.err });
+  // const GAME_NAME = window.sessionStorage.getItem('gameName');
+  const GAME_NAME = window.sessionStorage.getItem(encryptKey);
+  if (!GAME_NAME) return errorManagement({ errCase: 'errorComn', message: text.err });
 
   switch (GAME_NAME) {
     case 'taptap':
       taptapResponse();
       break;
-    case 'indianPocker':
+    // case 'indianPocker':
+    case findCharCode([68, 74, 69, 77, 70, 75, 76, 86, 68, 69]):
       indianPockerResponse();
       break;
     case 'blackAndWhite1':

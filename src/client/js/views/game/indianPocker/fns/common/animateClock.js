@@ -1,4 +1,5 @@
 import { errorManagement } from '@/client/js/module/errorManagement';
+import findCharCode from '@/client/js/functions/findCharCode';
 
 /**
  * coin의 시, 분 animation
@@ -7,9 +8,18 @@ import { errorManagement } from '@/client/js/module/errorManagement';
  * @param {boolean} _stop   : true -> 시간이 멈춤 | false -> 시간이 감
  */
 export default (_hour, _minute, _stop) => {
-  const GAME_STATE = window.sessionStorage.gameState;
-  if (!GAME_STATE) errorManagement({ errCase: 'errorComn', message: 'gameState not found' });
-  const GAME_RES = GAME_STATE === 'basicBet' || GAME_STATE === 'playing';
+  // basicBet
+  const encryptVal1 = findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]);
+  // playing
+  const encryptVal2 = findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]);
+  // const GAME_STATE = window.sessionStorage.gameState;
+  // gameState: sessionStorage.getItem('gameState'),
+  const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]);
+  const decryptVal = window.sessionStorage.getItem(encryptKey);
+  // if (!GAME_STATE) errorManagement({ errCase: 'errorComn', message: 'gameState not found' });
+  if (!decryptVal) errorManagement({ errCase: 'errorComn', message: 'gameState not found' });
+  // const GAME_RES = GAME_STATE === 'basicBet' || GAME_STATE === 'playing';
+  const GAME_RES = decryptVal === encryptVal1 || decryptVal === encryptVal2;
   if (!GAME_RES) return;
 
   const TRANSFORM_RES = (_pos, _deg) => `translate(-50%, ${_pos}%) rotate(${_deg}deg)`;

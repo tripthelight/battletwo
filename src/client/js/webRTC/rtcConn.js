@@ -4,6 +4,9 @@ import addNickname from '@/client/js/functions/addNickname';
 import { responseComn } from '@/client/js/communication/responseComn';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { text } from '@/client/js/functions/language';
+import compairStorage from '@/client/js/functions/compairStorage';
+import findCharCode from '@/client/js/functions/findCharCode';
+import addCharCode from '@/client/js/functions/addCharCode';
 import reload from '@/client/js/module/reload';
 
 /*
@@ -55,11 +58,16 @@ export default function webRTC(gameName) {
 
     function initOnopen() {
       try {
+        // sessionStorage gameName key 찾기
+        const encryptKey1 = findCharCode([66, 86, 68, 73, 69, 65, 73, 66, 75, 69]);
+        const encryptKey2 = findCharCode([74, 86, 88, 78, 80, 70, 85, 72, 87, 68]);
         signalingSocket.send(
           JSON.stringify({
             type: 'entryOrder',
-            gameName: sessionStorage.getItem('gameName'),
-            roomName: sessionStorage.getItem('roomName') ?? null,
+            // gameName: sessionStorage.getItem('gameName'),
+            gameName: sessionStorage.getItem(encryptKey1),
+            // roomName: sessionStorage.getItem('roomName') ?? null,
+            roomName: sessionStorage.getItem(encryptKey2) ?? null,
           }),
         );
       } catch (error) {
@@ -104,7 +112,15 @@ export default function webRTC(gameName) {
           debug.log('oniceconnectionstatechange :::', peerConnection.iceConnectionState);
           console.log('oniceconnectionstatechange :::', peerConnection.iceConnectionState);
           // 이 이벤트에서 상대 peer가 방을 나갔을 경우 disconnected는 약 5초 뒤에 발생함
-          const REMOTE_PEER_LEFT = peerConnection && (peerConnection.iceConnectionState === 'disconnected' || peerConnection.iceConnectionState === 'failed') && window.sessionStorage.getItem('gameState') && window.sessionStorage.getItem('gameState') !== 'gameOver';
+
+          // gameState: sessionStorage.getItem('gameState'),
+          const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]);
+          const decryptVal = window.sessionStorage.getItem(encryptKey);
+          // gameOver 체크
+          const storageCheck = decryptVal && decryptVal !== findCharCode([65, 70, 79, 73, 76, 85, 88, 87, 86, 75]);
+
+          // const REMOTE_PEER_LEFT = peerConnection && (peerConnection.iceConnectionState === 'disconnected' || peerConnection.iceConnectionState === 'failed') && window.sessionStorage.getItem('gameState') && window.sessionStorage.getItem('gameState') !== 'gameOver';
+          const REMOTE_PEER_LEFT = peerConnection && (peerConnection.iceConnectionState === 'disconnected' || peerConnection.iceConnectionState === 'failed') && storageCheck;
           if (REMOTE_PEER_LEFT) {
             errorManagement({ errCase: 'webRTC', component: 'peerConnection', event: 'oniceconnectionstatechange', message: 'ICE connection state is disconnected', errorDetails: event });
           }
@@ -159,9 +175,10 @@ export default function webRTC(gameName) {
         const message = JSON.parse(event.data);
 
         if (message.type === 'connectFirst' || message.type === 'connectSecond') {
-          console.log('message.type ????????????????? ', message.type);
-
-          storageMethod('s', 'SET_ITEM', 'remotePlayer', message.nickname);
+          // storageMethod('s', 'SET_ITEM', 'remotePlayer', message.nickname);
+          // remotePlayer
+          const encryptKey = findCharCode([74, 83, 78, 89, 67, 71, 87, 70, 82, 86]);
+          storageMethod('s', 'SET_ITEM', encryptKey, findCharCode(addCharCode(message.nickname)));
           addNickname('remotePlayer');
 
           // 상대방이 새로고침 후 재연결이라면
@@ -190,8 +207,6 @@ export default function webRTC(gameName) {
           if (message.type === 'connectSecond') {
             // dataChannel message 전송
             await responseComn();
-
-            console.log('gameState >>>>>>> ', window.sessionStorage.gameState);
 
             // 두 peer가 연결이 되어야 resolve 시켜야 함
             resolve();
@@ -237,9 +252,12 @@ export default function webRTC(gameName) {
     async function handleMessage(msgData) {
       try {
         if (msgData.type === 'entryOrder') {
+          const encryptKey = findCharCode([74, 86, 88, 78, 80, 70, 85, 72, 87, 68]);
           // 생성된 roomName 으로 channelName 생성
           const CHANNEL_NAME = `${gameName}-${msgData.roomName}-Channel`;
-          storageMethod('s', 'SET_ITEM', 'roomName', msgData.roomName);
+          // storageMethod('s', 'SET_ITEM', 'roomName', msgData.roomName);
+          // storageMethod('s', 'SET_ITEM', encryptKey, findCharCode(Array.from(msgData.roomName).map((char) => char.charCodeAt(0))));
+          storageMethod('s', 'SET_ITEM', encryptKey, msgData.roomName);
           initConnect();
           candidateEvent();
 
@@ -306,8 +324,13 @@ export default function webRTC(gameName) {
         }
 
         if (msgData.type === 'otherLeaves') {
-          if (window.sessionStorage.getItem('gameState')) {
-            if (window.sessionStorage.getItem('gameState') === 'gameOver') {
+          // gameState: sessionStorage.getItem('gameState'),
+          const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]);
+          const decryptVal = window.sessionStorage.getItem(encryptKey);
+          // if (window.sessionStorage.getItem('gameState')) {
+          if (encryptKey) {
+            // if (encryptKey === 'gameOver') {
+            if (encryptKey === findCharCode([65, 70, 79, 73, 76, 85, 88, 87, 86, 75])) {
               resolve();
             } else {
               if (msgData.msg === 'r2') {

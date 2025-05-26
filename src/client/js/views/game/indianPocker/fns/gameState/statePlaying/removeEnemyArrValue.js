@@ -4,12 +4,19 @@ import { errorManagement } from '@/client/js/module/errorManagement';
 import P1 from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/P1';
 import P2 from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/P2';
 import P3 from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/P3';
+import findCharCode from '@/client/js/functions/findCharCode';
 
 export default (_enum) => {
   // element | seeeion 체크
-  const CARD_NUM = window.sessionStorage.cardNum;
-  if (!CARD_NUM) return;
-  const CARD_NUM_ARR = JSON.parse(window.sessionStorage.cardNum);
+  // const CARD_NUM = window.sessionStorage.cardNum;
+  // if (!CARD_NUM) return;
+  // const CARD_NUM_ARR = JSON.parse(window.sessionStorage.cardNum);
+  // sessionStorage cardNum key 찾기
+  const encryptKey = findCharCode([77, 68, 79, 88, 73, 86, 69, 70, 65, 80]);
+  const decryptVal = window.sessionStorage.getItem(encryptKey);
+  if (!decryptVal) return;
+  const CARD_NUM_ARR = JSON.parse(decryptVal);
+
   if (!CARD_NUM_ARR || CARD_NUM_ARR.length < 1) return;
 
   setTimeout(() => {

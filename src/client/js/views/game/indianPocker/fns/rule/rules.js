@@ -28,7 +28,6 @@ export const RULES = {
     stopPlayerTime('call');
     RULES.COMN(comnText.call);
     SOCKET_EVENT.SET.CALL();
-    console.log('CALL GO GET_ROUND_END *****************');
     GET_ROUND_END.receiveRoundEnd();
   },
   RAISE: () => {

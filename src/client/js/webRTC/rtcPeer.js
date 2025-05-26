@@ -1,6 +1,7 @@
 import { debug } from '@/client/js/module/debug';
 import webRTC from '@/client/js/webRTC/rtcConn';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
+import findCharCode from '@/client/js/functions/findCharCode';
 import initNickName from '@/client/js/functions/initNickName';
 import waitPeer from '@/client/js/functions/waitPeer';
 import findNickname from '@/client/js/functions/findNickname';
@@ -18,11 +19,23 @@ export default async function rtcPeer(gameName) {
     await initNickName();
 
     // waitEnemy
-    if (!window.sessionStorage.getItem('gameState')) {
-      storageMethod('s', 'SET_ITEM', 'gameState', 'waitEnemy');
+    // if (!window.sessionStorage.getItem('gameState')) {
+    //   storageMethod('s', 'SET_ITEM', 'gameState', 'waitEnemy');
+    // }
+    // waitEnemy
+    // gameState: sessionStorage.getItem('gameState'),
+    const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]);
+    // waitEnemy
+    const encryptVal = findCharCode([74, 75, 71, 90, 87, 79, 85, 69, 65, 88]);
+    const decryptVal = window.sessionStorage.getItem(encryptKey);
+    if (decryptVal === null) {
+      storageMethod('s', 'SET_ITEM', encryptKey, encryptVal);
     }
 
-    if (window.sessionStorage.getItem('gameState') === 'waitEnemy') {
+    // if (window.sessionStorage.getItem('gameState') === 'waitEnemy') {
+    //   waitPeer(1, findNickname('localPlayer'));
+    // }
+    if (window.sessionStorage.getItem(encryptKey) === encryptVal) {
       waitPeer(1, findNickname('localPlayer'));
     }
 
@@ -32,7 +45,10 @@ export default async function rtcPeer(gameName) {
 
     await webRTC(gameName);
 
-    if (window.sessionStorage.getItem('gameState') === 'waitEnemy') {
+    // if (window.sessionStorage.getItem('gameState') === 'waitEnemy') {
+    //   waitPeer(2);
+    // }
+    if (window.sessionStorage.getItem(encryptKey) === encryptVal) {
       waitPeer(2);
     }
     resolve();

@@ -1,4 +1,6 @@
 import bcrypt from 'bcryptjs';
+import { selectCompairNumbers } from '@/client/store/encryptionStore';
+import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import comnDrawEnemyCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/comnDrawEnemyCard';
@@ -18,7 +20,15 @@ export default () => {
       res = BATTLE_CARD_NUM[i].num;
     }
   }
-  const NUMS_LIST = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-  const NUM_RES = NUMS_LIST.filter((nums) => bcrypt.compareSync(nums, res));
-  setTimeout(comnDrawEnemyCard, timeInterval_1, NUM_RES);
+
+  // const NUMS_LIST = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+  // const NUM_RES = NUMS_LIST.filter((nums) => bcrypt.compareSync(nums, res));
+  const arrNumbs = selectCompairNumbers();
+  if (!arrNumbs.length) return errorManagement({ errCase: 'cardNum', message: 'cardNum length 0' });
+  const NUM_RES = arrNumbs.filter((nums) => bcrypt.compareSync(nums, res));
+  if (!NUM_RES.length) return errorManagement({ errCase: 'cardNum', message: 'num result length 0' });
+
+  console.log('NUM_RES >>>>>>>>>>>> ', NUM_RES);
+
+  setTimeout(comnDrawEnemyCard, timeInterval_1, findCardNum(NUM_RES.join()));
 };

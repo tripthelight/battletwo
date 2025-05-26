@@ -1,4 +1,5 @@
 import { configureStore, combineReducers, createSlice } from '@reduxjs/toolkit';
+import findCharCode from '@/client/js/functions/findCharCode';
 
 // 슬라이스(slice) 생성: encryption 상태 관리
 const encryptionSlice = createSlice({
@@ -31,5 +32,15 @@ const encryptionStore = configureStore({
     encryptionState: encryptionSlice.reducer,
   },
 });
+
+// GETTERS
+// NUMBERS에서 랜덤한 10개의 숫자만 추출
+export const selectCompairNumbers = () => {
+  const state = encryptionStore.getState();
+  const compair = state.encryptionState.compair;
+  const encryptedKey = findCharCode([84, 78, 85, 70, 71, 74, 88, 68, 67, 77]);
+  const result = compair[encryptedKey] || [];
+  return result.slice(0, 10);
+};
 
 export default encryptionStore;

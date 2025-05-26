@@ -1,7 +1,8 @@
 import { timeInterval_1 } from '@/client/js/functions/variable';
+import { errorManagement } from '@/client/js/module/errorManagement';
+import findCharCode from '@/client/js/functions/findCharCode';
 import saveBetCoinSession from '@/client/js/views/game/indianPocker/fns/common/saveBetCoinSession';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
-import { errorManagement } from '@/client/js/module/errorManagement';
 
 export default () => {
   const PLAYER_COIN_UL = document.querySelector('ul.coins-player');
@@ -13,11 +14,19 @@ export default () => {
   if (!BET_COIN_SESSION) return;
   const BET_COIN_LIST = JSON.parse(BET_COIN_SESSION);
 
-  const GAME_STATE = window.sessionStorage.gameState;
-  if (!GAME_STATE) errorManagement({ errCase: 'errorComn', message: 'gameState not found' });
+  // const GAME_STATE = window.sessionStorage.gameState;
+  // if (!GAME_STATE) errorManagement({ errCase: 'errorComn', message: 'gameState not found' });
+  // gameState: sessionStorage.getItem('gameState'),
+  const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]);
+  const decryptVal = window.sessionStorage.getItem(encryptKey);
+  if (!decryptVal) errorManagement({ errCase: 'errorComn', message: 'gameState not found' });
 
   // 명령
   setTimeout(() => {
+    // basicBet
+    const encryptVal1 = findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]);
+    // playing
+    const encryptVal2 = findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]);
     let elemLi;
     let x = 0;
     let y = 0;
@@ -27,12 +36,14 @@ export default () => {
     minuteEl.classList.add('m');
     hourEl.classList.add('h');
 
-    if (GAME_STATE === 'basicBet') {
+    // if (GAME_STATE === 'basicBet') {
+    if (decryptVal === encryptVal1) {
       const COIN_POS = BET_COINS ? BET_COIN_LIST.filter((item) => item.host === 'enemy') : BET_COIN_LIST.filter((item) => item.host === 'player');
       minuteEl.style.transform = `translate(-50%, -96%) rotate(${COIN_POS[0].tm}deg)`;
       hourEl.style.transform = `translate(-50%, -86%) rotate(${COIN_POS[0].th}deg)`;
     }
-    if (GAME_STATE === 'playing') {
+    // if (GAME_STATE === 'playing') {
+    if (decryptVal === encryptVal2) {
       const COIN_POS = BET_COIN_LIST.filter((item) => item.host === 'player');
       const COINS_POS = COIN_POS[COIN_POS.length - 1];
       minuteEl.style.transform = `translate(-50%, -96%) rotate(${COINS_POS.tm}deg)`;
