@@ -1,15 +1,19 @@
-import { REQUEST_HANDLERS, REQUEST_BATTING_HANDLERS } from '@/client/js/communication/indianPocker/requestHandlers';
+import { REQUEST_HANDLERS, REQUEST_BATTING_HANDLERS, MAKE_CARD } from '@/client/js/communication/indianPocker/requestHandlers';
 import { errorManagement } from '@/client/js/module/errorManagement';
+import { globalDataChannel } from '@/client/js/webRTC/rtcConn';
 
 export function request(k, v) {
   // const onDataChannel = window.rtcChannels.onDataChannel;
   // if (!onDataChannel || onDataChannel.readyState !== 'open') return;
 
+  /*
   const dataChannel = window.rtcChannels.dataChannel;
-
   if (!dataChannel || (dataChannel && dataChannel.readyState !== 'open')) return;
+  */
+  if (!globalDataChannel || (globalDataChannel && globalDataChannel.readyState !== 'open')) return;
 
   const ALL_TEMPLATES = {
+    ...MAKE_CARD,
     ...REQUEST_HANDLERS,
     ...REQUEST_BATTING_HANDLERS,
   };
@@ -18,7 +22,8 @@ export function request(k, v) {
 
   if (templateFn) {
     const message = templateFn(v);
-    dataChannel.send(JSON.stringify(message));
+    // dataChannel.send(JSON.stringify(message));
+    globalDataChannel.send(JSON.stringify(message));
   } else {
     errorManagement({ errCase: 'errorComn', message: k + ' : Undefined message type' });
   }

@@ -9,6 +9,8 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import addCharCode from '@/client/js/functions/addCharCode';
 import reload from '@/client/js/module/reload';
 
+export let globalDataChannel = null;
+
 /*
  * 일반적으로 peerConnection.iceConnectionState === 'connected'가 먼저 실행되고,
  * 그 이후에 dataChannel.onopen이 실행됩니다.
@@ -30,7 +32,7 @@ export default function webRTC(gameName) {
 
     let signalingSocket = null;
     let peerConnection = null;
-    let dataChannel = null;
+    let dataChannel = null; //
     let isRemoteDescSet = false;
     const pendingCandidates = [];
 
@@ -232,6 +234,7 @@ export default function webRTC(gameName) {
         // onDataChannel은 상대방이 만든 채널을 내가 받은 것
         dataChannel = event.channel;
         window.rtcChannels.dataChannel = dataChannel;
+        globalDataChannel = dataChannel;
 
         comnDatachannel();
 
@@ -265,6 +268,7 @@ export default function webRTC(gameName) {
           if (!msgData.setOffer) {
             dataChannel = peerConnection.createDataChannel(CHANNEL_NAME);
             window.rtcChannels.dataChannel = dataChannel;
+            globalDataChannel = dataChannel;
 
             // 첫번째 접속한 사람만 offer를 보내야함
             createOffer();

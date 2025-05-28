@@ -23,9 +23,6 @@ document.onreadystatechange = async () => {
       // 먼저 webSocket에서 암호화된 sessionStorige를 받고,
       await insertStorageWs();
 
-      // 카드 우선 생성
-      makeCard();
-
       // await BCRYPT_STORAGE.bcryptCardTest();
 
       // gameName을 sessionStorage에 저장
@@ -47,6 +44,9 @@ document.onreadystatechange = async () => {
 
       // webRTC 공통
       await rtcPeer('indianPocker');
+
+      // 두 Peer가 연결 된 후 카드 우선 생성
+      makeCard();
 
       if (reload) {
         const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]);

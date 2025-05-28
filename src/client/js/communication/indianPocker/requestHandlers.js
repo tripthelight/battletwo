@@ -14,6 +14,12 @@ export const REQUEST_HANDLERS = {
   drewRefreshReturn: (v) => ({ type: 'drewRefreshReturn', value: v }),
 };
 
+// make card
+export const MAKE_CARD = {
+  requestMakeCard: (v) => ({ type: 'requestMakeCard', ...v }),
+  responseMakeCard: (v) => ({ type: 'responseMakeCard', ...v }),
+};
+
 // 배팅 메시지
 export const REQUEST_BATTING_HANDLERS = {
   firstExtBet: (v) => ({ type: 'firstExtBet', ...v }),

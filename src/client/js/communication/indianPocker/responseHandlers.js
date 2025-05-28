@@ -11,6 +11,8 @@ import enterBasicBetResult from '@/client/js/communication/indianPocker/fns/ente
 import basicBettingResult from '@/client/js/communication/indianPocker/fns/basicBettingResult';
 import drewRefreshResult from '@/client/js/communication/indianPocker/fns/drewRefreshResult';
 import drewRefreshReturnResult from '@/client/js/communication/indianPocker/fns/drewRefreshReturnResult';
+import requestMakeCard from '@/client/js/communication/indianPocker/fns/requestMakeCard';
+import responseMakeCard from '@/client/js/communication/indianPocker/fns/responseMakeCard';
 
 import SOCKET_EVENT from '@/client/js/communication/indianPocker/batting/battingEvent';
 
@@ -29,6 +31,10 @@ export const RESPONSE_HANDLERS = {
   enterBasicBet: (msg) => enterBasicBetResult(msg.gameState),
   drewRefresh: (msg) => drewRefreshResult(msg.value),
   drewRefreshReturn: (msg) => drewRefreshReturnResult(msg.value),
+
+  // make card
+  requestMakeCard: (msg) => requestMakeCard(msg.list),
+  responseMakeCard: (msg) => responseMakeCard(msg.list),
 
   // Betting 관련
   firstExtBet: (msg) => SOCKET_EVENT.GET.FIRST_EXT_BET_RESULT(msg),

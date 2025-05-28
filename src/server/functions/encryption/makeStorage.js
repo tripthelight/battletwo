@@ -1,4 +1,4 @@
-import obfuscationList from './obfuscationList.js';
+import { obfuscationList } from './obfuscationList.js';
 import uniqueCodeByTimeCRC32 from './uniqueCodeByTimeCRC32.js';
 import uniqueCodeByTimeAES from './uniqueCodeByTimeAES.js';
 import transformWithCRC32 from './transformWithCRC32.js';
@@ -30,7 +30,7 @@ export const MAKE_STORAGE = {
     // const keypair = uniqueCodeByTimeAES();
     // const storageData = convertStructure(transformWithAES(obfuscationList.indianPocker, keypair));
     const keypair = uniqueCodeByTimeCRC32();
-    const storageData = convertStructure(transformWithCRC32(obfuscationList.indianPocker, keypair));
+    const storageData = convertStructure(transformWithCRC32(obfuscationList.indianPocker(), keypair));
 
     return {
       storageData: storageData,
