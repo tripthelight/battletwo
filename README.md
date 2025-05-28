@@ -69,6 +69,12 @@ battletwo
 - npm config set strict-ssl false
 - npm cache clean --force
 
+## sessionStorage 암호화 전략
+- sessionStorage에 저장될 key와 value는 상황에 맞는 패턴으로 암호화 할 것.
+- sessionStorage에 저장될 key와 value는 랜덤한 10글자의 대문자 영문으로 적용하는 방법은 유지.
+- dataChannel 통신이 있을 경우, 내 데이터와 상대 데이터가 같은지 크로스 체크 할 것.
+- 크로스 체크 결과가 다를 경우, 상대방 방나감 처리 할 것
+
 ## 공통 수정사항
 - firefox에서 localStorage, sessionStorage 삭제됨
 
