@@ -1,6 +1,7 @@
 import { selectCompairNumbers } from '@/client/store/encryptionStore';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import bcrypt from 'bcryptjs';
+import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
 
 export default (_arr, _user) => {
   const arrNumbs = selectCompairNumbers();
@@ -17,7 +18,7 @@ export default (_arr, _user) => {
       */
       for (let j = 0; j < arrNumbs.length; j++) {
         if (bcrypt.compareSync(arrNumbs[j], _arr[i].num)) {
-          return j;
+          return findCardNum(arrNumbs[j]);
         }
       }
     }

@@ -12,9 +12,9 @@ export default () => {
   // const CARD_NUMS = JSON.parse(window.sessionStorage.cardNum);
   // if (!CARD_NUMS || CARD_NUMS.length <= 0) return errorManagement({ errCase: 'errorComn', message: 'cardNum 세션이 없거나 length가 없습니다.' });
   // sessionStorage cardNum key 찾기
-  const encryptKey2 = findCharCode([77, 68, 79, 88, 73, 86, 69, 70, 65, 80]);
-  const decryptVal2 = window.sessionStorage.getItem(encryptKey2);
-  const CARD_NUMS = JSON.parse(decryptVal2);
+  const encryptKey = findCharCode([77, 68, 79, 88, 73, 86, 69, 70, 65, 80]);
+  const decryptVal = window.sessionStorage.getItem(encryptKey);
+  const CARD_NUMS = JSON.parse(decryptVal);
   if (!CARD_NUMS || CARD_NUMS.length <= 0) return errorManagement({ errCase: 'errorComn', message: 'cardNum 세션이 없거나 length가 없습니다.' });
 
   const randomNum = randomArray(CARD_NUMS);
@@ -25,6 +25,6 @@ export default () => {
     }
   }
   // storageMethod('s', 'SET_ITEM', 'cardNum', JSON.stringify(CARD_NUMS));
-  storageMethod('s', 'SET_ITEM', encryptKey2, JSON.stringify(CARD_NUMS));
+  storageMethod('s', 'SET_ITEM', encryptKey, JSON.stringify(CARD_NUMS));
   setTimeout(sessionActiveCard, timeInterval_1, 'player', randomNum);
 };
