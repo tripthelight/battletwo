@@ -11,6 +11,7 @@ import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import makeCard from '@/client/js/views/game/indianPocker/fns/common/makeCard/makeCard';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { BCRYPT_STORAGE } from '@/client/js/module/bcryptStorage';
+import generateSecretKey from '@/client/js/views/game/indianPocker/fns/common/generateSecretKey';
 
 // onMounted
 document.onreadystatechange = async () => {
@@ -18,7 +19,7 @@ document.onreadystatechange = async () => {
   if (state === 'interactive') {
   } else if (state === 'complete') {
     try {
-      console.log('indianPocker init');
+      console.log('indianPocker init ', reload);
 
       // 먼저 webSocket에서 암호화된 sessionStorige를 받고,
       await insertStorageWs();
@@ -45,12 +46,16 @@ document.onreadystatechange = async () => {
       // webRTC 공통
       await rtcPeer('indianPocker');
 
+      // 상대 peer의 secret key 생성
+      await generateSecretKey();
+
       // 두 Peer가 연결 된 후 카드 우선 생성
       makeCard();
 
       if (reload) {
         const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]);
         const decryptVal = window.sessionStorage.getItem(encryptKey);
+
         // 새로 고침 후 재연결인 경우
         // switch (window.sessionStorage.getItem('gameState')) {
         switch (decryptVal) {
@@ -61,6 +66,8 @@ document.onreadystatechange = async () => {
             break;
           // case 'choiceCard':
           case findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82]):
+            console.log('새로고침 타냐 ????????????????? ');
+
             indianPockerGameState.choiceCard();
             break;
           // case 'basicBet':
@@ -97,7 +104,7 @@ document.onreadystatechange = async () => {
             indianPockerGameState.gameOver();
             break;
           default:
-            break;
+            return errorManagement({ errCase: 'errorComn', message: '새로고침 했는데 gameState가 없음' });
         }
       } else {
         // choiceCard

@@ -13,6 +13,10 @@ import drewRefreshResult from '@/client/js/communication/indianPocker/fns/drewRe
 import drewRefreshReturnResult from '@/client/js/communication/indianPocker/fns/drewRefreshReturnResult';
 import requestMakeCard from '@/client/js/communication/indianPocker/fns/requestMakeCard';
 import responseMakeCard from '@/client/js/communication/indianPocker/fns/responseMakeCard';
+import requestCardNumList from '@/client/js/communication/indianPocker/fns/requestCardNumList';
+import responseCardNumList from '@/client/js/communication/indianPocker/fns/responseCardNumList';
+import requestRemoveEnemyCardNum from '@/client/js/communication/indianPocker/fns/requestRemoveEnemyCardNum';
+import responseRemoveEnemyCardNum from '@/client/js/communication/indianPocker/fns/responseRemoveEnemyCardNum';
 
 import SOCKET_EVENT from '@/client/js/communication/indianPocker/batting/battingEvent';
 
@@ -35,6 +39,14 @@ export const RESPONSE_HANDLERS = {
   // make card
   requestMakeCard: (msg) => requestMakeCard(msg.list),
   responseMakeCard: (msg) => responseMakeCard(msg.list),
+
+  // validate
+  // 카드 리스트 검증
+  requestCardNumList: (msg) => requestCardNumList(msg),
+  responseCardNumList: (msg) => responseCardNumList(msg),
+  // 카드리스트에서 상대 카드 번호 제거
+  requestRemoveEnemyCardNum: (msg) => requestRemoveEnemyCardNum(msg),
+  responseRemoveEnemyCardNum: (msg) => responseRemoveEnemyCardNum(msg),
 
   // Betting 관련
   firstExtBet: (msg) => SOCKET_EVENT.GET.FIRST_EXT_BET_RESULT(msg),

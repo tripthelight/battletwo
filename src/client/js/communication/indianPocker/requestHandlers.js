@@ -15,9 +15,19 @@ export const REQUEST_HANDLERS = {
 };
 
 // make card
-export const MAKE_CARD = {
+export const REQUEST_MAKE_CARD = {
   requestMakeCard: (v) => ({ type: 'requestMakeCard', ...v }),
   responseMakeCard: (v) => ({ type: 'responseMakeCard', ...v }),
+};
+
+// 검증 요청
+export const REQUEST_VALIDATE_HANDLERS = {
+  // 카드 리스트 검증
+  requestCardNumList: (v) => ({ type: 'requestCardNumList', ...v }),
+  responseCardNumList: (v) => ({ type: 'responseCardNumList', ...v }),
+  // 카드리스트에서 상대 카드 번호 제거
+  requestRemoveEnemyCardNum: (v) => ({ type: 'requestRemoveEnemyCardNum', ...v }),
+  responseRemoveEnemyCardNum: (v) => ({ type: 'responseRemoveEnemyCardNum', ...v }),
 };
 
 // 배팅 메시지

@@ -12,7 +12,10 @@ export default () => {
   const encryptKey = findCharCode([77, 68, 79, 88, 73, 86, 69, 70, 65, 80]);
   const decryptVal = window.sessionStorage.getItem(encryptKey);
 
-  if (decryptVal !== null && JSON.parse(decryptVal).length > 0) return;
+  // if (decryptVal !== null && JSON.parse(decryptVal).length > 0) return;
+  // cardNum은 배열이 아니고 text 문자열
+  if (decryptVal !== null && decryptVal !== '') return;
+
   const encryptCardNumbers = new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve(encryptCardNumber());

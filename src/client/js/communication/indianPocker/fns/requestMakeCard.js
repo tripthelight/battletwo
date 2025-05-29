@@ -1,15 +1,18 @@
+import { errorManagement } from '@/client/js/module/errorManagement';
 import CryptoJS from 'crypto-js';
-import { RF_END_DREW } from '@/client/js/refresh/indianpoker/refreshPlaying/refreshRoundEndDrew/refreshDrewInit';
+import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/communication/indianPocker/request';
-import createBattleCardNum from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/createBattleCardNum';
 
 export default (cardList) => {
-  console.log('cardList >>>>>>>>>> ', cardList);
   // 내 secret key로 받은 카드 리스트 평문을 암호화 해서 응답
+  const secretKeyKey = findCharCode([83, 88, 73, 69, 85, 68, 66, 76, 80, 78]); // SECRET_KEY
+  const secretKeyVal = window.sessionStorage.getItem(secretKeyKey);
 
-  const secretKeytext = '93b4642b183214b64cc00b0db6dc9e3d2784cfa2d7ed3db4827cfef0a69eda1c';
+  if (secretKeyVal === null || (secretKeyVal !== null && secretKeyVal === '')) {
+    return errorManagement({ errCase: 'sessionStorageLoss', message: 'cardNum 복호화시 필요한 secret key 세션 없음' });
+  }
 
   // AES로 암호화
-  const hash = CryptoJS.AES.encrypt(cardList, secretKeytext).toString();
+  const hash = CryptoJS.AES.encrypt(cardList, secretKeyVal).toString();
   request('responseMakeCard', { list: hash });
 };

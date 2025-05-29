@@ -17,6 +17,7 @@ import { STATE_PLAYING } from '@/client/js/views/game/indianPocker/fns/gameState
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import resultTxtInnerHtml from '@/client/js/views/game/indianPocker/fns/common/resultTxtInnerHtml';
 import encryptCardNumber from '@/client/js/views/game/indianPocker/fns/common/makeCard/encryptCardNumber.js';
+import makeCard from '@/client/js/views/game/indianPocker/fns/common/makeCard/makeCard.js';
 
 export const GET_ROUND_END = {
   receiveRoundEnd: () => {
@@ -255,33 +256,51 @@ export const GET_ROUND_END = {
 
       // if (window.sessionStorage.cardNum && JSON.parse(window.sessionStorage.cardNum).length > 0) {
       // sessionStorage cardNum key 찾기
-      const encryptKey = findCharCode([77, 68, 79, 88, 73, 86, 69, 70, 65, 80]);
+      const encryptKey = findCharCode([77, 68, 79, 88, 73, 86, 69, 70, 65, 80]); // cardNum
       const decryptVal = window.sessionStorage.getItem(encryptKey);
-      if (decryptVal !== null && JSON.parse(decryptVal).length > 0) {
-        if (!_result) return;
-        console.log('2 ************* ', _result);
-        if (_result === 'drew') return STATE_PLAYING.drew();
-        if (_result !== 'drew') {
-          return indianPockerGameState.basicBet();
-        }
+      // if (decryptVal !== null && JSON.parse(decryptVal).length > 0) {
+      if (decryptVal === null) {
+        return errorManagement({ errCase: 'errorComn', message: '한 set 종료(roundEnd) 후 cardNum key 세션 없음' });
       } else {
-        setTimeout(() => {
-          console.log('3 ************* ');
-          resolve(encryptCardNumber());
-        }, timeInterval_1);
+        if (decryptVal === '') {
+          // 새 카드 set 생성
+          setTimeout(() => {
+            console.log('3 ************* ');
+            makeCard();
+            // resolve(encryptCardNumber());
+          }, timeInterval_1);
+        } else {
+          if (!_result) return;
+          console.log('2 ************* ', _result);
+          if (_result === 'drew') return STATE_PLAYING.drew();
+          if (_result !== 'drew') {
+            return indianPockerGameState.basicBet();
+          }
+        }
       }
     });
     encryptCardNumbers
+      /*
       .then((numArr) => {
         console.log('4 ************* ', _result);
         if (numArr) {
           if (!_result) return;
           console.log('5 ************* ', _result);
-          storageMethod('s', 'SET_ITEM', 'cardNum', JSON.stringify(numArr));
+          // storageMethod('s', 'SET_ITEM', 'cardNum', JSON.stringify(numArr));
           if (_result === 'drew') return STATE_PLAYING.drew();
           if (_result !== 'drew') {
             return indianPockerGameState.basicBet();
           }
+        }
+      })
+      */
+      .then(() => {
+        console.log('4 ************* ', _result);
+        if (!_result) return;
+        console.log('5 ************* ', _result);
+        if (_result === 'drew') return STATE_PLAYING.drew();
+        if (_result !== 'drew') {
+          return indianPockerGameState.basicBet();
         }
       })
       .catch((err) => {
