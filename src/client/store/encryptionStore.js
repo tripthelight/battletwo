@@ -34,7 +34,7 @@ const encryptionStore = configureStore({
 });
 
 // GETTERS
-// NUMBERS에서 랜덤한 10개의 숫자만 추출
+// NUMBERS에서 1 ~ 10까지 숫자만 추출
 export const selectCompairNumbers = () => {
   const state = encryptionStore.getState();
   const compair = state.encryptionState.compair;

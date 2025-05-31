@@ -32,6 +32,7 @@ export default (data) => {
     P1(P1_PARAMS)
       .then((data) => {
         const { _numRes, CARD_NUM_ARR } = data;
+
         const P2_PARAMS = {
           _numRes: _numRes.join(),
           CARD_NUM_ARR: CARD_NUM_ARR,
@@ -40,7 +41,10 @@ export default (data) => {
       })
       .then((data) => {
         const { _index, CARD_NUM_ARR } = data;
+        console.log('_index >>>>>>> ', _index);
+
         const NUM = JSON.parse(JSON.stringify(_index));
+        console.log('NUM >>>>>>>>>>> ', NUM);
 
         const P2_PARAMS = {
           _deleteList: NUM,
@@ -53,6 +57,8 @@ export default (data) => {
         // storageMethod('s', 'SET_ITEM', 'cardNum', JSON.stringify(_cardNumList));
         // storageMethod('s', 'SET_ITEM', encryptKey, JSON.stringify(_cardNumList));
         // storageMethod('s', 'SET_ITEM', encryptKey, JSON.stringify(_cardNumList));
+
+        console.log('_cardNumList.length >>>>>>>> ', _cardNumList.length);
 
         request('requestRemoveEnemyCardNum', {
           step: 'decrypeList',

@@ -8,11 +8,13 @@ export default (data) => {
     setTimeout(() => {
       const { _enum, CARD_NUM_ARR } = data;
       const arrNumbs = selectCompairNumbers();
+
       if (!arrNumbs.length) return errorManagement({ errCase: 'cardNum', message: 'cardNum length 0' });
+
       resolve(
         {
           _numRes: arrNumbs.filter((item) => bcrypt.compareSync(item.toString(), _enum)),
-          CARD_NUM_ARR,
+          CARD_NUM_ARR: CARD_NUM_ARR,
         },
         // arrNumbs.filter((item) => {
         //   return bcrypt.compareSync(item.toString(), _enum);

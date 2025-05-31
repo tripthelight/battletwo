@@ -15,6 +15,7 @@ export default (data) => {
       // const decryptVal = window.sessionStorage.getItem(encryptKey);
       // const CARD_NUM_ARR = JSON.parse(decryptVal);
       if (!CARD_NUM_ARR || CARD_NUM_ARR.length < 1) return reject(new Error('cardNum세션을 못받음'));
+
       // resolve(
       //   CARD_NUM_ARR.filter((item) => {
       //     return bcrypt.compareSync(_numRes.toString(), item);

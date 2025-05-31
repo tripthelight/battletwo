@@ -11,11 +11,11 @@ export default (_data) => {
   promise
     .then((_data) => {
       // playing
-      const encryptVal = findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]);
+      const encryptVal = findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]); // playing
       // if (_data === 'playing') {
       if (_data === encryptVal) {
         // gameState: sessionStorage.getItem('gameState'),
-        const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]);
+        const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
         const decryptVal = window.sessionStorage.getItem(encryptKey);
         // if (window.sessionStorage.gameState !== 'playing') request('enterPlaying', 'no');
         if (decryptVal !== encryptVal) {
@@ -34,6 +34,6 @@ export default (_data) => {
       }
     })
     .catch((error) => {
-      errorManagement({ errCase: 'errorComn', message: 'enterPlayingResult() 함수를 못탐 11 ::: ' });
+      errorManagement({ errCase: 'errorComn', message: `enterPlayingResult() 함수를 못탐 11 :::  ${error}` });
     });
 };

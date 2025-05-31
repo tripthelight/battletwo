@@ -19,7 +19,7 @@ export default (data) => {
     const decrypted = bytes.toString(CryptoJS.enc.Utf8);
     const encryptCardNum = decrypted.split(',');
 
-    // 상대 peer에게 내 cardNum을 보내
+    // 상대 peer에게 상대 cardNum을 보내
     request('responseCardNumList', {
       step: 'randomNumCard',
       encryptCardNum: encryptCardNum,
