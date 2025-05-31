@@ -26,7 +26,6 @@ export default () => {
       if (numArr) {
         const CARD_STR = numArr.join(); // 'a, b, c'
         const CARD_ARR = CARD_STR.split(','); // ['a', 'b', 'c']
-        console.log('CARD_STR >>>>>>>>> ', CARD_STR);
 
         // storageMethod('s', 'SET_ITEM', 'cardNum', JSON.stringify(numArr));
         // storageMethod('s', 'SET_ITEM', encryptKey, JSON.stringify(numArr));

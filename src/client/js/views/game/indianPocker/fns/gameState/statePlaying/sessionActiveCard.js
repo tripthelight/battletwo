@@ -30,12 +30,14 @@ export default (_host, _num) => {
       createBattleCardNum();
     }
 
+    /*
     const BATTLE_CARD_NUM = JSON.parse(window.sessionStorage.battleCardNum);
     console.log('BATTLE_CARD_NUM.length >>>>>> ', BATTLE_CARD_NUM.length);
 
     if (BATTLE_CARD_NUM.length === 2) {
       drawPlayerCard();
     }
+      */
   }, timeInterval_1);
 
   /*

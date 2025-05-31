@@ -8,6 +8,7 @@ import { request } from '@/client/js/communication/indianPocker/request';
 
 export default () => {
   const BATTLE_CARD_NUM = window.sessionStorage.battleCardNum;
+
   if (BATTLE_CARD_NUM && JSON.parse(BATTLE_CARD_NUM).length === 2) return;
 
   // const CARD_NUMS = JSON.parse(window.sessionStorage.cardNum);

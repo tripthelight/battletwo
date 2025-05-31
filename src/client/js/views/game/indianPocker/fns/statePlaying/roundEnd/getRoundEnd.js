@@ -83,17 +83,22 @@ export const GET_ROUND_END = {
     setTimeout(GET_ROUND_END.cardNumCompare, timeInterval_401, P_NUM_RES);
   },
   cardNumCompare: (_playerNumRes) => {
+    /*
     const BATTLE_CARD_NUM = window.sessionStorage.battleCardNum;
     if (!BATTLE_CARD_NUM) {
       console.log('error - getRoundEnd.js - !BATTLE_CARD_NUM');
       return errorManagement({ errCase: 'errorComn' });
     }
+
     const BATTLE_CARD_ARR = JSON.parse(BATTLE_CARD_NUM);
     if (!BATTLE_CARD_ARR || BATTLE_CARD_ARR.length <= 0) {
       console.log('error - getRoundEnd.js - !BATTLE_CARD_ARR || BATTLE_CARD_ARR.length <= 0');
       return errorManagement({ errCase: 'errorComn' });
     }
+
     let enemyNumRes = playerNum(BATTLE_CARD_ARR, 'enemy');
+    */
+
     let result = '';
     if (Number(_playerNumRes) > Number(enemyNumRes)) {
       result = 'win';

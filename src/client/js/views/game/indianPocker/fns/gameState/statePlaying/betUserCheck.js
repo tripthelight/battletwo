@@ -73,6 +73,7 @@ export default () => {
       errorManagement({ errCase: 'sessionStorageLoss', message: 'betUser 세션이 true도 아니고 false도 아닙니다' });
     }
     setTimeout(() => {
+      /*
       const BATTLE_CARD_NUM = window.sessionStorage.battleCardNum;
       if (BATTLE_CARD_NUM) {
         const NUMS_ARR = JSON.parse(BATTLE_CARD_NUM);
@@ -82,6 +83,12 @@ export default () => {
           // 기본 배팅 후, 남은 코인이 없을 경우
           // setTimeout(coinOneCheck, timeInterval_1);
         }
+      }
+      */
+      const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
+      if (BATTLE_CARD_NUM !== null) {
+        LOADING_EVENT.hide();
+        setTimeout(drewCheck, timeInterval_1);
       }
     }, timeInterval_4);
   }, timeInterval_1);

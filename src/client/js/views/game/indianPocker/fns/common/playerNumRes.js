@@ -2,6 +2,7 @@ import playerNum from '@/client/js/views/game/indianPocker/fns/common/playerNum.
 import { errorManagement } from '@/client/js/module/errorManagement';
 
 export default () => {
+  /*
   const BATTLE_CARD_NUM = window.sessionStorage.battleCardNum;
   if (!BATTLE_CARD_NUM) {
     console.log('error !BATTLE_CARD_NUM');
@@ -13,4 +14,11 @@ export default () => {
     return errorManagement({ errCase: 'errorComn' });
   }
   return playerNum(BATTLE_CARD_ARR, 'player');
+  */
+
+  const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
+  if (BATTLE_CARD_NUM === null) {
+    return errorManagement({ errCase: 'errorComn', message: 'error !BATTLE_CARD_NUM' });
+  }
+  return playerNum(BATTLE_CARD_NUM, 'player');
 };

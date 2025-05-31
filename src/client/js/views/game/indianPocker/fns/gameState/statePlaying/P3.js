@@ -17,7 +17,8 @@ export default (data) => {
       console.log('_deleteList.length >>>>>>>>>>> ', _deleteList.length);
 
       if (_deleteList.length === 0) return;
-      sessionActiveCard('enemy', _deleteList[0]);
+
+      // sessionActiveCard('enemy', _deleteList[0]);
       for (let i = 0; i < CARD_NUM_ARR.length; i++) {
         if (CARD_NUM_ARR[i] === _deleteList[0]) {
           CARD_NUM_ARR.splice(i, 1);
