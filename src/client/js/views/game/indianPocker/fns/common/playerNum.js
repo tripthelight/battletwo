@@ -4,7 +4,9 @@ import bcrypt from 'bcryptjs';
 import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
 
 // export default (_arr, _user) => {
-export default (_num, _user) => {
+export default (_num) => {
+  console.log('_num >>>>>>>>>>>>> ', _num);
+
   const arrNumbs = selectCompairNumbers();
   if (!arrNumbs.length) return errorManagement({ errCase: 'cardNum', message: 'cardNum length 0' });
 

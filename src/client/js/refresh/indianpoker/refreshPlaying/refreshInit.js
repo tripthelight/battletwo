@@ -6,17 +6,32 @@ import refreshDrawDrew from '@/client/js/views/game/indianPocker/fns/gameState/s
 import refreshDrewFlipCard from '@/client/js/refresh/indianpoker/refreshPlaying/refreshDrewFlipCard/refreshDrewFlipCard';
 import playerNumRes from '@/client/js/views/game/indianPocker/fns/common/playerNumRes.js';
 import refreshEnemyNumber from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/refreshEnemyNumber';
+import playerNum from '@/client/js/views/game/indianPocker/fns/common/playerNum';
 
 export default {
   main: () => {
     const BET_RESULTING = window.sessionStorage.betResulting;
     if (BET_RESULTING && BET_RESULTING === 'true') {
+      /*
       const P_NUM = playerNumRes();
       const BATTLE_CARD_NUM = window.sessionStorage.battleCardNum;
       if (!BATTLE_CARD_NUM) return;
       const BATTLE_CARD_ARR = JSON.parse(BATTLE_CARD_NUM);
       if (!BATTLE_CARD_ARR || BATTLE_CARD_ARR.length < 1) return;
       const E_NUM = refreshEnemyNumber(BATTLE_CARD_ARR);
+      */
+
+      const PLAYER_CARD_NUM = window.sessionStorage.getItem('playCardNum');
+      if (PLAYER_CARD_NUM === null || (PLAYER_CARD_NUM !== null && PLAYER_CARD_NUM === '')) {
+        return errorManagement({ errCase: 'errorComn', message: 'error - refreshInit.js - playCardNum null' });
+      }
+      const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
+      if (BATTLE_CARD_NUM === null || (BATTLE_CARD_NUM !== null && BATTLE_CARD_NUM === '')) {
+        return errorManagement({ errCase: 'errorComn', message: 'error - refreshInit.js - !battleCardNum' });
+      }
+
+      const P_NUM = playerNum(PLAYER_CARD_NUM);
+      const E_NUM = playerNum(BATTLE_CARD_NUM);
 
       if (Number(P_NUM) > Number(E_NUM) || Number(P_NUM) < Number(E_NUM)) {
         const coinsEnemyBet = window.sessionStorage.coinsEnemyBet;

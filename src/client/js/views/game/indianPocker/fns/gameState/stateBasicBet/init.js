@@ -11,7 +11,7 @@ import basicBetMainCheck from '@/client/js/views/game/indianPocker/fns/common/ba
 export default {
   main: () => {
     // basicBet
-    const encryptVal = findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]);
+    const encryptVal = findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]); // basicBet
     storageMethod('s', 'REMOVE_ITEM', 'betResulting');
     if (basicBetMainCheck()) {
       return gameEnd();

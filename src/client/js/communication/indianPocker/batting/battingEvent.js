@@ -32,10 +32,16 @@ export default {
       });
     },
     CALL: () => {
+      const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
+      if (BATTLE_CARD_NUM === null) {
+        return errorManagement({ errCase: 'errorComn', message: 'error request !BATTLE_CARD_NUM' });
+      }
+
       request('call', {
         coinCount: Number(window.sessionStorage.coinsPlayer),
         coinBet: Number(window.sessionStorage.coinsPlayerBet),
         extBet: Number(window.sessionStorage.coinsPlayerExtBet),
+        playerCardNum: BATTLE_CARD_NUM,
       });
     },
     RAISE: () => {
@@ -82,11 +88,14 @@ export default {
         });
     },
     CALL_RESULT: (_data) => {
-      let promise = new Promise((resolve, reject) => {
+      const promise = new Promise((resolve, reject) => {
         resolve(_data);
       });
       promise
         .then((_data) => {
+          // 새로고침 시 상대 카드번호 필요하여 storage에 저장
+          // 한 라운드가 끝난 후 삭제 필요
+          storageMethod('s', 'SET_ITEM', 'playCardNum', _data.playerCardNum);
           GET_CALL.receiveCallBet(_data);
         })
         .catch((error) => {

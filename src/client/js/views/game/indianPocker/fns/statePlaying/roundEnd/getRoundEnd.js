@@ -78,9 +78,20 @@ export const GET_ROUND_END = {
     setTimeout(GET_ROUND_END.flipPlayCard, timeInterval_1);
   },
   flipPlayCard: () => {
+    /*
     const P_NUM_RES = playerNumRes();
     flipPlayerCardComn(flipPlayerCard, P_NUM_RES);
     setTimeout(GET_ROUND_END.cardNumCompare, timeInterval_401, P_NUM_RES);
+    */
+    const PLAYER_CARD_NUM = window.sessionStorage.getItem('playCardNum');
+    if (PLAYER_CARD_NUM === null || (PLAYER_CARD_NUM !== null && PLAYER_CARD_NUM === '')) {
+      return errorManagement({ errCase: 'errorComn', message: 'error - getRoundEnd.js - playCardNum null' });
+    }
+
+    const PLAYER_CARD_NUMBER = playerNum(PLAYER_CARD_NUM);
+
+    flipPlayerCardComn(flipPlayerCard, PLAYER_CARD_NUMBER);
+    setTimeout(GET_ROUND_END.cardNumCompare, timeInterval_401, PLAYER_CARD_NUMBER);
   },
   cardNumCompare: (_playerNumRes) => {
     /*
@@ -97,7 +108,6 @@ export const GET_ROUND_END = {
     }
 
     let enemyNumRes = playerNum(BATTLE_CARD_ARR, 'enemy');
-    */
 
     let result = '';
     if (Number(_playerNumRes) > Number(enemyNumRes)) {
@@ -116,6 +126,39 @@ export const GET_ROUND_END = {
       console.log('error - getRoundEnd.js - cardNumCompare !result');
       errorManagement({ errCase: 'errorComn' });
     }
+    */
+
+    const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
+    if (BATTLE_CARD_NUM === null) {
+      return errorManagement({ errCase: 'errorComn', message: 'error - getRoundEnd.js - !BATTLE_CARD_NUM' });
+    }
+
+    const cardNum = {
+      enemy: playerNum(BATTLE_CARD_NUM),
+      player: _playerNumRes,
+    };
+
+    console.log('enemy card num =============== ', cardNum.enemy);
+    console.log('player card num =============== ', cardNum.player);
+
+    let result = '';
+    if (Number(cardNum.player) > Number(cardNum.enemy)) {
+      result = 'win';
+      storageMethod('s', 'REMOVE_ITEM', 'drewState');
+    } else if (Number(cardNum.player) < Number(cardNum.enemy)) {
+      result = 'lose';
+      storageMethod('s', 'REMOVE_ITEM', 'drewState');
+    } else if (Number(cardNum.player) == Number(cardNum.enemy)) {
+      result = 'drew';
+      storageMethod('s', 'SET_ITEM', 'betUser', window.sessionStorage.betUserFirst);
+      storageMethod('s', 'SET_ITEM', 'drewState', true);
+      storageMethod('s', 'SET_ITEM', 'roundEnd', false);
+      storageMethod('s', 'SET_ITEM', 'extFirstBet', false);
+    } else {
+      console.log('error - getRoundEnd.js - cardNumCompare !result');
+      errorManagement({ errCase: 'errorComn' });
+    }
+
     setTimeout(GET_ROUND_END.savsSessionResult, timeInterval_1, result);
   },
   savsSessionResult: (_result) => {

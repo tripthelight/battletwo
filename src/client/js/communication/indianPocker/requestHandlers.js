@@ -12,6 +12,8 @@ export const REQUEST_HANDLERS = {
   nextStep: (v) => ({ type: 'nextStep', value: v }),
   drewRefresh: (v) => ({ type: 'drewRefresh', value: v }),
   drewRefreshReturn: (v) => ({ type: 'drewRefreshReturn', value: v }),
+  requestPlayerCardNum: (v) => ({ type: 'requestPlayerCardNum', ...v }),
+  responsePlayerCardNum: (v) => ({ type: 'responsePlayerCardNum', ...v }),
 };
 
 // make card

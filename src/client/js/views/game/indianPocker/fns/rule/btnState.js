@@ -1,5 +1,6 @@
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { timeInterval_1, timeInterval_200 } from '@/client/js/functions/variable';
+import { request } from '@/client/js/communication/indianPocker/request';
 import { comnText } from '@/client/js/functions/language';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import BOTTOM_BUTTONS from '@/client/js/views/game/indianPocker/fns/common/components/bottomButtons';
@@ -21,6 +22,9 @@ export const BTN_STATE = {
     // 하단 버튼 삭제
     const BOTTOM_BUTTONS_EL = document.querySelector('.bottom-buttons');
     if (BOTTOM_BUTTONS_EL) BOTTOM_BUTTONS_EL.remove();
+  },
+  HANDLER: (clickBtn) => {
+    request('requestPlayerCardNum', { clickBtn: clickBtn });
   },
   INIT: () => {
     const BTN_FOLD = ELEMENT.CHECK('.fold', 'findCheck');
@@ -49,7 +53,8 @@ export const BTN_STATE = {
       const CEEB = INDIANPOCKER_SESSION('CEEB');
       changeBottomComnText(BTN_CALL_RAISE, CPB, CPEB, CEB, CEEB);
       changeBottomComnDisabled(BTN_CALL_RAISE, CP, CPB, CPEB, CE, CEB, CEEB);
-      if (CPB === CEB) BTN_CALL_RAISE.onclick = () => RULES.CALL();
+      // if (CPB === CEB) BTN_CALL_RAISE.onclick = () => RULES.CALL();
+      if (CPB === CEB) BTN_CALL_RAISE.onclick = () => BTN_STATE.HANDLER('call');
       if (CPB > CEB && CPB - CEB <= CE) BTN_CALL_RAISE.onclick = () => RULES.RAISE();
     }
     BTN_ALLIN.onclick = () => RULES.ALLIN();
@@ -81,7 +86,8 @@ export const BTN_STATE = {
       const CEEB = INDIANPOCKER_SESSION('CEEB');
       changeBottomComnText(BTN_CALL_RAISE, CPB, CPEB, CEB, CEEB);
       changeBottomComnDisabled(BTN_CALL_RAISE, CP, CPB, CPEB, CE, CEB, CEEB);
-      if (CPB === CEB) BTN_CALL_RAISE.onclick = () => RULES.CALL();
+      // if (CPB === CEB) BTN_CALL_RAISE.onclick = () => RULES.CALL();
+      if (CPB === CEB) BTN_CALL_RAISE.onclick = () => BTN_STATE.HANDLER('call');
       if (CPB > CEB && CPB - CEB <= CE) BTN_CALL_RAISE.onclick = () => RULES.RAISE();
     }
     const BTN_FOLD = ELEMENT.CHECK('.fold', 'findCheck');
@@ -117,11 +123,13 @@ export const BTN_STATE = {
           if (BTN_BATTING) {
             BTN_BATTING.removeAttribute('disabled');
             BTN_BATTING.innerHTML = comnText.call;
-            BTN_BATTING.onclick = () => RULES.CALL();
+            // BTN_BATTING.onclick = () => RULES.CALL();
+            BTN_BATTING.onclick = () => BTN_STATE.HANDLER('call');
           } else if (BTN_CALL) {
             BTN_CALL.removeAttribute('disabled');
             BTN_CALL.innerHTML = comnText.call;
-            BTN_CALL.onclick = () => RULES.CALL();
+            // BTN_CALL.onclick = () => RULES.CALL();
+            BTN_CALL.onclick = () => BTN_STATE.HANDLER('call');
           }
         }
 

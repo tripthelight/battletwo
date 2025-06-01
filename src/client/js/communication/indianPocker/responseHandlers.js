@@ -11,6 +11,8 @@ import enterBasicBetResult from '@/client/js/communication/indianPocker/fns/ente
 import basicBettingResult from '@/client/js/communication/indianPocker/fns/basicBettingResult';
 import drewRefreshResult from '@/client/js/communication/indianPocker/fns/drewRefreshResult';
 import drewRefreshReturnResult from '@/client/js/communication/indianPocker/fns/drewRefreshReturnResult';
+import requestPlayerCardNum from '@/client/js/communication/indianPocker/fns/requestPlayerCardNum';
+import responsePlayerCardNum from '@/client/js/communication/indianPocker/fns/responsePlayerCardNum';
 import requestMakeCard from '@/client/js/communication/indianPocker/fns/requestMakeCard';
 import responseMakeCard from '@/client/js/communication/indianPocker/fns/responseMakeCard';
 import requestCardNumList from '@/client/js/communication/indianPocker/fns/requestCardNumList';
@@ -35,6 +37,8 @@ export const RESPONSE_HANDLERS = {
   enterBasicBet: (msg) => enterBasicBetResult(msg.gameState),
   drewRefresh: (msg) => drewRefreshResult(msg.value),
   drewRefreshReturn: (msg) => drewRefreshReturnResult(msg.value),
+  requestPlayerCardNum: (msg) => requestPlayerCardNum(msg),
+  responsePlayerCardNum: (msg) => responsePlayerCardNum(msg),
 
   // make card
   requestMakeCard: (msg) => requestMakeCard(msg.list),
