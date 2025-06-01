@@ -20,5 +20,5 @@ export default () => {
   if (BATTLE_CARD_NUM === null) {
     return errorManagement({ errCase: 'errorComn', message: 'error !BATTLE_CARD_NUM' });
   }
-  return playerNum(BATTLE_CARD_NUM, 'player');
+  return playerNum(BATTLE_CARD_NUM);
 };

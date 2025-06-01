@@ -7,12 +7,16 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/communication/indianPocker/request';
 
 export default () => {
+  /*
   const BATTLE_CARD_NUM = window.sessionStorage.battleCardNum;
-
   if (BATTLE_CARD_NUM && JSON.parse(BATTLE_CARD_NUM).length === 2) return;
+  const CARD_NUMS = JSON.parse(window.sessionStorage.cardNum);
+  if (!CARD_NUMS || CARD_NUMS.length <= 0) return errorManagement({ errCase: 'errorComn', message: 'cardNum 세션이 없거나 length가 없습니다.' });
+  */
 
-  // const CARD_NUMS = JSON.parse(window.sessionStorage.cardNum);
-  // if (!CARD_NUMS || CARD_NUMS.length <= 0) return errorManagement({ errCase: 'errorComn', message: 'cardNum 세션이 없거나 length가 없습니다.' });
+  const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
+  if (BATTLE_CARD_NUM !== null && BATTLE_CARD_NUM !== '') return;
+
   // sessionStorage cardNum key 찾기
   const encryptKey = findCharCode([77, 68, 79, 88, 73, 86, 69, 70, 65, 80]);
   const decryptVal = window.sessionStorage.getItem(encryptKey);

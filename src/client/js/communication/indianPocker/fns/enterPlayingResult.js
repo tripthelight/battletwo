@@ -5,6 +5,8 @@ import { request } from '@/client/js/communication/indianPocker/request';
 import createBattleCardNum from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/createBattleCardNum.js';
 
 export default (_data) => {
+  console.log('_data >>>>>>>>>>>>>>>>>>> ', _data);
+
   const promise = new Promise((resolve, reject) => {
     resolve(_data);
   });
