@@ -91,6 +91,7 @@ battletwo
     - /src/client/js/socket/indianpoker/getSocket.js  
 
 ## 진행상황
+- choice card 단계에서 storage 삭제한 player에게 패널티 처리 필요
 - choice card 단계에서 storage value 암호화 필요
 - indian pocker 통합 테스트(integration testing) 중
 - FIXME: 랜선 PC와 wifi mobile에서 webRTC 연결 안됨
