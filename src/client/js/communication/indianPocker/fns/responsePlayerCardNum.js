@@ -10,5 +10,7 @@ export default (data) => {
 
   if (clickBtn === 'call') {
     RULES.CALL();
+  } else if (clickBtn === 'fold') {
+    RULES.FOLD();
   }
 };

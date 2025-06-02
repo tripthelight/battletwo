@@ -1,27 +1,34 @@
 export default (_target) => {
+  const TIMES = {
+    m: 0,
+    h: 0,
+  };
   // minute
-  const M_El = _target.querySelector("span.m");
-  const STYLE_M = window.getComputedStyle(M_El);
-  const MATRIX_M = new DOMMatrixReadOnly(STYLE_M.transform);
-  const DEG_M = Math.round(Math.asin(MATRIX_M.b) * (180 / Math.PI));
-  let m = DEG_M;
-  if (DEG_M < 0) {
-    m = Math.abs(DEG_M) + 180;
+  const M_El = _target.querySelector('span.m');
+  if (M_El) {
+    const STYLE_M = window.getComputedStyle(M_El);
+    const MATRIX_M = new DOMMatrixReadOnly(STYLE_M.transform);
+    const DEG_M = Math.round(Math.asin(MATRIX_M.b) * (180 / Math.PI));
+    TIMES.m = DEG_M;
+    if (DEG_M < 0) {
+      TIMES.m = Math.abs(DEG_M) + 180;
+    }
   }
 
   // hour
-  const H_El = _target.querySelector("span.h");
-  const STYLE_H = window.getComputedStyle(H_El);
-  const MATRIX_H = new DOMMatrixReadOnly(STYLE_H.transform);
-  const DEG_H = Math.round(Math.asin(MATRIX_H.b) * (180 / Math.PI));
-  let h = DEG_H;
-  if (DEG_H < 0) {
-    h = Math.abs(DEG_H) + 180;
+  const H_El = _target.querySelector('span.h');
+  if (H_El) {
+    const STYLE_H = window.getComputedStyle(H_El);
+    const MATRIX_H = new DOMMatrixReadOnly(STYLE_H.transform);
+    const DEG_H = Math.round(Math.asin(MATRIX_H.b) * (180 / Math.PI));
+    TIMES.h = DEG_H;
+    if (DEG_H < 0) {
+      TIMES.h = Math.abs(DEG_H) + 180;
+    }
   }
 
-  // console.log("탸냐 ??? ");
   // return
-  return { m, h };
+  return { m: TIMES.m, h: TIMES.h };
   /*
   // const STYLE_M = window.getComputedStyle(M_El);
   // const MATRIX_M = new DOMMatrixReadOnly(STYLE_M.transform);
@@ -38,7 +45,7 @@ export default (_target) => {
   // console.log("values3 :: ", values3);
 
   // let b = values3[1]; // 0.5
-  
+
   // let angle2 = Math.round(Math.asin(b) * (180 / Math.PI));
   // console.log("angle1 : ", angle1);
   // console.log("angle2 : ", angle2);

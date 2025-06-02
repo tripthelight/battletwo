@@ -9,6 +9,7 @@ import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState
 import flipPlayerCardComn from '@/client/js/views/game/indianPocker/fns/common/flipPlayerCardComn';
 import flipPlayerCard from '@/client/js/views/game/indianPocker/fns/common/flipPlayerCard';
 import playerNum from '@/client/js/views/game/indianPocker/fns/common/playerNum';
+import getLocalCardNum from '@/client/js/views/game/indianPocker/fns/common/getLocalCardNum';
 import BattingZoneMovePlayerBlock from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMovePlayerBlock';
 import BettingZoneMoveComnCallRaise from '@/client/js/views/game/indianPocker/fns/common/BettingZoneMoveComnCallRaise';
 import BattingZoneMoveEnemyBlock from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMoveEnemyBlock';
@@ -83,14 +84,16 @@ export const GET_ROUND_END = {
     flipPlayerCardComn(flipPlayerCard, P_NUM_RES);
     setTimeout(GET_ROUND_END.cardNumCompare, timeInterval_401, P_NUM_RES);
     */
+    /*
     const PLAYER_CARD_NUM = window.sessionStorage.getItem('playCardNum');
     if (PLAYER_CARD_NUM === null || (PLAYER_CARD_NUM !== null && PLAYER_CARD_NUM === '')) {
       return errorManagement({ errCase: 'errorComn', message: 'error - getRoundEnd.js - playCardNum null' });
     }
-
     const PLAYER_CARD_NUMBER = playerNum(PLAYER_CARD_NUM);
+    */
 
-    flipPlayerCardComn(flipPlayerCard, PLAYER_CARD_NUMBER);
+    const PLAYER_CARD_NUMBER = getLocalCardNum();
+    flipPlayerCardComn(flipPlayerCard, getLocalCardNum());
     setTimeout(GET_ROUND_END.cardNumCompare, timeInterval_401, PLAYER_CARD_NUMBER);
   },
   cardNumCompare: (_playerNumRes) => {

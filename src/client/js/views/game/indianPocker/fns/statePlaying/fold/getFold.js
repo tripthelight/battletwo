@@ -6,6 +6,7 @@ import { bottomSheet } from '@/client/components/popup/bottomSheet/bottomSheet';
 import flipPlayerCardComn from '@/client/js/views/game/indianPocker/fns/common/flipPlayerCardComn';
 import flipPlayerCard from '@/client/js/views/game/indianPocker/fns/common/flipPlayerCard';
 import playerNumRes from '@/client/js/views/game/indianPocker/fns/common/playerNumRes';
+import getLocalCardNum from '@/client/js/views/game/indianPocker/fns/common/getLocalCardNum';
 import BattingZoneMovePlayerBlock from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMovePlayerBlock';
 import BettingZoneMoveComn from '@/client/js/views/game/indianPocker/fns/common/BettingZoneMoveComn';
 import foldSendResultComn from '@/client/js/views/game/indianPocker/fns/common/foldSendResultComn';
@@ -21,7 +22,10 @@ export const GET_FOLD = {
     });
     promise
       .then((_data) => {
+        /*
         flipPlayerCardComn(flipPlayerCard, playerNumRes());
+        */
+        flipPlayerCardComn(flipPlayerCard, getLocalCardNum());
         GET_FOLD.roundResultDisplay();
         BattingZoneMovePlayerBlock('win').then((_state) => {
           BettingZoneMoveComn(_state).then((_stateNext) => {

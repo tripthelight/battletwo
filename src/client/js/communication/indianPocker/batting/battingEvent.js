@@ -34,7 +34,7 @@ export default {
     CALL: () => {
       const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
       if (BATTLE_CARD_NUM === null) {
-        return errorManagement({ errCase: 'errorComn', message: 'error request !BATTLE_CARD_NUM' });
+        return errorManagement({ errCase: 'errorComn', message: 'error CALL request !BATTLE_CARD_NUM' });
       }
 
       request('call', {
@@ -52,8 +52,14 @@ export default {
       });
     },
     FOLD: (_penalty) => {
+      const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
+      if (BATTLE_CARD_NUM === null) {
+        return errorManagement({ errCase: 'errorComn', message: 'error FOLD request !BATTLE_CARD_NUM' });
+      }
+
       request('foldSend', {
         penalty: Number(_penalty) === 10 ? true : false,
+        playerCardNum: BATTLE_CARD_NUM,
       });
     },
   },
@@ -117,11 +123,14 @@ export default {
         });
     },
     FOLD_RESULT: (_data) => {
-      let promise = new Promise((resolve, reject) => {
+      const promise = new Promise((resolve, reject) => {
         resolve(_data);
       });
       promise
         .then((_data) => {
+          // 새로고침 시 상대 카드번호 필요하여 storage에 저장
+          // 한 라운드가 끝난 후 삭제 필요
+          storageMethod('s', 'SET_ITEM', 'playCardNum', _data.playerCardNum);
           GET_FOLD.receivefold(_data);
         })
         .catch((error) => {
@@ -130,7 +139,7 @@ export default {
         });
     },
     FOLD_ENEMY: (_data) => {
-      let promise = new Promise((resolve, reject) => {
+      const promise = new Promise((resolve, reject) => {
         resolve(_data);
       });
       promise

@@ -36,5 +36,9 @@ export default () => {
 
   console.log('NUM_RES >>>>>>>>>>>> ', NUM_RES);
 
-  setTimeout(comnDrawEnemyCard, timeInterval_1, findCardNum(NUM_RES.join()));
+  const NUM_STR = NUM_RES.join();
+  // TEST: 중복 카드 테스트용 변수 - 실제 게임에서는 중복 될 수 없으므로 NUM_STR 변수를 적용해야함
+  const NUM_DUPLICATION_STR = (NUM_RES.length > 1 ? NUM_RES.slice(0, 1) : NUM_RES).join();
+
+  setTimeout(comnDrawEnemyCard, timeInterval_1, findCardNum(NUM_DUPLICATION_STR));
 };

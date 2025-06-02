@@ -1,6 +1,7 @@
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState.js';
 import { comnText } from '@/client/js/functions/language';
+import getLocalCardNum from '@/client/js/views/game/indianPocker/fns/common/getLocalCardNum';
 import setSessionMakeZero from '@/client/js/views/game/indianPocker/fns/sessions/setSessionMakeZero.js';
 import playerNumRes from '@/client/js/views/game/indianPocker/fns/common/playerNumRes.js';
 import allInClickEvent from '@/client/js/views/game/indianPocker/fns/common/allInClickEvent.js';
@@ -36,7 +37,10 @@ export const RULES = {
     SOCKET_EVENT.SET.RAISE();
   },
   FOLD: () => {
+    /*
     const P_NUM_RES = playerNumRes();
+    */
+    const P_NUM_RES = getLocalCardNum();
     foldPreCalculation(P_NUM_RES);
     RULES.COMN(comnText.fold);
     SET_FOLD.setFold(P_NUM_RES);

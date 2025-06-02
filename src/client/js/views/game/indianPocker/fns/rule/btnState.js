@@ -58,7 +58,8 @@ export const BTN_STATE = {
       if (CPB > CEB && CPB - CEB <= CE) BTN_CALL_RAISE.onclick = () => RULES.RAISE();
     }
     BTN_ALLIN.onclick = () => RULES.ALLIN();
-    BTN_FOLD.onclick = () => RULES.FOLD();
+    // BTN_FOLD.onclick = () => RULES.FOLD();
+    BTN_FOLD.onclick = () => BTN_STATE.HANDLER('fold');
   },
   CHANGE: () => {
     if (!ELEMENT.CHECK('.bottom-buttons', 'find')) return;
@@ -91,7 +92,8 @@ export const BTN_STATE = {
       if (CPB > CEB && CPB - CEB <= CE) BTN_CALL_RAISE.onclick = () => RULES.RAISE();
     }
     const BTN_FOLD = ELEMENT.CHECK('.fold', 'findCheck');
-    BTN_FOLD.onclick = () => RULES.FOLD();
+    // BTN_FOLD.onclick = () => RULES.FOLD();
+    BTN_FOLD.onclick = () => BTN_STATE.HANDLER('fold');
     const BTN_ALLIN = ELEMENT.CHECK('.all-in', 'findCheck');
     BTN_ALLIN.onclick = () => RULES.ALLIN();
   },
