@@ -47,6 +47,9 @@ function showErrorNotification(errCase, component, message) {
       default:
         break;
     }
+  } else if (errCase === 'foul') {
+    errorModal(text.leaveRoom);
+    console.log('errorComn error : ', message);
   } else if (errCase === 'elementLoss') {
     errorModal(text.err);
     console.log('elementLoss error : ', message);

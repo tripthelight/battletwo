@@ -1,4 +1,4 @@
-import { REQUEST_HANDLERS, REQUEST_MAKE_CARD, REQUEST_VALIDATE_HANDLERS, REQUEST_BATTING_HANDLERS } from '@/client/js/communication/indianPocker/requestHandlers';
+import { REQUEST_COMMON_HANDLERS, REQUEST_HANDLERS, REQUEST_MAKE_CARD_HANDLERS, REQUEST_VALIDATE_HANDLERS, REQUEST_BATTING_HANDLERS } from '@/client/js/communication/indianPocker/requestHandlers';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { globalDataChannel } from '@/client/js/webRTC/rtcConn';
 
@@ -13,8 +13,9 @@ export function request(k, v) {
   if (!globalDataChannel || (globalDataChannel && globalDataChannel.readyState !== 'open')) return;
 
   const ALL_TEMPLATES = {
+    ...REQUEST_COMMON_HANDLERS,
     ...REQUEST_HANDLERS,
-    ...REQUEST_MAKE_CARD,
+    ...REQUEST_MAKE_CARD_HANDLERS,
     ...REQUEST_VALIDATE_HANDLERS,
     ...REQUEST_BATTING_HANDLERS,
   };

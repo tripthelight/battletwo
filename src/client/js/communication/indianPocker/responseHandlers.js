@@ -1,3 +1,4 @@
+import opponentFouls from '@/client/js/functions/opponentFouls';
 import remoteReload from '@/client/js/functions/remoteReload';
 import enemyFirstChoice from '@/client/js/communication/indianPocker/fns/enemyFirstChoice';
 import nextStepResult from '@/client/js/communication/indianPocker/fns/nextStepResult';
@@ -24,6 +25,10 @@ import SOCKET_EVENT from '@/client/js/communication/indianPocker/batting/batting
 
 // 핸들러 객체 매핑
 export const RESPONSE_HANDLERS = {
+  // common messate
+  opponentFouls: (msg) => opponentFouls(msg),
+
+  // default message
   remoteReload: (msg) => remoteReload(msg.value),
   choiceFirst: (msg) => enemyFirstChoice(msg.num),
   choiceDrewCard: (msg) => enemyChoiceCardReady(msg.value),

@@ -21,7 +21,7 @@ export default (data) => {
   const secretKeyVal = window.sessionStorage.getItem(secretKeyKey);
 
   if (secretKeyVal === null || (secretKeyVal !== null && secretKeyVal === '')) {
-    return errorManagement({ errCase: 'sessionStorageLoss', message: 'cardNum 복호화시 필요한 secret key 세션 없음' });
+    return errorManagement({ errCase: 'sessionStorageLoss', message: 'cardNum 복호화시 필요한 secret key 세션 없음 3' });
   }
 
   // encryptCardNum ----------------------------

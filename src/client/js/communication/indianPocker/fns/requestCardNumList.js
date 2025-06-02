@@ -15,13 +15,24 @@ export default async (data) => {
   const secretKeyVal = window.sessionStorage.getItem(secretKeyKey);
 
   if (secretKeyVal === null || (secretKeyVal !== null && secretKeyVal === '')) {
-    return errorManagement({ errCase: 'sessionStorageLoss', message: 'cardNum 복호화시 필요한 secret key 세션 없음' });
+    return errorManagement({ errCase: 'sessionStorageLoss', message: 'cardNum 복호화시 필요한 secret key 세션 없음 1' });
   }
 
   // randomNumCard ----------------------------------------
   if (step === 'randomNumCard') {
     const bytes = CryptoJS.AES.decrypt(list, secretKeyVal);
     const decrypted = bytes.toString(CryptoJS.enc.Utf8);
+
+    /**
+     * 복호화 실패할 경우 결과는 빈 string
+      - 상대가 storage value를 바꿨다거나..
+     */
+
+    if (decrypted === '') {
+      request('opponentFouls', { message: '상대 cardNum이 없음' });
+      return errorManagement({ errCase: 'foul', message: 'req : cardNum 복호화시 필요한 secret key 세션 없음' });
+    }
+
     let remoteCardNum = decrypted.split(',');
 
     const remoteRandomNum = randomArray(remoteCardNum);

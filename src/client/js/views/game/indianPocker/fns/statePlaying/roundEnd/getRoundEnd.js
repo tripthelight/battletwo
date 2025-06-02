@@ -1,5 +1,6 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1, timeInterval_1000, timeInterval_2000, timeInterval_202, timeInterval_3201, timeInterval_3202, timeInterval_401, timeInterval_402 } from '@/client/js/functions/variable';
+import { request } from '@/client/js/communication/indianPocker/request';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import findCharCode from '@/client/js/functions/findCharCode';
@@ -314,7 +315,7 @@ export const GET_ROUND_END = {
       const decryptVal = window.sessionStorage.getItem(encryptKey);
       // if (decryptVal !== null && JSON.parse(decryptVal).length > 0) {
       if (decryptVal === null) {
-        return errorManagement({ errCase: 'errorComn', message: '한 set 종료(roundEnd) 후 cardNum key 세션 없음' });
+        reject('한 set 종료(roundEnd) 후 cardNum key 세션 없음');
       } else {
         /*
         if (decryptVal === '') {
@@ -339,10 +340,13 @@ export const GET_ROUND_END = {
 
         if (!_result) return;
         console.log('2 ************* ', _result);
-        if (_result === 'drew') return STATE_PLAYING.drew();
+        if (_result === 'drew') {
+          return STATE_PLAYING.drew();
+        }
         if (_result !== 'drew') {
           return indianPockerGameState.basicBet();
         }
+        resolve();
       }
     });
     encryptCardNumbers
@@ -370,8 +374,9 @@ export const GET_ROUND_END = {
         }
       })
       .catch((err) => {
-        console.log('error - getRoundEnd.js - encryptCardNumbers');
-        errorManagement({ errCase: 'errorComn' });
+        // request('opponentFouls', { message: err });
+        errorManagement({ errCase: 'errorComn', message: 'error - getRoundEnd.js - encryptCardNumbers :: ' + err });
+        return;
       });
   },
   getWinnerCoinNext: (_result) => {

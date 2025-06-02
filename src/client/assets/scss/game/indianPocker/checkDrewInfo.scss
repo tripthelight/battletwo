@@ -3,19 +3,19 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: rgba(0, 0, 0, 1);
-  border-radius: 20px;
+  border-radius: 14px;
   border: 0 none;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 10px;
   z-index: 4;
   animation-name: checkDrewInfo;
   animation-duration: 2s;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     left: calc(50% - 6px);
     bottom: -6px;
@@ -27,7 +27,7 @@
     clear: both;
   }
   span {
-    font-size: 12px;
+    font-size: 16px;
     display: inline-block;
     color: #fff;
     text-align: center;

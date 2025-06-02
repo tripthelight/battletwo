@@ -1,3 +1,9 @@
+// 공통 메시지
+export const REQUEST_COMMON_HANDLERS = {
+  // 상대가 반칙 - ex) 플레이어가 직접 storage를 수정
+  opponentFouls: (v) => ({ type: 'opponentFouls', ...v }),
+};
+
 // 일반 메시지
 export const REQUEST_HANDLERS = {
   choiceFirst: (v) => ({ type: 'choiceFirst', num: v }),
@@ -17,7 +23,7 @@ export const REQUEST_HANDLERS = {
 };
 
 // make card
-export const REQUEST_MAKE_CARD = {
+export const REQUEST_MAKE_CARD_HANDLERS = {
   requestMakeCard: (v) => ({ type: 'requestMakeCard', ...v }),
   responseMakeCard: (v) => ({ type: 'responseMakeCard', ...v }),
 };

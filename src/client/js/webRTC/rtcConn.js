@@ -10,6 +10,8 @@ import addCharCode from '@/client/js/functions/addCharCode';
 import reload from '@/client/js/module/reload';
 
 export let globalDataChannel = null;
+export let signalingSocket = null;
+export let peerConnection = null;
 
 /*
  * 일반적으로 peerConnection.iceConnectionState === 'connected'가 먼저 실행되고,
@@ -30,8 +32,8 @@ export default function webRTC(gameName) {
       ],
     };
 
-    let signalingSocket = null;
-    let peerConnection = null;
+    // let signalingSocket = null;
+    // let peerConnection = null;
     let dataChannel = null; //
     let isRemoteDescSet = false;
     const pendingCandidates = [];
