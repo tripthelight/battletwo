@@ -1,3 +1,4 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { selectCompairNumbers } from '@/client/store/encryptionStore';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import bcrypt from 'bcryptjs';

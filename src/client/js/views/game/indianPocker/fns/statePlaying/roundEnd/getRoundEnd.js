@@ -162,6 +162,9 @@ export const GET_ROUND_END = {
       errorManagement({ errCase: 'errorComn' });
     }
 
+    // 내 카드 확인 완료 했으니 storage 에서 제거
+    storageMethod('s', 'REMOVE_ITEM', 'playCardNum');
+
     setTimeout(GET_ROUND_END.savsSessionResult, timeInterval_1, result);
   },
   savsSessionResult: (_result) => {
@@ -313,6 +316,7 @@ export const GET_ROUND_END = {
       if (decryptVal === null) {
         return errorManagement({ errCase: 'errorComn', message: '한 set 종료(roundEnd) 후 cardNum key 세션 없음' });
       } else {
+        /*
         if (decryptVal === '') {
           // 20장 모두 소진 시 -
           // 새 카드 set 생성
@@ -330,6 +334,14 @@ export const GET_ROUND_END = {
           if (_result !== 'drew') {
             return indianPockerGameState.basicBet();
           }
+        }
+        */
+
+        if (!_result) return;
+        console.log('2 ************* ', _result);
+        if (_result === 'drew') return STATE_PLAYING.drew();
+        if (_result !== 'drew') {
+          return indianPockerGameState.basicBet();
         }
       }
     });

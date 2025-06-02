@@ -4,15 +4,20 @@ import { RULES } from '@/client/js/views/game/indianPocker/fns/rule/rules';
 export default (data) => {
   const { num, clickBtn } = data;
 
-  // 새로고침 시 상대 카드번호 필요하여 storage에 저장
-  // 한 라운드가 끝난 후 삭제 필요
-  storageMethod('s', 'SET_ITEM', 'playCardNum', num);
+  const RULE_ACTIONS = {
+    call: () => RULES.CALL(),
+    fold: () => RULES.FOLD(),
+    allin: () => RULES.ALLIN(),
+  };
 
-  if (clickBtn === 'call') {
-    RULES.CALL();
-  } else if (clickBtn === 'fold') {
-    RULES.FOLD();
-  } else if (clickBtn === 'allin') {
-    RULES.ALLIN();
+  if (clickBtn === 'call' || clickBtn === 'fold') {
+    // 상대 카드번호 저장
+    storageMethod('s', 'SET_ITEM', 'playCardNum', num);
+  }
+
+  // 해당 버튼에 대응하는 RULES 메서드가 있으면 실행
+  const action = RULE_ACTIONS[clickBtn];
+  if (action) {
+    action();
   }
 };

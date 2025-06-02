@@ -67,6 +67,10 @@ export const SET_FOLD = {
         storageMethod('s', 'SET_ITEM', 'betUser', false);
         storageMethod('s', 'REMOVE_ITEM', 'drewState');
         flipPlayerCardComn(flipPlayerCard, _numRes);
+
+        // 내 카드 확인 완료 했으니 storage 에서 제거
+        storageMethod('s', 'REMOVE_ITEM', 'playCardNum');
+
         // 1. YOU FOLD NEXT 문구 출력
         // 2. 배팅이 끝난 코인은 enemy block으로 이동
         // 3. player의 추가 배팅이 있으면 player block으로 이동

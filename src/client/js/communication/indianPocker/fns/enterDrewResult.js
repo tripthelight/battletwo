@@ -1,4 +1,4 @@
-import { timeInterval_1000 } from '@/client/js/functions/variable';
+import { timeInterval_100, timeInterval_101, timeInterval_102, timeInterval_1000 } from '@/client/js/functions/variable';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { request } from '@/client/js/communication/indianPocker/request';
@@ -33,15 +33,15 @@ export default (_data) => {
               if (window.sessionStorage.drewReady && window.sessionStorage.drewReady === 'true') {
                 if (window.sessionStorage.betUser === 'true') createBattleCardNum();
               }
-            }, 102);
-          }, 101);
+            }, timeInterval_102);
+          }, timeInterval_101);
         } else {
           if (!window.sessionStorage.drewReady || window.sessionStorage.drewReady !== 'true') request('enterDrew', false);
           if (window.sessionStorage.drewReady && window.sessionStorage.drewReady === 'true') {
             if (window.sessionStorage.betUser === 'true') createBattleCardNum();
           }
         }
-      }, 100);
+      }, timeInterval_100);
     } else if (!_data) {
       setTimeout(() => {
         request('enterDrew', true);

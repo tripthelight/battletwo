@@ -91,7 +91,6 @@ battletwo
     - /src/client/js/socket/indianpoker/getSocket.js  
 
 ## 진행상황
-- call 에니메이션 대기 중 둘다 새로고침 하면 한쪽이 먹통됨
 - indian pocker 통합 테스트(integration testing) 중
 - FIXME: 랜선 PC와 wifi mobile에서 webRTC 연결 안됨
 - 랜선사용자와 모바일LTE 사용자간 연결을 위해 TURN 실서버 반드시 구축해야됨

@@ -26,6 +26,9 @@ export const GET_FOLD = {
         flipPlayerCardComn(flipPlayerCard, playerNumRes());
         */
         flipPlayerCardComn(flipPlayerCard, getLocalCardNum());
+        // 내 카드 확인 완료 했으니 storage 에서 제거
+        storageMethod('s', 'REMOVE_ITEM', 'playCardNum');
+
         GET_FOLD.roundResultDisplay();
         BattingZoneMovePlayerBlock('win').then((_state) => {
           BettingZoneMoveComn(_state).then((_stateNext) => {
