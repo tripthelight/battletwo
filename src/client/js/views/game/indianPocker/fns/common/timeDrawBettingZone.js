@@ -24,12 +24,14 @@ export default (_state) => {
     liEl = BET_COINS[i];
     minuteEl = liEl.querySelector('span.m');
     hourEl = liEl.querySelector('span.h');
-    if (liEl.classList.contains('e')) {
-      // enemy coin
-      _state ? posClock(hourEl, minuteEl) : animateClock(hourEl, minuteEl, false);
-    } else {
-      // player coin
-      _state ? animateClock(hourEl, minuteEl, false) : posClock(hourEl, minuteEl);
+    if (minuteEl && hourEl) {
+      if (liEl.classList.contains('e')) {
+        // enemy coin
+        _state ? posClock(hourEl, minuteEl) : animateClock(hourEl, minuteEl, false);
+      } else {
+        // player coin
+        _state ? animateClock(hourEl, minuteEl, false) : posClock(hourEl, minuteEl);
+      }
     }
   }
 };

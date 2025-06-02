@@ -28,7 +28,9 @@ export default (_state, _playerCoins, _enemyCoins) => {
       liEl = PLAYER_COINS[i];
       minuteEl = liEl.querySelector('span.m');
       hourEl = liEl.querySelector('span.h');
-      _state ? animateClock(hourEl, minuteEl, false) : posClock(hourEl, minuteEl);
+      if (minuteEl && hourEl) {
+        _state ? animateClock(hourEl, minuteEl, false) : posClock(hourEl, minuteEl);
+      }
     }
   }
   if (ENEMY_COINS && ENEMY_COINS.length > 0) {
@@ -36,7 +38,9 @@ export default (_state, _playerCoins, _enemyCoins) => {
       liEl = ENEMY_COINS[i];
       minuteEl = liEl.querySelector('span.m');
       hourEl = liEl.querySelector('span.h');
-      _state ? posClock(hourEl, minuteEl) : animateClock(hourEl, minuteEl, false);
+      if (minuteEl && hourEl) {
+        _state ? posClock(hourEl, minuteEl) : animateClock(hourEl, minuteEl, false);
+      }
     }
   }
 

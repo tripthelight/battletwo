@@ -21,7 +21,7 @@ export default (_data) => {
         storageMethod('s', 'SET_ITEM', 'roundEnd', false);
         setTimeout(sessionInit, timeInterval_1);
         // } else if (window.sessionStorage.gameState !== 'basicBet') {
-      } else if (encryptVal !== encryptVal) {
+      } else if (decryptVal !== encryptVal) {
         storageMethod('s', 'SET_ITEM', 'basicBetReady', false);
       }
     }

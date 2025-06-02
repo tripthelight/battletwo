@@ -1,3 +1,4 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { RF_END_DREW } from '@/client/js/refresh/indianpoker/refreshPlaying/refreshRoundEndDrew/refreshDrewInit';
 import { request } from '@/client/js/communication/indianPocker/request';
 import createBattleCardNum from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/createBattleCardNum';
