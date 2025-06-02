@@ -314,12 +314,15 @@ export const GET_ROUND_END = {
         return errorManagement({ errCase: 'errorComn', message: '한 set 종료(roundEnd) 후 cardNum key 세션 없음' });
       } else {
         if (decryptVal === '') {
+          // 20장 모두 소진 시 -
           // 새 카드 set 생성
+          // *****************************************************************
           setTimeout(() => {
             console.log('3 ************* ');
             makeCard();
             // resolve(encryptCardNumber());
           }, timeInterval_1);
+          // *****************************************************************
         } else {
           if (!_result) return;
           console.log('2 ************* ', _result);

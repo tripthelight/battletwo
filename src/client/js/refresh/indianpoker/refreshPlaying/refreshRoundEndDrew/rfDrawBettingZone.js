@@ -4,9 +4,13 @@ import rfDrawBettingZoneCoins from '@/client/js/refresh/indianpoker/refreshPlayi
 export default () => {
   // element | seeeion 체크
   const GAME_SCENE = document.getElementById('gameScene');
+  console.log(' 2-1 : loading show loop test >>>>>>>>>>>>>> ');
   if (!GAME_SCENE) return;
+  console.log(' 2-2 : loading show loop test >>>>>>>>>>>>>> ');
   const BETTING_ZONE = document.querySelector('.betting-zone');
+  console.log(' 3-1 : loading show loop test >>>>>>>>>>>>>> ');
   if (BETTING_ZONE) return;
+  console.log(' 3-2 : loading show loop test >>>>>>>>>>>>>> ');
 
   // 명령
   setTimeout(() => {

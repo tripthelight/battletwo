@@ -11,7 +11,6 @@ export const STATE_PLAYING = {
   main: () => {
     console.log('playing main 진입 >>>>>>>>>> ');
     LOADING_EVENT.show();
-
     // request('enterPlaying', 'playing');
     request('enterPlaying', findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71])); // playing
 
@@ -22,6 +21,7 @@ export const STATE_PLAYING = {
     // if (window.sessionStorage.drewReady && window.sessionStorage.drewReady === "true") return refreshDrawDrew(); // refresh
     if (window.sessionStorage.drewFlipCardMode && window.sessionStorage.drewFlipCardMode === 'true') return refreshDrawDrew();
     LOADING_EVENT.show();
+    console.log(' s: loading show loop test >>>>>>>>>>>>>>');
     storageMethod('s', 'REMOVE_ITEM', 'dropState');
     storageMethod('s', 'SET_ITEM', 'drewReady', true);
     request('enterDrew', true);

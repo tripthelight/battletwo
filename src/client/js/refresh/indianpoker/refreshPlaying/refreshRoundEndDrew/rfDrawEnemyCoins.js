@@ -5,7 +5,9 @@ import rfDrawBettingZone from '@/client/js/refresh/indianpoker/refreshPlaying/re
 export default () => {
   // element | seeeion 체크
   const COINS_ENEMY = document.querySelector('.coins-enemy');
+  console.log(' 1-1 : loading show loop test >>>>>>>>>>>>>> ');
   if (COINS_ENEMY) return;
+  console.log(' 1-2 : loading show loop test >>>>>>>>>>>>>> ');
   const ENEMY_BLOCK = document.querySelector('.enemy-block');
   if (!ENEMY_BLOCK) return errorManagement({ errCase: 'elementLoss', message: '.enemy-block 엘리먼트가 없습니다' });
 
