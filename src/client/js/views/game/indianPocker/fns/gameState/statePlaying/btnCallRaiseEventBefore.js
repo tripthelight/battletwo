@@ -1,4 +1,5 @@
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
+import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState';
 import { RULES } from '@/client/js/views/game/indianPocker/fns/rule/rules';
 import { request } from '@/client/js/communication/indianPocker/request';
 
@@ -7,7 +8,8 @@ export default () => {
   if (CHECH_DREW_INFO) CHECH_DREW_INFO.remove();
   const DREW_READY = window.sessionStorage.drewCardReady;
   if (DREW_READY && DREW_READY === 'true') {
-    RULES.CALL();
+    // RULES.CALL();
+    BTN_STATE.HANDLER('call');
   } else {
     LOADING_EVENT.show();
     request('drewReadyCheck');

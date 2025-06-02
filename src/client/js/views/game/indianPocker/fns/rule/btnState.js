@@ -57,7 +57,8 @@ export const BTN_STATE = {
       if (CPB === CEB) BTN_CALL_RAISE.onclick = () => BTN_STATE.HANDLER('call');
       if (CPB > CEB && CPB - CEB <= CE) BTN_CALL_RAISE.onclick = () => RULES.RAISE();
     }
-    BTN_ALLIN.onclick = () => RULES.ALLIN();
+    // BTN_ALLIN.onclick = () => RULES.ALLIN();
+    BTN_ALLIN.onclick = () => BTN_STATE.HANDLER('allin');
     // BTN_FOLD.onclick = () => RULES.FOLD();
     BTN_FOLD.onclick = () => BTN_STATE.HANDLER('fold');
   },
@@ -95,7 +96,8 @@ export const BTN_STATE = {
     // BTN_FOLD.onclick = () => RULES.FOLD();
     BTN_FOLD.onclick = () => BTN_STATE.HANDLER('fold');
     const BTN_ALLIN = ELEMENT.CHECK('.all-in', 'findCheck');
-    BTN_ALLIN.onclick = () => RULES.ALLIN();
+    // BTN_ALLIN.onclick = () => RULES.ALLIN();
+    BTN_ALLIN.onclick = () => BTN_STATE.HANDLER('allin');
   },
   LAST: () => {
     // emeny나 player 중 기본 배팅 후 남은 코인이 없음

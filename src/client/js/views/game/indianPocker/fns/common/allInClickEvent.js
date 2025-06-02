@@ -5,6 +5,7 @@ import BattingZoneMovePlayerBlock from '@/client/js/views/game/indianPocker/fns/
 import BettingZoneMoveAllin from '@/client/js/views/game/indianPocker/fns/common/BettingZoneMoveAllin.js';
 import BattingZoneMoveAllinTime from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMoveAllinTime';
 import { RULES } from '@/client/js/views/game/indianPocker/fns/rule/rules.js';
+import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState';
 import SOCKET_EVENT from '@/client/js/communication/indianPocker/batting/battingEvent';
 
 export default () => {
@@ -29,7 +30,8 @@ export default () => {
           storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', _aiCoinsRes.epeb);
           if (Number(window.sessionStorage.coinsPlayerBet) === Number(window.sessionStorage.coinsEnemyBet)) {
             // ENEMY 올인을 받고, PLAYER도 올인
-            RULES.CALL();
+            // RULES.CALL();
+            BTN_STATE.HANDLER('call');
           } else {
             // PLAYER의 첫 올인
             SOCKET_EVENT.SET.ALL_IN();

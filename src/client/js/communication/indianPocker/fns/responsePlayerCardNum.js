@@ -12,5 +12,7 @@ export default (data) => {
     RULES.CALL();
   } else if (clickBtn === 'fold') {
     RULES.FOLD();
+  } else if (clickBtn === 'allin') {
+    RULES.ALLIN();
   }
 };

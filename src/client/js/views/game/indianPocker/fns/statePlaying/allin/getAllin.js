@@ -1,10 +1,10 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1, timeInterval_1001 } from '@/client/js/functions/variable.js';
 import { errorManagement } from '@/client/js/module/errorManagement';
+import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState';
 import { RULES } from '@/client/js/views/game/indianPocker/fns/rule/rules.js';
 import pcDraggableCheck from '@/client/js/views/game/indianPocker/fns/common/pcDraggableCheck.js';
 import moveCoins from '@/client/js/views/game/indianPocker/fns/common/moveCoins.js';
-import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState.js';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 import EnemyBlockMoveBattingZone from '@/client/js/views/game/indianPocker/fns/common/EnemyBlockMoveBattingZone.js';
 import subtractMoveCoin from '@/client/js/views/game/indianPocker/fns/common/subtractMoveCoin.js';
@@ -26,7 +26,8 @@ export const GET_ALLIN = {
         const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet;
         if (Number(COINS_ENEMY_BET) === Number(COINS_PLAYER_BET)) {
           // PLAYER 올인을 받고 ENEMY 올인 함
-          RULES.CALL();
+          // RULES.CALL();
+          BTN_STATE.HANDLER('call');
         } else {
           // 상대의 첫 올인을 받음
           const COINS_ENEMY = document.querySelector('.coins-enemy');
