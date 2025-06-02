@@ -1,3 +1,4 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { text } from '@/client/js/functions/language';
@@ -9,8 +10,14 @@ export default () => {
   if (!CONTAINER) return errorManagement({ errCase: 'elementLoss', message: '#container 엘리먼트가 없습니다.' });
   const CHOICE_CARD_INFO = CONTAINER.querySelector('.choice-card-info');
   if (CHOICE_CARD_INFO) return;
+
+  /*
   const ENEMY_CARD_CHOICE_READY = window.sessionStorage.enemyCardChoiceReady;
   if (ENEMY_CARD_CHOICE_READY) return;
+  */
+  const encryptKey = findCharCode([68, 71, 87, 77, 85, 66, 65, 84, 88, 69]); // enemyCardChoiceReady
+  const encryptval = window.sessionStorage.getItem(encryptKey);
+  if (encryptval !== null) return;
 
   // 명령
   setTimeout(() => {

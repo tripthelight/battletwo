@@ -185,19 +185,23 @@ export default function webRTC(gameName) {
           storageMethod('s', 'SET_ITEM', encryptKey, findCharCode(addCharCode(message.nickname)));
           addNickname('remotePlayer');
 
+          /*
           // 상대방이 새로고침 후 재연결이라면
           if (message.reload) {
             storageMethod('s', 'SET_ITEM', 'remoteReload', message.reload.toString());
           }
+            */
 
           if (message.type === 'connectFirst') {
             const sharedParams = {
               type: 'connectSecond',
               nickname: localStorage.getItem('localPlayer'),
             };
+            /*
             if (reload) {
               sharedParams.reload = true;
             }
+            */
 
             dataChannel.send(JSON.stringify(sharedParams));
 
@@ -246,9 +250,11 @@ export default function webRTC(gameName) {
             type: 'connectFirst',
             nickname: localStorage.getItem('localPlayer'),
           };
+          /*
           if (reload) {
             sharedParams.reload = true;
           }
+            */
           dataChannel.send(JSON.stringify(sharedParams));
         }
       };

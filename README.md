@@ -91,6 +91,7 @@ battletwo
     - /src/client/js/socket/indianpoker/getSocket.js  
 
 ## 진행상황
+- choice card 단계에서 storage value 암호화 필요
 - indian pocker 통합 테스트(integration testing) 중
 - FIXME: 랜선 PC와 wifi mobile에서 webRTC 연결 안됨
 - 랜선사용자와 모바일LTE 사용자간 연결을 위해 TURN 실서버 반드시 구축해야됨

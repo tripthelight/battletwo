@@ -75,6 +75,28 @@ export const obfuscationList = {
           gameOver: 'AFOILUXWVK', // [65, 70, 79, 73, 76, 85, 88, 87, 86, 75]
         },
       },
+      //choice card
+      PLAYER_FIRST_CARD_NUM: {
+        k: 'MDIZJHVGUW', // [77, 68, 73, 90, 74, 72, 86, 71, 85, 87]
+      },
+      UL_INDEX: {
+        k: 'NIDLCRWSYF', // [78, 73, 68, 76, 67, 82, 87, 83, 89, 70]
+      },
+      LI_INDEX: {
+        k: 'SFOCAGBWMV', // [83, 70, 79, 67, 65, 71, 66, 87, 77, 86]
+      },
+      ENEMY_FIRST_NUMBER: {
+        k: 'QCRJWLYOSU', // [81, 67, 82, 74, 87, 76, 89, 79, 83, 85]
+      },
+      UL_INDEX_ENEMY: {
+        k: 'NHYICUGOML', // [78, 72, 89, 73, 67, 85, 71, 79, 77, 76]
+      },
+      LI_INDEX_ENEMY: {
+        k: 'MCEIHKDRGP', // [77, 67, 69, 73, 72, 75, 68, 82, 71, 80]
+      },
+      ENEMY_CARD_CHOICE_READY: {
+        k: 'DGWMUBATXE', // [68, 71, 87, 77, 85, 66, 65, 84, 88, 69]
+      },
     };
   },
 };
