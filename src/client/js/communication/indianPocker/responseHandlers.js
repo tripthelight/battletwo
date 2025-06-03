@@ -23,6 +23,9 @@ import responseCardNumList from '@/client/js/communication/indianPocker/fns/resp
 import requestRemoveEnemyCardNum from '@/client/js/communication/indianPocker/fns/requestRemoveEnemyCardNum';
 import responseRemoveEnemyCardNum from '@/client/js/communication/indianPocker/fns/responseRemoveEnemyCardNum';
 
+import requestCompairChoiceCard from '@/client/js/communication/indianPocker/fns/requestCompairChoiceCard';
+import responseCompairChoiceCard from '@/client/js/communication/indianPocker/fns/responseCompairChoiceCard';
+
 import SOCKET_EVENT from '@/client/js/communication/indianPocker/batting/battingEvent';
 
 // 핸들러 객체 매핑
@@ -70,4 +73,8 @@ export const RESPONSE_HANDLERS = {
   raise: (msg) => SOCKET_EVENT.GET.RAISE_RESULT(msg),
   foldSend: (msg) => SOCKET_EVENT.GET.FOLD_RESULT(msg),
   enemyFold: (msg) => SOCKET_EVENT.GET.FOLD_ENEMY(msg),
+
+  // sstorage 비교
+  requestCompairChoiceCard: (msg) => requestCompairChoiceCard(msg),
+  responseCompairChoiceCard: (msg) => responseCompairChoiceCard(msg),
 };

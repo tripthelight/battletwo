@@ -54,3 +54,10 @@ export const REQUEST_BATTING_HANDLERS = {
   foldSend: (v) => ({ type: 'foldSend', ...v }),
   enemyFold: (v) => ({ type: 'enemyFold', ...v }),
 };
+
+// sstorage 비교
+export const REQUEST_COMPAIR_HANDLERS = {
+  // choiceCard
+  requestCompairChoiceCard: (v) => ({ type: 'requestCompairChoiceCard', ...v }),
+  responseCompairChoiceCard: (v) => ({ type: 'responseCompairChoiceCard', ...v }),
+};
