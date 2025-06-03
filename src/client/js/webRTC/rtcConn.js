@@ -263,6 +263,10 @@ export default function webRTC(gameName) {
     async function handleMessage(msgData) {
       try {
         if (msgData.type === 'entryOrder') {
+          // 브라우저 새고로침 판단
+          if (msgData.reload) {
+            window.reload = true;
+          }
           const encryptKey = findCharCode([74, 86, 88, 78, 80, 70, 85, 72, 87, 68]);
           // 생성된 roomName 으로 channelName 생성
           const CHANNEL_NAME = `${gameName}-${msgData.roomName}-Channel`;

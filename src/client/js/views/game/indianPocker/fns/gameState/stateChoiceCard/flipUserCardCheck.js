@@ -11,7 +11,7 @@ export default () => {
     const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
 
     // if (window.sessionStorage.enemyFirstNumber && window.sessionStorage.playerFirstNumber) {
-    if (encryptVal1 !== null && encryptVal2 !== null) {
+    if (encryptVal1 !== '' && encryptVal2 !== '') {
       // const enemyNum = Number(window.sessionStorage.enemyFirstNumber);
       // const playerNum = Number(window.sessionStorage.playerFirstNumber);
 

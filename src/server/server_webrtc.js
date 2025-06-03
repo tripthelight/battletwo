@@ -139,6 +139,7 @@ async function refreshDuringGame(data) {
             JSON.stringify({
               type: 'entryOrder',
               roomName: socket.roomName,
+              reload: true,
             }),
           );
           DIFF_SOCKET.send(
@@ -146,6 +147,7 @@ async function refreshDuringGame(data) {
               type: 'entryOrder',
               roomName: socket.roomName,
               setOffer: 'true',
+              reload: true,
             }),
           );
         } else {

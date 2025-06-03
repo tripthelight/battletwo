@@ -4,9 +4,16 @@ export const REQUEST_COMMON_HANDLERS = {
   opponentFouls: (v) => ({ type: 'opponentFouls', ...v }),
 };
 
+// 각 gameState 입장 시 상대 peer에게 sessionStorage data 검증
+export const REQUEST_ENTER_STATE_HANDLERS = {
+  // choiceCard
+  requestEnterChoiceCard: () => ({ type: 'requestEnterChoiceCard' }),
+  responseEnterChoiceCard: (v) => ({ type: 'responseEnterChoiceCard', ...v }),
+};
+
 // 일반 메시지
 export const REQUEST_HANDLERS = {
-  choiceFirst: (v) => ({ type: 'choiceFirst', num: v }),
+  choiceFirst: (v) => ({ type: 'choiceFirst', ...v }),
   choiceDrewCard: (v) => ({ type: 'choiceDrewCard', value: v }),
   basicBetting: (v) => ({ type: 'basicBetting', state: true, coinCount: v }),
   drewReadyCheck: () => ({ type: 'drewReadyCheck', state: true }),

@@ -45,19 +45,18 @@ export default () => {
     // remote player가 선택한 카드가 있을 때
     // const remotePlayerSelect = window.sessionStorage.ulIndexEnemy && window.sessionStorage.liIndexEnemy && window.sessionStorage.enemyFirstNumber;
 
-    const findFromCharCode = (arr) => String.fromCharCode(...arr);
-    const createLocalStorageKeys = (arrays) => arrays.map(findFromCharCode);
+    const createLocalStorageKeys = (arrays) => arrays.map(findCharCode);
     const getSessionStorageValues = (keys) => keys.map((key) => window.sessionStorage.getItem(key));
     const isPlayerSelected = (arrays) => {
       const keys = createLocalStorageKeys(arrays);
       const values = getSessionStorageValues(keys);
-      return values.every((value) => value !== null);
+      return values.every((value) => value !== '');
     };
     const localPlayerKeys = {
       player: [
         [78, 73, 68, 76, 67, 82, 87, 83, 89, 70], // ulIndex
         [83, 70, 79, 67, 65, 71, 66, 87, 77, 86], // liIndex
-        [66, 86, 68, 73, 69, 65, 73, 66, 75, 69], // playerFirstNumber
+        [77, 68, 73, 90, 74, 72, 86, 71, 85, 87], // playerFirstNumber
       ],
       enemy: [
         [81, 67, 82, 74, 87, 76, 89, 79, 83, 85], // ulIndexEnemy

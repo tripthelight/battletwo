@@ -29,7 +29,7 @@ export default async (data) => {
      */
 
     if (decrypted === '') {
-      request('opponentFouls', { message: '상대 cardNum이 없음' });
+      request('opponentFouls', { subject: 'remote', message: '상대 cardNum이 없음' });
       return errorManagement({ errCase: 'foul', message: 'req : cardNum 복호화시 필요한 secret key 세션 없음' });
     }
 

@@ -50,12 +50,15 @@ function showErrorNotification(errCase, component, message) {
   } else if (errCase === 'foul') {
     errorModal(text.leaveRoom);
     console.log('errorComn error : ', message);
+  } else if (errCase === 'cookies') {
+    errorModal(text.err);
+    console.log('cookies error : ', message);
   } else if (errCase === 'elementLoss') {
     errorModal(text.err);
     console.log('elementLoss error : ', message);
   } else if (errCase === 'sessionStorageLoss') {
     errorModal(text.err);
-    console.log('elementLoss error : ', message);
+    console.log('sessionStorageLoss error : ', message);
   } else if (errCase === 'cardNum') {
     errorModal(text.error_text);
     console.log('cardNum error : ', message);

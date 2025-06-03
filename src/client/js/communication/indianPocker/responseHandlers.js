@@ -1,4 +1,6 @@
 import opponentFouls from '@/client/js/functions/opponentFouls';
+import requestEnterChoiceCard from '@/client/js/communication/indianPocker/fns/requestEnterChoiceCard';
+import responseEnterChoiceCard from '@/client/js/communication/indianPocker/fns/responseEnterChoiceCard';
 import remoteReload from '@/client/js/functions/remoteReload';
 import enemyFirstChoice from '@/client/js/communication/indianPocker/fns/enemyFirstChoice';
 import nextStepResult from '@/client/js/communication/indianPocker/fns/nextStepResult';
@@ -28,9 +30,13 @@ export const RESPONSE_HANDLERS = {
   // common messate
   opponentFouls: (msg) => opponentFouls(msg),
 
+  // 각 gameState 입장 시 상대 peer에게 sessionStorage data 검증
+  requestEnterChoiceCard: () => requestEnterChoiceCard(),
+  responseEnterChoiceCard: (msg) => responseEnterChoiceCard(msg.keys),
+
   // default message
   remoteReload: (msg) => remoteReload(msg.value),
-  choiceFirst: (msg) => enemyFirstChoice(msg.num),
+  choiceFirst: (msg) => enemyFirstChoice(msg),
   choiceDrewCard: (msg) => enemyChoiceCardReady(msg.value),
   nextStep: (msg) => nextStepResult(msg.value),
   basicBetting: (msg) => basicBettingResult({ state: msg.state, coinCount: msg.coinCount }),
