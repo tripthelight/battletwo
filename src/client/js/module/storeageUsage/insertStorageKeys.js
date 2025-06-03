@@ -16,6 +16,9 @@ export default (params) => {
         const encryptKey1 = findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]); // playerFirstNumber
         const encryptKey2 = findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85]); // enemyFirstNumber
 
+        console.log('===========================', encryptKey1);
+        console.log('===========================', encryptKey2);
+
         const params = {
           encryptVal1: window.sessionStorage.getItem(encryptKey1),
           encryptVal2: window.sessionStorage.getItem(encryptKey2),
