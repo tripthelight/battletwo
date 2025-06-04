@@ -19,6 +19,7 @@ import { request } from '@/client/js/communication/indianPocker/request';
   - enemyCardChoiceReady
   - betUser
   - betUserFirst
+  - tieWait
   - myNextStepState
   - nextStepChoiceCard
  */

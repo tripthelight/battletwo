@@ -4,6 +4,6 @@ import againChoiceCard from '@/client/js/views/game/indianPocker/fns/gameState/s
 
 export default (_state) => {
   LOADING_EVENT.show();
-  if (_state == 'start' || _state == 'end') socketNextStepEvent();
-  if (_state == 'tie') againChoiceCard();
+  if (_state === 'start' || _state == 'end') socketNextStepEvent();
+  if (_state === 'tie') againChoiceCard();
 };

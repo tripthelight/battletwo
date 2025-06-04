@@ -28,6 +28,10 @@ export default () => {
     storageMethod('s', 'REMOVE_ITEM', 'ulIndexEnemy');
     */
 
+    // 같은 카드였던 상태에서 한명이 팝업 x 버튼 누르고 대기 상태 일 경우
+    const encryptKey = findCharCode([[79, 88, 77, 84, 87, 86, 83, 69, 89, 73]]); // tieWait
+    storageMethod('s', 'SET_ITEM', encryptKey, true);
+
     const encryptKey1 = findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85]); // enemyFirstNumber
     const encryptKey2 = findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]); // playerFirstNumber
     const encryptKey3 = findCharCode([83, 70, 79, 67, 65, 71, 66, 87, 77, 86]); // liIndex
@@ -35,18 +39,44 @@ export default () => {
     const encryptKey5 = findCharCode([77, 67, 69, 73, 72, 75, 68, 82, 71, 80]); // liIndexEnemy
     const encryptKey6 = findCharCode([78, 72, 89, 73, 67, 85, 71, 79, 77, 76]); // ulIndexEnemy
     const encryptKey7 = findCharCode([68, 71, 87, 77, 85, 66, 65, 84, 88, 69]); // enemyCardChoiceReady
+    const encryptKey8 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
+    const encryptKey9 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
 
-    storageMethod('s', 'REMOVE_ITEM', encryptKey1); // enemyFirstNumber
-    storageMethod('s', 'REMOVE_ITEM', encryptKey2); // playerFirstNumber
-    storageMethod('s', 'REMOVE_ITEM', 'betUser');
-    storageMethod('s', 'REMOVE_ITEM', encryptKey3); // liIndex
-    storageMethod('s', 'REMOVE_ITEM', encryptKey4); // ulIndex
-    storageMethod('s', 'REMOVE_ITEM', encryptKey5); // liIndexEnemy
-    storageMethod('s', 'REMOVE_ITEM', encryptKey6); // ulIndexEnemy
+    const ORDER_CHECK = window.sessionStorage.getItem(encryptKey7) === 'true';
+
+    if (ORDER_CHECK) {
+      request('choiceDrewCard', false);
+      LOADING_EVENT.hide();
+      const encryptKey = findCharCode([[79, 88, 77, 84, 87, 86, 83, 69, 89, 73]]); // tieWait
+      storageMethod('s', 'SET_ITEM', encryptKey, '');
+      setTimeout(choiceCardsClick, timeInterval_1);
+    } else {
+      // 먼저 X를 누른 user
+      request('choiceDrewCard', true);
+    }
+    storageMethod('s', 'REMOVE_VALUE', '', '', [encryptKey1, encryptKey2, encryptKey3, encryptKey4, encryptKey5, encryptKey6, encryptKey7, encryptKey8, encryptKey9]);
+
     for (let i = 0; i < CHOICE_CARDS.length; i++) {
       CHOICE_CARDS[i].querySelector('img').setAttribute('src', SVG_BACK);
       CHOICE_CARDS[i].classList.remove('show');
     }
+
+    /*
+    setTimeout(() => {
+      if (ORDER_CHECK) {
+        storageMethod('s', 'SET_ITEM', encryptKey7, '');
+        LOADING_EVENT.hide();
+      } else {
+        request('choiceDrewCard', true);
+        setTimeout(() => {
+          LOADING_EVENT.hide();
+          setTimeout(choiceCardsClick, timeInterval_1);
+        }, timeInterval_1);n
+      }
+    }, timeInterval_1);
+    */
+
+    /*
     setTimeout(() => {
       request('choiceDrewCard', true);
       setTimeout(() => {
@@ -57,5 +87,6 @@ export default () => {
         }
       }, timeInterval_1);
     }, timeInterval_1);
+    */
   }, timeInterval_1);
 };

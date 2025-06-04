@@ -112,6 +112,9 @@ export const obfuscationList = {
       NEXT_STEP_CHOICE_CARD: {
         k: 'DOJURSQVHM', // [68, 79, 74, 85, 82, 83, 81, 86, 72, 77]
       },
+      TIE_WAIT: {
+        k: 'OXMTWVSEYI', // [79, 88, 77, 84, 87, 86, 83, 69, 89, 73]
+      },
       // e: sessionStorage keys
       // s: click event
       // choiceCardClick
@@ -157,7 +160,7 @@ function getRandomUniqueLetters() {
 
   return result.join('');
 }
-  getRandomUniqueLetters();
+getRandomUniqueLetters();
 // 40번 반복
 for (let i = 0; i < 40; i++) {
   console.log(i, ' : ', getRandomUniqueLetters());

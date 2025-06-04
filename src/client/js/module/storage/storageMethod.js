@@ -23,6 +23,15 @@ export default function storageMethod(_storage, _method, _key, _value, _keys) {
         saveSessionStorage();
       }
       break;
+    case 'REMOVE_VALUE':
+      if (_storage === 'l') {
+        for (let i = 0; i < _keys.length; i++) window.localStorage.setItem(_keys[i], '');
+        saveLocalStorage();
+      } else if (_storage === 's') {
+        for (let i = 0; i < _keys.length; i++) window.sessionStorage.setItem(_keys[i], '');
+        saveSessionStorage();
+      }
+      break;
     case 'REMOVE_ALL':
       if (_storage === 'l') {
         window.localStorage.clear();
