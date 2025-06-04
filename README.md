@@ -76,6 +76,7 @@ battletwo
 - 크로스 체크 결과가 다를 경우, 상대방 방나감 처리 할 것
 
 ## 공통 수정사항
+- TODO: 모든 alert 안내문구를 공통변수로 변경해야함
 - firefox에서 localStorage, sessionStorage 삭제됨
 
 ## 공통 해야할 일

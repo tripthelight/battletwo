@@ -97,6 +97,18 @@ export const obfuscationList = {
       ENEMY_CARD_CHOICE_READY: {
         k: 'DGWMUBATXE', // [68, 71, 87, 77, 85, 66, 65, 84, 88, 69]
       },
+      BET_USER: {
+        k: 'HFUCSDYRMX', // [72, 70, 85, 67, 83, 68, 89, 82, 77, 88]
+      },
+      BET_USER_FIRST: {
+        k: 'ZYPFDTAMJN', // [90, 89, 80, 70, 68, 84, 65, 77, 74, 78]
+      },
+      MY_NEXT_STEP_STATE: {
+        k: 'RICMUXFSGW', // [82, 73, 67, 77, 85, 88, 70, 83, 71, 87]
+      },
+      NEXT_STEP_CHOICE_CARD: {
+        k: 'DOJURSQVHM', // [68, 79, 74, 85, 82, 83, 81, 86, 72, 77]
+      },
     };
   },
 };
@@ -135,6 +147,7 @@ function getRandomUniqueLetters() {
 
   return result.join('');
 }
+  getRandomUniqueLetters();
 // 40번 반복
 for (let i = 0; i < 40; i++) {
   console.log(i, ' : ', getRandomUniqueLetters());

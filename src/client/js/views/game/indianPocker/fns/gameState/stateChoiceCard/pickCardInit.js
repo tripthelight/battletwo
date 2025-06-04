@@ -4,8 +4,8 @@ import { request } from '@/client/js/communication/indianPocker/request';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import randomNumberMinMax from '@/client/js/views/game/indianPocker/fns/common/randomNumberMinMax';
 import showChoiceCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/showChoiceCard';
-import storageKeys from '@/client/js/module/storeageUsage/storageKeys';
-import storeageUsage from '@/client/js/module/storeageUsage/storeageUsage';
+import storageKeys from '@/client/js/functions/dataVerification/load/storageKeys';
+import storeageUsage from '@/client/js/functions/dataVerification/load/storeageUsage';
 
 export default (_event) => {
   // sessionStorage 모든 key check

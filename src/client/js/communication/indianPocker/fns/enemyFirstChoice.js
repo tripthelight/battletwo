@@ -2,8 +2,8 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { request } from '@/client/js/communication/indianPocker/request';
-import storageKeys from '@/client/js/module/storeageUsage/storageKeys';
-import storeageUsage from '@/client/js/module/storeageUsage/storeageUsage';
+import storageKeys from '@/client/js/functions/dataVerification/load/storageKeys';
+import storeageUsage from '@/client/js/functions/dataVerification/load/storeageUsage';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import flipEnemyFirstCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipEnemyFirstCard';
 
