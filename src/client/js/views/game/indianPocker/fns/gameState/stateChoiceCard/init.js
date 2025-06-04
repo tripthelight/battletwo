@@ -5,7 +5,7 @@ import drawPickCard from '@/client/js/views/game/indianPocker/fns/gameState/stat
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import dataHandler from '@/client/js/functions/dataVerification/load/dataHandler';
-import storageKeys from '@/client/js/functions/dataVerification/load/storageKeys';
+import storageKeys from '@/client/js/functions/dataVerification/storageKeys';
 import { request } from '@/client/js/communication/indianPocker/request';
 
 /**

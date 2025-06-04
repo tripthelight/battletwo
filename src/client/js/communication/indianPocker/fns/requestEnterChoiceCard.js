@@ -1,6 +1,6 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/communication/indianPocker/request';
-import storageKeys from '@/client/js/functions/dataVerification/load/storageKeys';
+import storageKeys from '@/client/js/functions/dataVerification/storageKeys';
 
 export default function requestEnterChoiceCard() {
   request('responseEnterChoiceCard', {

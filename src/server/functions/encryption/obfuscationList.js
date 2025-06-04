@@ -75,7 +75,10 @@ export const obfuscationList = {
           gameOver: 'AFOILUXWVK', // [65, 70, 79, 73, 76, 85, 88, 87, 86, 75]
         },
       },
-      //choice card
+      /**
+       * choice card
+       */
+      // s: sessionStorage keys
       PLAYER_FIRST_CARD_NUM: {
         k: 'MDIZJHVGUW', // [77, 68, 73, 90, 74, 72, 86, 71, 85, 87]
       },
@@ -109,6 +112,13 @@ export const obfuscationList = {
       NEXT_STEP_CHOICE_CARD: {
         k: 'DOJURSQVHM', // [68, 79, 74, 85, 82, 83, 81, 86, 72, 77]
       },
+      // e: sessionStorage keys
+      // s: click event
+      // choiceCardClick
+      CHOICE_CARD_CLICK: {
+        k: 'FHOEWPICTS', // [70, 72, 79, 69, 87, 80, 73, 67, 84, 83]
+      },
+      // e: click event
     };
   },
 };

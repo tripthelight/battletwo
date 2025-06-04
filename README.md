@@ -77,6 +77,7 @@ battletwo
 
 ## 공통 수정사항
 - TODO: 모든 alert 안내문구를 공통변수로 변경해야함
+  - 안내문구는 브라우저 코드에 노출되기 때문에, 서버에서 내려주고, store에 저장 할 것
 - firefox에서 localStorage, sessionStorage 삭제됨
 
 ## 공통 해야할 일
