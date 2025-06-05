@@ -216,6 +216,10 @@ async function offerAnserCandidateDataProcess(resData) {
 // 연결된 클라이언트 처리
 WSS.on('connection', async (socket) => {
   const connectionPromise = new Promise((resolve) => {
+    // socket에 고유한 id 주입
+    if (!socket.socketId) {
+      socket.socketId = uuidv4();
+    }
     resolve(socket);
   });
 
@@ -285,6 +289,7 @@ WSS.on('connection', async (socket) => {
       }
 
       const standbyMapState = socket.gameName && socket.socketId && STANDBY_MAP[socket.gameName] && STANDBY_MAP[socket.gameName].get(socket.socketId);
+
       if (standbyMapState) {
         STANDBY_MAP[socket.gameName].delete(socket.socketId);
       }

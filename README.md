@@ -79,6 +79,7 @@ battletwo
 - TODO: 모든 alert 안내문구를 공통변수로 변경해야함
   - 안내문구는 브라우저 코드에 노출되기 때문에, 서버에서 내려주고, store에 저장 할 것
 - firefox에서 localStorage, sessionStorage 삭제됨
+- 각기 다른 브라우저 6개 이상 켜고 테스트 필요
 
 ## 공통 해야할 일
 - battletwo.com ssl 이증된 호스트 구매 필요
