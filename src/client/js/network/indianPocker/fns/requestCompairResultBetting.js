@@ -2,56 +2,29 @@ import { errorManagement } from '@/client/js/module/errorManagement';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/network/indianPocker/request';
 
-function validateBetUserData(remoteValue, localValue, keyName, params) {
-  const isRemoteTrue = remoteValue === 'true';
-  const isLocalFalse = localValue === 'false';
-
-  if (isRemoteTrue && isLocalFalse) {
-    // 정상
-    request('responseCompairResultBetting', params);
-    return;
-  }
-
-  // 상대가 storage data를 조작
-  if (!isRemoteTrue) {
-    params.compair = false;
-    params.person = 'local';
-    request('responseCompairResultBetting', params);
-    errorManagement({ errCase: 'foul', message: `상대가 sessionStorage ${keyName} data 조작` });
-  }
-
-  // 내가 storage data를 조작
-  if (!isLocalFalse) {
-    params.compair = false;
-    params.person = 'remote';
-    request('responseCompairResultBetting', params);
-    errorManagement({ errCase: 'sessionStorageLoss', message: `내가 sessionStorage ${keyName} data 조작` });
-  }
-}
-
 export default (_data) => {
   const PROMISE = new Promise((resolve, reject) => {
     resolve(_data);
   });
   PROMISE.then((_data) => {
+    const { result, resultStorage } = _data;
+    const { valRemoteBetUser, valRemoteBetUserFirst } = resultStorage;
+    const params = {
+      compair: true,
+      result: result,
+    };
+
     // 내가 먼저 X 버튼을 누르고 대기 상태
     const keyTieWait = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
     if (window.sessionStorage.getItem(keyTieWait) === 'true') {
+      request('responseCompairResultBetting', params);
       return;
     }
-
-    const { result, resultStorage } = _data;
-    const { valRemoteBetUser, valRemoteBetUserFirst } = resultStorage;
 
     const keyLocalBetUser = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
     const keyLocalBetUserFirst = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
     const valLocalBetUser = window.sessionStorage.getItem(keyLocalBetUser);
     const valLocalBetUserFirst = window.sessionStorage.getItem(keyLocalBetUserFirst);
-
-    const params = {
-      compair: true,
-      result: result,
-    };
 
     switch (result) {
       case 'start': // 상대 peer가 높음 ********************************
@@ -72,8 +45,7 @@ export default (_data) => {
             params.person = 'remote';
             // 내가 storage data를 조작
             request('responseCompairResultBetting', params);
-            // 잘못된 접근입니다.
-            errorManagement({ errCase: 'sessionStorageLoss', message: '내가 sessionStorage betUser data 조작' });
+            // 상대가 나에게 opponentFouls를 보냄
           }
         }
 
@@ -94,8 +66,7 @@ export default (_data) => {
             params.person = 'remote';
             // 내가 storage data를 조작
             request('responseCompairResultBetting', params);
-            // 잘못된 접근입니다.
-            errorManagement({ errCase: 'sessionStorageLoss', message: '내가 sessionStorage betUserFirst data 조작' });
+            // 상대가 나에게 opponentFouls를 보냄
           }
         }
         break;
@@ -117,8 +88,7 @@ export default (_data) => {
             params.person = 'remote';
             // 내가 storage data를 조작
             request('responseCompairResultBetting', params);
-            // 잘못된 접근입니다.
-            errorManagement({ errCase: 'sessionStorageLoss', message: '내가 sessionStorage betUser data 조작' });
+            // 상대가 나에게 opponentFouls를 보냄
           }
         }
 
@@ -139,8 +109,7 @@ export default (_data) => {
             params.person = 'remote';
             // 내가 storage data를 조작
             request('responseCompairResultBetting', params);
-            // 잘못된 접근입니다.
-            errorManagement({ errCase: 'sessionStorageLoss', message: '내가 sessionStorage betUserFirst data 조작' });
+            // 상대가 나에게 opponentFouls를 보냄
           }
         }
         break;
@@ -162,8 +131,7 @@ export default (_data) => {
             params.person = 'remote';
             // 내가 storage data를 조작
             request('responseCompairResultBetting', params);
-            // 잘못된 접근입니다.
-            errorManagement({ errCase: 'sessionStorageLoss', message: '내가 sessionStorage betUser data 조작' });
+            // 상대가 나에게 opponentFouls를 보냄
           }
         }
 
@@ -184,8 +152,7 @@ export default (_data) => {
             params.person = 'remote';
             // 내가 storage data를 조작
             request('responseCompairResultBetting', params);
-            // 잘못된 접근입니다.
-            errorManagement({ errCase: 'sessionStorageLoss', message: '내가 sessionStorage betUserFirst data 조작' });
+            // 상대가 나에게 opponentFouls를 보냄
           }
         }
         break;

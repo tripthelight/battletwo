@@ -21,8 +21,8 @@ export default (_event) => {
   storageMethod('s', 'SET_ITEM', encryptKey1, false);
 
   // TEST: 같은 숫자 뽑기
-  const playerNum = 5;
-  // const playerNum = randomNumberMinMax(1, 10);
+  // const playerNum = 5;
+  const playerNum = randomNumberMinMax(1, 10);
 
   const encryptKey2 = findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]); // playerFirstNumber
   const encryptVal2 = window.sessionStorage.getItem(encryptKey2);

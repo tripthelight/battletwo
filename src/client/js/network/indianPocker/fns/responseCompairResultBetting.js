@@ -25,6 +25,7 @@ export default (_data) => {
       } else if (person === 'remote') {
         // 상대가 betUser sessionStorage 조작
         errorManagement({ errCase: 'foul', message: '상대가 sessionStorage betUser data 조작' });
+        request('opponentFouls', { message: '상대가 sessionStorage betUser data 조작' });
       }
     }
   }).catch((error) => {
