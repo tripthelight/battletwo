@@ -3,11 +3,8 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 import addNickname from '@/client/js/functions/addNickname';
 import { responseComn } from '@/client/js/network/responseComn';
 import { errorManagement } from '@/client/js/module/errorManagement';
-import { text } from '@/client/js/functions/language';
-import compairStorage from '@/client/js/functions/compairStorage';
 import findCharCode from '@/client/js/functions/findCharCode';
 import addCharCode from '@/client/js/functions/addCharCode';
-import reload from '@/client/js/module/reload';
 
 export let globalDataChannel = null;
 export let signalingSocket = null;
@@ -263,10 +260,6 @@ export default function webRTC(gameName) {
     async function handleMessage(msgData) {
       try {
         if (msgData.type === 'entryOrder') {
-          // 브라우저 새고로침 판단
-          if (msgData.reload) {
-            window.reload = true;
-          }
           const encryptKey = findCharCode([74, 86, 88, 78, 80, 70, 85, 72, 87, 68]);
           // 생성된 roomName 으로 channelName 생성
           const CHANNEL_NAME = `${gameName}-${msgData.roomName}-Channel`;
@@ -278,6 +271,11 @@ export default function webRTC(gameName) {
 
           // 첫번째 접속자
           if (!msgData.setOffer) {
+            // 브라우저 새고로침 판단
+            if (msgData.reload) {
+              window.__customReloadFlag = true;
+            }
+
             dataChannel = peerConnection.createDataChannel(CHANNEL_NAME);
             window.rtcChannels.dataChannel = dataChannel;
             globalDataChannel = dataChannel;

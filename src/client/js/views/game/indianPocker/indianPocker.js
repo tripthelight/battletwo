@@ -52,7 +52,7 @@ document.onreadystatechange = async () => {
       // 두 Peer가 연결 된 후 카드 우선 생성
       makeCard();
 
-      if (window.reload) {
+      if (window.__customReloadFlag) {
         const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]);
         const decryptVal = window.sessionStorage.getItem(encryptKey);
 

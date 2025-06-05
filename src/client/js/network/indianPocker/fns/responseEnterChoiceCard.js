@@ -1,7 +1,7 @@
 import { errorManagement } from '@/client/js/module/errorManagement';
 
 export default function responseEnterChoiceCard(keys) {
-  if (!window.reload) return;
+  if (!window.__customReloadFlag) return;
 
   for (const key of keys) {
     const value = window.sessionStorage.getItem(key);

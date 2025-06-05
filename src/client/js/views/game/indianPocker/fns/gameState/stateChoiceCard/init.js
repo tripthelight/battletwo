@@ -52,6 +52,10 @@ export default {
     if (CHOICE_CARD_INFO) CHOICE_CARD_INFO.remove();
     LOADING_EVENT.hide();
 
+    // 다음 gameState로 진입 바로 직전 __customReloadFlag 삭제
+    delete window.__customReloadFlag;
+
+    // 다음 gameState로 진입
     indianPockerGameState.basicBet();
   },
 };
