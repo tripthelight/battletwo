@@ -5,7 +5,7 @@ import reload from '@/client/js/module/reload';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorManagement';
 
-import { request } from '@/client/js/communication/blackAndWhite1/request';
+import { request } from '@/client/js/network/blackAndWhite1/request';
 
 // onMounted
 document.onreadystatechange = async () => {

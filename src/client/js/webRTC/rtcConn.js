@@ -1,7 +1,7 @@
 import { debug } from '@/client/js/module/debug';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import addNickname from '@/client/js/functions/addNickname';
-import { responseComn } from '@/client/js/communication/responseComn';
+import { responseComn } from '@/client/js/network/responseComn';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { text } from '@/client/js/functions/language';
 import compairStorage from '@/client/js/functions/compairStorage';

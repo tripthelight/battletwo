@@ -1,7 +1,7 @@
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState';
 import { RULES } from '@/client/js/views/game/indianPocker/fns/rule/rules';
-import { request } from '@/client/js/communication/indianPocker/request';
+import { request } from '@/client/js/network/indianPocker/request';
 
 export default () => {
   const CHECH_DREW_INFO = document.querySelector('.check-drew-info');

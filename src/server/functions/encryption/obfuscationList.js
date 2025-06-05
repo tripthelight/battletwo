@@ -121,6 +121,9 @@ export const obfuscationList = {
       CHOICE_CARD_CLICK: {
         k: 'FHOEWPICTS', // [70, 72, 79, 69, 87, 80, 73, 67, 84, 83]
       },
+      RESULT_BETTING_CLICK: {
+        k: 'BHINYATMSV', // [66, 72, 73, 78, 89, 65, 84, 77, 83, 86]
+      },
       // e: click event
     };
   },
@@ -157,10 +160,10 @@ function getRandomUniqueLetters() {
     // 중복 방지를 위해 선택한 알파벳 제거
     letters.splice(index, 1);
   }
-
   return result.join('');
 }
 getRandomUniqueLetters();
+
 // 40번 반복
 for (let i = 0; i < 40; i++) {
   console.log(i, ' : ', getRandomUniqueLetters());

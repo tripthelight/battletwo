@@ -6,7 +6,7 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import dataHandler from '@/client/js/functions/dataVerification/load/dataHandler';
 import storageKeys from '@/client/js/functions/dataVerification/storageKeys';
-import { request } from '@/client/js/communication/indianPocker/request';
+import { request } from '@/client/js/network/indianPocker/request';
 
 /**
  * ChoiceCar에서 사용하는 sessionStorage Data

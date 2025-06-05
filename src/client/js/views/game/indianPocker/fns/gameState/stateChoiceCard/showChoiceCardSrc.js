@@ -1,6 +1,6 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { timeInterval_1 } from '@/client/js/functions/variable';
-import { request } from '@/client/js/communication/indianPocker/request';
+import { request } from '@/client/js/network/indianPocker/request';
 import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipUserCardCheck';
 import imgSetCardNum from '@/client/js/views/game/indianPocker/fns/common/images/setCards';
 

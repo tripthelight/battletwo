@@ -2,7 +2,7 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
-import { request } from '@/client/js/communication/indianPocker/request';
+import { request } from '@/client/js/network/indianPocker/request';
 import gameEnd from '@/client/js/views/game/indianPocker/fns/common/gameEnd';
 import sessionInit from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/sessionInit';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';

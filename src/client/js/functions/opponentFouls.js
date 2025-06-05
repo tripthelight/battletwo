@@ -1,6 +1,6 @@
 import { peerConnection, signalingSocket } from '@/client/js/webRTC/rtcConn';
 import { errorManagement } from '@/client/js/module/errorManagement';
-import { request } from '@/client/js/communication/indianPocker/request';
+import { request } from '@/client/js/network/indianPocker/request';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 
 // 파울은 상대 peer에게 받기만 하는 로직

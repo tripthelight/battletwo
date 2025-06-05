@@ -1,5 +1,5 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import { request } from '@/client/js/communication/taptap/request';
+import { request } from '@/client/js/network/taptap/request';
 
 export default (count) => {
   count.value = Number(count.value) + 1;

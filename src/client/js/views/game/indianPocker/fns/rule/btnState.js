@@ -1,6 +1,6 @@
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { timeInterval_1, timeInterval_200 } from '@/client/js/functions/variable';
-import { request } from '@/client/js/communication/indianPocker/request';
+import { request } from '@/client/js/network/indianPocker/request';
 import { comnText } from '@/client/js/functions/language';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import BOTTOM_BUTTONS from '@/client/js/views/game/indianPocker/fns/common/components/bottomButtons';

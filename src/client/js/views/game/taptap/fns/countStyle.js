@@ -1,4 +1,4 @@
-import { request } from '@/client/js/communication/taptap/request';
+import { request } from '@/client/js/network/taptap/request';
 import cowndown from '@/client/js/views/game/taptap/fns/cowndown';
 import { timeInterval_1000, timeInterval_2000, timeInterval_3000, timeInterval_4000 } from '@/client/js/functions/variable';
 import storageMethod from '@/client/js/module/storage/storageMethod';

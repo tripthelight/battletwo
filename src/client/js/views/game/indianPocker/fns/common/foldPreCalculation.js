@@ -1,5 +1,5 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import { request } from '@/client/js/communication/indianPocker/request';
+import { request } from '@/client/js/network/indianPocker/request';
 
 /**
  * FOLD 에니메이션 중 브라우저 새로고침 시 미리 계산을 시도해 봄

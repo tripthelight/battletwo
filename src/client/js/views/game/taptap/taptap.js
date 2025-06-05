@@ -9,7 +9,7 @@ import taptapGameState from '@/client/js/gameState/taptap';
 import cowndown from '@/client/js/views/game/taptap/fns/cowndown';
 import countStyle from '@/client/js/views/game/taptap/fns/countStyle';
 import screenClickEvent from '@/client/js/views/game/taptap/fns/screenClickEvent';
-import { request } from '@/client/js/communication/taptap/request';
+import { request } from '@/client/js/network/taptap/request';
 import reload from '@/client/js/module/reload';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import { text } from '@/client/js/functions/language';

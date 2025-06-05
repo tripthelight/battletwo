@@ -6,7 +6,7 @@ import setSessionMakeZero from '@/client/js/views/game/indianPocker/fns/sessions
 import playerNumRes from '@/client/js/views/game/indianPocker/fns/common/playerNumRes.js';
 import allInClickEvent from '@/client/js/views/game/indianPocker/fns/common/allInClickEvent.js';
 import btnBettingCallRaiseComn from '@/client/js/views/game/indianPocker/fns/common/btnBettingCallRaiseComn';
-import SOCKET_EVENT from '@/client/js/communication/indianPocker/batting/battingEvent';
+import SOCKET_EVENT from '@/client/js/network/indianPocker/batting/battingEvent';
 import { GET_ROUND_END } from '@/client/js/views/game/indianPocker/fns/statePlaying/roundEnd/getRoundEnd';
 import { SET_FOLD } from '@/client/js/views/game/indianPocker/fns/statePlaying/fold/setFold';
 import stopPlayerTime from '@/client/js/views/game/indianPocker/fns/common/stopPlayerTime';

@@ -4,7 +4,7 @@ import { errorManagement } from '@/client/js/module/errorManagement';
 import randomArray from '@/client/js/views/game/indianPocker/fns/common/randomArray';
 import sessionActiveCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/sessionActiveCard';
 import findCharCode from '@/client/js/functions/findCharCode';
-import { request } from '@/client/js/communication/indianPocker/request';
+import { request } from '@/client/js/network/indianPocker/request';
 
 export default () => {
   /*

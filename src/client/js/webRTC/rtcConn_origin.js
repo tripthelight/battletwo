@@ -1,12 +1,12 @@
 import { debug } from '@/client/js/module/debug';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import addNickname from '@/client/js/functions/addNickname';
-import { responseComn } from '@/client/js/communication/responseComn';
+import { responseComn } from '@/client/js/network/responseComn';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { text } from '@/client/js/functions/language';
 import reload from '@/client/js/module/reload';
 
-import commErr from '@/client/js/communication/commErr';
+import commErr from '@/client/js/network/commErr';
 
 export default function webRTC(gameName) {
   return new Promise(async (resolve, reject) => {
