@@ -94,7 +94,7 @@ battletwo
     - /src/client/js/socket/indianpoker/getSocket.js  
 
 ## 진행상황
-- 두 peer 모두 카드 선택 > 두 peer 모두 같은 숫자입니다. 팝업 노출된 상태 >한 peer가 팝업을 닫음 >팝업을 닫지 않은 peer가 새로고침 하면 data 충돌남
+- choiceCard 단계에서 공통 sessionStorage key - ex. gameState, gameName, roomName - 검증 피룡
 - indian pocker 통합 테스트(integration testing) 중
 - FIXME: 랜선 PC와 wifi mobile에서 webRTC 연결 안됨
 - 랜선사용자와 모바일LTE 사용자간 연결을 위해 TURN 실서버 반드시 구축해야됨

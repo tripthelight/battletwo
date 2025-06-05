@@ -52,6 +52,9 @@ export const obfuscationList = {
           NUM_40: 'ZSIKJDPFTO', // [90, 83, 73, 75, 74, 68, 80, 70, 84, 79]
         },
       },
+      GAME_STATE_ALL_KEYS: {
+        k: 'XBAHZDVKUI', // [88, 66, 65, 72, 90, 68, 86, 75, 85, 73]
+      },
       GAME_NAME: {
         k: 'BVDIEAIBKE', // [66, 86, 68, 73, 69, 65, 73, 66, 75, 69]
         v: 'DJEMFKLVDE', // indianPocker -> [68, 74, 69, 77, 70, 75, 76, 86, 68, 69]

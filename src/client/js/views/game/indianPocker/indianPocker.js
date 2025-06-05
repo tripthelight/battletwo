@@ -27,8 +27,8 @@ document.onreadystatechange = async () => {
       // await BCRYPT_STORAGE.bcryptCardTest();
 
       // gameName을 sessionStorage에 저장
-      const encryptKey = findCharCode([66, 86, 68, 73, 69, 65, 73, 66, 75, 69]);
-      const encryptVal = findCharCode([68, 74, 69, 77, 70, 75, 76, 86, 68, 69]);
+      const encryptKey = findCharCode([66, 86, 68, 73, 69, 65, 73, 66, 75, 69]); // gameName
+      const encryptVal = findCharCode([68, 74, 69, 77, 70, 75, 76, 86, 68, 69]); // indianPocker
 
       const decryptVal = window.sessionStorage.getItem(encryptKey);
       if (decryptVal === null || (decryptVal !== null && decryptVal !== encryptVal)) {
