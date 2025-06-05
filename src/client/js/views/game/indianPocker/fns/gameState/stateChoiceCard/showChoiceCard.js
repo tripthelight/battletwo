@@ -19,7 +19,7 @@ export default (_event, _playerNum) => {
   const TARGET_LI = TARGET.closest('li');
   if (!TARGET_LI) return errorManagement({ errCase: 'errorComn', message: 'TARGET의 closest li가 없습니다.' });
 
-  const TARGET_TAG_NAME = TARGET.tagName == 'IMG' ? TARGET : TARGET.querySelector('img');
+  const TARGET_TAG_NAME = TARGET.tagName === 'IMG' ? TARGET : TARGET.querySelector('img');
   if (!TARGET_TAG_NAME) return errorManagement({ errCase: 'errorComn', message: 'TARGET의 tagName이 없습니다.' });
 
   if (TARGET_LI.classList.contains('show')) return;

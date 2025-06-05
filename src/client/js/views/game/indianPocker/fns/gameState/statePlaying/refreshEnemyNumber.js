@@ -2,7 +2,7 @@ import refreshCompareCardNum from '@/client/js/views/game/indianPocker/fns/gameS
 
 export default (_arr) => {
   for (let i = 0; i < _arr.length; i++) {
-    if (_arr[i].host == 'enemy') {
+    if (_arr[i].host === 'enemy') {
       return refreshCompareCardNum(_arr[i]);
     }
   }

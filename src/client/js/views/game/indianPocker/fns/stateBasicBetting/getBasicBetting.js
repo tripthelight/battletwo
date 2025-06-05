@@ -115,7 +115,7 @@ export const GET_BASIC_BETTING = {
                 const BET_COINS_LIST = BET_COINS.querySelectorAll('li');
                 if (BET_COINS_LIST.length === BET_COIN_LIST.length) return;
                 for (let i = 0; i < BET_COIN_LIST.length; i++) {
-                  if (i === BET_COIN_LIST.length - 1 && BET_COIN_LIST[i].host == 'enemy') {
+                  if (i === BET_COIN_LIST.length - 1 && BET_COIN_LIST[i].host === 'enemy') {
                     elemLi = document.createElement('li');
 
                     minuteEl = document.createElement('span');

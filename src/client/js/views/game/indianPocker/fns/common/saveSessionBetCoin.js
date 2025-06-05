@@ -25,9 +25,9 @@ export default (data) => {
     const COINS_PLAYER = Number(window.sessionStorage.coinsPlayer) - 1;
     storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(arr));
     storageMethod('s', 'SET_ITEM', 'coinsPlayer', COINS_PLAYER);
-    storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', JSON.parse(window.sessionStorage.betCoin).filter((coins) => coins.host == 'player').length);
+    storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', JSON.parse(window.sessionStorage.betCoin).filter((coins) => coins.host === 'player').length);
 
-    if (window.sessionStorage.betState == 'extraBetting') {
+    if (window.sessionStorage.betState === 'extraBetting') {
       if (window.sessionStorage.coinsPlayerExtBet) {
         storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', Number(window.sessionStorage.coinsPlayerExtBet) + 1);
       } else {

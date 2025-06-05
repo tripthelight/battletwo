@@ -11,7 +11,7 @@ export default () => {
     pcDraggableCheck('coins-player', false);
     COINS.classList.add('disabled');
     let disableMoveCoins = COINS.querySelectorAll('li');
-    if (disableMoveCoins.length == 0) return;
+    if (disableMoveCoins.length === 0) return;
     const deviceState = deviceStateStore.getState().deviceStateState.deviceState;
     if (deviceState === 'pc') {
       for (let i = 0; i < disableMoveCoins.length; i++) {

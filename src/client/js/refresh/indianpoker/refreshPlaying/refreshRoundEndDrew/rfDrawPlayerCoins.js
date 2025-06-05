@@ -22,7 +22,7 @@ export default () => {
     for (let i = 0; i < coinCount; i++) {
       li = document.createElement('li');
       const deviceState = deviceStateStore.getState().deviceStateState.deviceState;
-      if (deviceState == 'pc') li.setAttribute('draggable', true);
+      if (deviceState === 'pc') li.setAttribute('draggable', true);
       elem.appendChild(li);
     }
     PLAYER_BLOCK.appendChild(elem);

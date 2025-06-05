@@ -120,7 +120,7 @@ export const GET_ROUND_END = {
     } else if (Number(_playerNumRes) < Number(enemyNumRes)) {
       result = 'lose';
       storageMethod('s', 'REMOVE_ITEM', 'drewState');
-    } else if (Number(_playerNumRes) == Number(enemyNumRes)) {
+    } else if (Number(_playerNumRes) === Number(enemyNumRes)) {
       result = 'drew';
       storageMethod('s', 'SET_ITEM', 'betUser', window.sessionStorage.betUserFirst);
       storageMethod('s', 'SET_ITEM', 'drewState', true);
@@ -152,7 +152,7 @@ export const GET_ROUND_END = {
     } else if (Number(cardNum.player) < Number(cardNum.enemy)) {
       result = 'lose';
       storageMethod('s', 'REMOVE_ITEM', 'drewState');
-    } else if (Number(cardNum.player) == Number(cardNum.enemy)) {
+    } else if (Number(cardNum.player) === Number(cardNum.enemy)) {
       result = 'drew';
       storageMethod('s', 'SET_ITEM', 'betUser', window.sessionStorage.betUserFirst);
       storageMethod('s', 'SET_ITEM', 'drewState', true);

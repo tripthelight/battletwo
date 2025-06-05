@@ -21,9 +21,9 @@ export default (_state) => {
     inner.classList.add('popup-inner');
     btnClose.setAttribute('aria-label', text.popup.btnClose);
 
-    if (_state == 'start') spanEl.innerHTML = text.orderStart;
-    else if (_state == 'end') spanEl.innerHTML = text.orderEnd;
-    else if (_state == 'tie') spanEl.innerHTML = text.orderTie;
+    if (_state === 'start') spanEl.innerHTML = text.orderStart;
+    else if (_state === 'end') spanEl.innerHTML = text.orderEnd;
+    else if (_state === 'tie') spanEl.innerHTML = text.orderTie;
     btnClose.onclick = () => {
       stateResultBetting(_state);
       if (document.querySelector('.choice-card-info')) document.querySelector('.choice-card-info').remove();

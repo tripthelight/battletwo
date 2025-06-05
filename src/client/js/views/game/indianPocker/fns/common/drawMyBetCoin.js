@@ -58,7 +58,7 @@ export default () => {
       if (BET_COINS_LIST.length === BET_COIN_LIST.length) return;
       for (let i = 0; i < BET_COIN_LIST.length; i++) {
         elemLi = document.createElement('li');
-        if (i == BET_COIN_LIST.length - 1 && BET_COIN_LIST[i].host === 'player') {
+        if (i === BET_COIN_LIST.length - 1 && BET_COIN_LIST[i].host === 'player') {
           elemLi.appendChild(minuteEl);
           elemLi.appendChild(hourEl);
           x = BET_COIN_LIST[i].offsetLeft + BET_COIN_LIST[i].translateX;

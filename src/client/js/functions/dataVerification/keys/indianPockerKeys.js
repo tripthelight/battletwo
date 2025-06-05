@@ -3,6 +3,8 @@ import findCharCode from '@/client/js/functions/findCharCode';
 export default (gameState) => {
   // gameState: choiceCard
   if (gameState === findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82])) {
+    console.log('tieWait >>>>>>>>> ', findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]));
+
     return [
       findCharCode([78, 73, 68, 76, 67, 82, 87, 83, 89, 70]), // ulIndex
       findCharCode([83, 70, 79, 67, 65, 71, 66, 87, 77, 86]), // liIndex

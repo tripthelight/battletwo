@@ -13,8 +13,8 @@ const enemyDotAni = () => {
   dotAni = setInterval(function () {
     ENEMY_DOT_L.innerText += '.';
     ENEMY_DOT_R.innerText += '.';
-    if (ENEMY_DOT_L.innerText.length == 4) ENEMY_DOT_L.innerText = '';
-    if (ENEMY_DOT_R.innerText.length == 4) ENEMY_DOT_R.innerText = '';
+    if (ENEMY_DOT_L.innerText.length === 4) ENEMY_DOT_L.innerText = '';
+    if (ENEMY_DOT_R.innerText.length === 4) ENEMY_DOT_R.innerText = '';
     if (!matching) clearInterval(dotAni);
   }, timeInterval_500);
 };

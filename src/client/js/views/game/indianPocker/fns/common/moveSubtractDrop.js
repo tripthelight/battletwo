@@ -34,7 +34,7 @@ export default (event) => {
   // LI : betting-zone에 넣었다 player-block으로 뺀 코인
   const LI = document.createElement('li');
   const deviceState = deviceStateStore.getState().deviceStateState.deviceState;
-  if (deviceState == 'pc') LI.setAttribute('draggable', true);
+  if (deviceState === 'pc') LI.setAttribute('draggable', true);
 
   const COINS_PLAYER = document.querySelector('.coins-player');
   if (!COINS_PLAYER) return errorManagement({ errCase: 'errorComn', message: '.coins-player 엘리먼트를 찾을 수 없습니다.' });

@@ -7,7 +7,23 @@ export default (_data) => {
     resolve(_data);
   });
   PROMISE.then((_data) => {
-    const { remoteStorage } = _data;
+    const { remoteStorage, tieWait } = _data;
+
+    // 같은 카드였던 상태에서 상대 peer가 팝업 x 버튼을 먼저 누르고 대기 상태 일 경우
+    if (tieWait) {
+      request('responseCompairChoiceCard', { result: true, tieWaitConfirmed: true });
+      return;
+    }
+
+    // 같은 카드였던 상태에서 내가 팝업 x 버튼을 먼저 누르고 대기 상태 일 경우
+    const encryptKey = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
+    const encryptVal = window.sessionStorage.getItem(encryptKey);
+    if (encryptVal !== null) {
+      if (encryptVal === 'true') {
+        request('responseCompairChoiceCard', { result: true, tieWaitConfirmed: true });
+        return;
+      }
+    }
 
     const encryptKey1 = findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]); // playerFirstNumber
     const encryptKey2 = findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85]); // enemyFirstNumber
@@ -88,7 +104,7 @@ export default (_data) => {
       request('opponentFouls', { message });
     } else {
       // data 검증에 성공하여 PASS
-      request('responseCompairChoiceCard', { result: true });
+      request('responseCompairChoiceCard', { result: true, tieWaitConfirmed: false });
     }
   }).catch((error) => {
     errorManagement({ errCase: 'errorComn', message: 'requestCompairChoiceCard() 함수를 못탐 : ' + error });

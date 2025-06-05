@@ -13,7 +13,7 @@ export default (_num) => {
 
   /*
   for (let i = 0; i < _arr.length; i++) {
-    if (_arr[i].host == _user) {
+    if (_arr[i].host === _user) {
       // for (let j = 1; j < 11; j++) {
       //   if (bcrypt.compareSync(j.toString(), _arr[i].num)) {
       //     return j;

@@ -1,21 +1,37 @@
-import storageMethod from '@/client/js/module/storage/storageMethod';
-import { timeInterval_1 } from '@/client/js/functions/variable';
-import findCharCode from '@/client/js/functions/findCharCode';
-import sessionInit from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/sessionInit';
-
 import { errorManagement } from '@/client/js/module/errorManagement';
-import drawPickCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/drawPickCard';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
+import findCharCode from '@/client/js/functions/findCharCode';
+import drawPickCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/drawPickCard';
 
 export default (_data) => {
   const PROMISE = new Promise((resolve, reject) => {
     resolve(_data);
   });
   PROMISE.then((_data) => {
-    if (_data.result) {
+    const { result, tieWaitConfirmed } = _data;
+
+    if (result) {
       // choiceCard 단계에서 필요한 data 검중 후 PASS 하면 다음 단계 진행
       drawPickCard();
-      LOADING_EVENT.hide();
+
+      if (tieWaitConfirmed) {
+        const encryptKey = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
+        const encryptVal = window.sessionStorage.getItem(encryptKey);
+        if (encryptVal === null) {
+          // null일 수 없음
+          // foul: 내가 key를 삭제했음
+        } else {
+          if (encryptVal === 'true') {
+            // 같은 카드였던 상태에서 내가 팝업 x 버튼을 먼저 누르고 대기 상태 였던 경우
+            LOADING_EVENT.show();
+          } else if (encryptVal === '') {
+            // 같은 카드였던 상태에서 상대 peer가 팝업 x 버튼을 먼저 누르고 대기 상태 였던 경우
+            LOADING_EVENT.hide();
+          }
+        }
+      } else {
+        LOADING_EVENT.hide();
+      }
     }
   }).catch((error) => {
     errorManagement({ errCase: 'errorComn', message: 'enterBasicBetResult() 함수를 못탐' });

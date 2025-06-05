@@ -62,7 +62,7 @@ export default (e) => {
   BET_COINS_LI[reactiveState.mTargetIdx].remove();
   const LI = document.createElement('li');
   const deviceState = deviceStateStore.getState().deviceStateState.deviceState;
-  if (deviceState == 'pc') LI.setAttribute('draggable', true);
+  if (deviceState === 'pc') LI.setAttribute('draggable', true);
 
   // S: betting-zone에서  player-block으로 뺀 코인에 시계 그리기
   const hasH = LI.querySelector('.h');

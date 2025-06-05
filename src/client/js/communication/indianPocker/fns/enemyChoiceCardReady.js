@@ -21,7 +21,7 @@ export default (_data) => {
         storageMethod('s', 'SET_ITEM', encryptKey, _state);
       } else {
         LOADING_EVENT.hide();
-        const encryptKey = findCharCode([[79, 88, 77, 84, 87, 86, 83, 69, 89, 73]]); // tieWait
+        const encryptKey = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
         storageMethod('s', 'SET_ITEM', encryptKey, '');
         setTimeout(choiceCardsClick, timeInterval_1);
       }

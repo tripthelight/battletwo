@@ -4,7 +4,7 @@
 const checkCountryCode = () => {
   let type = navigator.appName;
   let lang, country_code;
-  if (type == 'Netscape') lang = navigator.language;
+  if (type === 'Netscape') lang = navigator.language;
   else lang = navigator.userLanguage;
   country_code = lang.substr(3, 4);
   return country_code;

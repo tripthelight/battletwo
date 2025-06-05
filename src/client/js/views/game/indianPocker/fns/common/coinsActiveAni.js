@@ -4,7 +4,7 @@ export default () => {
   const COIN_WRAP = document.querySelector('.coins-player');
   if (!COIN_WRAP) return;
   const COINS = COIN_WRAP.querySelectorAll('li');
-  if (COINS.length == 0) return;
+  if (COINS.length === 0) return;
 
   // setTimeout(() => {
   //   COIN_WRAP.classList.add("active");

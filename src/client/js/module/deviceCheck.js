@@ -20,7 +20,7 @@ export function deviceCheck() {
     if (GNB) GNB.setAttribute('aria-hidden', 'false');
 
     const agent = navigator.userAgent.toLowerCase();
-    if ((navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) || agent.indexOf('msie') != -1) {
+    if ((navigator.appName === 'Netscape' && agent.indexOf('trident') != -1) || agent.indexOf('msie') != -1) {
       // pc : ie
       const URL = window.location.protocol + '//' + window.location.host + '/' + window.location.pathname;
       if (navigator.userAgent.indexOf('Trident') > 0) {
