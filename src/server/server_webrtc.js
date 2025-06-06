@@ -36,10 +36,31 @@ STANDBY_MAP = {
 }
 */
 
-// roomName이 있는지 check
+/**
+ * roomName이 있는지 check
+  - 최초 webRTC 접속 후 새로고침 했을 경우
+  - parsedData.gameName, parsedData.roomName 있음
+  - 새로고침 후 재접속이므로 socket.roomName은 없음
+ * @typedef {Object} data
+ * @property {string} parsedData client에서 보내준 gameName, roomName
+ * @property {string} socket 새로고침 후 새로 생성된 socket
+ * @returns
+ */
 async function roomsMapInit(data) {
   return new Promise((resolve, reject) => {
     const { parsedData, socket } = data;
+
+    // 처음 새로고침 한 peer가 roomName을 조작해서 reject 난 후,
+    // 바로 상대 peer가 새로고침 하면 ROOMS_MAP에 parsedData.roomName 없음
+    // 처음 새로고침 한 peer가 roomName을 조작해서 reject 난 직후 상대 peer에게 경고 팝업 띄어야 함
+    if (parsedData.gameName && parsedData.roomName) {
+      if (ROOMS_MAP[parsedData.gameName].get(parsedData.roomName)) {
+        // 새로고침 한 peer가 roomName 조작 안함
+      } else {
+        // 새로고침 한 peer가 roomName 조작함
+        reject({ type: 'foul' });
+      }
+    }
 
     if (parsedData.roomName) {
       socket.roomName = parsedData.roomName;
@@ -99,16 +120,16 @@ async function firstEntry(socket) {
         } else {
           // 대기하고 있던 user 나감
           // 나는 대기 중 상태로 변경
-          STANDBY_MAP[socket.gameName].set(socket.socketId, socket);
+          STANDBY_MAP[socket.gameName].set(socket.__customSocketId, socket);
         }
       } else {
         // 대기하고 있던 user 나감
         // 나는 대기 중 상태로 변경
-        STANDBY_MAP[socket.gameName].set(socket.socketId, socket);
+        STANDBY_MAP[socket.gameName].set(socket.__customSocketId, socket);
       }
     } else {
       // 내 gameName에 standby 상태인 user 없음
-      STANDBY_MAP[socket.gameName].set(socket.socketId, socket);
+      STANDBY_MAP[socket.gameName].set(socket.__customSocketId, socket);
     }
 
     resolve();
@@ -216,10 +237,6 @@ async function offerAnserCandidateDataProcess(resData) {
 // 연결된 클라이언트 처리
 WSS.on('connection', async (socket) => {
   const connectionPromise = new Promise((resolve) => {
-    // socket에 고유한 id 주입
-    if (!socket.socketId) {
-      socket.socketId = uuidv4();
-    }
     resolve(socket);
   });
 
@@ -238,24 +255,40 @@ WSS.on('connection', async (socket) => {
         .then(async (parsedData) => {
           await roomsMapInit({ parsedData, socket });
 
+          /**
+           * 최초 진입 - insertStorageWs
+           */
+          if (parsedData.type === 'requestStorage') {
+            // 각 게임에 필요한 암호화된 sessionStorage 생성
+            const STORAGE_DATA = await MAKE_STORAGE.findGame(parsedData.gameName);
+
+            if (Object.keys(STORAGE_DATA).length === 0) {
+              console.log('사용자가 최초 진입 시 battleTwo에 없는 gameName을 보냄');
+              socket.send(JSON.stringify({ type: 'requestStorageError' }));
+            } else {
+              socket.send(
+                JSON.stringify({
+                  type: 'responseStorage',
+                  ...STORAGE_DATA,
+                }),
+              );
+            }
+          }
+
+          /**
+           * webRTC connect - rtcPeer > webRTC
+           */
           if (parsedData.type === 'entryOrder') {
+            // 두 peer가 webRTC 연결 시 socket에 고유한 id 주입
+            if (!socket.__customSocketId) {
+              socket.__customSocketId = uuidv4();
+            }
+
             await handleEntryOrder({
               socket,
               gameName: parsedData.gameName,
               roomName: parsedData.roomName,
             });
-          }
-
-          if (parsedData.type === 'requestStorage') {
-            // 각 게임에 필요한 암호화된 sessionStorage 생성
-            const STORAGE_DATA = await MAKE_STORAGE.findGame(parsedData.gameName);
-
-            socket.send(
-              JSON.stringify({
-                type: 'responseStorage',
-                ...STORAGE_DATA,
-              }),
-            );
           }
 
           if (parsedData.type === 'offer' || parsedData.type === 'answer' || parsedData.type === 'candidate') {
@@ -265,7 +298,12 @@ WSS.on('connection', async (socket) => {
           }
         })
         .catch((err) => {
-          socket.send(JSON.stringify({ type: 'otherLeaves', msg: err }));
+          if (err.type === 'foul') {
+            socket.send(JSON.stringify({ type: 'foul', msg: '새로고침 한 peer가 sessstorage roomName key 조작' }));
+          }
+          if (err.type === 'otherLeaves') {
+            socket.send(JSON.stringify({ type: 'otherLeaves', msg: err }));
+          }
         });
     });
   });
@@ -288,10 +326,10 @@ WSS.on('connection', async (socket) => {
         }
       }
 
-      const standbyMapState = socket.gameName && socket.socketId && STANDBY_MAP[socket.gameName] && STANDBY_MAP[socket.gameName].get(socket.socketId);
+      const standbyMapState = socket.gameName && socket.__customSocketId && STANDBY_MAP[socket.gameName] && STANDBY_MAP[socket.gameName].get(socket.__customSocketId);
 
       if (standbyMapState) {
-        STANDBY_MAP[socket.gameName].delete(socket.socketId);
+        STANDBY_MAP[socket.gameName].delete(socket.__customSocketId);
       }
 
       // console.log('ROOMS_MAP', JSON.stringify(ROOMS_MAP, null, 2));

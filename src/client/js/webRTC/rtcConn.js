@@ -49,8 +49,6 @@ export default function webRTC(gameName) {
         signalingSocket.close(); // WebSocket 연결 닫기
         signalingSocket = null; // 소켓 객체 제거
       }
-      signalingSocket = null;
-      peerConnection = null;
       dataChannel = null;
       isRemoteDescSet = false;
       pendingCandidates.length = 0;
@@ -342,9 +340,9 @@ export default function webRTC(gameName) {
           const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]);
           const decryptVal = window.sessionStorage.getItem(encryptKey);
           // if (window.sessionStorage.getItem('gameState')) {
-          if (encryptKey) {
+          if (decryptVal !== null) {
             // if (encryptKey === 'gameOver') {
-            if (encryptKey === findCharCode([65, 70, 79, 73, 76, 85, 88, 87, 86, 75])) {
+            if (decryptVal === findCharCode([65, 70, 79, 73, 76, 85, 88, 87, 86, 75])) {
               resolve();
             } else {
               if (msgData.msg === 'r2') {
@@ -358,6 +356,19 @@ export default function webRTC(gameName) {
             errorManagement({ errCase: 'errorComn' });
             return;
           }
+          return;
+        }
+
+        if (msgData.type === 'foul') {
+          if (peerConnection) {
+            peerConnection.close();
+            peerConnection = null; // 연결 객체 제거
+          }
+          if (signalingSocket) {
+            signalingSocket.close(); // WebSocket 연결 닫기
+            signalingSocket = null; // 소켓 객체 제거
+          }
+          errorManagement({ errCase: 'errorComn', message: msgData.msg });
           return;
         }
       } catch (error) {

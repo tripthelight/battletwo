@@ -1,7 +1,5 @@
 import '@/client/assets/scss/game/indianPocker/common';
 import '@/client/js/common/common';
-import { debug } from '@/client/js/module/debug';
-import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import reload from '@/client/js/module/reload';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorManagement';
@@ -10,7 +8,6 @@ import rtcPeer from '@/client/js/webRTC/rtcPeer';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import makeCard from '@/client/js/views/game/indianPocker/fns/common/makeCard/makeCard';
 import findCharCode from '@/client/js/functions/findCharCode';
-import { BCRYPT_STORAGE } from '@/client/js/module/bcryptStorage';
 import generateSecretKey from '@/client/js/views/game/indianPocker/fns/common/generateSecretKey';
 
 // onMounted
@@ -19,17 +16,23 @@ document.onreadystatechange = async () => {
   if (state === 'interactive') {
   } else if (state === 'complete') {
     try {
-      console.log('indianPocker init ', reload);
+      const GAME_NAME = 'indianPocker';
+      console.log(`${GAME_NAME} init `, reload);
+      const GAME_ARR = [68, 74, 69, 77, 70, 75, 76, 86, 68, 69]; // indianPocker
 
-      // 먼저 webSocket에서 암호화된 sessionStorige를 받고,
-      await insertStorageWs();
+      // S : 모든 게임 공통 영역 (코드 동일) ======================================================
+      /**
+       * STEP 1 *************************************************
+       * 먼저 webSocket에서 암호화된 sessionStorage를 받고
+       */
+      await insertStorageWs(GAME_NAME);
 
-      // await BCRYPT_STORAGE.bcryptCardTest();
-
-      // gameName을 sessionStorage에 저장
+      /**
+       * STEP 2 *************************************************
+       * gameName을 sessionStorage에 저장
+       */
       const encryptKey = findCharCode([66, 86, 68, 73, 69, 65, 73, 66, 75, 69]); // gameName
-      const encryptVal = findCharCode([68, 74, 69, 77, 70, 75, 76, 86, 68, 69]); // indianPocker
-
+      const encryptVal = findCharCode(GAME_ARR);
       const decryptVal = window.sessionStorage.getItem(encryptKey);
       if (decryptVal === null || (decryptVal !== null && decryptVal !== encryptVal)) {
         // sessionStorage gameName이 없음
@@ -43,17 +46,38 @@ document.onreadystatechange = async () => {
       }
       */
 
-      // webRTC 공통
-      await rtcPeer('indianPocker');
+      /**
+       * STEP 3 ************************************************
+       * webRTC 공통
+       */
+      await rtcPeer(GAME_NAME);
 
-      // 상대 peer의 secret key 생성
+      /**
+       * STEP 4 ************************************************
+       * 상대 peer의 secret key 생성
+       */
+
       await generateSecretKey();
 
-      // 두 Peer가 연결 된 후 카드 우선 생성
+      /**
+       * STEP 5 ************************************************
+       * 이후 단계 진행 전 waitEnemy 단계에서 필요한 sessionStorage key 검증
+       */
+
+      // E : 모든 게임 공통 영역 (코드 동일) ======================================================
+
+      /**
+       * STEP 6 ************************************************
+       * 두 Peer가 연결 된 후 카드 우선 생성
+       */
       makeCard();
 
+      /**
+       * STEP 7 ************************************************
+       * reload 여부 판단 후 이후 단계 진행
+       */
       if (window.__customReloadFlag) {
-        const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]);
+        const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
         const decryptVal = window.sessionStorage.getItem(encryptKey);
 
         // 새로 고침 후 재연결인 경우

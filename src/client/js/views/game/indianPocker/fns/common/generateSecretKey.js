@@ -1,4 +1,5 @@
 import { errorManagement } from '@/client/js/module/errorManagement';
+import storageKeys from '@/client/js/functions/dataVerification/storageKeys';
 import { request } from '@/client/js/network/indianPocker/request';
 import encryptionStore from '@/client/store/encryptionStore';
 import findCharCode from '@/client/js/functions/findCharCode';
@@ -14,7 +15,12 @@ export default async () => {
     const decryptVal2 = window.sessionStorage.getItem(encryptKey2);
     // gameState가 waitEnemy 이고 secretKey가 없을 때만 주입
     // TODO: 이 후, secretKey가 없는 경우는 사용자가 삭제한 경우 이므로 error 처리 필요
-    if (decryptVal1 === encryptVal1) {
+    const encryptKeys = storageKeys({
+      p1: findCharCode([68, 74, 69, 77, 70, 75, 76, 86, 68, 69]), // indianPocker,
+      p2: findCharCode([88, 66, 65, 72, 90, 68, 86, 75, 85, 73]), // gameStateAllKeys
+    });
+
+    if (encryptKeys.includes(encryptVal1)) {
       if (decryptVal1 !== null && decryptVal2 === null) {
         const compair = encryptionStore.getState().encryptionState.compair;
         storageMethod('s', 'SET_ITEM', encryptKey2, compair[encryptKey2]);

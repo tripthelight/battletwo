@@ -40,8 +40,6 @@ export default async function rtcPeer(gameName) {
       if (encryptKeys.includes(decryptVal)) {
         // 모든 gameState key 가 정상적으로 있음
       } else {
-        console.log('비정상 >>>>>>>>>>>>>>> ');
-
         reject({ errCase: 'errorComn', message: 'gameState value error' });
         return;
       }

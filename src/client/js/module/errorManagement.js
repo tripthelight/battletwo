@@ -95,7 +95,9 @@ function sendErrorLogToServer(errorData) {
  * @param {*} errData
  */
 export function errorManagement(errData) {
-  const { component, event, message, errCase } = errData;
+  const { component, event, message, errCase, errorDetails } = errData;
+  console.log('component >>>>>>>>>>>>>>>>> ', component);
+
   const errorMessage = `[Error] ${component} - ${event}: ${message}`;
 
   // 1. 콘솔에 오류 출력
