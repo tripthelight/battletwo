@@ -53,14 +53,14 @@ async function roomsMapInit(data) {
     // 처음 새로고침 한 peer가 roomName을 조작해서 reject 난 후,
     // 바로 상대 peer가 새로고침 하면 ROOMS_MAP에 parsedData.roomName 없음
     // 처음 새로고침 한 peer가 roomName을 조작해서 reject 난 직후 상대 peer에게 경고 팝업 띄어야 함
-    if (parsedData.gameName && parsedData.roomName) {
-      if (ROOMS_MAP[parsedData.gameName].get(parsedData.roomName)) {
-        // 새로고침 한 peer가 roomName 조작 안함
-      } else {
-        // 새로고침 한 peer가 roomName 조작함
-        reject({ type: 'foul' });
-      }
-    }
+    // if (parsedData.gameName && parsedData.roomName) {
+    //   if (ROOMS_MAP[parsedData.gameName].get(parsedData.roomName)) {
+    //     // 새로고침 한 peer가 roomName 조작 안함
+    //   } else {
+    //     // 새로고침 한 peer가 roomName 조작함
+    //     reject({ type: 'foul' });
+    //   }
+    // }
 
     if (parsedData.roomName) {
       socket.roomName = parsedData.roomName;

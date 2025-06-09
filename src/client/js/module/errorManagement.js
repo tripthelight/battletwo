@@ -8,7 +8,7 @@ function showErrorNotification(errCase, component, message) {
     switch (component) {
       case 'signalingSocket':
         // socket error
-        errorModal(text.networkLost);
+        errorModal(text.serverProblem);
         break;
       case 'peerConnection':
         // 상대방이 새로고침하면 나는 여기를 두번째로 탐

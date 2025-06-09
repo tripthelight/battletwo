@@ -33,6 +33,7 @@ const language = (country) => {
         leaveRoom: '상대방이 방을 나갔습니다.',
         networkSpeed: '네트워크가 느려서 게임을 할 수 없습니다.',
         networkLost: '네트워크가 연결되어 있지 않습니다.',
+        serverProblem: '서버에 문제가 생겼습니다.',
         popup: {
           btnClose: '팝업 닫기',
         },
@@ -77,6 +78,7 @@ const language = (country) => {
         leaveRoom: '相手が部屋を出ました。',
         networkSpeed: 'ネットワークが遅い。ゲームを進めることはできません。',
         networkLost: 'ネットワークに接続されていません。',
+        serverProblem: 'サーバーに問題が発生しました。',
         popup: {
           btnClose: 'ポップアップを閉じる',
         },
@@ -121,6 +123,7 @@ const language = (country) => {
         leaveRoom: '对方已经离开了房间。',
         networkSpeed: '网络很慢。游戏无法继续。',
         networkLost: '网络未连接。',
+        serverProblem: '服务器出现了问题。',
         popup: {
           btnClose: '关闭弹出窗口',
         },
@@ -165,6 +168,7 @@ const language = (country) => {
         leaveRoom: 'दूसरे पक्ष ने कमरा छोड़ दिया है।',
         networkSpeed: 'नेटवर्क धीमा है। खेल जारी नहीं रह सकता।',
         networkLost: 'नेटवर्क कनेक्ट नहीं है।',
+        serverProblem: 'सर्वर में समस्या आ गई है।',
         popup: {
           btnClose: 'पॉपअप बंद करें',
         },
@@ -209,6 +213,7 @@ const language = (country) => {
         leaveRoom: 'Pihak lain telah meninggalkan ruangan.',
         networkSpeed: 'Jaringan lambat. Tidak dapat melanjutkan permainan.',
         networkLost: 'Jaringan tidak terhubung.',
+        serverProblem: 'Terjadi masalah pada server.',
         popup: {
           btnClose: 'tutup munculan',
         },
@@ -253,6 +258,7 @@ const language = (country) => {
         leaveRoom: "L'autre partie a quitté la salle.",
         networkSpeed: 'Le réseau est lent. Le jeu ne peut pas continuer.',
         networkLost: "Le réseau n'est pas connecté.",
+        serverProblem: 'Un problème est survenu sur le serveur.',
         popup: {
           btnClose: 'fermer la fenêtre contextuelle',
         },
@@ -297,6 +303,7 @@ const language = (country) => {
         leaveRoom: 'A outra parte saiu da sala.',
         networkSpeed: 'A rede está lenta. O jogo não pode continuar.',
         networkLost: 'A rede não está conectada.',
+        serverProblem: 'Ocorreu um problema no servidor.',
         popup: {
           btnClose: 'fechar pop-up',
         },
@@ -341,6 +348,7 @@ const language = (country) => {
         leaveRoom: 'อีกฝ่ายออกจากห้องไปแล้ว',
         networkSpeed: 'เกมไม่สามารถดำเนินการต่อได้เนื่องจากเครือข่ายช้า',
         networkLost: 'เครือข่ายไม่ได้เชื่อมต่อ',
+        serverProblem: 'เกิดปัญหากับเซิร์ฟเวอร์',
         popup: {
           btnClose: 'ปิดป๊อปอัป',
         },
@@ -385,6 +393,7 @@ const language = (country) => {
         leaveRoom: 'Der Gesprächspartner hat den Raum verlassen.',
         networkSpeed: 'Netzwerk ist langsam. Kann mit dem Spiel nicht fortfahren.',
         networkLost: 'Das Netzwerk ist nicht verbunden.',
+        serverProblem: 'Es ist ein Problem mit dem Server aufgetreten.',
         popup: {
           btnClose: 'Popup schließen',
         },
@@ -429,6 +438,7 @@ const language = (country) => {
         leaveRoom: "L'altra parte ha lasciato la stanza.",
         networkSpeed: 'La rete è lenta. Impossibile procedere con il gioco.',
         networkLost: 'La rete non è connessa.',
+        serverProblem: 'Si è verificato un problema al server.',
         popup: {
           btnClose: 'chiudi popup',
         },
@@ -473,6 +483,7 @@ const language = (country) => {
         leaveRoom: 'La otra parte ha salido de la habitación.',
         networkSpeed: 'La red es lenta. No se puede continuar con el juego.',
         networkLost: 'La red no está conectada.',
+        serverProblem: 'Se ha producido un problema en el servidor.',
         popup: {
           btnClose: 'cerrar elemento emergente',
         },
@@ -517,6 +528,7 @@ const language = (country) => {
         leaveRoom: 'Другая сторона вышла из комнаты.',
         networkSpeed: 'Сеть медленная. Не могу продолжить игру.',
         networkLost: 'Сеть не подключена.',
+        serverProblem: 'Произошла ошибка на сервере.',
         popup: {
           btnClose: 'закрыть всплывающее окно',
         },
@@ -561,6 +573,7 @@ const language = (country) => {
         leaveRoom: 'Bên kia đã rời khỏi phòng.',
         networkSpeed: 'Mạng chậm. Không thể tiếp tục trò chơi.',
         networkLost: 'Mạng không được kết nối.',
+        serverProblem: 'Đã xảy ra sự cố với máy chủ.',
         popup: {
           btnClose: 'đóng quảng cáo',
         },
@@ -605,6 +618,7 @@ const language = (country) => {
         leaveRoom: 'The other party has left the room.',
         networkSpeed: "I can't play the game because my network is slow.",
         networkLost: 'The network is not connected.',
+        serverProblem: "There's a problem with the server.",
         popup: {
           btnClose: 'Close popup',
         },

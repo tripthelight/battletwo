@@ -368,7 +368,6 @@ export default function webRTC(gameName) {
             signalingSocket.close(); // WebSocket 연결 닫기
             signalingSocket = null; // 소켓 객체 제거
           }
-          errorManagement({ errCase: 'errorComn', message: msgData.msg });
           return;
         }
       } catch (error) {
@@ -395,13 +394,13 @@ export default function webRTC(gameName) {
       signalingSocket.onerror = (event) => {
         // WebSocket 연결 오류
         // otherLeavesComn();
-        reject({ component: 'signalingSocket', event: 'onerror', message: 'Signaling socket error occurred', errorDetails: event });
+        reject({ errCase: 'webRTC', component: 'signalingSocket', event: 'onerror', message: 'Signaling socket error occurred', errorDetails: event });
       };
 
       signalingSocket.onclose = (event) => {
         // WebSocket 연결이 닫힘
         // otherLeavesComn();
-        reject({ component: 'signalingSocket', event: 'onclose', message: 'Signaling socket connection closed', errorDetails: event });
+        reject({ errCase: 'webRTC', component: 'signalingSocket', event: 'onclose', message: 'Signaling socket connection closed', errorDetails: event });
       };
     } catch (error) {
       // otherLeavesComn();
