@@ -34,7 +34,8 @@ if (cluster.isPrimary) {
 } else {
   // 각 워커 프로세스가 수행할 작업 결정
   if (process.env.WORKER_TYPE === 'webrtc') {
-    import('./server_webrtc.js');
+    // import('./server_webrtc.js');
+    import('./server_webrtc_tuning.js');
   } else if (process.env.WORKER_TYPE === 'websocket') {
     import('./server_websocket.js');
   }

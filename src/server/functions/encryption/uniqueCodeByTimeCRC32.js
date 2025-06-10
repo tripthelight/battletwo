@@ -18,6 +18,6 @@ export default () => {
     current = (current * 31 + i) % 26;
     result += String.fromCharCode(A_CODE + current);
   }
-  return 'ABHMMNTYYZ';
-  // return result;
+  // return 'ABHMMNTYYZ';
+  return result;
 };

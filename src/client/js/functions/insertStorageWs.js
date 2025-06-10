@@ -45,7 +45,7 @@ export default async (gameName) => {
           await insertStorageDate(msgData);
 
           // 서버에서 암호화된 sessiongStorage 받은 후 resolve
-          webSocket.close(1000, 'Work_complete');
+          // webSocket.close(1000, 'Work_complete');
           resolve();
         }
         if (msgData.type === 'requestStorageError') {

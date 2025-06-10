@@ -1,5 +1,6 @@
 import '@/client/assets/scss/common';
 import clearStorage from '@/client/js/common/clearStorage';
+import clearCookies from '@/client/js/common/clearCookies';
 import storageEvent from '@/client/js/module/storage/storageEvent';
 import '@/client/js/module/networkCheck';
 import '@/client/js/module/browserLang';
@@ -9,6 +10,7 @@ import '@/client/js/common/gesture';
 import '@/client/js/common/resize';
 
 clearStorage(window.location.pathname);
+clearCookies(window.location.pathname);
 // storageEvent();
 setInnerHeight();
 deviceCheck();
