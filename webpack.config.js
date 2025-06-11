@@ -212,7 +212,7 @@ const server = new webpackDevServer(
       directory: path.resolve(__dirname, 'src'), // 정적 파일 제공 디렉터리
     },
     compress: true,
-    port: 3000,
+    port: process.env.CLIENT_PORT,
     hot: true,
     client: {
       progress: true,

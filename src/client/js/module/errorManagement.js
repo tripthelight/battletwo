@@ -2,9 +2,9 @@ import errorModal from '@/client/components/popup/modal/errorModal';
 import { text } from '@/client/js/functions/language';
 
 // UI 알림 표시 함수
-function showErrorNotification(errCase, component, message) {
-  // CASE : webRTC error
+function showErrorNotification(errCase, component, message, target) {
   if (errCase === 'webRTC') {
+    // CASE : webRTC error
     switch (component) {
       case 'signalingSocket':
         // socket error
@@ -47,6 +47,35 @@ function showErrorNotification(errCase, component, message) {
       default:
         break;
     }
+  } else if (errCase === 'dataManipulation') {
+    // CASE : data 조작 error
+    switch (target) {
+      case 'local':
+        errorModal(text.err);
+        break;
+      case 'remote':
+        errorModal(text.err);
+        break;
+      default:
+        break;
+    }
+    console.log('data manipulation error : ', target + ' -> ' + message);
+  } else if (errCase === 'server') {
+    // CASE : server error
+    switch (target) {
+      case 'local':
+        errorModal(text.err);
+        break;
+      case 'remote':
+        errorModal(text.leaveRoom);
+        break;
+      case 'server':
+        errorModal(text.serverProblem);
+        break;
+      default:
+        break;
+    }
+    console.log('server error : ', target + ' -> ' + message);
   } else if (errCase === 'foul') {
     errorModal(text.leaveRoom);
     console.log('errorComn error : ', message);
@@ -95,7 +124,7 @@ function sendErrorLogToServer(errorData) {
  * @param {*} errData
  */
 export function errorManagement(errData) {
-  const { component, event, message, errCase, errorDetails } = errData;
+  const { component, event, message, errCase, target, errorDetails } = errData;
   console.log('component >>>>>>>>>>>>>>>>> ', component);
 
   const errorMessage = `[Error] ${component} - ${event}: ${message}`;
@@ -105,7 +134,7 @@ export function errorManagement(errData) {
   // if (errorDetails) console.error('Error Details:', errorDetails);
 
   // 2. 사용자에게 오류 알림 (UI 메시지)
-  showErrorNotification(errCase, component, message);
+  showErrorNotification(errCase, component, message, target);
 
   // 3. 특정 오류 대응 (자동 복구, 재연결)
   // handleRecovery(component, event);

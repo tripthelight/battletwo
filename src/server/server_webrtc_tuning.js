@@ -13,7 +13,15 @@ const ROOMS_MAP = {}; // room name과 WebSocket 인스턴스를 매핑할 Map
 const STANDBY_MAP = {}; // standby 상태인 사용자만 저장
 
 // 연결된 클라이언트 처리
-WSS.on('connection', async (socket) => {
+WSS.on('connection', async (socket, req) => {
+  // IP 제한
+  const origin = req.headers.origin;
+  const corsURL = `${process.env.CLIENT_HOST}:${process.env.CLIENT_PORT}`;
+  if (origin !== corsURL) {
+    socket.close();
+    return;
+  }
+
   console.log('WebSocket connection');
 
   socket.on('message', async (data) => {

@@ -1,0 +1,7 @@
+STEP 1. signalingServer 연결
+
+  SUB STEP 1 : 서버로 부터 secret key 받은 후 cookies에 등록
+  SUB STEP 2 : gameName, gameState를 sesstionStorage 에 등록
+  SUB STEP 3 : webRTC 연결
+
+STEP 2. 게임 로직 실행 단계

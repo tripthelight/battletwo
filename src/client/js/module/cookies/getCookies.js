@@ -16,10 +16,12 @@ export default (params) => {
     if (cookieValue) {
       return cookieValue;
     } else {
-      errorManagement({ errCase: 'cookies', message: 'cookie value가 없습니다.' });
+      // errorManagement({ errCase: 'cookies', message: 'cookie value가 없습니다.' });
+      return null;
     }
   } else {
-    errorManagement({ errCase: 'cookies', message: 'cookieName이 없습니다.' });
+    // errorManagement({ errCase: 'cookies', message: 'cookieName이 없습니다.' });
+    return null;
   }
   return null;
 };
