@@ -17,15 +17,15 @@ set msg=%msg:~1%
 
 :: 메시지가 비었는지 확인
 if "%msg%"=="" (
-    echo ❗ 커밋 메시지를 입력하세요.
-    echo 사용법: git-auto.bat "커밋 메시지"
-    exit /b 1
+  echo ❗ 커밋 메시지를 입력하세요.
+  echo 사용법: git-auto.bat "커밋 메시지"
+  exit /b 1
 )
 
 :: 변경사항 있는지 확인
 git status --porcelain > temp_git_status.txt
 for /f %%i in ('findstr /r /c:"." temp_git_status.txt') do (
-    goto :has_changes
+  goto :has_changes
 )
 
 echo ✅ 변경된 파일이 없습니다. 커밋할 내용이 없어요.
