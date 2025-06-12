@@ -1,3 +1,5 @@
+:: 윈도우 cmd에서 사용 시 한글 깨짐 현상 발생하여 사용 안함
+
 @echo off
 setlocal enabledelayedexpansion
 
