@@ -19,6 +19,7 @@ fi
 # 실행
 echo "📦 변경된 파일이 감지되었습니다. 커밋을 진행합니다..."
 
+git status
 git add .
 git commit -m "$msg"
 git push origin main
