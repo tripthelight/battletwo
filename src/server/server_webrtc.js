@@ -279,6 +279,7 @@ WSS.on('connection', async (socket) => {
            * webRTC connect - rtcPeer > webRTC
            */
           if (parsedData.type === 'entryOrder') {
+
             // 두 peer가 webRTC 연결 시 socket에 고유한 id 주입
             if (!socket.__customSocketId) {
               socket.__customSocketId = uuidv4();
@@ -300,10 +301,11 @@ WSS.on('connection', async (socket) => {
         .catch((err) => {
           if (err.type === 'foul') {
             socket.send(JSON.stringify({ type: 'foul', msg: '새로고침 한 peer가 sessstorage roomName key 조작' }));
-          }
-          if (err.type === 'otherLeaves') {
+          } else if (err.type === 'otherLeaves') {
             socket.send(JSON.stringify({ type: 'otherLeaves', msg: err }));
-          }
+          } else {
+            socket.send(JSON.stringify({ type: 'otherLeaves', msg: err }));
+          };
         });
     });
   });

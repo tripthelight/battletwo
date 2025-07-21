@@ -99,3 +99,7 @@ battletwo
 - FIXME: 랜선 PC와 wifi mobile에서 webRTC 연결 안됨
 - 랜선사용자와 모바일LTE 사용자간 연결을 위해 TURN 실서버 반드시 구축해야됨
 - coturn 여러 대 구성 예제나 로드밸런서 설정 예제(Nginx/HAProxy) 확인 필요
+- TODO: 
+- 나의 keypair 가 생기기 전에 roomName, gameState sessionStorage key 를 어떻게 해시문으로 바꾸지?
+  - keypair 뺄까?... 안돼, keypair가 있어야 접속할 때 마다 key가 바뀌어!!
+- local player가 roomName sessionStorage를 삭제하고 새로고침하면 어떻게 재연결 시키지?

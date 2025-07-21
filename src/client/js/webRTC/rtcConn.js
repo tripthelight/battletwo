@@ -58,15 +58,19 @@ export default function webRTC(gameName) {
     function initOnopen() {
       try {
         // sessionStorage gameName key 찾기
-        const encryptKey1 = findCharCode([66, 86, 68, 73, 69, 65, 73, 66, 75, 69]);
-        const encryptKey2 = findCharCode([74, 86, 88, 78, 80, 70, 85, 72, 87, 68]);
+        const encryptKey1 = findCharCode([66, 86, 68, 73, 69, 65, 73, 66, 75, 69]); // gameName
+        const encryptKey2 = findCharCode([74, 86, 88, 78, 80, 70, 85, 72, 87, 68]); // roomName
+
+        console.log('initOnopen >>>>>>>> ');
+
         signalingSocket.send(
           JSON.stringify({
             type: 'entryOrder',
-            // gameName: sessionStorage.getItem('gameName'),
-            gameName: sessionStorage.getItem(encryptKey1),
-            // roomName: sessionStorage.getItem('roomName') ?? null,
-            roomName: sessionStorage.getItem(encryptKey2) ?? null,
+            // gameName: window.sessionStorage.getItem('gameName'),
+            // gameName: sessionStorage.getItem(encryptKey1),
+            gameName: gameName,
+            roomName: window.sessionStorage.getItem('roomName') ?? null,
+            // roomName: sessionStorage.getItem(encryptKey2) ?? null,
           }),
         );
       } catch (error) {
@@ -113,10 +117,12 @@ export default function webRTC(gameName) {
           // 이 이벤트에서 상대 peer가 방을 나갔을 경우 disconnected는 약 5초 뒤에 발생함
 
           // gameState: sessionStorage.getItem('gameState'),
-          const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]);
-          const decryptVal = window.sessionStorage.getItem(encryptKey);
+          const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
+          // const decryptVal = window.sessionStorage.getItem(encryptKey);
+          const decryptVal = window.sessionStorage.getItem('gameState');
           // gameOver 체크
-          const storageCheck = decryptVal && decryptVal !== findCharCode([65, 70, 79, 73, 76, 85, 88, 87, 86, 75]);
+          // const storageCheck = decryptVal && decryptVal !== findCharCode([65, 70, 79, 73, 76, 85, 88, 87, 86, 75]); // gameOver
+          const storageCheck = decryptVal && decryptVal !== 'gameOver'; // gameOver
 
           // const REMOTE_PEER_LEFT = peerConnection && (peerConnection.iceConnectionState === 'disconnected' || peerConnection.iceConnectionState === 'failed') && window.sessionStorage.getItem('gameState') && window.sessionStorage.getItem('gameState') !== 'gameOver';
           const REMOTE_PEER_LEFT = peerConnection && (peerConnection.iceConnectionState === 'disconnected' || peerConnection.iceConnectionState === 'failed') && storageCheck;
@@ -176,8 +182,10 @@ export default function webRTC(gameName) {
         if (message.type === 'connectFirst' || message.type === 'connectSecond') {
           // storageMethod('s', 'SET_ITEM', 'remotePlayer', message.nickname);
           // remotePlayer
-          const encryptKey = findCharCode([74, 83, 78, 89, 67, 71, 87, 70, 82, 86]);
-          storageMethod('s', 'SET_ITEM', encryptKey, findCharCode(addCharCode(message.nickname)));
+          // const encryptKey = findCharCode([74, 83, 78, 89, 67, 71, 87, 70, 82, 86]); // remotePlayer
+          // storageMethod('s', 'SET_ITEM', encryptKey, findCharCode(addCharCode(message.nickname)));
+
+          storageMethod('s', 'SET_ITEM', 'remotePlayer', addCharCode(message.nickname));
           addNickname('remotePlayer');
 
           /*
@@ -201,7 +209,7 @@ export default function webRTC(gameName) {
             dataChannel.send(JSON.stringify(sharedParams));
 
             // dataChannel message 전송
-            await responseComn();
+            await responseComn(gameName);
 
             // 두 peer가 연결이 되어야 resolve 시켜야 함
             resolve();
@@ -209,7 +217,7 @@ export default function webRTC(gameName) {
 
           if (message.type === 'connectSecond') {
             // dataChannel message 전송
-            await responseComn();
+            await responseComn(gameName);
 
             // 두 peer가 연결이 되어야 resolve 시켜야 함
             resolve();
@@ -258,12 +266,14 @@ export default function webRTC(gameName) {
     async function handleMessage(msgData) {
       try {
         if (msgData.type === 'entryOrder') {
-          const encryptKey = findCharCode([74, 86, 88, 78, 80, 70, 85, 72, 87, 68]);
+          const encryptKey = findCharCode([74, 86, 88, 78, 80, 70, 85, 72, 87, 68]); // roomName
           // 생성된 roomName 으로 channelName 생성
           const CHANNEL_NAME = `${gameName}-${msgData.roomName}-Channel`;
           // storageMethod('s', 'SET_ITEM', 'roomName', msgData.roomName);
           // storageMethod('s', 'SET_ITEM', encryptKey, findCharCode(Array.from(msgData.roomName).map((char) => char.charCodeAt(0))));
-          storageMethod('s', 'SET_ITEM', encryptKey, msgData.roomName);
+
+          // storageMethod('s', 'SET_ITEM', encryptKey, msgData.roomName);
+          storageMethod('s', 'SET_ITEM', 'roomName', msgData.roomName);
           initConnect();
           candidateEvent();
 
@@ -337,12 +347,16 @@ export default function webRTC(gameName) {
 
         if (msgData.type === 'otherLeaves') {
           // gameState: sessionStorage.getItem('gameState'),
-          const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]);
-          const decryptVal = window.sessionStorage.getItem(encryptKey);
+          // const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
+          // const decryptVal = window.sessionStorage.getItem(encryptKey);
+          const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
+          const decryptVal = window.sessionStorage.getItem('gameState');
+
           // if (window.sessionStorage.getItem('gameState')) {
           if (decryptVal !== null) {
             // if (encryptKey === 'gameOver') {
-            if (decryptVal === findCharCode([65, 70, 79, 73, 76, 85, 88, 87, 86, 75])) {
+            // if (decryptVal === findCharCode([65, 70, 79, 73, 76, 85, 88, 87, 86, 75])) { // gameOver
+            if (decryptVal === 'gameOver') { // gameOver
               resolve();
             } else {
               if (msgData.msg === 'r2') {

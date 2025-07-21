@@ -2,9 +2,12 @@ import CRC32 from 'crc-32';
 import encryptionStore from '@/client/store/encryptionStore';
 import getCookies from '@/client/js/module/cookies/getCookies';
 
-export default (_key, _old) => {
+export default (_key) => {
   // const keypair = encryptionStore.getState().encryptionState.keypair;
   const keypair = getCookies({ cookieName: 'gc:kp', cookieKey: 'kp' });
+  // console.log('keypair :::::: ', keypair); // null
+  // console.log('_key + keypair :::::: ', _key + keypair); // keypair가 null일 경우 _key 뒤에 'null' 문자열이 붙음
+
   return (CRC32.str(_key + keypair) >>> 0).toString(16); // 양수 변환 후 16진수로
   /*
   const keypair = window.sessionStorage.getItem('keyPair');

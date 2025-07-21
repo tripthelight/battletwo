@@ -6,20 +6,20 @@ import { response as indianPockerResponse } from '@/client/js/network/indianPock
 import { response as blackAndWhite1Response } from '@/client/js/network/blackAndWhite1/response';
 import { response as findTheSamePictureResponse } from '@/client/js/network/findTheSamePicture/response';
 
-export async function responseComn() {
+export async function responseComn(gameName) {
   // sessionStorage gameName key 찾기
-  const encryptKey = findCharCode([66, 86, 68, 73, 69, 65, 73, 66, 75, 69]);
+  // const encryptKey = findCharCode([66, 86, 68, 73, 69, 65, 73, 66, 75, 69]); // gameName
 
   // const GAME_NAME = window.sessionStorage.getItem('gameName');
-  const GAME_NAME = window.sessionStorage.getItem(encryptKey);
-  if (!GAME_NAME) return errorManagement({ errCase: 'errorComn', message: text.err });
+  // const GAME_NAME = window.sessionStorage.getItem(encryptKey);
+  // if (!GAME_NAME) return errorManagement({ errCase: 'errorComn', message: text.err });
 
-  switch (GAME_NAME) {
+  switch (gameName) {
     case 'taptap':
       taptapResponse();
       break;
-    // case 'indianPocker':
-    case findCharCode([68, 74, 69, 77, 70, 75, 76, 86, 68, 69]):
+    case 'indianPocker':
+    // case findCharCode([68, 74, 69, 77, 70, 75, 76, 86, 68, 69]):
       indianPockerResponse();
       break;
     case 'blackAndWhite1':
