@@ -127,12 +127,16 @@ export default function webRTC(gameName) {
           // const REMOTE_PEER_LEFT = peerConnection && (peerConnection.iceConnectionState === 'disconnected' || peerConnection.iceConnectionState === 'failed') && window.sessionStorage.getItem('gameState') && window.sessionStorage.getItem('gameState') !== 'gameOver';
           const REMOTE_PEER_LEFT = peerConnection && (peerConnection.iceConnectionState === 'disconnected' || peerConnection.iceConnectionState === 'failed') && storageCheck;
           if (REMOTE_PEER_LEFT) {
+
             errorManagement({ errCase: 'webRTC', component: 'peerConnection', event: 'oniceconnectionstatechange', message: 'ICE connection state is disconnected', errorDetails: event });
+
+            otherLeavesComn();
+            console.log('여기 2 ------------- ');
           }
 
-          if (peerConnection.iceConnectionState === 'connected') {
+          /* if (peerConnection.iceConnectionState === 'connected') {
             //
-          }
+          } */
         };
       } catch (error) {
         // otherLeavesComn();
@@ -143,6 +147,7 @@ export default function webRTC(gameName) {
     async function initConnect() {
       try {
         peerConnection = new RTCPeerConnection(servers);
+        window.rtcChannels.peerConnection = peerConnection;
       } catch (error) {
         // otherLeavesComn();
         reject({ component: 'initConnect', event: 'catch', message: 'Unexpected error in initConnect', errorDetails: error });
@@ -362,6 +367,9 @@ export default function webRTC(gameName) {
               if (msgData.msg === 'r2') {
                 // 게임 중 한 명이 나간 상태에서 나머지 한 명이 새로고침
                 // debug.log('방나감 팝업 오픈 :::');
+                otherLeavesComn();
+                console.log('여기 2 ------------- ');
+
                 errorManagement({ errCase: 'webRTC', component: 'peerConnection' });
                 return;
               }

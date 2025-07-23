@@ -60,7 +60,6 @@ export default async function rtcPeer(gameName) {
       }
       */
 
-
       // gameState
       const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
       // console.log(encryptKey); // keypair null이어도 만들어짐

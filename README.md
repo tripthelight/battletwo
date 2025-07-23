@@ -102,4 +102,3 @@ battletwo
 - TODO: 
 - 나의 keypair 가 생기기 전에 roomName, gameState sessionStorage key 를 어떻게 해시문으로 바꾸지?
   - keypair 뺄까?... 안돼, keypair가 있어야 접속할 때 마다 key가 바뀌어!!
-- local player가 roomName sessionStorage를 삭제하고 새로고침하면 어떻게 재연결 시키지?

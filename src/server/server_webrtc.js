@@ -197,7 +197,7 @@ async function handleEntryOrder(data) {
 
     if (roomName) {
       // 게임 중 새로고침
-      await refreshDuringGame({ socket, roomName }).catch(() => {
+      refreshDuringGame({ socket, roomName }).catch(() => {
         socket.send(JSON.stringify({ type: 'otherLeaves', msg: 'r4' }));
       });
     } else {
@@ -333,6 +333,8 @@ WSS.on('connection', async (socket) => {
       if (standbyMapState) {
         STANDBY_MAP[socket.gameName].delete(socket.__customSocketId);
       }
+
+      socket = null;
 
       // console.log('ROOMS_MAP', JSON.stringify(ROOMS_MAP, null, 2));
       // console.log('STANDBY_MAP : ', JSON.stringify(STANDBY_MAP, null, 2));
