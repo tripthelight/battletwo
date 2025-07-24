@@ -76,6 +76,7 @@ document.onreadystatechange = async () => {
     await rtcPeer(GAME_NAME);
 
   } catch (error) {
+    console.log('error indianPocker.js >>>>>>>>>>>> ', error);
     errorManagement(error);
   }
 };

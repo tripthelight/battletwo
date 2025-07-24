@@ -1,13 +1,27 @@
+import fs from 'fs';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 dotenv.config();
+import https from 'https';
+import express from 'express';
 import Redis from 'ioredis';
 import { v4 as uuidv4 } from 'uuid';
 import { WebSocketServer } from 'ws';
 import { MAKE_STORAGE } from './functions/encryption/makeStorage.js';
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const app = express();
+
+const server = https.createServer({
+  key: fs.readFileSync(path.resolve(__dirname, '../../certs/client/localhost-key.pem')),
+  cert: fs.readFileSync(path.resolve(__dirname, '../../certs/client/localhost.pem')),
+}, app);
+
 // WebSocket 서버 생성
 const PORT = process.env.RTC_PORT || 8081;
-const WSS = new WebSocketServer({ port: PORT });
+const WSS = new WebSocketServer({ server  });
 const REDIS = new Redis(); // 6379 단일 redis server
 const ROOMS_MAP = {}; // room name과 WebSocket 인스턴스를 매핑할 Map
 const STANDBY_MAP = {}; // standby 상태인 사용자만 저장
@@ -342,4 +356,7 @@ WSS.on('connection', async (socket) => {
   });
 });
 
-console.log(`WebRTC server ${process.pid} running on port ${PORT}`);
+// console.log(`WebRTC server ${process.pid} running on port ${PORT}`);
+server.listen(PORT, () => {
+  console.log('WSS 서버가 https://210.124.202.95:5000 에서 실행 중');
+});

@@ -111,7 +111,7 @@ export default async function rtcPeer(gameName) {
       }
       resolve();
     } catch (error) {
-      console.log('error >>>>>>>>>>>> ', error);
+      console.log('error webPeer.js >>>>>>>>>>>> ', error);
 
       reject(error);
     }

@@ -102,3 +102,6 @@ battletwo
 - TODO: 
 - 나의 keypair 가 생기기 전에 roomName, gameState sessionStorage key 를 어떻게 해시문으로 바꾸지?
   - keypair 뺄까?... 안돼, keypair가 있어야 접속할 때 마다 key가 바뀌어!!
+- FIXME:
+  - 모바일은 TURN 서버 구축 필요
+  - 시놀로지 NAS로 구축 해볼 예정

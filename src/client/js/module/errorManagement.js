@@ -42,7 +42,7 @@ function showErrorNotification(errCase, component, message, target) {
         break;
       case 'messageHandler':
         // socket message error - offer/answer/candidate
-        errorModal(text.networkLost);
+        errorModal(text.serverProblem);
         break;
       default:
         break;

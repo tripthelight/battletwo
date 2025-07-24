@@ -28,7 +28,7 @@ export const debug = {
   },
   log: (...data) => {
     // 모바일에서만 실행
-    /*
+
     const deviceState = deviceStateStore.getState().deviceStateState.deviceState;
     if (deviceState === 'pc') return;
 
@@ -44,7 +44,7 @@ export const debug = {
     });
 
     debug.close();
-    */
+
     return;
   },
 };
