@@ -6,10 +6,6 @@ import { errorManagement } from '@/client/js/module/errorManagement';
 import findCharCode from '@/client/js/functions/findCharCode';
 import addCharCode from '@/client/js/functions/addCharCode';
 
-export let globalDataChannel = null;
-export let peerConnection = null;
-export let signalingSocket = null;
-
 /** ==============================================================================================================
  * common variable
  */
@@ -40,8 +36,9 @@ export default function webRTC(gameName) {
     /** ==============================================================================================================
      * functions
      */
-    function checkReady() {
+    async function checkReady() {
       if (iceConnected && dataChannelOpen) {
+        await responseComn(gameName);
         resolve();
       };
     };

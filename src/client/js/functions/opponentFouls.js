@@ -1,4 +1,4 @@
-import { peerConnection, signalingSocket } from '@/client/js/webRTC/rtcConn';
+// import { peerConnection, signalingSocket } from '@/client/js/webRTC/rtcConn';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { request } from '@/client/js/network/indianPocker/request';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
@@ -30,10 +30,10 @@ export default function opponentFouls(data) {
 
   errorManagement({ errCase: 'foul', message: data.message });
 
-  if (peerConnection) {
+  /* if (peerConnection) {
     peerConnection.close();
   }
   if (signalingSocket) {
     signalingSocket.close();
-  }
+  } */
 }

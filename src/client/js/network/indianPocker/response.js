@@ -13,19 +13,21 @@ import drewRefreshReturnResult from '@/client/js/network/indianPocker/fns/drewRe
 
 import { responsetBatting as indianPockerBattingResponse } from '@/client/js/network/indianPocker/batting/responsetBatting';
 
-import { globalDataChannel } from '@/client/js/webRTC/rtcConn';
+// import { globalDataChannel } from '@/client/js/webRTC/rtcConn';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { RESPONSE_HANDLERS } from '@/client/js/network/indianPocker/responseHandlers';
 
 export function response() {
+  const onDataChannel = window.rtcChannels.dataChannel;
   /*
-  const dataChannel = window.rtcChannels.dataChannel;
+  // const dataChannel = window.rtcChannels.dataChannel;
 
   if (dataChannel && dataChannel.readyState === 'open') {
     dataChannel.onmessage = (event) => {
   */
-  if (globalDataChannel && globalDataChannel.readyState === 'open') {
-    globalDataChannel.onmessage = (event) => {
+  // if (globalDataChannel && globalDataChannel.readyState === 'open') {
+  if (onDataChannel && onDataChannel.readyState === 'open') {
+    onDataChannel.onmessage = (event) => {
       const message = JSON.parse(event.data);
       const handler = RESPONSE_HANDLERS[message.type];
 
