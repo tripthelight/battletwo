@@ -93,6 +93,7 @@ app.get('/user-info', verifyJWT, (req, res) => {
   // * 여기서 roomName과 gameName 받음
   // roomName : req.user.roomName
   // gameName : req.user.gameName
+  // *
 });
 
 app.listen(PORT, () => {
