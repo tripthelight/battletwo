@@ -38,7 +38,10 @@ export default function webRTC(gameName) {
      */
     async function checkReady() {
       if (iceConnected && dataChannelOpen) {
+        window.rtcChannels.peerConnection = peers[remotePeer].pc;
+        window.rtcChannels.dataChannel = peers[remotePeer].dataChannel;
         await responseComn(gameName);
+        signalingServer.send(JSON.stringify({ type: 'connectEnd' }));
         resolve();
       };
     };
@@ -52,7 +55,7 @@ export default function webRTC(gameName) {
       }));
     };
 
-    function createPeerConnection(roomName) {
+    async function createPeerConnection(roomName) {
       const pc = new RTCPeerConnection(servers);
       const dataChannel = pc.createDataChannel(`${gameName}-${roomName}-Channel`);
       peers[remotePeer] = { pc, dataChannel };
@@ -63,22 +66,14 @@ export default function webRTC(gameName) {
         checkReady();
       };
 
-      dataChannel.onmessage = (event) => {
+      dataChannel.onmessage = (event) => {};
 
-      };
-
-      pc.createOffer()
-        .then(offer => pc.setLocalDescription(offer))
-        .then(() => {
-          signalingServer.send(JSON.stringify({
-            type: 'offer',
-            sdp: pc.localDescription
-          }))
-        })
-        .catch(err => {
-          console.error('offer creation failed : ', err);
-        });
-      //
+      const offer = await pc.createOffer();
+      await pc.setLocalDescription(offer);
+      signalingServer.send(JSON.stringify({
+        type: 'offer',
+        sdp: pc.localDescription
+      }));
 
       // ICE connected ---------------------------------
       pc.onicecandidate = (event) => {
@@ -92,8 +87,14 @@ export default function webRTC(gameName) {
       pc.oniceconnectionstatechange = (event) => {
         if (event.target.iceConnectionState === 'disconnected') {
           if (peers[remotePeer]) {
+            debug.log(`${remotePeer} : ICE 연결 끊김으로 peers에서 제거`);
             console.log(`${remotePeer} : ICE 연결 끊김으로 peers에서 제거`);
             delete peers[remotePeer];
+            errorManagement({ errCase: 'webRTC', component: 'peerConnection' });
+            sessionStorage.clear();
+            window.rtcChannels = {};
+            if (signalingServer) signalingServer.close();
+            if (pc) pc.close();
           };
         };
 
@@ -116,9 +117,7 @@ export default function webRTC(gameName) {
             dataChannelOpen = true;
             checkReady();
           };
-          event.channel.onmessage = (event) => {
-
-          };
+          event.channel.onmessage = (event) => {};
         };
 
         await pc.setRemoteDescription(new RTCSessionDescription(sdp));
@@ -144,6 +143,11 @@ export default function webRTC(gameName) {
               debug.log(`${remotePeer} : ICE 연결 끊김으로 peers에서 제거`);
               console.log(`${remotePeer} : ICE 연결 끊김으로 peers에서 제거`);
               delete peers[remotePeer];
+              errorManagement({ errCase: 'webRTC', component: 'peerConnection' });
+              sessionStorage.clear();
+              window.rtcChannels = {};
+              if (signalingServer) signalingServer.close();
+
             };
           };
 
@@ -173,7 +177,7 @@ export default function webRTC(gameName) {
         storageMethod('s', 'SET_ITEM', 'roomName', roomName);
         if (setOffer === 'true') {
           // 두번째 접속자 - offer 만들어서 보내야 됨
-          createPeerConnection(roomName);
+          await createPeerConnection(roomName);
         } else {
           // 첫번째 접속자 - offer 받을 준비 해야됨
         };
@@ -191,15 +195,6 @@ export default function webRTC(gameName) {
         await handleCandidate(candidate);
       };
     };
-
-    document.body.onclick = () => {
-      Object.values(peers).forEach(peer => {
-        if (peer.dataChannel && peer.dataChannel.readyState === 'open') {
-          peer.dataChannel.send('click');
-        };
-      });
-    };
-
 
     /** ==============================================================================================================
      * execution

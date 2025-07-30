@@ -299,7 +299,12 @@ WSS.on('connection', async (socket) => {
             await offerAnserCandidateDataProcess({ parsedData, socket }).catch(() => {
               socket.send(JSON.stringify({ type: 'otherLeaves', msg: '2' }));
             });
-          }
+          };
+
+          if (parsedData.type === 'connectEnd') {
+            console.log('webRTC 연결 완료, socket 삭제');
+            socket = null;
+          };
         })
         .catch((err) => {
           if (err.type === 'foul') {

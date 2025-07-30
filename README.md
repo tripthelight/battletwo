@@ -105,3 +105,7 @@ battletwo
 - FIXME:
   - 모바일은 TURN 서버 구축 필요
   - 시놀로지 NAS로 구축 해볼 예정
+- TODO:
+  - JWT로 새로고침 처리 필요
+  - httpOnly cookie로 한 번 접속했던 peer 식별 할 것
+  - https://chatgpt.com/c/6889b309-fd2c-8328-85e7-208049d39f2b

@@ -32,6 +32,8 @@ document.onreadystatechange = async () => {
         if (window.sessionStorage.getItem('roomName') === null) {
           // roomName 없으면 기존 Peer와 재연결 불가능
           // return errorManagement({ errCase: 'errorComn'});
+          sessionStorage.clear();
+          window.rtcChannels = {};
           throw { errCase: 'errorComn' };
         };
       }
