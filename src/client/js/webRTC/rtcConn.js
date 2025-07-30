@@ -42,8 +42,6 @@ export default function webRTC(gameName) {
      */
     function checkReady() {
       if (iceConnected && dataChannelOpen) {
-        debug.log('ICE 연결과 DataChannel OPEN 모두 완료!');
-        console.log('ICE 연결과 DataChannel OPEN 모두 완료!');
         resolve();
       };
     };
@@ -64,15 +62,12 @@ export default function webRTC(gameName) {
 
       // Data Channel opened -----------------------
       dataChannel.onopen = () => {
-        debug.log(`Data Channel with ${remotePeer} opened.`);
-        console.log(`Data Channel with ${remotePeer} opened.`);
         dataChannelOpen = true;
         checkReady();
       };
 
       dataChannel.onmessage = (event) => {
-        debug.log(event.data);
-        console.log(event.data);
+
       };
 
       pc.createOffer()
@@ -81,7 +76,10 @@ export default function webRTC(gameName) {
           signalingServer.send(JSON.stringify({
             type: 'offer',
             sdp: pc.localDescription
-          }));
+          }))
+        })
+        .catch(err => {
+          console.error('offer creation failed : ', err);
         });
       //
 
@@ -92,9 +90,6 @@ export default function webRTC(gameName) {
             type: 'candidate',
             candidate: event.candidate
           }));
-
-          debug.log(`ICE candidate widt ${remotePeer} connected`);
-          console.log(`ICE candidate widt ${remotePeer} connected`);
         };
       };
       pc.oniceconnectionstatechange = (event) => {
@@ -121,14 +116,11 @@ export default function webRTC(gameName) {
         pc.ondatachannel = (event) => {
           peers[remotePeer].dataChannel = event.channel;
           event.channel.onopen = () => {
-            debug.log(`Data Channel with ${remotePeer} opened.`);
-            console.log(`Data Channel with ${remotePeer} opened.`);
             dataChannelOpen = true;
             checkReady();
           };
           event.channel.onmessage = (event) => {
-            debug.log(event.data);
-            console.log(event.data);
+
           };
         };
 
@@ -147,9 +139,6 @@ export default function webRTC(gameName) {
               type: 'candidate',
               candidate: event.candidate
             }));
-
-            debug.log(`ICE candidate with ${remotePeer} connected`);
-            console.log(`ICE candidate with ${remotePeer} connected`);
           };
         };
         pc.oniceconnectionstatechange = (event) => {
@@ -183,7 +172,6 @@ export default function webRTC(gameName) {
       const { type, sdp, candidate, roomName, setOffer } = data;
 
       if (type === 'entryOrder') {
-        debug.log('entryOrder 받음');
         console.log('entryOrder 받음');
         storageMethod('s', 'SET_ITEM', 'roomName', roomName);
         if (setOffer === 'true') {
@@ -192,16 +180,16 @@ export default function webRTC(gameName) {
         } else {
           // 첫번째 접속자 - offer 받을 준비 해야됨
         };
+
       } else if (type === 'offer') {
-        debug.log('offer 받음');
         console.log('offer 받음');
         await handleOffer(sdp);
+
       } else if (type === 'answer') {
-        debug.log('answer 받음');
         console.log('answer 받음');
         await handleAnswer(sdp);
+
       } else if (type === 'candidate') {
-        debug.log('candidate 받음');
         console.log('candidate 받음');
         await handleCandidate(candidate);
       };

@@ -224,6 +224,7 @@ async function offerAnserCandidateDataProcess(resData) {
             }), */
             JSON.stringify(parsedData),
           );
+          resolve();
         } else {
           reject();
         }
@@ -233,7 +234,6 @@ async function offerAnserCandidateDataProcess(resData) {
     } else {
       reject();
     }
-    resolve();
   });
 }
 

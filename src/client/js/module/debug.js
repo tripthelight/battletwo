@@ -41,6 +41,7 @@ export const debug = {
       const msgState = msgType === 'object' ? true : false;
       const message = msgState ? JSON.stringify(msg, null, 2) : msg;
       DEBUG_EL.innerHTML += `${message}<br>`;
+      DEBUG_EL.scrollTop = DEBUG_EL.scrollHeight;
     });
 
     debug.close();
