@@ -1,27 +1,13 @@
-import fs from 'fs';
-import path, { dirname } from 'path';
-import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 dotenv.config();
-import https from 'https';
-import express from 'express';
 import Redis from 'ioredis';
 import { v4 as uuidv4 } from 'uuid';
 import { WebSocketServer } from 'ws';
 import { MAKE_STORAGE } from './functions/encryption/makeStorage.js';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
-const app = express();
-
-const server = https.createServer({
-  key: fs.readFileSync(path.resolve(__dirname, '../../certs/client/localhost-key.pem')),
-  cert: fs.readFileSync(path.resolve(__dirname, '../../certs/client/localhost.pem')),
-}, app);
-
 // WebSocket 서버 생성
 const PORT = process.env.RTC_PORT || 8081;
-const WSS = new WebSocketServer({ server  });
+const WSS = new WebSocketServer({ port: PORT });
 const REDIS = new Redis(); // 6379 단일 redis server
 const ROOMS_MAP = {}; // room name과 WebSocket 인스턴스를 매핑할 Map
 const STANDBY_MAP = {}; // standby 상태인 사용자만 저장
@@ -100,6 +86,7 @@ async function roomsMapInit(data) {
 // 처음 입장
 async function firstEntry(socket) {
   return new Promise(async (resolve, reject) => {
+
     // standby 상태 user 찾기
     const STANDBY_USER_LIST = [...STANDBY_MAP[socket.gameName]];
     if (STANDBY_USER_LIST.length > 0) {
@@ -211,7 +198,7 @@ async function handleEntryOrder(data) {
 
     if (roomName) {
       // 게임 중 새로고침
-      refreshDuringGame({ socket, roomName }).catch(() => {
+      await refreshDuringGame({ socket, roomName }).catch(() => {
         socket.send(JSON.stringify({ type: 'otherLeaves', msg: 'r4' }));
       });
     } else {
@@ -225,15 +212,17 @@ async function handleEntryOrder(data) {
 async function offerAnserCandidateDataProcess(resData) {
   return new Promise(async (resolve, reject) => {
     const { parsedData, socket } = resData;
+
     if (parsedData && socket) {
       if (socket.gameName && socket.roomName && ROOMS_MAP[socket.gameName] && ROOMS_MAP[socket.gameName].get(socket.roomName) && ROOMS_MAP[socket.gameName].get(socket.roomName).length === 2) {
         const DIFF_SOCKET = ROOMS_MAP[socket.gameName].get(socket.roomName).find((ws) => ws !== socket);
         if (DIFF_SOCKET && DIFF_SOCKET.readyState === WebSocket.OPEN) {
           DIFF_SOCKET.send(
-            JSON.stringify({
+            /* JSON.stringify({
               type: parsedData.type,
               data: parsedData.data,
-            }),
+            }), */
+            JSON.stringify(parsedData),
           );
         } else {
           reject();
@@ -293,11 +282,10 @@ WSS.on('connection', async (socket) => {
            * webRTC connect - rtcPeer > webRTC
            */
           if (parsedData.type === 'entryOrder') {
-
             // 두 peer가 webRTC 연결 시 socket에 고유한 id 주입
-            if (!socket.__customSocketId) {
+            /* if (!socket.__customSocketId) {
               socket.__customSocketId = uuidv4();
-            }
+            } */
 
             await handleEntryOrder({
               socket,
@@ -306,7 +294,8 @@ WSS.on('connection', async (socket) => {
             });
           }
 
-          if (parsedData.type === 'offer' || parsedData.type === 'answer' || parsedData.type === 'candidate') {
+          // if (parsedData.type === 'offer' || parsedData.type === 'answer' || parsedData.type === 'candidate') {
+          if (['offer', 'answer', 'candidate'].includes(parsedData.type)) {
             await offerAnserCandidateDataProcess({ parsedData, socket }).catch(() => {
               socket.send(JSON.stringify({ type: 'otherLeaves', msg: '2' }));
             });
@@ -315,11 +304,10 @@ WSS.on('connection', async (socket) => {
         .catch((err) => {
           if (err.type === 'foul') {
             socket.send(JSON.stringify({ type: 'foul', msg: '새로고침 한 peer가 sessstorage roomName key 조작' }));
-          } else if (err.type === 'otherLeaves') {
+          }
+          if (err.type === 'otherLeaves') {
             socket.send(JSON.stringify({ type: 'otherLeaves', msg: err }));
-          } else {
-            socket.send(JSON.stringify({ type: 'otherLeaves', msg: err }));
-          };
+          }
         });
     });
   });
@@ -348,15 +336,10 @@ WSS.on('connection', async (socket) => {
         STANDBY_MAP[socket.gameName].delete(socket.__customSocketId);
       }
 
-      socket = null;
-
       // console.log('ROOMS_MAP', JSON.stringify(ROOMS_MAP, null, 2));
       // console.log('STANDBY_MAP : ', JSON.stringify(STANDBY_MAP, null, 2));
     });
   });
 });
 
-// console.log(`WebRTC server ${process.pid} running on port ${PORT}`);
-server.listen(PORT, () => {
-  console.log('WSS 서버가 https://210.124.202.95:5000 에서 실행 중');
-});
+console.log(`WebRTC server ${process.pid} running on port ${PORT}`);

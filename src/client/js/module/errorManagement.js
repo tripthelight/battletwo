@@ -6,7 +6,7 @@ function showErrorNotification(errCase, component, message, target) {
   if (errCase === 'webRTC') {
     // CASE : webRTC error
     switch (component) {
-      case 'signalingSocket':
+      case 'signalingServer':
         // socket error
         errorModal(text.serverProblem);
         break;
@@ -45,6 +45,7 @@ function showErrorNotification(errCase, component, message, target) {
         errorModal(text.serverProblem);
         break;
       default:
+        errorModal(text.serverProblem);
         break;
     }
   } else if (errCase === 'dataManipulation') {
@@ -57,6 +58,7 @@ function showErrorNotification(errCase, component, message, target) {
         errorModal(text.err);
         break;
       default:
+        errorModal(text.err);
         break;
     }
     console.log('data manipulation error : ', target + ' -> ' + message);
@@ -73,6 +75,7 @@ function showErrorNotification(errCase, component, message, target) {
         errorModal(text.serverProblem);
         break;
       default:
+        errorModal(text.serverProblem);
         break;
     }
     console.log('server error : ', target + ' -> ' + message);
@@ -103,7 +106,7 @@ function handleRecovery(component, event) {
     console.log('재연결 시도 가능');
     // 필요 시 재연결 로직 추가
     errorModal(text.leaveRoom);
-  } else if (component === 'signalingSocket' && event === 'onclose') {
+  } else if (component === 'signalingServer' && event === 'onclose') {
     console.log('Signaling 서버 재접속 로직 가능');
     errorModal(text.networkLost);
     // 재접속 시도 가능
@@ -125,7 +128,6 @@ function sendErrorLogToServer(errorData) {
  */
 export function errorManagement(errData) {
   const { component, event, message, errCase, target, errorDetails } = errData;
-  console.log('component >>>>>>>>>>>>>>>>> ', component);
 
   const errorMessage = `[Error] ${component} - ${event}: ${message}`;
 

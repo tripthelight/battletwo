@@ -14,7 +14,7 @@ import WebpackObfuscator from 'webpack-obfuscator';
 import multipleHtmlPlugins from './src/client/js/webpack/htmlPage.js';
 import multipleJsPlugins from './src/client/js/webpack/jsPage.js';
 import commonEnv from './src/client/js/webpack/env/commonEnv.js';
-import fs from 'fs';
+// import fs from 'fs';
 // import { createRequire } from 'module';
 // const require = createRequire(import.meta.url);
 // const glob = require('glob');
@@ -212,13 +212,13 @@ const server = new webpackDevServer(
     static: {
       directory: path.resolve(__dirname, 'src'), // 정적 파일 제공 디렉터리
     },
-    server: {
+    /* server: {
       type: 'https',
       options: {
         key: fs.readFileSync(path.resolve(__dirname, 'certs/client/localhost-key.pem')),
         cert: fs.readFileSync(path.resolve(__dirname, 'certs/client/localhost.pem')),
       },
-    },
+    }, */
     compress: true,
     port: process.env.CLIENT_PORT,
     hot: true,
