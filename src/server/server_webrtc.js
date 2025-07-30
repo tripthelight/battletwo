@@ -5,11 +5,15 @@ import { v4 as uuidv4 } from 'uuid';
 import { WebSocketServer } from 'ws';
 import { MAKE_STORAGE } from './functions/encryption/makeStorage.js';
 
+// 워커 고유 채널
+const CHANNEL_NAME = `webrtc_worker_${process.pid}`; // 워커 고유 채널
+
 // WebSocket 서버 생성
 const PORT = process.env.RTC_PORT || 8081;
 const WSS = new WebSocketServer({ port: PORT });
-// const REDIS = new Redis(); // 6379 단일 redis server
+const REDIS = new Redis(); // 6379 단일 redis server
 const REDIS_PUB = new Redis();
+const REDIS_SUB = new Redis();
 const ROOMS_MAP = {}; // room name과 WebSocket 인스턴스를 매핑할 Map
 const STANDBY_MAP = {}; // standby 상태인 사용자만 저장
 
@@ -288,9 +292,12 @@ WSS.on('connection', async (socket) => {
            */
           if (parsedData.type === 'entryOrder') {
             // 두 peer가 webRTC 연결 시 socket에 고유한 id 주입
-            /* if (!socket.__customSocketId) {
-              socket.__customSocketId = uuidv4();
-            } */
+            if (!socket.__customSocketId) {
+              const socketId = uuidv4();
+              socket.__customSocketId = socketId;
+              REDIS.set(`SOCKET_TO_WORKER:${socketId}`, process.pid);
+              console.log(`[Worker ${process.pid}] socketId ${socketId} 등록 완료`);
+            };
 
             await handleEntryOrder({
               socket,
@@ -353,3 +360,25 @@ WSS.on('connection', async (socket) => {
 });
 
 console.log(`WebRTC server ${process.pid} running on port ${PORT}`);
+
+// REDIS PUBLIC
+REDIS_SUB.subscribe(CHANNEL_NAME, (err, count) => {
+  if (err) {
+    console.error(`Redis subscribe 실패: ${err.message}`);
+  } else {
+    console.log(`[Worker ${process.pid}] 채널 구독 시작: ${CHANNEL_NAME}`);
+  }
+});
+
+REDIS_SUB.on('message', (channel, message) => {
+  const data = JSON.parse(message);
+  if (channel === CHANNEL_NAME) {
+    // 자신에게 온 메시지만 처리
+    console.log(`[Worker ${process.pid}] 메시지 수신:`, data);
+    if (data.action === 'resumeConnection') {
+      const { socketId } = data;
+      // LOCAL_SOCKETS 등에서 socketId로 socket 찾아서 새로고침 처리
+      console.log('socketId --------- ', socketId);
+    }
+  }
+});

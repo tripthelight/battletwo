@@ -13,6 +13,8 @@ const HOST = process.env.JWT_HOST;
 const PORT = process.env.JWT_PORT;
 const allowedOrigin = `${process.env.CLIENT_HOST}:${process.env.CLIENT_PORT}`;
 
+const REDIS = new Redis();
+const REDIS_PUB = new Redis();
 const REDIS_SUB = new Redis();
 
 app.use(express.json());
@@ -88,13 +90,19 @@ function verifyJWT(req, res, next) {
 // --------------------------------
 app.get('/user-info', verifyJWT, (req, res) => {
   res.json({ message: '인증 성공', user: req.user });
+  // * 여기서 roomName과 gameName 받음
+  // roomName : req.user.roomName
+  // gameName : req.user.gameName
 });
 
 app.listen(PORT, () => {
   console.log(`JWT server ${process.pid} running on port ${PORT}`);
 });
 
-// REDIS message
+// --------------------------------
+// 4) REDIS COMMUNCTION
+// --------------------------------
+// * REDIS SUB subscribe, message
 REDIS_SUB.subscribe('roomChannel', (err, count) => {
   if (err) console.error('Redis subscribe error:', err);
   else console.log(`Subscribed to roomChannel`);
@@ -104,3 +112,12 @@ REDIS_SUB.on('message', (channel, message) => {
   console.log(`JWT 서버에서 수신: roomName=${roomName}`);
   // 이후 roomName을 JWT payload에 심을 수 있음
 });
+
+// * REDIS PUB publish
+/* const workerId = await REDIS.get(`SOCKET_TO_WORKER:${socketId}`);
+if (workerId) {
+  REDIS_PUB.publish(`webrtc_worker_${workerId}`, JSON.stringify({
+    action: 'resumeConnection',
+    socketId
+  }));
+}; */
