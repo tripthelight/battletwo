@@ -242,6 +242,15 @@ const server = new webpackDevServer(
         { from: /^\/game\/findTheSamePicture$/, to: '/views/game/findTheSamePicture.html' },
       ],
     },
+    proxy: [
+      {
+        context: ['/api'], // 1) 프록시를 적용할 경로
+        target: `${process.env.JWT_HOST}:${process.env.JWT_PORT}`, // 2) 프록시 대상 서버 주소 (백엔드 API 서버)
+        // target: 'http://211.42.181.66:6000',
+        changeOrigin: true, // 3) Origin 헤더를 target 주소로 변경
+        pathRewrite: { '^/api': '' }, // 4) /api 접두어를 제거하고 요청
+      },
+    ],
   },
   compiler,
 );

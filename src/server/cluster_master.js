@@ -2,7 +2,8 @@ import cluster from 'cluster';
 import os from 'os';
 import Redis from 'ioredis';
 
-const numCPUs = os.cpus().length; // 시스템에서 사용할 수 있는 CPU 코어 수
+const numCPUs = os.cpus().length; // 시스템에서 사용할 수 있는 CPU 코어 수 - 6개
+
 const redis = new Redis();
 
 if (cluster.isPrimary) {
@@ -10,7 +11,8 @@ if (cluster.isPrimary) {
 
   // numCPUs 만큼 워커를 생성합니다.
   for (let i = 0; i < numCPUs; i++) {
-    const workerType = i % 2 === 0 ? 'webrtc' : 'websocket'; // 짝수는 WebRTC, 홀수는 WebSocket
+    // const workerType = i % 2 === 0 ? 'webrtc' : 'websocket'; // 짝수는 WebRTC, 홀수는 WebSocket
+    const workerType = i % 2 === 0 ? 'webrtc' : 'jwt'; // 짝수는 WebRTC, 홀수는 WebSocket
     cluster.fork({ WORKER_TYPE: workerType });
   }
 
@@ -37,8 +39,9 @@ if (cluster.isPrimary) {
     console.log('open server webrtc');
     import('./server_webrtc.js');
     // import('./server_webrtc_tuning.js');
-  } else if (process.env.WORKER_TYPE === 'websocket') {
-    console.log('open server websocket');
-    import('./server_websocket.js');
+  // } else if (process.env.WORKER_TYPE === 'websocket') {
+  } else if (process.env.WORKER_TYPE === 'jwt') {
+    console.log('open server jwt');
+    import('./server_jwt.js');
   }
 }

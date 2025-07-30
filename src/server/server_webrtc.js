@@ -8,7 +8,8 @@ import { MAKE_STORAGE } from './functions/encryption/makeStorage.js';
 // WebSocket 서버 생성
 const PORT = process.env.RTC_PORT || 8081;
 const WSS = new WebSocketServer({ port: PORT });
-const REDIS = new Redis(); // 6379 단일 redis server
+// const REDIS = new Redis(); // 6379 단일 redis server
+const REDIS_PUB = new Redis();
 const ROOMS_MAP = {}; // room name과 WebSocket 인스턴스를 매핑할 Map
 const STANDBY_MAP = {}; // standby 상태인 사용자만 저장
 
@@ -94,10 +95,14 @@ async function firstEntry(socket) {
       const diffSocket = STANDBY_MAP[socket.gameName].values().next().value; // 첫 번째 값
       if (diffSocket) {
         STANDBY_MAP[socket.gameName].delete(diffSocketId);
+
         const NEW_ROOM_NAME = uuidv4();
+
         ROOMS_MAP[socket.gameName].set(NEW_ROOM_NAME, [socket, diffSocket]);
         socket.roomName = NEW_ROOM_NAME;
         diffSocket.roomName = socket.roomName;
+
+        REDIS_PUB.publish('roomChannel', JSON.stringify({ roomName: socket.roomName }));
 
         if (diffSocket && diffSocket.readyState === WebSocket.OPEN) {
           if (socket && socket.readyState === WebSocket.OPEN) {
@@ -301,10 +306,10 @@ WSS.on('connection', async (socket) => {
             });
           };
 
-          if (parsedData.type === 'connectEnd') {
+          /* if (parsedData.type === 'connectEnd') {
             console.log('webRTC 연결 완료, socket 삭제');
             socket = null;
-          };
+          }; */
         })
         .catch((err) => {
           if (err.type === 'foul') {

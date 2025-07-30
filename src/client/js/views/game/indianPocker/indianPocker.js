@@ -24,6 +24,33 @@ import setCookies from '@/client/js/module/cookies/setCookies';
 document.onreadystatechange = async () => {
   if (document.readyState !== 'complete') return;
   try {
+
+    // JWT 요청
+    /* const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: 'testID', roomName: 'room1234' })
+    });
+    const data = await res.json();
+    console.log('로그인 응답:', data); */
+
+    // LOGIN COOKIE 확인 요청
+    /* fetch('/api/user-info', {
+      method: 'GET',
+      credentials: 'include', // 쿠키(authToken)를 함께 보냄
+    })
+      .then(response => {
+        if (!response.ok) throw new Error('인증 실패');
+        return response.json();
+      })
+      .then(data => {
+        console.log('인증 성공:', data);
+      })
+      .catch(error => {
+        console.error('에러:', error);
+      }); */
+
+
     if (reload) {
       // 새로고침 했을 때
       if (window.sessionStorage.getItem('reload') === 'true') {
