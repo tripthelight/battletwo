@@ -80,7 +80,25 @@ app.post('/login', async (req, res) => {
 });
 
 // --------------------------------
-// 2) JWT 인증 미들웨어
+// 2) JWT 만료 API
+// --------------------------------
+app.post('/logout', (req, res) => {
+  const logoutCookieOptions = [
+    'HttpOnly',
+    'Path=/',
+    'Max-Age=0',
+    process.env.NODE_ENV === 'production' ? 'Secure' : '',
+    'SameSite=Strict',
+  ].filter(Boolean).join('; ');
+
+  // authToken 쿠키를 제거
+  res.setHeader('Set-Cookie', `authToken=; ${logoutCookieOptions}`);
+
+  res.json({ message: '로그아웃 완료' });
+});
+
+// --------------------------------
+// 3) JWT 인증 미들웨어
 // --------------------------------
 function verifyJWT(req, res, next) {
   const token = req.cookies?.authToken || '';
@@ -101,24 +119,6 @@ function verifyJWT(req, res, next) {
 };
 
 // --------------------------------
-// 3) JWT 만료 API
-// --------------------------------
-app.post('/logout', (req, res) => {
-  const logoutCookieOptions = [
-    'HttpOnly',
-    'Path=/',
-    'Max-Age=0',
-    process.env.NODE_ENV === 'production' ? 'Secure' : '',
-    'SameSite=Strict',
-  ].filter(Boolean).join('; ');
-
-  // authToken 쿠키를 제거
-  res.setHeader('Set-Cookie', `authToken=; ${logoutCookieOptions}`);
-
-  res.json({ message: '로그아웃 완료' });
-});
-
-// --------------------------------
 // 4) JWT 인증이 필요한 API
 // --------------------------------
 app.get('/user-info', verifyJWT, (req, res) => {
@@ -134,8 +134,6 @@ app.get('/user-info', verifyJWT, (req, res) => {
 // --------------------------------
 app.get('/auth-room', verifyJWT, (req, res) => {
   const { gameName, roomName, pid } = req.user;
-  // console.log('gameName : ', gameName);
-  // console.log('roomName : ', roomName);
 
   if (gameName && roomName) {
     REDIS_PUB.publish(

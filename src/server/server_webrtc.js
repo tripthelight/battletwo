@@ -391,15 +391,15 @@ WSS.on('connection', async (socket) => {
 console.log(`WebRTC server ${process.pid} running on port ${PORT}`);
 
 // REDIS PUBLIC
-REDIS_SUB.subscribe(CHANNEL_NAME, (err, count) => {
+/* REDIS_SUB.subscribe(CHANNEL_NAME, (err, count) => {
   if (err) {
     console.error(`Redis subscribe 실패: ${err.message}`);
   } else {
     console.log(`[Worker ${process.pid}] 채널 구독 시작: ${CHANNEL_NAME}`);
   }
-});
+}); */
 
-REDIS_SUB.on('message', (channel, message) => {
+/* REDIS_SUB.on('message', (channel, message) => {
   const data = JSON.parse(message);
   if (channel === CHANNEL_NAME) {
     // 자신에게 온 메시지만 처리
@@ -408,4 +408,4 @@ REDIS_SUB.on('message', (channel, message) => {
       const { gameName, roomName } = data;
     };
   };
-});
+}); */
