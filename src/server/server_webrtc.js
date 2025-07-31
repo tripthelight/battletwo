@@ -166,6 +166,8 @@ async function refreshDuringGame(data) {
       if (ROOMS_MAP[socket.gameName].get(roomName) && ROOMS_MAP[socket.gameName].get(roomName).length === 2) {
         const DIFF_SOCKET = ROOMS_MAP[socket.gameName].get(roomName).find((ws) => ws !== socket);
         if (DIFF_SOCKET) {
+          console.log('DIFF_SOCKET 있음');
+
           socket.send(
             JSON.stringify({
               type: 'entryOrder',

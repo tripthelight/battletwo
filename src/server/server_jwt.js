@@ -43,11 +43,11 @@ app.use((req, res, next) => {
 app.post('/login', async (req, res) => {
   try {
     // 브라우저에서 받은 로그인 정보
-    const { userId, roomName } = req.body;
+    const { gameName, roomName } = req.body;
 
     // JWT 발급
     const token = jwt.sign(
-      { userId, roomName, role: 'user' }, // payload
+      { gameName, roomName, role: 'user' }, // payload
       SECRET_KEY,                         // 비밀키
       { expiresIn: '1h' }                 // 1시간 유효
     );
@@ -76,7 +76,14 @@ app.post('/login', async (req, res) => {
 // --------------------------------
 function verifyJWT(req, res, next) {
   const token = req.cookies?.authToken || '';
-  if (!token) return res.status(401).json({ message: '토큰 없음' });
+  // if (!token) return res.status(401).json({ message: '토큰 없음' });
+  if (!token) {
+    // 실제론 401이지만 우회 위해 200 응답
+    return res.status(200).json({
+      status: 'unauthorized',
+      message: '토큰이 없습니다. 로그인해주세요.',
+    });
+  };
 
   jwt.verify(token, SECRET_KEY, (err, decoded) => {
     if (err) return res.status(403).json({ message: '토큰 검증 실패' });
@@ -94,6 +101,24 @@ app.get('/user-info', verifyJWT, (req, res) => {
   // roomName : req.user.roomName
   // gameName : req.user.gameName
   // *
+});
+
+// --------------------------------
+// 4) JWT 만료 API
+// --------------------------------
+app.post('/logout', (req, res) => {
+  const logoutCookieOptions = [
+    'HttpOnly',
+    'Path=/',
+    'Max-Age=0',
+    process.env.NODE_ENV === 'production' ? 'Secure' : '',
+    'SameSite=Strict',
+  ].filter(Boolean).join('; ');
+
+  // authToken 쿠키를 제거
+  res.setHeader('Set-Cookie', `authToken=; ${logoutCookieOptions}`);
+
+  res.json({ message: '로그아웃 완료' });
 });
 
 app.listen(PORT, () => {

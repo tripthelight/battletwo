@@ -85,8 +85,8 @@ export default async function rtcPeer(gameName) {
         } else {
           reject({ errCase: 'errorComn', message: 'gameState value error' });
           return;
-        }
-      }
+        };
+      };
 
       // if (window.sessionStorage.getItem('gameState') === 'waitEnemy') {
       //   waitPeer(1, findNickname('localPlayer'));
@@ -94,11 +94,11 @@ export default async function rtcPeer(gameName) {
       // if (window.sessionStorage.getItem(encryptKey) === encryptVal) {
       if (window.sessionStorage.getItem('gameState') === 'waitEnemy') {
         waitPeer(1, findNickname('localPlayer'));
-      }
+      };
 
       if (!window.rtcChannels) {
         window.rtcChannels = {};
-      }
+      };
 
       await webRTC(gameName);
 

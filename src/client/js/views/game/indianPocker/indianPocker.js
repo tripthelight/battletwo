@@ -19,6 +19,8 @@ import getCookies from '@/client/js/module/cookies/getCookies';
 import waitPeer from '@/client/js/functions/waitPeer';
 import findNickname from '@/client/js/functions/findNickname';
 import setCookies from '@/client/js/module/cookies/setCookies';
+import login from '@/client/js/auth/login';
+import logout from '@/client/js/auth/logout';
 
 // onMounted
 document.onreadystatechange = async () => {
@@ -26,16 +28,16 @@ document.onreadystatechange = async () => {
   try {
 
     // JWT 요청
-    const res = await fetch('/api/login', {
+    /* const res = await fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: 'testID', roomName: 'room1234' })
+      body: JSON.stringify({ gameName: 'indianPocker', roomName: '' })
     });
     const data = await res.json();
-    console.log('로그인 응답:', data);
+    console.log('로그인 응답 : ', data); */
 
     // LOGIN COOKIE 확인 요청
-    fetch('/api/user-info', {
+    /* await fetch('/api/user-info', {
       method: 'GET',
       credentials: 'include', // 쿠키(authToken)를 함께 보냄
     })
@@ -48,10 +50,28 @@ document.onreadystatechange = async () => {
       })
       .catch(error => {
         console.error('에러:', error);
-      });
+      }); */
+
+    /* const auth = await fetch('/api/user-info', {
+      method: 'GET',
+      credentials: 'include', // 쿠키(authToken)를 함께 보냄
+    });
+
+    if (auth.ok) {
+      const authData = await auth.json();
+      if (authData.status === 'unauthorized') {
+        console.log('처음 진입 : ', authData.message);
+        await login();
+      } else {
+        console.log('새로고침 인증 성공 : ', authData);
+      }
+    } else {
+      throw { errCase: 'auth', component: 'token', event: 'unauthorized', message: 'auth check failed' };
+    }; */
 
 
-    if (reload) {
+
+    /* if (reload) {
       // 새로고침 했을 때
       if (window.sessionStorage.getItem('reload') === 'true') {
         // 기존 연결 되어 있는 상태에서 새로고침
@@ -64,21 +84,9 @@ document.onreadystatechange = async () => {
           throw { errCase: 'errorComn' };
         };
       }
-    };
-
-    window.addEventListener('pagehide', () => {
-      // 페이지가 언로드되기 직전!
-      if (
-        window.rtcChannels &&
-        window.rtcChannels.dataChannel &&
-        window.rtcChannels.peerConnection
-      ) {
-        const peerConnection = window.rtcChannels.peerConnection;
-        peerConnection.close();
-        // 기존 연결 되어 있는 상태에서 새로고침
-        storageMethod('s', 'SET_ITEM', 'reload', true);
-      };
-    });
+    } else {
+      await logout();
+    }; */
 
     /*
     document.addEventListener('visibilitychange', () => {
@@ -98,6 +106,15 @@ document.onreadystatechange = async () => {
     });
     */
 
+    // 브라우저 뒤로가기, 브라우저 새로고침 모두 동작
+    /* window.addEventListener('beforeunload', () => {
+      // WebRTC 연결 JWT LOGOUT 처리
+      navigator.sendBeacon('/api/logout', {
+        method: 'POST',
+        credentials: 'include',
+      });
+    }); */
+
     LOADING_EVENT.show();
 
     const GAME_NAME = 'indianPocker';
@@ -109,3 +126,17 @@ document.onreadystatechange = async () => {
     errorManagement(error);
   }
 };
+
+// 페이지가 언로드되기 직전!
+/* window.addEventListener('pagehide', () => {
+  if (
+    window.rtcChannels &&
+    window.rtcChannels.dataChannel &&
+    window.rtcChannels.peerConnection
+  ) {
+    const peerConnection = window.rtcChannels.peerConnection;
+    peerConnection.close();
+    // 기존 연결 되어 있는 상태에서 새로고침
+    storageMethod('s', 'SET_ITEM', 'reload', true);
+  };
+}); */

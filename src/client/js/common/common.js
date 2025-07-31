@@ -8,7 +8,9 @@ import { setInnerHeight } from '@/client/js/module/appHeight';
 import { deviceCheck } from '@/client/js/module/deviceCheck';
 import '@/client/js/common/gesture';
 import '@/client/js/common/resize';
+// import logout from '@/client/js/auth/logout';
 
+// await logout(window.location.pathname);
 clearStorage(window.location.pathname);
 clearCookies(window.location.pathname);
 // storageEvent();

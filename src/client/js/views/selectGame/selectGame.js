@@ -17,9 +17,9 @@ document.onreadystatechange = async () => {
   }
 };
 
-window.onpageshow = function (event) {
+/* window.onpageshow = function (event) {
   // BFCache(뒤로가기 캐시)에서 페이지가 복원될 경우
   if (event.persisted) {
     location.reload(); // 강제로 새로고침
   }
-};
+}; */

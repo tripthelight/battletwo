@@ -48,6 +48,9 @@ function showErrorNotification(errCase, component, message, target) {
         errorModal(text.serverProblem);
         break;
     }
+  } else if (errCase === 'auth') {
+    // login / logout / auth check
+    errorModal(text.serverProblem);
   } else if (errCase === 'dataManipulation') {
     // CASE : data 조작 error
     switch (target) {
