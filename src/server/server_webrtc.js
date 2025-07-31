@@ -7,6 +7,13 @@ import { MAKE_STORAGE } from './functions/encryption/makeStorage.js';
 
 // 워커 고유 채널
 const CHANNEL_NAME = `webrtc_worker_${process.pid}`; // 워커 고유 채널
+const cryptPID = parseInt( // 브라우저로 보내는 pid 암호화
+  parseInt(
+    (process.pid).toString(8),  // 8진수 문자열
+    8                           // 다시 숫자로
+  ).toString(2),                // 2진수 문자열
+  2                             // 다시 숫자로
+).toString(16);
 
 // WebSocket 서버 생성
 const PORT = process.env.RTC_PORT || 8081;
@@ -106,22 +113,24 @@ async function firstEntry(socket) {
         socket.roomName = NEW_ROOM_NAME;
         diffSocket.roomName = socket.roomName;
 
-        REDIS_PUB.publish('roomChannel', JSON.stringify({ roomName: socket.roomName }));
+        // REDIS_PUB.publish('roomChannel', JSON.stringify({ roomName: socket.roomName }));
 
         if (diffSocket && diffSocket.readyState === WebSocket.OPEN) {
           if (socket && socket.readyState === WebSocket.OPEN) {
+            const params = {
+              type: 'entryOrder',
+              roomName: socket.roomName,
+            };
+
             socket.send(
               JSON.stringify({
-                type: 'entryOrder',
-                roomName: socket.roomName,
+                ...params,
+                pid: cryptPID,
                 setOffer: 'true',
               }),
             );
             diffSocket.send(
-              JSON.stringify({
-                type: 'entryOrder',
-                roomName: socket.roomName,
-              }),
+              JSON.stringify({...params}),
             );
           } else {
             // 내 socket이 없음 : network 장애
@@ -225,6 +234,11 @@ async function offerAnserCandidateDataProcess(resData) {
   return new Promise(async (resolve, reject) => {
     const { parsedData, socket } = resData;
 
+    if (parsedData.type === 'offer') {
+      parsedData.roomName = socket.roomName;
+      parsedData.pid = cryptPID;
+    };
+
     if (parsedData && socket) {
       if (socket.gameName && socket.roomName && ROOMS_MAP[socket.gameName] && ROOMS_MAP[socket.gameName].get(socket.roomName) && ROOMS_MAP[socket.gameName].get(socket.roomName).length === 2) {
         const DIFF_SOCKET = ROOMS_MAP[socket.gameName].get(socket.roomName).find((ws) => ws !== socket);
@@ -298,8 +312,8 @@ WSS.on('connection', async (socket) => {
             if (!socket.__customSocketId) {
               const socketId = uuidv4();
               socket.__customSocketId = socketId;
-              REDIS.set(`SOCKET_TO_WORKER:${socketId}`, process.pid);
-              console.log(`[Worker ${process.pid}] socketId ${socketId} 등록 완료`);
+              // REDIS.set(`SOCKET_TO_WORKER:${socketId}`, process.pid);
+              // console.log(`[Worker ${process.pid}] socketId ${socketId} 등록 완료`);
             };
 
             await handleEntryOrder({
@@ -390,10 +404,8 @@ REDIS_SUB.on('message', (channel, message) => {
   if (channel === CHANNEL_NAME) {
     // 자신에게 온 메시지만 처리
     console.log(`[Worker ${process.pid}] 메시지 수신:`, data);
-    if (data.action === 'resumeConnection') {
-      const { socketId } = data;
-      // LOCAL_SOCKETS 등에서 socketId로 socket 찾아서 새로고침 처리
-      console.log('socketId --------- ', socketId);
-    }
-  }
+    if (data.action === 'jwtGameRoom') {
+      const { gameName, roomName } = data;
+    };
+  };
 });

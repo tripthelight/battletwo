@@ -7,6 +7,7 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import addCharCode from '@/client/js/functions/addCharCode';
 import logout from '@/client/js/auth/logout';
 import authCheck from '@/client/js/auth/authCheck';
+import searchRoom from '@/client/js/auth/searchRoom';
 
 export default function webRTC(gameName) {
   return new Promise(async (resolve, reject) => {
@@ -39,28 +40,29 @@ export default function webRTC(gameName) {
     /** ==============================================================================================================
      * functions
      */
-    async function checkReady(roomName) {
+    async function checkReady(roomName, pid) {
       if (iceConnected && dataChannelOpen) {
         window.rtcChannels.peerConnection = peers[remotePeer].pc;
         window.rtcChannels.dataChannel = peers[remotePeer].dataChannel;
         await responseComn(gameName);
         if (!serverRefresh) {
-          await authCheck(gameName, roomName);
+          await authCheck(gameName, roomName, pid);
         };
         resolve();
       };
     };
 
-    function initOnopen() {
+    async function initOnopen() {
       // throw { component: 'signalingSocket', event: 'initOnopen', message: 'Failed to send initOnopen' };
+      const roomName = await searchRoom();
       signalingServer.send(JSON.stringify({
         type: 'entryOrder',
-        gameName: gameName,
-        roomName: window.sessionStorage.getItem('roomName') ?? null
+        gameName,
+        roomName
       }));
     };
 
-    async function createPeerConnection(roomName) {
+    async function createPeerConnection(roomName, pid) {
       // 새로고침 당하는 Peer 는 여기를 탐
       if (peers[remotePeer] && peers[remotePeer].pc) {
         // 기존 peer RTCPeerConnection close 시켜야
@@ -80,7 +82,7 @@ export default function webRTC(gameName) {
       // Data Channel opened -----------------------
       dataChannel.onopen = () => {
         dataChannelOpen = true;
-        checkReady(roomName);
+        checkReady(roomName, pid);
       };
 
       dataChannel.onmessage = (event) => {};
@@ -118,12 +120,12 @@ export default function webRTC(gameName) {
 
         if (event.target.iceConnectionState === 'connected' || event.target.iceConnectionState === 'completed') {
           iceConnected = true;
-          checkReady(roomName);
+          checkReady(roomName, pid);
         };
       };
     };
 
-    async function handleOffer(sdp, roomName) {
+    async function handleOffer(sdp, roomName, pid) {
       if (!peers[remotePeer]) {
         const pc = new RTCPeerConnection(servers);
         peers[remotePeer] = { pc, dataChannel: null };
@@ -133,7 +135,7 @@ export default function webRTC(gameName) {
           peers[remotePeer].dataChannel = event.channel;
           event.channel.onopen = () => {
             dataChannelOpen = true;
-            checkReady(roomName);
+            checkReady(roomName, pid);
           };
           event.channel.onmessage = (event) => {};
         };
@@ -172,7 +174,7 @@ export default function webRTC(gameName) {
 
           if (event.target.iceConnectionState === 'connected' || event.target.iceConnectionState === 'completed') {
             iceConnected = true;
-            checkReady(roomName);
+            checkReady(roomName, pid);
           };
         };
       };
@@ -189,11 +191,11 @@ export default function webRTC(gameName) {
     async function handleMessage(event) {
       const data = JSON.parse(event.data);
 
-      const { type, sdp, candidate, roomName, setOffer, refresh } = data;
+      const { type, sdp, candidate, roomName, setOffer, refresh, pid } = data;
 
       if (type === 'entryOrder') {
         console.log('entryOrder 받음');
-        storageMethod('s', 'SET_ITEM', 'roomName', roomName);
+        // storageMethod('s', 'SET_ITEM', 'roomName', roomName);
 
         // 새로고침 후 재접속이면, webRTC 서버에서 refresh true로 받음
         serverRefresh = false;
@@ -203,14 +205,14 @@ export default function webRTC(gameName) {
 
         if (setOffer === 'true') {
           // 두번째 접속자 - offer 만들어서 보내야 됨
-          await createPeerConnection(roomName);
+          await createPeerConnection(roomName, pid);
         } else {
           // 첫번째 접속자 - offer 받을 준비 해야됨
         };
 
       } else if (type === 'offer') {
         console.log('offer 받음');
-        await handleOffer(sdp, roomName);
+        await handleOffer(sdp, roomName, pid);
 
       } else if (type === 'answer') {
         console.log('answer 받음');
@@ -226,9 +228,9 @@ export default function webRTC(gameName) {
      * execution
      */
     try {
-      signalingServer.onopen = () => {
+      signalingServer.onopen = async () => {
         try {
-          initOnopen();
+          await initOnopen();
           // throw { component: 'signalingServer', event: 'onopen', message: 'Failed to send onopen' };
         } catch (error) {
           reject({ ...error, errCase: 'webRTC' });

@@ -37,17 +37,25 @@ app.use((req, res, next) => {
   res.status(403).json({ message: '접근이 제한되었습니다.' });
 });
 
+const decryptPID = (pid) => parseInt( // 브라우저에서 받은 pid 복호화
+  parseInt(
+    parseInt(pid, 16).toString(2), // 16진수 → 2진수 문자열
+    2                              // 2진수 → 10진수
+  ).toString(8),                   // 10진수 → 8진수 문자열
+  8                                // 8진수 → 최종 10진수
+);
+
 // --------------------------------
 // 1) 로그인 요청 프록시 & JWT 발급
 // --------------------------------
 app.post('/login', async (req, res) => {
   try {
     // 브라우저에서 받은 로그인 정보
-    const { gameName, roomName } = req.body;
+    const { gameName, roomName, pid } = req.body;
 
     // JWT 발급
     const token = jwt.sign(
-      { gameName, roomName, role: 'user' }, // payload
+      { gameName, roomName, pid, role: 'user' }, // payload
       SECRET_KEY,                         // 비밀키
       { expiresIn: '1h' }                 // 1시간 유효
     );
@@ -93,18 +101,7 @@ function verifyJWT(req, res, next) {
 };
 
 // --------------------------------
-// 3) JWT 인증이 필요한 API
-// --------------------------------
-app.get('/user-info', verifyJWT, (req, res) => {
-  res.json({ message: '인증 성공', user: req.user });
-  // * 여기서 roomName과 gameName 받음
-  // roomName : req.user.roomName
-  // gameName : req.user.gameName
-  // *
-});
-
-// --------------------------------
-// 4) JWT 만료 API
+// 3) JWT 만료 API
 // --------------------------------
 app.post('/logout', (req, res) => {
   const logoutCookieOptions = [
@@ -121,15 +118,60 @@ app.post('/logout', (req, res) => {
   res.json({ message: '로그아웃 완료' });
 });
 
+// --------------------------------
+// 4) JWT 인증이 필요한 API
+// --------------------------------
+app.get('/user-info', verifyJWT, (req, res) => {
+  res.json({ message: '인증 성공', user: req.user });
+  // * 여기서 roomName과 gameName 받음
+  // roomName : req.user.roomName
+  // gameName : req.user.gameName
+  // *
+});
+
+// --------------------------------
+// 5) 새로고침 → roomName이 없는 경우
+// --------------------------------
+app.get('/auth-room', verifyJWT, (req, res) => {
+  const { gameName, roomName, pid } = req.user;
+  // console.log('gameName : ', gameName);
+  // console.log('roomName : ', roomName);
+
+  if (gameName && roomName) {
+    REDIS_PUB.publish(
+      `webrtc_worker_${decryptPID(pid)}`,
+      JSON.stringify({
+        action: 'jwtGameRoom',
+        gameName,
+        roomName
+      })
+    );
+    res.json({ message: '조회 성공' });
+  } else {
+    res.status(401).json({ message: '조회 실패' });
+  };
+});
+
+// --------------------------------
+// 6) JWT 에서 roomName을 반환하는 API
+// --------------------------------
+app.get('/search-room', verifyJWT, (req, res) => {
+  res.json({ message: '인증 성공', roomName: req.user.roomName });
+  // * 여기서 roomName과 gameName 받음
+  // roomName : req.user.roomName
+  // gameName : req.user.gameName
+  // *
+});
+
 app.listen(PORT, () => {
   console.log(`JWT server ${process.pid} running on port ${PORT}`);
 });
 
 // --------------------------------
-// 4) REDIS COMMUNCTION
+// REDIS COMMUNCTION
 // --------------------------------
 // * REDIS SUB subscribe, message
-REDIS_SUB.subscribe('roomChannel', (err, count) => {
+/* REDIS_SUB.subscribe('roomChannel', (err, count) => {
   if (err) console.error('Redis subscribe error:', err);
   else console.log(`Subscribed to roomChannel`);
 });
@@ -137,7 +179,7 @@ REDIS_SUB.on('message', (channel, message) => {
   const { roomName } = JSON.parse(message);
   console.log(`JWT 서버에서 수신: roomName=${roomName}`);
   // 이후 roomName을 JWT payload에 심을 수 있음
-});
+}); */
 
 // * REDIS PUB publish
 /* const workerId = await REDIS.get(`SOCKET_TO_WORKER:${socketId}`);

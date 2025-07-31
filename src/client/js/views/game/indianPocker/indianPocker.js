@@ -26,57 +26,12 @@ import logout from '@/client/js/auth/logout';
 document.onreadystatechange = async () => {
   if (document.readyState !== 'complete') return;
   try {
-
-    // JWT 요청
-    /* const res = await fetch('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ gameName: 'indianPocker', roomName: '' })
-    });
-    const data = await res.json();
-    console.log('로그인 응답 : ', data); */
-
-    // LOGIN COOKIE 확인 요청
-    /* await fetch('/api/user-info', {
-      method: 'GET',
-      credentials: 'include', // 쿠키(authToken)를 함께 보냄
-    })
-      .then(response => {
-        if (!response.ok) throw new Error('인증 실패');
-        return response.json();
-      })
-      .then(data => {
-        console.log('인증 성공:', data);
-      })
-      .catch(error => {
-        console.error('에러:', error);
-      }); */
-
-    /* const auth = await fetch('/api/user-info', {
-      method: 'GET',
-      credentials: 'include', // 쿠키(authToken)를 함께 보냄
-    });
-
-    if (auth.ok) {
-      const authData = await auth.json();
-      if (authData.status === 'unauthorized') {
-        console.log('처음 진입 : ', authData.message);
-        await login();
-      } else {
-        console.log('새로고침 인증 성공 : ', authData);
-      }
-    } else {
-      throw { errCase: 'auth', component: 'token', event: 'unauthorized', message: 'auth check failed' };
-    }; */
-
-
-
-    // 새로고침 안함
+    // 새로고침 트리거
     if (reload) {
       //
     } else {
       await logout();
-    }
+    };
 
     LOADING_EVENT.show();
 
