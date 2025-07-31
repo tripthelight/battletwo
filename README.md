@@ -123,10 +123,6 @@ battletwo
 - FIXME:
   - 모바일은 TURN 서버 구축 필요
   - 시놀로지 NAS로 구축 해볼 예정
-- TODO:
-  - 게임 indianPocker 진입 후 webRTC 연결 성공 후, 
-    - 뒤로가기 하면 JWT 초기화 안됨
-
 
 
 ## 새로고침 전략 - GPT - 새로고침 시 5초 대기

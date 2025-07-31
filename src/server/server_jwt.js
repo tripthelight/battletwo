@@ -130,7 +130,7 @@ app.get('/user-info', verifyJWT, (req, res) => {
 });
 
 // --------------------------------
-// 5) 새로고침 → roomName이 없는 경우
+// 5) 새로고침 → roomName이 없는 경우 ***** webRTC 연결 시 roomName을 '/search-room' 에서 조회하므로 불필요
 // --------------------------------
 app.get('/auth-room', verifyJWT, (req, res) => {
   const { gameName, roomName, pid } = req.user;
