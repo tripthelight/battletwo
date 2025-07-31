@@ -32,6 +32,7 @@ export default function webRTC(gameName) {
     const peers = {};
     const remotePeer = 'RemotePeer';
 
+    let serverRefresh = false;
     let iceConnected = false;
     let dataChannelOpen = false;
 
@@ -43,7 +44,9 @@ export default function webRTC(gameName) {
         window.rtcChannels.peerConnection = peers[remotePeer].pc;
         window.rtcChannels.dataChannel = peers[remotePeer].dataChannel;
         await responseComn(gameName);
-        await authCheck();
+        if (!serverRefresh) {
+          await authCheck();
+        };
         resolve();
       };
     };
@@ -58,6 +61,18 @@ export default function webRTC(gameName) {
     };
 
     async function createPeerConnection(roomName) {
+      // 새로고침 당하는 Peer 는 여기를 탐
+      if (peers[remotePeer] && peers[remotePeer].pc) {
+        // 기존 peer RTCPeerConnection close 시켜야
+        // oniceconnectionstatechange에서
+        // iceConnectionState disconnected를 안탐
+        const oldPc = peers[remotePeer].pc;
+        oldPc.close();
+        window.rtcChannels = {};
+        iceConnected = false;
+        dataChannelOpen = false;
+      };
+
       const pc = new RTCPeerConnection(servers);
       const dataChannel = pc.createDataChannel(`${gameName}-${roomName}-Channel`);
       peers[remotePeer] = { pc, dataChannel };
@@ -174,11 +189,18 @@ export default function webRTC(gameName) {
     async function handleMessage(event) {
       const data = JSON.parse(event.data);
 
-      const { type, sdp, candidate, roomName, setOffer } = data;
+      const { type, sdp, candidate, roomName, setOffer, refresh } = data;
 
       if (type === 'entryOrder') {
         console.log('entryOrder 받음');
         storageMethod('s', 'SET_ITEM', 'roomName', roomName);
+
+        // 새로고침 후 재접속이면, webRTC 서버에서 refresh true로 받음
+        serverRefresh = false;
+        if (refresh) {
+          serverRefresh = true;
+        };
+
         if (setOffer === 'true') {
           // 두번째 접속자 - offer 만들어서 보내야 됨
           await createPeerConnection(roomName);

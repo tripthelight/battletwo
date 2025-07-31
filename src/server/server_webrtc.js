@@ -166,19 +166,20 @@ async function refreshDuringGame(data) {
       if (ROOMS_MAP[socket.gameName].get(roomName) && ROOMS_MAP[socket.gameName].get(roomName).length === 2) {
         const DIFF_SOCKET = ROOMS_MAP[socket.gameName].get(roomName).find((ws) => ws !== socket);
         if (DIFF_SOCKET) {
-          console.log('DIFF_SOCKET 있음');
+          const params = {
+            type: 'entryOrder',
+            roomName: socket.roomName,
+            refresh: true,
+          };
 
+          // 새로고침 한 peer
           socket.send(
-            JSON.stringify({
-              type: 'entryOrder',
-              roomName: socket.roomName,
-              reload: true,
-            }),
+            JSON.stringify({...params}),
           );
+          // 새로고침 당한 peer
           DIFF_SOCKET.send(
             JSON.stringify({
-              type: 'entryOrder',
-              roomName: socket.roomName,
+              ...params,
               setOffer: 'true',
             }),
           );
