@@ -338,10 +338,18 @@ WSS.on('connection', async (socket) => {
       resolve(socket);
     });
     closePromise.then(async (socket) => {
-      const roomsMapState = socket.gameName && socket.roomName && ROOMS_MAP[socket.gameName] && ROOMS_MAP[socket.gameName].get(socket.roomName);
+      const roomsMapState =
+        socket.gameName &&
+        socket.roomName &&
+        ROOMS_MAP[socket.gameName] &&
+        ROOMS_MAP[socket.gameName].get(socket.roomName);
+
       if (roomsMapState) {
         const room = ROOMS_MAP[socket.gameName].get(socket.roomName);
         const index = room.indexOf(socket);
+
+        // 한명이 새로고침 or 뒤로가기 : index: 1
+        // 두명 모두 나감 : index: 0
         if (index !== -1) {
           room.splice(index, 1); // socket을 배열에서 삭제
         }
@@ -350,7 +358,11 @@ WSS.on('connection', async (socket) => {
         }
       }
 
-      const standbyMapState = socket.gameName && socket.__customSocketId && STANDBY_MAP[socket.gameName] && STANDBY_MAP[socket.gameName].get(socket.__customSocketId);
+      const standbyMapState =
+        socket.gameName &&
+        socket.__customSocketId &&
+        STANDBY_MAP[socket.gameName] &&
+        STANDBY_MAP[socket.gameName].get(socket.__customSocketId);
 
       if (standbyMapState) {
         STANDBY_MAP[socket.gameName].delete(socket.__customSocketId);

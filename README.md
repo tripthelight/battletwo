@@ -126,7 +126,6 @@ battletwo
 - TODO:
   - 게임 indianPocker 진입 후 webRTC 연결 성공 후, 
     - 뒤로가기 하면 JWT 초기화 안됨
-    - 새로고침 하면 재연결 되지만, oniceconnectionstatechange에서 disconnected 발생됨
 
 
 

@@ -1,8 +1,8 @@
-export default async function login() {
+export default async function login(gameName, roomName) {
   const res = await fetch('/api/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ gameName: 'indianPocker', roomName: '' })
+    body: JSON.stringify({ gameName, roomName })
   });
 
   if (res.ok) {

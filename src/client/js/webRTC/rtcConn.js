@@ -39,13 +39,13 @@ export default function webRTC(gameName) {
     /** ==============================================================================================================
      * functions
      */
-    async function checkReady() {
+    async function checkReady(roomName) {
       if (iceConnected && dataChannelOpen) {
         window.rtcChannels.peerConnection = peers[remotePeer].pc;
         window.rtcChannels.dataChannel = peers[remotePeer].dataChannel;
         await responseComn(gameName);
         if (!serverRefresh) {
-          await authCheck();
+          await authCheck(gameName, roomName);
         };
         resolve();
       };
@@ -80,7 +80,7 @@ export default function webRTC(gameName) {
       // Data Channel opened -----------------------
       dataChannel.onopen = () => {
         dataChannelOpen = true;
-        checkReady();
+        checkReady(roomName);
       };
 
       dataChannel.onmessage = (event) => {};
@@ -118,12 +118,12 @@ export default function webRTC(gameName) {
 
         if (event.target.iceConnectionState === 'connected' || event.target.iceConnectionState === 'completed') {
           iceConnected = true;
-          checkReady();
+          checkReady(roomName);
         };
       };
     };
 
-    async function handleOffer(sdp) {
+    async function handleOffer(sdp, roomName) {
       if (!peers[remotePeer]) {
         const pc = new RTCPeerConnection(servers);
         peers[remotePeer] = { pc, dataChannel: null };
@@ -133,7 +133,7 @@ export default function webRTC(gameName) {
           peers[remotePeer].dataChannel = event.channel;
           event.channel.onopen = () => {
             dataChannelOpen = true;
-            checkReady();
+            checkReady(roomName);
           };
           event.channel.onmessage = (event) => {};
         };
@@ -172,7 +172,7 @@ export default function webRTC(gameName) {
 
           if (event.target.iceConnectionState === 'connected' || event.target.iceConnectionState === 'completed') {
             iceConnected = true;
-            checkReady();
+            checkReady(roomName);
           };
         };
       };
@@ -210,7 +210,7 @@ export default function webRTC(gameName) {
 
       } else if (type === 'offer') {
         console.log('offer 받음');
-        await handleOffer(sdp);
+        await handleOffer(sdp, roomName);
 
       } else if (type === 'answer') {
         console.log('answer 받음');
