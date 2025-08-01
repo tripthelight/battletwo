@@ -67,11 +67,11 @@ app.post('/login', async (req, res) => {
     );
 
     // public keypair가 포함된 keypair token
-    const keypairToken = jwt.sign(
+    /* const keypairToken = jwt.sign(
       { gameName, roomName, role: 'keypair' },  // payload
       SECRET_KEY,                               // 비밀키
       { expiresIn: '1h' }                       // 1시간 유효
-    );
+    ); */
 
     const cookieOptions = [
       // 'HttpOnly',
@@ -84,14 +84,14 @@ app.post('/login', async (req, res) => {
     ].filter(Boolean).join('; ');
 
     // // httpOnly 쿠키에 JWT auth token 저장
-    // res.setHeader('Set-Cookie', `gc_at=${authToken}; ${cookieOptions}`);
+    res.setHeader('Set-Cookie', `gc_at=${authToken}; ${cookieOptions}`);
     // // httpOnly 쿠키에 JWT keypair token 저장
     // res.setHeader('Set-Cookie', `gc_kp=${keypairToken}; ${cookieOptions}`);
 
-    res.setHeader('Set-Cookie', [
-      `gc_at=${authToken}; ${cookieOptions}`,
-      `gc_kp=${keypairToken}; ${cookieOptions}`
-    ]);
+    // res.setHeader('Set-Cookie', [
+    //   `gc_at=${authToken}; ${cookieOptions}`,
+    //   `gc_kp=${keypairToken}; ${cookieOptions}`
+    // ]);
 
     // 응답 반환
     res.json({ message: '로그인 성공', authToken });

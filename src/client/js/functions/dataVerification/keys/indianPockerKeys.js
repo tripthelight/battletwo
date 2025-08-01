@@ -2,22 +2,22 @@ import findCharCode from '@/client/js/functions/findCharCode';
 
 export default (gameState) => {
   // find gameState all keys
-  // if (gameState === findCharCode([88, 66, 65, 72, 90, 68, 86, 75, 85, 73])) {
-  if (gameState ==='gameStateAllKeys') {
-    /* return [
+  if (gameState === findCharCode([88, 66, 65, 72, 90, 68, 86, 75, 85, 73])) {
+  // if (gameState ==='gameStateAllKeys') {
+    return [
       findCharCode([74, 75, 71, 90, 87, 79, 85, 69, 65, 88]), // waitEnemy
       findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82]), // choiceCard
       findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]), // basicBet
       findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]), // playing
       findCharCode([65, 70, 79, 73, 76, 85, 88, 87, 86, 75]), // gameOver
-    ]; */
-    return [
+    ];
+    /* return [
       'waitEnemy', // waitEnemy
       'choiceCard', // choiceCard
       'basicBet', // basicBet
       'playing', // playing
       'gameOver', // gameOver
-    ];
+    ]; */
   }
 
   // gameState: choiceCard

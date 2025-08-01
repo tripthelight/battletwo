@@ -31,7 +31,7 @@ document.onreadystatechange = async () => {
       console.log('COOKIE ________ ', document.cookie);
       // 아직 연결 안되어 대기중에 새로고침하면 여리를 탐
       // 이전에 두 Peer가 연결되었다가 새로고침한 peer는 여기를 탐
-      if (['gc_at', 'gc_kp'].some(name => !getCookies({ cookieName: name }))) {
+      if (['gc_at'].some(name => !getCookies({ cookieName: name }))) {
         throw { errCase: 'cookies', message: 'cookies failed' };
       };
     } else {
@@ -43,6 +43,10 @@ document.onreadystatechange = async () => {
     const GAME_NAME = 'indianPocker';
 
     await rtcPeer(GAME_NAME);
+
+    const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
+    const encryptVal = findCharCode([74, 75, 71, 90, 87, 79, 85, 69, 65, 88]); // waitEnemy
+    storageMethod('s', 'SET_ITEM', encryptKey, encryptVal);
 
   } catch (error) {
     console.log('error indianPocker.js >>>>>>>>>>>> ', error);

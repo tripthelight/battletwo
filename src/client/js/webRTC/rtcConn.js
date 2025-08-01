@@ -1,4 +1,5 @@
 import setCookies from '@/client/js/module/cookies/setCookies';
+import getCookies from '@/client/js/module/cookies/getCookies';
 import { debug } from '@/client/js/module/debug';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import addNickname from '@/client/js/functions/addNickname';
@@ -9,6 +10,8 @@ import addCharCode from '@/client/js/functions/addCharCode';
 import logout from '@/client/js/auth/logout';
 import authCheck from '@/client/js/auth/authCheck';
 import searchRoom from '@/client/js/auth/searchRoom';
+
+export const encrypt = { keypair: '' };
 
 export default function webRTC(gameName) {
   return new Promise(async (resolve, reject) => {
@@ -49,6 +52,20 @@ export default function webRTC(gameName) {
         await responseComn(gameName);
         if (!serverRefresh) {
           await authCheck(gameName, roomName, pid);
+        };
+
+        if (encrypt.keypair === '') {
+          if (getCookies({ cookieName: 'gc_at' })) {
+            // keypair 생성 후 freeze
+            encrypt.keypair = getCookies({ cookieName: 'gc_at' }).substring(2, 12);
+            Object.freeze(encrypt);
+
+            // const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
+            // const encryptVal = findCharCode([74, 75, 71, 90, 87, 79, 85, 69, 65, 88]); // waitEnemy
+            // storageMethod('s', 'SET_ITEM', encryptKey, encryptVal);
+          } else {
+            reject({ errCase: 'webRTC' });
+          };
         };
         resolve();
       };
@@ -217,6 +234,8 @@ export default function webRTC(gameName) {
         };
 
         if (setOffer === 'true') {
+          console.log('encrypt ______________ ', encrypt);
+
           // 두번째 접속자 - offer 만들어서 보내야 됨
           await createPeerConnection(roomName, pid);
         } else {
