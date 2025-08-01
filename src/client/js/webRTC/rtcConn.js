@@ -37,6 +37,7 @@ export default function webRTC(gameName) {
     let serverRefresh = false;
     let iceConnected = false;
     let dataChannelOpen = false;
+    // let entryOrderTimeoutId = null;
 
     /** ==============================================================================================================
      * functions
@@ -56,13 +57,19 @@ export default function webRTC(gameName) {
     async function initOnopen() {
       // throw { component: 'signalingSocket', event: 'initOnopen', message: 'Failed to send initOnopen' };
       const roomName = await searchRoom();
-      console.log('roomName __________ ', roomName);
 
       signalingServer.send(JSON.stringify({
         type: 'entryOrder',
         gameName,
         roomName
       }));
+
+      // 5초 동안 응답 없으면 alert
+      /* if (roomName) {
+        entryOrderTimeoutId = setTimeout(() => {
+          console.log('상대가 방 나감');
+        }, 100 * 10);
+      }; */
     };
 
     async function createPeerConnection(roomName, pid) {
@@ -198,7 +205,10 @@ export default function webRTC(gameName) {
 
       if (type === 'entryOrder') {
         console.log('entryOrder 받음');
-        // storageMethod('s', 'SET_ITEM', 'roomName', roomName);
+        /* if (entryOrderTimeoutId) {
+          clearTimeout(entryOrderTimeoutId);
+          entryOrderTimeoutId = null;
+        }; */
 
         // 새로고침 후 재접속이면, webRTC 서버에서 refresh true로 받음
         serverRefresh = false;
@@ -231,7 +241,11 @@ export default function webRTC(gameName) {
       } else if (type === 'candidate') {
         console.log('candidate 받음');
         await handleCandidate(candidate);
-      };
+
+      } else if (type === 'otherLeaves') {
+        console.log('otherLeaves 받음');
+        throw { errCase: 'webRTC', component: 'peerConnection' };
+      }
     };
 
     /** ==============================================================================================================

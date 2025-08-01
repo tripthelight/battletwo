@@ -183,7 +183,10 @@ async function refreshDuringGame(data) {
     const { socket, roomName } = data;
 
     if (ROOMS_MAP[socket.gameName] && ROOMS_MAP[socket.gameName].get(roomName)) {
+      console.log('roomName >>>>>>>>>>>>>>>>>>>> ', ROOMS_MAP[socket.gameName].get(roomName));
+
       if (ROOMS_MAP[socket.gameName].get(roomName) && ROOMS_MAP[socket.gameName].get(roomName).length !== 2) {
+        // 상대가 나간 상태에서 내가 새로고침
         await watiRefreshUser();
       }
       if (ROOMS_MAP[socket.gameName].get(roomName) && ROOMS_MAP[socket.gameName].get(roomName).length === 2) {
@@ -378,9 +381,12 @@ WSS.on('connection', async (socket) => {
 
         // 한명이 새로고침 or 뒤로가기 : index: 1
         // 두명 모두 나감 : index: 0
+        console.log('index >>>>>>>>>>>>>>>>>>>>>>> ', index);
+
         if (index !== -1) {
           room.splice(index, 1); // socket을 배열에서 삭제
         }
+        console.log('length >>>>>>>>>>>>>>>>>>>>>>> ', ROOMS_MAP[socket.gameName].get(socket.roomName).length);
         if (ROOMS_MAP[socket.gameName].get(socket.roomName).length === 0) {
           ROOMS_MAP[socket.gameName].delete(socket.roomName);
         }
