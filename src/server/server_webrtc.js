@@ -122,18 +122,9 @@ async function firstEntry(socket) {
 
         if (diffSocket && diffSocket.readyState === WebSocket.OPEN) {
           if (socket && socket.readyState === WebSocket.OPEN) {
-            // public keypair 생성
-            const keypairToken = jwt.sign(
-              { gameName: socket.gameName, roomName: socket.roomName, role: 'keypair' },  // payload
-              SECRET_KEY,                               // 비밀키
-              { expiresIn: '1h' }                       // 1시간 유효
-            );
-            const keypair = (CRC32.str(Math.random().toString(36).substring(2, 10)) >>> 0).toString(16);
-
             const params = {
               type: 'entryOrder',
               roomName: socket.roomName,
-              keypair: keypairToken
             };
 
             socket.send(
@@ -183,8 +174,6 @@ async function refreshDuringGame(data) {
     const { socket, roomName } = data;
 
     if (ROOMS_MAP[socket.gameName] && ROOMS_MAP[socket.gameName].get(roomName)) {
-      console.log('roomName >>>>>>>>>>>>>>>>>>>> ', ROOMS_MAP[socket.gameName].get(roomName));
-
       if (ROOMS_MAP[socket.gameName].get(roomName) && ROOMS_MAP[socket.gameName].get(roomName).length !== 2) {
         // 상대가 나간 상태에서 내가 새로고침
         await watiRefreshUser();

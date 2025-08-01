@@ -59,10 +59,18 @@ app.post('/login', async (req, res) => {
     const { gameName, roomName, pid } = req.body;
 
     // JWT 발급
-    const token = jwt.sign(
+    // gameName, roomName, pid가 포함된 auth token
+    const authToken = jwt.sign(
       { gameName, roomName, pid, role: 'user' }, // payload
       SECRET_KEY,                         // 비밀키
       { expiresIn: '1h' }                 // 1시간 유효
+    );
+
+    // public keypair가 포함된 keypair token
+    const keypairToken = jwt.sign(
+      { gameName, roomName, role: 'keypair' },  // payload
+      SECRET_KEY,                               // 비밀키
+      { expiresIn: '1h' }                       // 1시간 유효
     );
 
     const cookieOptions = [
@@ -75,11 +83,18 @@ app.post('/login', async (req, res) => {
       'SameSite=Lax'
     ].filter(Boolean).join('; ');
 
-    // httpOnly 쿠키에 JWT 저장
-    res.setHeader('Set-Cookie', `gc_at=${token}; ${cookieOptions}`);
+    // // httpOnly 쿠키에 JWT auth token 저장
+    // res.setHeader('Set-Cookie', `gc_at=${authToken}; ${cookieOptions}`);
+    // // httpOnly 쿠키에 JWT keypair token 저장
+    // res.setHeader('Set-Cookie', `gc_kp=${keypairToken}; ${cookieOptions}`);
+
+    res.setHeader('Set-Cookie', [
+      `gc_at=${authToken}; ${cookieOptions}`,
+      `gc_kp=${keypairToken}; ${cookieOptions}`
+    ]);
 
     // 응답 반환
-    res.json({ message: '로그인 성공', token });
+    res.json({ message: '로그인 성공', authToken });
   } catch (error) {
     console.error('프록시 로그인 실패:', error);
     res.status(500).json({ message: '서버 오류', error: error.message });
@@ -113,9 +128,9 @@ function verifyJWT(req, res, next) {
   console.log('verifyJWT ---------------------- ');
   console.log('req.cookies ::::::::::: ', req.cookies);
 
-  const token = req.cookies?.gc_at || '';
+  const authToken = req.cookies?.gc_at || '';
   // if (!token) return res.status(401).json({ message: '토큰 없음' });
-  if (!token) {
+  if (!authToken) {
     // 실제론 401이지만 우회 위해 200 응답
     return res.status(200).json({
       status: 'unauthorized',
@@ -123,7 +138,7 @@ function verifyJWT(req, res, next) {
     });
   };
 
-  jwt.verify(token, SECRET_KEY, (err, decoded) => {
+  jwt.verify(authToken, SECRET_KEY, (err, decoded) => {
     if (err) return res.status(403).json({ message: '토큰 검증 실패' });
     req.user = decoded;
     next();

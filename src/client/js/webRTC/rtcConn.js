@@ -201,7 +201,7 @@ export default function webRTC(gameName) {
     async function handleMessage(event) {
       const data = JSON.parse(event.data);
 
-      const { type, sdp, candidate, roomName, setOffer, refresh, pid, keypair } = data;
+      const { type, sdp, candidate, roomName, setOffer, refresh, pid } = data;
 
       if (type === 'entryOrder') {
         console.log('entryOrder 받음');
@@ -214,13 +214,6 @@ export default function webRTC(gameName) {
         serverRefresh = false;
         if (refresh) {
           serverRefresh = true;
-        } else {
-          // 서버에서 생성한 public keypair 등록
-          // 해당 keypair는 양방향 비교를 위한 key라서 공개되어도 상관 없음
-          setCookies({
-            cookieName: 'gc_kp',
-            cookieData: keypair,
-          });
         };
 
         if (setOffer === 'true') {
