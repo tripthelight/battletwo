@@ -15,7 +15,7 @@ export default async (msgData) => {
       console.log('keypair >>>>>>>>>>>>>>>>> ', keypair);
 
       setCookies({
-        cookieName: 'gc:kp',
+        cookieName: 'gc_kp',
         cookieData: { kp: keypair },
       });
 

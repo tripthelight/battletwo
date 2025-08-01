@@ -4,6 +4,10 @@ import Redis from 'ioredis';
 import { v4 as uuidv4 } from 'uuid';
 import { WebSocketServer } from 'ws';
 import { MAKE_STORAGE } from './functions/encryption/makeStorage.js';
+import CRC32 from 'crc-32';
+import jwt from 'jsonwebtoken';
+
+const SECRET_KEY = process.env.SECRET_KEY;
 
 // 워커 고유 채널
 const CHANNEL_NAME = `webrtc_worker_${process.pid}`; // 워커 고유 채널
@@ -101,6 +105,7 @@ async function firstEntry(socket) {
 
     // standby 상태 user 찾기
     const STANDBY_USER_LIST = [...STANDBY_MAP[socket.gameName]];
+
     if (STANDBY_USER_LIST.length > 0) {
       const diffSocketId = STANDBY_MAP[socket.gameName].keys().next().value; // 첫 번째 키
       const diffSocket = STANDBY_MAP[socket.gameName].values().next().value; // 첫 번째 값
@@ -117,9 +122,18 @@ async function firstEntry(socket) {
 
         if (diffSocket && diffSocket.readyState === WebSocket.OPEN) {
           if (socket && socket.readyState === WebSocket.OPEN) {
+            // public keypair 생성
+            const keypairToken = jwt.sign(
+              { gameName: socket.gameName, roomName: socket.roomName, role: 'keypair' },  // payload
+              SECRET_KEY,                               // 비밀키
+              { expiresIn: '1h' }                       // 1시간 유효
+            );
+            const keypair = (CRC32.str(Math.random().toString(36).substring(2, 10)) >>> 0).toString(16);
+
             const params = {
               type: 'entryOrder',
               roomName: socket.roomName,
+              keypair: keypairToken
             };
 
             socket.send(

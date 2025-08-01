@@ -15,6 +15,7 @@ export default async function authCheck(gameName, roomName, pid) {
       console.log('새로고침 인증 성공 : ', authData);
     }
   } else {
-    throw { errCase: 'auth', component: 'token', event: 'unauthorized', message: 'auth check failed' };
+    // 브라우저 cookie의 authToken을 조작하면 이부분을 탐
+    throw { errCase: 'auth', component: 'token', event: 'unauthorized', message: 'Token verification failed' };
   };
 };

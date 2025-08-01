@@ -18,10 +18,11 @@ const REDIS_PUB = new Redis();
 const REDIS_SUB = new Redis();
 
 app.use(express.json());
-app.use(cookieParser()); // 쿠키 파싱
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || origin === allowedOrigin) {
+      console.log('1 ---------------- ');
+
       callback(null, true);  // 허용
     } else {
       callback(new Error('CORS policy: Not allowed by server'));
@@ -32,10 +33,12 @@ app.use(cors({
 app.use((req, res, next) => {
   const referer = req.get('referer') || '';
   if (referer.startsWith(`${allowedOrigin}`)) {
+    console.log('2 ---------------- ');
     return next();
   }
   res.status(403).json({ message: '접근이 제한되었습니다.' });
 });
+app.use(cookieParser()); // 쿠키 파싱
 
 const decryptPID = (pid) => parseInt( // 브라우저에서 받은 pid 복호화
   parseInt(
@@ -50,6 +53,8 @@ const decryptPID = (pid) => parseInt( // 브라우저에서 받은 pid 복호화
 // --------------------------------
 app.post('/login', async (req, res) => {
   try {
+    console.log('/login ---------------------- ');
+
     // 브라우저에서 받은 로그인 정보
     const { gameName, roomName, pid } = req.body;
 
@@ -61,15 +66,17 @@ app.post('/login', async (req, res) => {
     );
 
     const cookieOptions = [
-      'HttpOnly',
+      // 'HttpOnly',
       'Path=/',
+      // `Path=/game/${gameName}`,
       'Max-Age=3600',
       process.env.NODE_ENV === 'production' ? 'Secure' : '',  // dev에서는 Secure 제외
-      'SameSite=Strict'
+      // 'SameSite=Strict'
+      'SameSite=Lax'
     ].filter(Boolean).join('; ');
 
     // httpOnly 쿠키에 JWT 저장
-    res.setHeader('Set-Cookie', `authToken=${token}; ${cookieOptions}`);
+    res.setHeader('Set-Cookie', `gc_at=${token}; ${cookieOptions}`);
 
     // 응답 반환
     res.json({ message: '로그인 성공', token });
@@ -83,16 +90,18 @@ app.post('/login', async (req, res) => {
 // 2) JWT 만료 API
 // --------------------------------
 app.post('/logout', (req, res) => {
+  console.log('/logout ---------------------- ');
   const logoutCookieOptions = [
-    'HttpOnly',
-    'Path=/',
+    // 'HttpOnly',
+    `Path=/`,
     'Max-Age=0',
     process.env.NODE_ENV === 'production' ? 'Secure' : '',
-    'SameSite=Strict',
+    // 'SameSite=Strict',
+    'SameSite=Lax'
   ].filter(Boolean).join('; ');
 
   // authToken 쿠키를 제거
-  res.setHeader('Set-Cookie', `authToken=; ${logoutCookieOptions}`);
+  res.setHeader('Set-Cookie', `gc_at=; ${logoutCookieOptions}`);
 
   res.json({ message: '로그아웃 완료' });
 });
@@ -101,7 +110,10 @@ app.post('/logout', (req, res) => {
 // 3) JWT 인증 미들웨어
 // --------------------------------
 function verifyJWT(req, res, next) {
-  const token = req.cookies?.authToken || '';
+  console.log('verifyJWT ---------------------- ');
+  console.log('req.cookies ::::::::::: ', req.cookies);
+
+  const token = req.cookies?.gc_at || '';
   // if (!token) return res.status(401).json({ message: '토큰 없음' });
   if (!token) {
     // 실제론 401이지만 우회 위해 200 응답
@@ -122,6 +134,7 @@ function verifyJWT(req, res, next) {
 // 4) JWT 인증이 필요한 API
 // --------------------------------
 app.get('/user-info', verifyJWT, (req, res) => {
+  console.log('/user-info ---------------------- ');
   res.json({ message: '인증 성공', user: req.user });
   // * 여기서 roomName과 gameName 받음
   // roomName : req.user.roomName
@@ -133,6 +146,7 @@ app.get('/user-info', verifyJWT, (req, res) => {
 // 5) 새로고침 → roomName이 없는 경우 ***** webRTC 연결 시 roomName을 '/search-room' 에서 조회하므로 불필요
 // --------------------------------
 app.get('/auth-room', verifyJWT, (req, res) => {
+  console.log('/auth-room ---------------------- ');
   const { gameName, roomName, pid } = req.user;
 
   if (gameName && roomName) {
@@ -154,6 +168,7 @@ app.get('/auth-room', verifyJWT, (req, res) => {
 // 6) JWT 에서 roomName을 반환하는 API
 // --------------------------------
 app.get('/search-room', verifyJWT, (req, res) => {
+  console.log('/search-room ---------------------- ');
   res.json({ message: '인증 성공', roomName: req.user.roomName });
   // * 여기서 roomName과 gameName 받음
   // roomName : req.user.roomName

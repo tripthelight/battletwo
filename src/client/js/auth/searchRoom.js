@@ -4,8 +4,13 @@ export default async function searchRoom() {
     credentials: 'include', // 쿠키(authToken)를 함께 보냄
   });
 
+  console.log('auth _________ ', auth);
+
+
   if (auth.ok) {
     const authData = await auth.json();
+
+
     if (authData.status === 'unauthorized') {
       // roomName 없음
       return null;
@@ -14,6 +19,8 @@ export default async function searchRoom() {
       return authData.roomName;
     }
   } else {
+    console.log('auth :::::: ', auth);
+
     throw { errCase: 'auth', component: 'searchRoom', event: 'unauthorized', message: 'auth noomName not found' };
   };
 };

@@ -18,7 +18,7 @@ import storageKeys from '@/client/js/functions/dataVerification/storageKeys';
 import getCookies from '@/client/js/module/cookies/getCookies';
 import waitPeer from '@/client/js/functions/waitPeer';
 import findNickname from '@/client/js/functions/findNickname';
-import setCookies from '@/client/js/module/cookies/setCookies';
+// import setCookies from '@/client/js/module/cookies/setCookies';
 import login from '@/client/js/auth/login';
 import logout from '@/client/js/auth/logout';
 
@@ -28,7 +28,12 @@ document.onreadystatechange = async () => {
   try {
     // 새로고침 트리거
     if (reload) {
-      //
+      console.log('COOKIE ________ ', document.cookie);
+      // 아직 연결 안되어 대기중에 새로고침하면 여리를 탐
+      // 이전에 두 Peer가 연결되었다가 새로고침한 peer는 여기를 탐
+      if (['gc_at', 'gc_kp'].some(name => !getCookies({ cookieName: name }))) {
+        throw { errCase: 'cookies', message: 'cookies failed' };
+      };
     } else {
       await logout();
     };
