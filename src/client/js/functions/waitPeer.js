@@ -65,9 +65,9 @@ const WAIT_ENEMY = {
   hide: () => {
     if (document.querySelector('.wait')) {
       document.querySelector('.wait').remove();
-      setTimeout(() => {
-        // LOADING_EVENT.hide();
-      }, timeInterval_1);
+      /* setTimeout(() => {
+        LOADING_EVENT.hide();
+      }, timeInterval_1); */
     }
   },
 };

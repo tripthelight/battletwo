@@ -15,7 +15,13 @@ export default (_key) => {
   // console.log('encrypt :::::: ', encrypt.keypair); // null
   // console.log('_key + keypair :::::: ', _key + keypair); // keypair가 null일 경우 _key 뒤에 'null' 문자열이 붙음
 
-  return (CRC32.str(_key + encrypt) >>> 0).toString(16); // 양수 변환 후 16진수로
+  // encrypt.keypair = '';
+  // // webRTC 연결 후 keypair 생성 전까지는 이 부분을 타면 안됨
+  // if (!encrypt || encrypt && (encrypt.keypair === '')) {
+  //   throw { errCase: 'cookies', message: 'cookie keypair failed' }
+  //   // return errorManagement({ errCase: 'cookies', message: 'cookie keypair failed' });
+  // };
+  // return (CRC32.str(_key + encrypt.keypair) >>> 0).toString(16); // 양수 변환 후 16진수로
   /*
   const keypair = window.sessionStorage.getItem('keyPair');
   const arrPair = JSON.parse(keypair);
@@ -30,4 +36,15 @@ export default (_key) => {
   // const keypair = window.sessionStorage.getItem('newPair');
   // const oldPair = window.sessionStorage.getItem('oldPair');
   // return (CRC32.str(_key + (_old ? oldPair : keypair)) >>> 0).toString(16); // 양수 변환 후 16진수로
+
+  try {
+    // webRTC 연결 후 keypair 생성 전까지는 이 부분을 타면 안됨
+    if (!encrypt || (encrypt && encrypt.keypair === '')) {
+      throw 'encrypt error';
+      // return errorManagement({ errCase: 'cookies', message: 'cookie keypair failed' });
+    };
+    return (CRC32.str(_key + encrypt.keypair) >>> 0).toString(16); // 양수 변환 후 16진수로
+  } catch (error) {
+    throw { errCase: 'cookies', message: 'cookie keypair failed' };
+  };
 };

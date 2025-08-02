@@ -53,15 +53,16 @@ const decryptPID = (pid) => parseInt( // 브라우저에서 받은 pid 복호화
 // --------------------------------
 app.post('/login', async (req, res) => {
   try {
-    console.log('/login ---------------------- ');
+    // console.log('/login ---------------------- ');
 
     // 브라우저에서 받은 로그인 정보
     const { gameName, roomName, pid } = req.body;
+    const keypair = Math.random().toString(36).substring(2, 10);
 
     // JWT 발급
     // gameName, roomName, pid가 포함된 auth token
     const authToken = jwt.sign(
-      { gameName, roomName, pid, role: 'user' }, // payload
+      { keypair, gameName, roomName, pid, role: 'user' }, // payload
       SECRET_KEY,                         // 비밀키
       { expiresIn: '1h' }                 // 1시간 유효
     );
@@ -105,7 +106,7 @@ app.post('/login', async (req, res) => {
 // 2) JWT 만료 API
 // --------------------------------
 app.post('/logout', (req, res) => {
-  console.log('/logout ---------------------- ');
+  // console.log('/logout ---------------------- ');
   const logoutCookieOptions = [
     // 'HttpOnly',
     `Path=/`,
@@ -125,8 +126,7 @@ app.post('/logout', (req, res) => {
 // 3) JWT 인증 미들웨어
 // --------------------------------
 function verifyJWT(req, res, next) {
-  console.log('verifyJWT ---------------------- ');
-  console.log('req.cookies ::::::::::: ', req.cookies);
+  // console.log('verifyJWT ---------------------- ');
 
   const authToken = req.cookies?.gc_at || '';
   // if (!token) return res.status(401).json({ message: '토큰 없음' });
@@ -149,7 +149,7 @@ function verifyJWT(req, res, next) {
 // 4) JWT 인증이 필요한 API
 // --------------------------------
 app.get('/user-info', verifyJWT, (req, res) => {
-  console.log('/user-info ---------------------- ');
+  // console.log('/user-info ---------------------- ');
   res.json({ message: '인증 성공', user: req.user });
   // * 여기서 roomName과 gameName 받음
   // roomName : req.user.roomName
@@ -161,7 +161,7 @@ app.get('/user-info', verifyJWT, (req, res) => {
 // 5) 새로고침 → roomName이 없는 경우 ***** webRTC 연결 시 roomName을 '/search-room' 에서 조회하므로 불필요
 // --------------------------------
 app.get('/auth-room', verifyJWT, (req, res) => {
-  console.log('/auth-room ---------------------- ');
+  // console.log('/auth-room ---------------------- ');
   const { gameName, roomName, pid } = req.user;
 
   if (gameName && roomName) {
@@ -183,7 +183,7 @@ app.get('/auth-room', verifyJWT, (req, res) => {
 // 6) JWT 에서 roomName을 반환하는 API
 // --------------------------------
 app.get('/search-room', verifyJWT, (req, res) => {
-  console.log('/search-room ---------------------- ');
+  // console.log('/search-room ---------------------- ');
   res.json({ message: '인증 성공', roomName: req.user.roomName });
   // * 여기서 roomName과 gameName 받음
   // roomName : req.user.roomName

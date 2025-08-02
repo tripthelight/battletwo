@@ -54,10 +54,12 @@ export default function webRTC(gameName) {
           await authCheck(gameName, roomName, pid);
         };
 
+        // 처음 진입했거나, 두 Peer가 연결된 상태에서 새로고침 한 경우
         if (encrypt.keypair === '') {
           if (getCookies({ cookieName: 'gc_at' })) {
             // keypair 생성 후 freeze
-            encrypt.keypair = getCookies({ cookieName: 'gc_at' }).substring(2, 12);
+            const cookie = getCookies({ cookieName: 'gc_at' });
+            encrypt.keypair = cookie.slice(-10);
             Object.freeze(encrypt);
 
             // const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState

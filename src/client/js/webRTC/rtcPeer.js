@@ -21,6 +21,7 @@ export default async function rtcPeer(gameName) {
        */
       await initNickName();
 
+      /*
       if (getCookies({ cookieName: 'gc_at' })) {
         const decryptkey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
         const decryptVal = window.sessionStorage.getItem(decryptkey);
@@ -35,10 +36,10 @@ export default async function rtcPeer(gameName) {
           reject({ errCase: 'errorComn', message: 'gameState value error' });
           return;
         };
-      } else {
-        // 처음 진입
-        waitPeer(1, findNickname('localPlayer'));
       };
+      */
+
+      waitPeer(1, findNickname('localPlayer'));
 
       if (!window.rtcChannels) {
         window.rtcChannels = {};
@@ -46,9 +47,8 @@ export default async function rtcPeer(gameName) {
 
       await webRTC(gameName);
 
-      if (getCookies({ cookieName: 'gc_at' })) {
-        waitPeer(2);
-      }
+      waitPeer(2);
+
       resolve();
     } catch (error) {
       console.log('error webPeer.js >>>>>>>>>>>> ', error);
