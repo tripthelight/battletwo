@@ -16,6 +16,7 @@ import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import initNickName from '@/client/js/functions/initNickName';
 import storageKeys from '@/client/js/functions/dataVerification/storageKeys';
 import getCookies from '@/client/js/module/cookies/getCookies';
+import delCookies from '@/client/js/module/cookies/delCookies';
 import waitPeer from '@/client/js/functions/waitPeer';
 import findNickname from '@/client/js/functions/findNickname';
 // import setCookies from '@/client/js/module/cookies/setCookies';
@@ -28,14 +29,24 @@ document.onreadystatechange = async () => {
   try {
     // 새로고침 트리거
     if (reload) {
-      // 아직 연결 안되어 대기중에 새로고침하면 여리를 탐
+      // 아직 연결 안되어 대기중에 새로고침하면 여기를 탐
       // 이전에 두 Peer가 연결되었다가 새로고침한 peer는 여기를 탐
-      if (['gc_at'].some(name => !getCookies({ cookieName: name }))) {
+      // 게임 중, sessionStorage를 모두 지우고, cookie도 지우고 새로고침 하면 처음부터 새로운 Peer와 재연결 - 게임 나감 처리로 간주
+      const refreshFailed = {
+        cookie: window.sessionStorage.length > 0 && ['gc_at'].some(name => !getCookies({ cookieName: name })),
+        storage: window.sessionStorage.length === 0 && ['gc_at'].some(name => getCookies({ cookieName: name }))
+      };
+      if (refreshFailed.cookie || refreshFailed.storage) {
         throw { errCase: 'cookies', message: 'cookies failed' };
       };
     } else {
       await logout();
     };
+
+    // 아예 처음 진입했거나,
+    // 새로고침 했는데,
+    // window.sessionStorage.length가 0보다 크고,
+    // gc_at 쿠키가 있으면 이 단계로 진입
 
     LOADING_EVENT.show();
 
@@ -43,18 +54,37 @@ document.onreadystatechange = async () => {
 
     await rtcPeer(GAME_NAME);
 
+
+
     // 처음 진입해서 gameState가 없으면 sessionStorage에 waitEnemy 주입
-    const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
-    if (!window.sessionStorage.getItem(encryptKey)) {
-      const encryptVal = findCharCode([74, 75, 71, 90, 87, 79, 85, 69, 65, 88]); // waitEnemy
-      storageMethod('s', 'SET_ITEM', encryptKey, encryptVal);
-    };
+    // const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
+    // if (!window.sessionStorage.getItem(encryptKey)) {
+    //   const encryptVal = findCharCode([74, 75, 71, 90, 87, 79, 85, 69, 65, 88]); // waitEnemy
+    //   storageMethod('s', 'SET_ITEM', encryptKey, encryptVal);
+    // };
 
   } catch (error) {
     console.log('error indianPocker.js >>>>>>>>>>>> ', error);
     errorManagement(error);
   }
 };
+
+// 디바운스로 새로고침 방지
+/*
+function debounce(fn, delay) {
+  let timeoutId;
+  return function (...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => fn.apply(this, args), delay);
+  };
+};
+
+const handleRefresh = () => {
+  console.log('마지막 새로고침만 실행');
+};
+
+window.addEventListener('beforeunload', debounce(handleRefresh, 500));
+*/
 
 // 페이지가 언로드되기 직전!
 /* window.addEventListener('pagehide', () => {

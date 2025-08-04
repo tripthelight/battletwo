@@ -100,8 +100,24 @@ function showErrorNotification(errCase, component, message, target) {
   } else if (errCase === 'errorComn') {
     errorModal(text.err);
     console.log('errorComn error : ', message);
-  }
-}
+  };
+
+  // disconnected common
+  /* if (window.rtcChannels) {
+    if (
+      window.rtcChannels.dataChannel &&
+      window.rtcChannels.dataChannel.readyState === 'open'
+    ) {
+      window.rtcChannels.dataChannel.close();
+    };
+    if (
+      window.rtcChannels.peerConnection &&
+      window.rtcChannels.peerConnection.connectionState === 'connected'
+    ) {
+      window.rtcChannels.peerConnection.close();
+    };
+  }; */
+};
 
 // 오류 복구 로직
 function handleRecovery(component, event) {

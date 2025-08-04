@@ -1,5 +1,6 @@
 import setCookies from '@/client/js/module/cookies/setCookies';
 import getCookies from '@/client/js/module/cookies/getCookies';
+import delCookies from '@/client/js/module/cookies/delCookies';
 import { debug } from '@/client/js/module/debug';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import addNickname from '@/client/js/functions/addNickname';
@@ -10,6 +11,7 @@ import addCharCode from '@/client/js/functions/addCharCode';
 import logout from '@/client/js/auth/logout';
 import authCheck from '@/client/js/auth/authCheck';
 import searchRoom from '@/client/js/auth/searchRoom';
+import storageKeys from '@/client/js/functions/dataVerification/storageKeys';
 
 export const encrypt = { keypair: '' };
 
@@ -18,7 +20,7 @@ export default function webRTC(gameName) {
     /** ==============================================================================================================
      * common variable
      */
-    const signalingServer = new WebSocket(`${process.env.SOCKET_HOST}:${process.env.RTC_PORT}`);
+    let signalingServer = new WebSocket(`${process.env.SOCKET_HOST}:${process.env.RTC_PORT}`);
     const servers = {
       iceServers: [
         {
@@ -69,6 +71,40 @@ export default function webRTC(gameName) {
             reject({ errCase: 'webRTC' });
           };
         };
+
+        if (serverRefresh) {
+          const decryptkey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
+          const decryptVal = window.sessionStorage.getItem(decryptkey);
+
+          if (!decryptVal) {
+            reject({ errCase: 'errorComn', message: 'gameState sessionStorage not found' });
+          };
+
+          const encryptKeys = storageKeys({
+            p1: findCharCode([68, 74, 69, 77, 70, 75, 76, 86, 68, 69]), // indianPocker,
+            p2: findCharCode([88, 66, 65, 72, 90, 68, 86, 75, 85, 73]), // gameStateAllKeys
+          });
+          if (encryptKeys.includes(decryptVal)) {
+            // 모든 gameState key 가 정상적으로 있음
+          } else {
+            delCookies('gc_at');
+            if (signalingServer) signalingServer.close();
+            peers[remotePeer].pc.close();
+            peers[remotePeer].pc = null;
+            peers[remotePeer].dataChannel.close();
+            peers[remotePeer].dataChannel = null;
+            delete peers[remotePeer];
+            window.rtcChannels = {};
+            reject({ errCase: 'errorComn', message: 'gameState value error' });
+          };
+        } else {
+          // 처음 진입해서 gameState가 없으면 sessionStorage에 waitEnemy 주입
+          const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
+          if (!window.sessionStorage.getItem(encryptKey)) {
+            const encryptVal = findCharCode([74, 75, 71, 90, 87, 79, 85, 69, 65, 88]); // waitEnemy
+            storageMethod('s', 'SET_ITEM', encryptKey, encryptVal);
+          };
+        }
         resolve();
       };
     };
@@ -135,6 +171,7 @@ export default function webRTC(gameName) {
       pc.oniceconnectionstatechange = async (event) => {
         if (event.target.iceConnectionState === 'disconnected') {
           if (peers[remotePeer]) {
+            // 상대 peer와 연결 끊김 후 새로고침 하면 새로운 peer와 재연결 시도
             await logout();
             if (signalingServer) signalingServer.close();
             if (pc) pc.close();
@@ -189,6 +226,7 @@ export default function webRTC(gameName) {
         pc.oniceconnectionstatechange = async (event) => {
           if (event.target.iceConnectionState === 'disconnected') {
             if (peers[remotePeer]) {
+              // 상대 peer와 연결 끊김 후 새로고침 하면 새로운 peer와 재연결 시도
               await logout();
               if (signalingServer) signalingServer.close();
               if (pc) pc.close();
