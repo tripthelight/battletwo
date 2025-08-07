@@ -295,7 +295,7 @@ WSS.on('connection', async (socket) => {
            */
           if (parsedData.type === 'requestStorage') {
             // 각 게임에 필요한 암호화된 sessionStorage 생성
-            const STORAGE_DATA = await MAKE_STORAGE.findGame(parsedData.gameName);
+            const STORAGE_DATA = await MAKE_STORAGE.findGame(parsedData.gameName, parsedData.keypair);
 
             if (Object.keys(STORAGE_DATA).length === 0) {
               console.log('사용자가 최초 진입 시 battleTwo에 없는 gameName을 보냄');
@@ -304,7 +304,7 @@ WSS.on('connection', async (socket) => {
               socket.send(
                 JSON.stringify({
                   type: 'responseStorage',
-                  ...STORAGE_DATA,
+                  storageData: STORAGE_DATA,
                 }),
               );
             }
@@ -370,12 +370,12 @@ WSS.on('connection', async (socket) => {
 
         // 한명이 새로고침 or 뒤로가기 : index: 1
         // 두명 모두 나감 : index: 0
-        console.log('index >>>>>>>>>>>>>>>>>>>>>>> ', index);
+        // console.log('index >>>>>>>>>>>>>>>>>>>>>>> ', index);
 
         if (index !== -1) {
           room.splice(index, 1); // socket을 배열에서 삭제
         }
-        console.log('length >>>>>>>>>>>>>>>>>>>>>>> ', ROOMS_MAP[socket.gameName].get(socket.roomName).length);
+        // console.log('length >>>>>>>>>>>>>>>>>>>>>>> ', ROOMS_MAP[socket.gameName].get(socket.roomName).length);
         if (ROOMS_MAP[socket.gameName].get(socket.roomName).length === 0) {
           ROOMS_MAP[socket.gameName].delete(socket.roomName);
         }

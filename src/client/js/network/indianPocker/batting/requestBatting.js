@@ -49,7 +49,7 @@ export function requestBatting(k, v) {
   }
 
   /*
-  const onDataChannel = window.rtcChannels.onDataChannel;
+  const onDataChannel = window.rtcChannels.dataChannel;
 
   if (onDataChannel && onDataChannel.readyState === 'open') {
     switch (k) {

@@ -21,8 +21,6 @@ app.use(express.json());
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || origin === allowedOrigin) {
-      console.log('1 ---------------- ');
-
       callback(null, true);  // 허용
     } else {
       callback(new Error('CORS policy: Not allowed by server'));
@@ -33,7 +31,6 @@ app.use(cors({
 app.use((req, res, next) => {
   const referer = req.get('referer') || '';
   if (referer.startsWith(`${allowedOrigin}`)) {
-    console.log('2 ---------------- ');
     return next();
   }
   res.status(403).json({ message: '접근이 제한되었습니다.' });

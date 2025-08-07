@@ -4,6 +4,7 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/network/indianPocker/request';
 
 export default (cardList) => {
+  console.log('cardList =========> ', cardList);
   // 내 secret key로 받은 카드 리스트 평문을 암호화 해서 응답
   const secretKeyKey = findCharCode([83, 88, 73, 69, 85, 68, 66, 76, 80, 78]); // SECRET_KEY
   const secretKeyVal = window.sessionStorage.getItem(secretKeyKey);

@@ -3,7 +3,7 @@ import { errorManagement } from '@/client/js/module/errorManagement';
 // import { globalDataChannel } from '@/client/js/webRTC/rtcConn';
 
 export function request(k, v) {
-  const onDataChannel = window.rtcChannels.onDataChannel;
+  const onDataChannel = window.rtcChannels.dataChannel;
   // if (!onDataChannel || onDataChannel.readyState !== 'open') return;
 
   /*

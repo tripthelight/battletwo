@@ -3,20 +3,40 @@ import { errorManagement } from '@/client/js/module/errorManagement';
 import shuffleArray from '@/client/js/views/game/indianPocker/fns/common/makeCard/shuffleArray';
 import encryption from '@/client/js/views/game/indianPocker/fns/common/makeCard/encryption';
 
-export default () => {
-  return new Promise((resolve, reject) => {
-    const arrNumbs = selectCompairNumbers();
-    if (!arrNumbs.length) return errorManagement({ errCase: 'cardNum', message: 'cardNum length 0' });
+export default async  () => {
+  const arrNumbs = selectCompairNumbers();
+  if (!arrNumbs.length) {
+    throw errorManagement({ errCase: 'cardNum', message: 'cardNum length 0' });
+  }
 
-    let cNums = [];
-    // 카드 배열을 1 ~ 10까지의 숫자로 2세트로 지정
-    shuffleArray(arrNumbs.concat(arrNumbs)).map((item) =>
-      encryption(item.toString(), 3)
-        .then((_nums) => cNums.push(_nums))
-        .catch((error) => errorManagement({ errCase: 'cardNum', message: error })),
-    );
-    resolve(cNums);
-  });
+  /* let cNums = [];
+  // 카드 배열을 1 ~ 10까지의 숫자로 2세트로 지정
+  shuffleArray(arrNumbs.concat(arrNumbs)).map((item) =>
+    encryption(item.toString(), 3)
+      .then((_nums) => cNums.push(_nums))
+      .catch((error) => errorManagement({ errCase: 'cardNum', message: error })),
+  );
+  resolve(cNums); */
+
+  const rawCardNumbers = shuffleArray([...arrNumbs, ...arrNumbs]);
+
+  const encryptedCardNumbers = await Promise.all(
+    rawCardNumbers.map((item) =>
+      encryption(item.toString(), 3).catch((error) => {
+        // errorManagement({ errCase: 'cardNum', message: error });
+        return null; // 실패한 항목은 null로 표시
+      })
+    )
+  );
+
+  // null이 포함되어 있는지 확인
+  const hasError = encryptedCardNumbers.some((v) => v === null);
+  if (hasError) {
+    throw { errCase: 'cardNum', message: 'One or more encryption failed' };
+  }
+
+  return encryptedCardNumbers;
+
   /*
   const arrNumbs = selectCompairNumbers();
   if (!arrNumbs.length) return errorManagement({ errCase: 'cardNum', message: 'cardNum length 0' });

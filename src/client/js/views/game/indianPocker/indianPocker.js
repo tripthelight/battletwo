@@ -15,6 +15,7 @@ import insertStorageDate from '@/client/js/functions/insertStorageDate';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import initNickName from '@/client/js/functions/initNickName';
 import storageKeys from '@/client/js/functions/dataVerification/storageKeys';
+import setCookies from '@/client/js/module/cookies/setCookies';
 import getCookies from '@/client/js/module/cookies/getCookies';
 import delCookies from '@/client/js/module/cookies/delCookies';
 import waitPeer from '@/client/js/functions/waitPeer';
@@ -33,8 +34,10 @@ document.onreadystatechange = async () => {
       // 이전에 두 Peer가 연결되었다가 새로고침한 peer는 여기를 탐
       // 게임 중, sessionStorage를 모두 지우고, cookie도 지우고 새로고침 하면 처음부터 새로운 Peer와 재연결 - 게임 나감 처리로 간주
       const refreshFailed = {
-        cookie: window.sessionStorage.length > 0 && ['gc_at'].some(name => !getCookies({ cookieName: name })),
-        storage: window.sessionStorage.length === 0 && ['gc_at'].some(name => getCookies({ cookieName: name }))
+        // cookie: window.sessionStorage.length > 0 && ['gc_at'].some(name => !getCookies({ cookieName: name })),
+        // storage: window.sessionStorage.length === 0 && ['gc_at'].some(name => getCookies({ cookieName: name }))
+        cookie: window.sessionStorage.length > 0 && !getCookies({ cookieName: 'gc_at' }),
+        storage: window.sessionStorage.length === 0 && getCookies({ cookieName: 'gc_at' })
       };
       if (refreshFailed.cookie || refreshFailed.storage) {
         throw { errCase: 'cookies', message: 'cookies failed' };
@@ -54,14 +57,11 @@ document.onreadystatechange = async () => {
 
     await rtcPeer(GAME_NAME);
 
+    // webRTC 연결 후,
+    // gameState가 있으면 이 단계로 진입
 
+    await makeCard();
 
-    // 처음 진입해서 gameState가 없으면 sessionStorage에 waitEnemy 주입
-    // const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
-    // if (!window.sessionStorage.getItem(encryptKey)) {
-    //   const encryptVal = findCharCode([74, 75, 71, 90, 87, 79, 85, 69, 65, 88]); // waitEnemy
-    //   storageMethod('s', 'SET_ITEM', encryptKey, encryptVal);
-    // };
 
   } catch (error) {
     console.log('error indianPocker.js >>>>>>>>>>>> ', error);

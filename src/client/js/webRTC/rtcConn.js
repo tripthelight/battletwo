@@ -13,6 +13,8 @@ import authCheck from '@/client/js/auth/authCheck';
 import searchRoom from '@/client/js/auth/searchRoom';
 import storageKeys from '@/client/js/functions/dataVerification/storageKeys';
 
+import insertStorageDate from '@/client/js/functions/insertStorageDate';
+
 export const encrypt = { keypair: '' };
 
 export default function webRTC(gameName) {
@@ -42,7 +44,6 @@ export default function webRTC(gameName) {
     let serverRefresh = false;
     let iceConnected = false;
     let dataChannelOpen = false;
-    // let entryOrderTimeoutId = null;
 
     /** ==============================================================================================================
      * functions
@@ -104,8 +105,25 @@ export default function webRTC(gameName) {
             const encryptVal = findCharCode([74, 75, 71, 90, 87, 79, 85, 69, 65, 88]); // waitEnemy
             storageMethod('s', 'SET_ITEM', encryptKey, encryptVal);
           };
-        }
-        resolve();
+        };
+
+        if (!serverRefresh) {
+          if (signalingServer) {
+            if (gameName === 'indianPocker') {
+              signalingServer.send(JSON.stringify({
+                type: 'requestStorage',
+                gameName: gameName,
+                keypair: encrypt.keypair
+              }))
+            } else {
+              resolve();
+            };
+          };
+        } else {
+          resolve();
+        };
+
+
       };
     };
 
@@ -118,13 +136,6 @@ export default function webRTC(gameName) {
         gameName,
         roomName
       }));
-
-      // 5초 동안 응답 없으면 alert
-      /* if (roomName) {
-        entryOrderTimeoutId = setTimeout(() => {
-          console.log('상대가 방 나감');
-        }, 100 * 10);
-      }; */
     };
 
     async function createPeerConnection(roomName, pid) {
@@ -145,9 +156,9 @@ export default function webRTC(gameName) {
       peers[remotePeer] = { pc, dataChannel };
 
       // Data Channel opened -----------------------
-      dataChannel.onopen = () => {
+      dataChannel.onopen = async () => {
         dataChannelOpen = true;
-        checkReady(roomName, pid);
+        await checkReady(roomName, pid);
       };
 
       dataChannel.onmessage = (event) => {};
@@ -186,7 +197,7 @@ export default function webRTC(gameName) {
 
         if (event.target.iceConnectionState === 'connected' || event.target.iceConnectionState === 'completed') {
           iceConnected = true;
-          checkReady(roomName, pid);
+          await checkReady(roomName, pid);
         };
       };
     };
@@ -199,9 +210,9 @@ export default function webRTC(gameName) {
         // Data Channel opened -----------------------
         pc.ondatachannel = (event) => {
           peers[remotePeer].dataChannel = event.channel;
-          event.channel.onopen = () => {
+          event.channel.onopen = async () => {
             dataChannelOpen = true;
-            checkReady(roomName, pid);
+            await checkReady(roomName, pid);
           };
           event.channel.onmessage = (event) => {};
         };
@@ -241,7 +252,7 @@ export default function webRTC(gameName) {
 
           if (event.target.iceConnectionState === 'connected' || event.target.iceConnectionState === 'completed') {
             iceConnected = true;
-            checkReady(roomName, pid);
+            await checkReady(roomName, pid);
           };
         };
       };
@@ -258,14 +269,10 @@ export default function webRTC(gameName) {
     async function handleMessage(event) {
       const data = JSON.parse(event.data);
 
-      const { type, sdp, candidate, roomName, setOffer, refresh, pid } = data;
+      const { type, sdp, candidate, roomName, setOffer, refresh, pid, storageData } = data;
 
       if (type === 'entryOrder') {
         console.log('entryOrder 받음');
-        /* if (entryOrderTimeoutId) {
-          clearTimeout(entryOrderTimeoutId);
-          entryOrderTimeoutId = null;
-        }; */
 
         // 새로고침 후 재접속이면, webRTC 서버에서 refresh true로 받음
         serverRefresh = false;
@@ -297,7 +304,14 @@ export default function webRTC(gameName) {
       } else if (type === 'otherLeaves') {
         console.log('otherLeaves 받음');
         throw { errCase: 'webRTC', component: 'peerConnection' };
-      }
+      };
+
+      // indianPocker
+      if (type === 'responseStorage') {
+        console.log('data 받음 >>>>>>>>> ', storageData);
+        await insertStorageDate(storageData);
+        resolve();
+      };
     };
 
     /** ==============================================================================================================
@@ -309,7 +323,7 @@ export default function webRTC(gameName) {
           await initOnopen();
           // throw { component: 'signalingServer', event: 'onopen', message: 'Failed to send onopen' };
         } catch (error) {
-          reject({ ...error, errCase: 'webRTC' });
+          reject({ ...error, errCase: error.errCase || 'webRTC' });
         };
       };
 

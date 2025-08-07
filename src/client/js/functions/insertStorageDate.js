@@ -14,10 +14,10 @@ export default async (msgData) => {
       // 상대 peer의 AES secret key
       console.log('keypair >>>>>>>>>>>>>>>>> ', keypair);
 
-      setCookies({
-        cookieName: 'gc_kp',
-        cookieData: { kp: keypair },
-      });
+      // setCookies({
+      //   cookieName: 'gc_kp',
+      //   cookieData: { kp: keypair },
+      // });
 
       encryptionStore.dispatch(updateCompair({ compair: Object.assign({}, storageData) }));
       encryptionStore.dispatch(updateKeypair({ keypair: keypair }));
