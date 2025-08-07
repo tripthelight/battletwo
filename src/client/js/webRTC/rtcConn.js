@@ -107,22 +107,19 @@ export default function webRTC(gameName) {
           };
         };
 
-        if (!serverRefresh) {
-          if (signalingServer) {
-            if (gameName === 'indianPocker') {
-              signalingServer.send(JSON.stringify({
-                type: 'requestStorage',
-                gameName: gameName,
-                keypair: encrypt.keypair
-              }))
-            } else {
-              resolve();
-            };
+        if (gameName === 'indianPocker') {
+          if (signalingServer && signalingServer.readyState === WebSocket.OPEN) {
+            signalingServer.send(JSON.stringify({
+              type: 'requestStorage',
+              gameName: gameName,
+              keypair: encrypt.keypair
+            }));
+          } else {
+            reject({ errCase: 'webRTC', component: 'signalingServer', event: 'requestStorage', message: 'Signaling socket error occurred' });
           };
         } else {
           resolve();
         };
-
 
       };
     };
