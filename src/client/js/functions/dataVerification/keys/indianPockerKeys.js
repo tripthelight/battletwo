@@ -22,7 +22,7 @@ export default (gameState) => {
 
   // gameState: choiceCard
   if (gameState === findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82])) {
-    /* return [
+    return [
       findCharCode([78, 73, 68, 76, 67, 82, 87, 83, 89, 70]), // ulIndex
       findCharCode([83, 70, 79, 67, 65, 71, 66, 87, 77, 86]), // liIndex
       findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]), // playerFirstNumber
@@ -35,8 +35,8 @@ export default (gameState) => {
       findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]), // tieWait
       findCharCode([82, 73, 67, 77, 85, 88, 70, 83, 71, 87]), // myNextStepState
       findCharCode([68, 79, 74, 85, 82, 83, 81, 86, 72, 77]), // nextStepChoiceCard
-    ]; */
-    return [
+    ];
+    /* return [
       'ulIndex', // ulIndex
       'liIndex', // liIndex
       'playerFirstNumber', // playerFirstNumber
@@ -49,6 +49,6 @@ export default (gameState) => {
       'tieWait', // tieWait
       'myNextStepState', // myNextStepState
       'nextStepChoiceCard', // nextStepChoiceCard
-    ];
+    ]; */
   }
 };

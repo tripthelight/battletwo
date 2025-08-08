@@ -30,11 +30,13 @@ export default (_event) => {
   // if (window.sessionStorage.playerFirstNumber) {
   if (encryptVal2 === '') {
     // local player가 선택한 카드가 없을 때
-    setTimeout(showChoiceCard, timeInterval_1, _event, playerNum);
+    showChoiceCard(_event, playerNum);
+    // setTimeout(showChoiceCard, timeInterval_1, _event, playerNum);
   } else {
     // local player가 선택한 카드가 있을 때
     const message = '내가 선택하기 전 카드 번호 sessionStorage value 조작';
     request('opponentFouls', { message });
-    errorManagement({ errCase: 'sessionStorageLoss', message });
-  }
+    throw { errCase: 'sessionStorageLoss', message }
+    // errorManagement({ errCase: 'sessionStorageLoss', message });
+  };
 };

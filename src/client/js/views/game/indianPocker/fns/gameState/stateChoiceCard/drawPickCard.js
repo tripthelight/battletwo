@@ -10,14 +10,15 @@ import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState
 export default () => {
   // element | seeeion 체크
   const GAME_SCENE = document.getElementById('gameScene');
-  if (!GAME_SCENE) return errorManagement({ errCase: 'elementLoss', message: '#gameScene 엘리먼트가 없습니다.' });
+  // if (!GAME_SCENE) return errorManagement({ errCase: 'elementLoss', message: '#gameScene 엘리먼트가 없습니다.' });
+  if (!GAME_SCENE) throw { errCase: 'elementLoss', message: '#gameScene 엘리먼트가 없습니다.' };
   const CHOICE_CARD = GAME_SCENE.querySelector('.choice-card');
   if (CHOICE_CARD) return;
 
   // 명령
-  setTimeout(() => {
+  // setTimeout(() => {
     // element | session 변수
-    const GAME_SCENE = document.getElementById('gameScene');
+    // const GAME_SCENE = document.getElementById('gameScene');
     const ELEM = document.createElement('div');
     ELEM.classList.add('choice-card');
     for (let i = 0; i < 2; i++) {
@@ -38,7 +39,8 @@ export default () => {
 
     // 다음 함수 실행
     // 선플레이어 카드 선택 안내 팝업
-    setTimeout(drawPickCardInfo, timeInterval_1);
+    // setTimeout(drawPickCardInfo, timeInterval_1);
+    drawPickCardInfo();
 
     // local player가 선택한 카드가 있을 때
     // const localPlayerSelect = window.sessionStorage.ulIndex && window.sessionStorage.liIndex && window.sessionStorage.playerFirstNumber;
@@ -121,9 +123,11 @@ export default () => {
     }
 
     if (remotePlayerSelect && localPlayerSelect) {
-      setTimeout(flipUserCardCheck, timeInterval_2);
+      flipUserCardCheck();
+      // setTimeout(flipUserCardCheck, timeInterval_2);
     } else {
-      setTimeout(choiceCardsClick, timeInterval_2);
+      choiceCardsClick();
+      // setTimeout(choiceCardsClick, timeInterval_2);
     }
-  }, timeInterval_1);
+  // }, timeInterval_1);
 };

@@ -22,6 +22,7 @@ export default (_eNum, _pNum) => {
   } else if (_eNum === _pNum) {
     drawResultCardInfo('tie');
   } else {
-    return errorManagement({ errCase: 'errorComn', message: 'flipEnemyCardCheck 함수에서 _eNum, _pNum 을 못받았습니다.' });
+    // return errorManagement({ errCase: 'errorComn', message: 'flipEnemyCardCheck 함수에서 _eNum, _pNum 을 못받았습니다.' });
+    throw { errCase: 'errorComn', message: 'flipEnemyCardCheck 함수에서 _eNum, _pNum 을 못받았습니다.' }
   }
 };

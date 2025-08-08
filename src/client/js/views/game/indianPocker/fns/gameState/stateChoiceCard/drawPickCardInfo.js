@@ -7,7 +7,8 @@ import closePopup from '@/client/js/functions/popup';
 export default () => {
   // element | seeeion 체크
   const CONTAINER = document.getElementById('container');
-  if (!CONTAINER) return errorManagement({ errCase: 'elementLoss', message: '#container 엘리먼트가 없습니다.' });
+  // if (!CONTAINER) return errorManagement({ errCase: 'elementLoss', message: '#container 엘리먼트가 없습니다.' });
+  if (!CONTAINER) throw { errCase: 'elementLoss', message: '#container 엘리먼트가 없습니다.' };
   const CHOICE_CARD_INFO = CONTAINER.querySelector('.choice-card-info');
   if (CHOICE_CARD_INFO) return;
 
@@ -17,10 +18,10 @@ export default () => {
   */
   const encryptKey = findCharCode([68, 71, 87, 77, 85, 66, 65, 84, 88, 69]); // enemyCardChoiceReady
   const encryptval = window.sessionStorage.getItem(encryptKey);
-  if (encryptval !== null) return;
+  if (encryptval !== null && encryptval !== '') return;
 
   // 명령
-  setTimeout(() => {
+  // setTimeout(() => {
     let elem = document.createElement('div');
     let inner = document.createElement('div');
     let spanEl = document.createElement('span');
@@ -43,5 +44,5 @@ export default () => {
     elem.classList.add('choice-card-info');
     elem.classList.add('modal-popup');
     CONTAINER.appendChild(elem);
-  }, timeInterval_1);
+  // }, timeInterval_1);
 };

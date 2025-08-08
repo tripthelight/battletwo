@@ -15,8 +15,8 @@ export default {
   choiceCard: () => {
     // storageMethod('s', 'SET_ITEM', 'gameState', 'choiceCard');
     // gameState: sessionStorage.getItem('gameState'),
-    const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]);
-    storageMethod('s', 'SET_ITEM', encryptKey, findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82]));
+    const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
+    storageMethod('s', 'SET_ITEM', encryptKey, findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82])); // choiceCard
     gameStateChoiceCard();
   },
   basicBet: (reloadState) => {

@@ -11,7 +11,7 @@ export default (_state) => {
   if (CHOICE_CARD_INFO) return;
 
   // 명령
-  setTimeout(() => {
+  // setTimeout(() => {
     let elem = document.createElement('div');
     let inner = document.createElement('div');
     let spanEl = document.createElement('span');
@@ -37,5 +37,5 @@ export default (_state) => {
     elem.classList.add('choice-card-info');
     elem.classList.add('modal-popup');
     CONTAINER.appendChild(elem);
-  }, timeInterval_1);
+  // }, timeInterval_1);
 };

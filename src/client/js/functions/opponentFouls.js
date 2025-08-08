@@ -2,6 +2,9 @@
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { request } from '@/client/js/network/indianPocker/request';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
+import delCookies from '@/client/js/module/cookies/delCookies';
+import storageMethod from '@/client/js/module/storage/storageMethod';
+import eventHanlerErrorComn from '@/client/js/module/eventHanlerErrorComn';
 
 // 파울은 상대 peer에게 받기만 하는 로직
 export default function opponentFouls(data) {
@@ -28,7 +31,24 @@ export default function opponentFouls(data) {
   }
     */
 
-  errorManagement({ errCase: 'foul', message: data.message });
+  /* // delCookies('gc_at');
+  storageMethod('s', 'REMOVE_ALL');
+  if (window['rtcChannels']) {
+    if (
+      window.rtcChannels.dataChannel &&
+      window.rtcChannels.dataChannel.readyState === 'open'
+    ) {
+      window.rtcChannels.dataChannel.close();
+    };
+    if (
+      window.rtcChannels.peerConnection &&
+      window.rtcChannels.peerConnection.connectionState === 'connected'
+    ) {
+      window.rtcChannels.peerConnection.close();
+    };
+  };
+  errorManagement({ errCase: 'foul', message: data.message }); */
+  eventHanlerErrorComn({ errCase: 'foul', message: data.message });
 
   /* if (peerConnection) {
     peerConnection.close();

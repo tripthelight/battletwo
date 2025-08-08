@@ -4,7 +4,7 @@ import flipEnemyCardCheck from '@/client/js/views/game/indianPocker/fns/gameStat
 
 export default () => {
   // 명령
-  setTimeout(() => {
+  // setTimeout(() => {
     const encryptKey1 = findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]); // playerFirstNumber
     const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
     const encryptKey2 = findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85]); // enemyFirstNumber
@@ -17,7 +17,8 @@ export default () => {
 
       const playerNum = Number(encryptVal1);
       const enemyNum = Number(encryptVal2);
-      setTimeout(flipEnemyCardCheck, timeInterval_1, enemyNum, playerNum);
+      flipEnemyCardCheck(enemyNum, playerNum);
+      // setTimeout(flipEnemyCardCheck, timeInterval_1, enemyNum, playerNum);
     }
-  }, timeInterval_1);
+  // }, timeInterval_1);
 };

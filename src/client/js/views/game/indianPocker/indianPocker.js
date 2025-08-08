@@ -62,6 +62,23 @@ document.onreadystatechange = async () => {
 
     await makeCard();
 
+    if (reload) {
+      const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
+      const decryptVal = window.sessionStorage.getItem(encryptKey);
+
+      switch (decryptVal) {
+        // case 'choiceCard':
+        case findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82]):
+          indianPockerGameState.choiceCard();
+          break;
+        default:
+          return errorManagement({ errCase: 'errorComn', message: '새로고침 했는데 gameState가 없음' });
+      };
+    } else {
+      // choiceCard
+      indianPockerGameState.choiceCard();
+    };
+
 
   } catch (error) {
     console.log('error indianPocker.js >>>>>>>>>>>> ', error);
