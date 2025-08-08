@@ -124,7 +124,8 @@ battletwo
   - 모바일은 TURN 서버 구축 필요
   - 시놀로지 NAS로 구축 해볼 예정
 - TODO: 
-  - 두 peer 연결 후 한 peer가 새로고침하면 loding이 안사라짐
+  - choiceCard 에서 내가 카드 클릭 해서 내 번호 보이는 부분(showChoiceCardSrc.js)까지 함
+  - choiceCard 숫자 암호화도 selectCompairNumbers()(pickCardInit.js) 로 해야하나???
 
 
 ## 새로고침 전략 - GPT - 새로고침 시 5초 대기

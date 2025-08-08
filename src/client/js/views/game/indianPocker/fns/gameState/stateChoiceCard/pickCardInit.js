@@ -6,8 +6,9 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 import randomNumberMinMax from '@/client/js/views/game/indianPocker/fns/common/randomNumberMinMax';
 import showChoiceCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/showChoiceCard';
 import dataHandler from '@/client/js/functions/dataVerification/click/dataHandler';
+import encryption from '@/client/js/views/game/indianPocker/fns/common/makeCard/encryption';
 
-export default (_event) => {
+export default async (_event) => {
   // sessionStorage 모든 key check
   dataHandler({
     p1: findCharCode([68, 74, 69, 77, 70, 75, 76, 86, 68, 69]), // indianPocker
@@ -22,7 +23,9 @@ export default (_event) => {
 
   // TEST: 같은 숫자 뽑기
   // const playerNum = 5;
+  // selectCompairNumbers()의 숫자들로 암호화???
   const playerNum = randomNumberMinMax(1, 10);
+  const encryptPlayerNum = await encryption(playerNum.toString(), 3);
 
   const encryptKey2 = findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]); // playerFirstNumber
   const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
@@ -30,7 +33,7 @@ export default (_event) => {
   // if (window.sessionStorage.playerFirstNumber) {
   if (encryptVal2 === '') {
     // local player가 선택한 카드가 없을 때
-    showChoiceCard(_event, playerNum);
+    showChoiceCard(_event, encryptPlayerNum);
     // setTimeout(showChoiceCard, timeInterval_1, _event, playerNum);
   } else {
     // local player가 선택한 카드가 있을 때

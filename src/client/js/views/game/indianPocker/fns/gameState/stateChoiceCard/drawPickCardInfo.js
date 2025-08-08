@@ -21,28 +21,26 @@ export default () => {
   if (encryptval !== null && encryptval !== '') return;
 
   // 명령
-  // setTimeout(() => {
-    let elem = document.createElement('div');
-    let inner = document.createElement('div');
-    let spanEl = document.createElement('span');
-    let btnClose = document.createElement('button');
-    let bg = document.createElement('div');
-    bg.classList.add('popup-bg');
-    inner.classList.add('popup-inner');
-    btnClose.setAttribute('aria-label', text.popup.btnClose);
+  let elem = document.createElement('div');
+  let inner = document.createElement('div');
+  let spanEl = document.createElement('span');
+  let btnClose = document.createElement('button');
+  let bg = document.createElement('div');
+  bg.classList.add('popup-bg');
+  inner.classList.add('popup-inner');
+  btnClose.setAttribute('aria-label', text.popup.btnClose);
 
-    spanEl.innerHTML = text.indianpocker.choiceFirst;
-    btnClose.onclick = () => {
-      closePopup(btnClose);
-    };
+  spanEl.innerHTML = text.indianpocker.choiceFirst;
+  btnClose.onclick = () => {
+    closePopup(btnClose);
+  };
 
-    btnClose.classList.add('close-popup');
-    inner.appendChild(btnClose);
-    inner.appendChild(spanEl);
-    elem.appendChild(bg);
-    elem.appendChild(inner);
-    elem.classList.add('choice-card-info');
-    elem.classList.add('modal-popup');
-    CONTAINER.appendChild(elem);
-  // }, timeInterval_1);
+  btnClose.classList.add('close-popup');
+  inner.appendChild(btnClose);
+  inner.appendChild(spanEl);
+  elem.appendChild(bg);
+  elem.appendChild(inner);
+  elem.classList.add('choice-card-info');
+  elem.classList.add('modal-popup');
+  CONTAINER.appendChild(elem);
 };
