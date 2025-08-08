@@ -16,13 +16,16 @@ export default async () => {
 
     const NUM_ARR = await encryptCardNumber();
     // console.log('NUM_ARR ::::: ', NUM_ARR);
-    const CARD_STR = NUM_ARR.join();
-    console.log('CARD_STR :::::::::: ', CARD_STR);
+    // const CARD_STR = NUM_ARR.join('');
+    // console.log('CARD_STR :::::::::: ', CARD_STR);
     // request('requestMakeCard', { list: CARD_STR });
 
+    const encryptKey2 = findCharCode([77, 68, 79, 88, 73, 86, 69, 70, 65, 80]); // cardNum
+    const decryptVal2 = window.sessionStorage.getItem(encryptKey2);
+    if (decryptVal2 !== null && JSON.parse(decryptVal2).length > 0) return;
+    storageMethod('s', 'SET_ITEM', encryptKey2, JSON.stringify(NUM_ARR));
 
     console.log('카드 새로 만듬');
-
 
     /*
     // const cardNum = window.sessionStorage.getItem('cardNum');

@@ -103,7 +103,7 @@ function showErrorNotification(errCase, component, message, target) {
   };
 
   // disconnected common
-  /* if (window.rtcChannels) {
+  /* if (window['rtcChannels']) {
     if (
       window.rtcChannels.dataChannel &&
       window.rtcChannels.dataChannel.readyState === 'open'

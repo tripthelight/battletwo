@@ -28,6 +28,8 @@ import logout from '@/client/js/auth/logout';
 document.onreadystatechange = async () => {
   if (document.readyState !== 'complete') return;
   try {
+    const GAME_NAME = 'indianPocker';
+
     // 새로고침 트리거
     if (reload) {
       // 아직 연결 안되어 대기중에 새로고침하면 여기를 탐
@@ -52,8 +54,6 @@ document.onreadystatechange = async () => {
     // gc_at 쿠키가 있으면 이 단계로 진입
 
     LOADING_EVENT.show();
-
-    const GAME_NAME = 'indianPocker';
 
     await rtcPeer(GAME_NAME);
 

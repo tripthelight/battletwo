@@ -6,8 +6,8 @@ import encryption from '@/client/js/views/game/indianPocker/fns/common/makeCard/
 export default async  () => {
   const arrNumbs = selectCompairNumbers();
   if (!arrNumbs.length) {
-    throw errorManagement({ errCase: 'cardNum', message: 'cardNum length 0' });
-  }
+    throw { message: 'cardNum length 0' };
+  };
 
   /* let cNums = [];
   // 카드 배열을 1 ~ 10까지의 숫자로 2세트로 지정
@@ -32,7 +32,7 @@ export default async  () => {
   // null이 포함되어 있는지 확인
   const hasError = encryptedCardNumbers.some((v) => v === null);
   if (hasError) {
-    throw { errCase: 'cardNum', message: 'One or more encryption failed' };
+    throw { message: 'One or more encryption failed' };
   }
 
   return encryptedCardNumbers;

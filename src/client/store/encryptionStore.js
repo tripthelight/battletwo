@@ -37,18 +37,11 @@ const encryptionStore = configureStore({
 export const selectCompairNumbers = () => {
   const state = encryptionStore.getState();
   const compair = state.encryptionState.compair;
-  console.log('compair >>>>>>>>>> ', compair);
   const encryptedKey = findCharCode([84, 78, 85, 70, 71, 74, 88, 68, 67, 77]); // nums
-  console.log('encryptedKey >>>>> ', encryptedKey);
   const keyList = compair[encryptedKey] || [];
-  console.log('keyList >>>>>>>>>> ', keyList);
-
-
-
 
   // NUMBERS에서 1 ~ 10까지 숫자만 추출
   const result = keyList.slice(0, 10);
-
 
   /*
   // NUMBERS에서 숫자 1카드 5장 & 숫자 10카드 5장 추출

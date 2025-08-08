@@ -14,6 +14,7 @@ import searchRoom from '@/client/js/auth/searchRoom';
 import storageKeys from '@/client/js/functions/dataVerification/storageKeys';
 
 import insertStorageDate from '@/client/js/functions/insertStorageDate';
+import cardVerification from '@/client/js/views/game/indianPocker/fns/common/cardVerification';
 
 export const encrypt = { keypair: '' };
 
@@ -48,6 +49,22 @@ export default function webRTC(gameName) {
     /** ==============================================================================================================
      * functions
      */
+    function rejectComn() {
+      delCookies('gc_at');
+      if (signalingServer) signalingServer.close();
+      if (peers[remotePeer]) {
+        peers[remotePeer].pc.close();
+        peers[remotePeer].pc = null;
+        peers[remotePeer].dataChannel.close();
+        peers[remotePeer].dataChannel = null;
+        delete peers[remotePeer];
+      };
+      // if (window['rtcChannels']) {
+      //   delete window['rtcChannels'];
+      // };
+      window.rtcChannels = {};
+    };
+
     async function checkReady(roomName, pid) {
       if (iceConnected && dataChannelOpen) {
         window.rtcChannels.peerConnection = peers[remotePeer].pc;
@@ -78,6 +95,7 @@ export default function webRTC(gameName) {
           const decryptVal = window.sessionStorage.getItem(decryptkey);
 
           if (!decryptVal) {
+            rejectComn();
             reject({ errCase: 'errorComn', message: 'gameState sessionStorage not found' });
           };
 
@@ -88,14 +106,7 @@ export default function webRTC(gameName) {
           if (encryptKeys.includes(decryptVal)) {
             // 모든 gameState key 가 정상적으로 있음
           } else {
-            delCookies('gc_at');
-            if (signalingServer) signalingServer.close();
-            peers[remotePeer].pc.close();
-            peers[remotePeer].pc = null;
-            peers[remotePeer].dataChannel.close();
-            peers[remotePeer].dataChannel = null;
-            delete peers[remotePeer];
-            window.rtcChannels = {};
+            rejectComn();
             reject({ errCase: 'errorComn', message: 'gameState value error' });
           };
         } else {
@@ -107,18 +118,32 @@ export default function webRTC(gameName) {
           };
         };
 
-        if (gameName === 'indianPocker') {
-          if (signalingServer && signalingServer.readyState === WebSocket.OPEN) {
-            signalingServer.send(JSON.stringify({
-              type: 'requestStorage',
-              gameName: gameName,
-              keypair: encrypt.keypair
-            }));
-          } else {
-            reject({ errCase: 'webRTC', component: 'signalingServer', event: 'requestStorage', message: 'Signaling socket error occurred' });
+        if (serverRefresh) {
+          // indianPocker
+          if (gameName === 'indianPocker') {
+            try {
+              await cardVerification();
+              resolve();
+            } catch (error) {
+              rejectComn();
+              reject(error);
+            };
           };
         } else {
-          resolve();
+          // indianPocker
+          if (gameName === 'indianPocker') {
+            if (signalingServer && signalingServer.readyState === WebSocket.OPEN) {
+              signalingServer.send(JSON.stringify({
+                type: 'requestStorage',
+                gameName: gameName,
+                keypair: encrypt.keypair
+              }));
+            } else {
+              reject({ errCase: 'webRTC', component: 'signalingServer', event: 'requestStorage', message: 'Signaling socket error occurred' });
+            };
+          } else {
+            resolve();
+          };
         };
 
       };
