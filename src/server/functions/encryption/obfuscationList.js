@@ -3,6 +3,13 @@ import makeAesSecretKey from './makeAesSecretKey.js';
 export const obfuscationList = {
   indianPocker: () => {
     return {
+      BOOLEAN: {
+        k: 'HWXQCUPGOE', // [72, 87, 88, 81, 67, 85, 80, 71, 79, 69]
+        v: {
+          true: 'ECHAJDIPBK', // [69, 67, 72, 65, 74, 68, 73, 80, 66, 75]
+          false: 'FJYTOKXWUN', // [70, 74, 89, 84, 79, 75, 88, 87, 85, 78]
+        },
+      },
       SECRET_KEY: {
         k: 'SXIEUDBLPN', // [83, 88, 73, 69, 85, 68, 66, 76, 80, 78]
         v: makeAesSecretKey(),

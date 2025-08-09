@@ -1,3 +1,4 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import storageMethod from '@/client/js/module/storage/storageMethod';
@@ -28,6 +29,11 @@ export default () => {
     CARDS[i].onclick = (event) => {
       try {
         pickCardInit(event);
+
+        const encryptKey = findCharCode([68, 71, 87, 77, 85, 66, 65, 84, 88, 69]); // enemyCardChoiceReady
+        const encryptVal = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
+        storageMethod('s', 'SET_ITEM', encryptKey, encryptVal);
+
       } catch (error) {
         console.log('choiceCardsClick.js onclick error : ');
         eventHanlerErrorComn(error);

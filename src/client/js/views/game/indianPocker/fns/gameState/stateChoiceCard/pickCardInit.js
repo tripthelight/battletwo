@@ -21,8 +21,8 @@ export default async (_event) => {
 
   // storageMethod('s', 'SET_ITEM', 'enemyCardChoiceReady', false);
 
-  const encryptKey1 = findCharCode([68, 71, 87, 77, 85, 66, 65, 84, 88, 69]); // enemyCardChoiceReady
-  storageMethod('s', 'SET_ITEM', encryptKey1, false);
+  // const encryptKey1 = findCharCode([68, 71, 87, 77, 85, 66, 65, 84, 88, 69]); // enemyCardChoiceReady
+  // storageMethod('s', 'SET_ITEM', encryptKey1, false);
 
   // TEST: 같은 숫자 뽑기
   // const playerNum = 5;
