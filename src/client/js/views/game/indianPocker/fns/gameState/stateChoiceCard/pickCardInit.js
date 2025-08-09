@@ -1,3 +1,6 @@
+import bcrypt from 'bcryptjs';
+import { selectCompairNumbers } from '@/client/store/encryptionStore';
+import encryptCardNumber from '@/client/js/views/game/indianPocker/fns/common/makeCard/encryptCardNumber';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { timeInterval_1 } from '@/client/js/functions/variable';
@@ -24,8 +27,13 @@ export default async (_event) => {
   // TEST: 같은 숫자 뽑기
   // const playerNum = 5;
   // selectCompairNumbers()의 숫자들로 암호화???
-  const playerNum = randomNumberMinMax(1, 10);
-  const encryptPlayerNum = await encryption(playerNum.toString(), 3);
+  // const playerNum = randomNumberMinMax(1, 10);
+  // const encryptPlayerNum = await encryption(playerNum.toString(), 3);
+
+  const arrNumbs = selectCompairNumbers();
+  const randomValue = arrNumbs[Math.floor(Math.random() * arrNumbs.length)];
+  const encryptPlayerNum = bcrypt.hashSync(randomValue, 3);
+
 
   const encryptKey2 = findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]); // playerFirstNumber
   const encryptVal2 = window.sessionStorage.getItem(encryptKey2);

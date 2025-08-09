@@ -9,13 +9,25 @@ import imgSetCardNum from '@/client/js/views/game/indianPocker/fns/common/images
 
 export default (_target, _num) => {
   // 명령
-  const decryptCardNum = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].find(item => bcrypt.compareSync(item.toString(), _num));
-  _target.setAttribute('src', imgSetCardNum(decryptCardNum));
+  const arrNumbs = selectCompairNumbers();
+  const decryptCardNumb = arrNumbs.find(item => bcrypt.compareSync(item.toString(), _num));
+  const findCardNumb = findCardNum(decryptCardNumb);
 
-  const encryptKey2 = findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85]); // enemyFirstNumber
-  const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+  _target.setAttribute('src', imgSetCardNum(findCardNumb));
+
+  const encryptKey = findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85]); // enemyFirstNumber
+  const encryptVal = window.sessionStorage.getItem(encryptKey);
+
+  let remoteNum = encryptVal;
+  if (encryptVal !== '') {
+    const decryptRemoteCardNum = arrNumbs.find(item => bcrypt.compareSync(item.toString(), encryptVal));
+    remoteNum = findCardNum(decryptRemoteCardNum);
+  };
+
 
   // local player가 선택한 카드를 remote player에게 보내기 : choiceFirst
-  request('choiceFirst', { eNum: _num, pNum: encryptVal2 });
-  flipUserCardCheck();
+  request('choiceFirst', { eNum: findCardNumb, pNum: remoteNum });
+  if (encryptVal !== '') {
+    flipUserCardCheck({ pNum: findCardNumb, eNum: remoteNum });
+  };
 };

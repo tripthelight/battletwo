@@ -1,3 +1,6 @@
+import bcrypt from 'bcryptjs';
+import { selectCompairNumbers } from '@/client/store/encryptionStore';
+import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { timeInterval_1, timeInterval_201 } from '@/client/js/functions/variable';
@@ -6,7 +9,9 @@ import randomNumberMinMax from '@/client/js/views/game/indianPocker/fns/common/r
 import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipUserCardCheck';
 import imgGetCardNum from '@/client/js/views/game/indianPocker/fns/common/images/getCards';
 
-export default () => {
+export default (params) => {
+  const { eNum, pNum }  = params;
+
   // element | seeeion 체크
   const encryptKey1 = findCharCode([78, 72, 89, 73, 67, 85, 71, 79, 77, 76]); // ulIndexEnemy
   const encryptKey2 = findCharCode([77, 67, 69, 73, 72, 75, 68, 82, 71, 80]); // liIndexEnemy
@@ -27,19 +32,20 @@ export default () => {
   if (!ENEMY_CARD_IMG) return errorManagement({ errCase: 'elementLoss', message: '..choice-card 엘리먼트 li의 img가 없습니다' });
 
   // 명령
-  setTimeout(() => {
-    // storageMethod('s', 'SET_ITEM', 'ulIndexEnemy', RANDOM_UL);
-    // storageMethod('s', 'SET_ITEM', 'liIndexEnemy', RANDOM_LI);
+  // storageMethod('s', 'SET_ITEM', 'ulIndexEnemy', RANDOM_UL);
+  // storageMethod('s', 'SET_ITEM', 'liIndexEnemy', RANDOM_LI);
 
-    storageMethod('s', 'SET_ITEM', encryptKey1, RANDOM_UL);
-    storageMethod('s', 'SET_ITEM', encryptKey2, RANDOM_LI);
-    ENEMY_CARD_LI.classList.add('show');
-    setTimeout(() => {
-      // ENEMY_CARD_IMG.setAttribute('src', imgGetCardNum(ENEMY_NUMBER));
-      console.log('ENEMY_NUMBER >>>>>>>>>>>> ', ENEMY_NUMBER);
+  storageMethod('s', 'SET_ITEM', encryptKey1, RANDOM_UL);
+  storageMethod('s', 'SET_ITEM', encryptKey2, RANDOM_LI);
+  ENEMY_CARD_LI.classList.add('show');
 
-      ENEMY_CARD_IMG.setAttribute('src', imgGetCardNum(ENEMY_NUMBER));
-      setTimeout(flipUserCardCheck, timeInterval_1);
-    }, timeInterval_201);
-  }, timeInterval_1);
+  // ENEMY_CARD_IMG.setAttribute('src', imgGetCardNum(ENEMY_NUMBER));
+  console.log('ENEMY_NUMBER >>>>>>>>>>>> ', ENEMY_NUMBER);
+
+  const arrNumbs = selectCompairNumbers();
+  const decryptCardNumb = arrNumbs.find(item => bcrypt.compareSync(item.toString(), ENEMY_NUMBER));
+  const findCardNumb = findCardNum(decryptCardNumb);
+
+  ENEMY_CARD_IMG.setAttribute('src', imgGetCardNum(findCardNumb));
+  flipUserCardCheck({ eNum, pNum });
 };
