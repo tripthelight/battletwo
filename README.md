@@ -124,8 +124,9 @@ battletwo
   - 모바일은 TURN 서버 구축 필요
   - 시놀로지 NAS로 구축 해볼 예정
 - TODO: 
-  - choiceCard 에서 내가 카드 클릭 해서 내 번호 보이는 부분(showChoiceCardSrc.js)까지 함
-  - choiceCard 숫자 암호화도 selectCompairNumbers()(pickCardInit.js) 로 해야하나???
+  - 내가 선택 -> 상대가 선택 -> 카드 비교
+  - playerFirstNumber, ulIndex, liIndex, betUser, betUserFirst 숫자 및 true, false 암호화 필요
+  - 
 
 
 ## 새로고침 전략 - GPT - 새로고침 시 5초 대기
