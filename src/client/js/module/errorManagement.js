@@ -107,23 +107,9 @@ function showErrorNotification(errCase, component, message, target) {
   };
 
   // disconnected common
-  if (getCookies({ cookieName: 'gc_at' })) {
-    delCookies('gc_at');
-  };
-  /* if (window['rtcChannels']) {
-    if (
-      window.rtcChannels.dataChannel &&
-      window.rtcChannels.dataChannel.readyState === 'open'
-    ) {
-      window.rtcChannels.dataChannel.close();
-    };
-    if (
-      window.rtcChannels.peerConnection &&
-      window.rtcChannels.peerConnection.connectionState === 'connected'
-    ) {
-      window.rtcChannels.peerConnection.close();
-    };
-  }; */
+  // if (getCookies({ cookieName: 'gc_at' })) {
+  //   delCookies('gc_at');
+  // };
 };
 
 // 오류 복구 로직

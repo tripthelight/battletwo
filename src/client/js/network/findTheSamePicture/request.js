@@ -1,8 +1,7 @@
-import { errorManagement } from '@/client/js/module/errorManagement';
-import { text } from '@/client/js/functions/language';
+import { connObj } from '@/client/js/webRTC/rtcConn';
 
 export function request(k, v) {
-  const dataChannel = window.rtcChannels.dataChannel;
+  const dataChannel = connObj.dataChannel;
 
   if (!dataChannel || (dataChannel && dataChannel.readyState !== 'open')) return;
   switch (k) {

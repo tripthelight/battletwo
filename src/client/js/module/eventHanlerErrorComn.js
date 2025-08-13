@@ -1,4 +1,4 @@
-import delCookies from '@/client/js/module/cookies/delCookies';
+import { connObj } from '@/client/js/webRTC/rtcConn';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorManagement';
 
@@ -12,18 +12,18 @@ import { errorManagement } from '@/client/js/module/errorManagement';
 export default (error) => {
   // delCookies('gc_at');
   storageMethod('s', 'REMOVE_ALL');
-  if (window['rtcChannels']) {
+  if (connObj) {
     if (
-      window.rtcChannels.dataChannel &&
-      window.rtcChannels.dataChannel.readyState === 'open'
+      connObj.dataChannel &&
+      connObj.dataChannel.readyState === 'open'
     ) {
-      window.rtcChannels.dataChannel.close();
+      connObj.dataChannel.close();
     };
     if (
-      window.rtcChannels.peerConnection &&
-      window.rtcChannels.peerConnection.connectionState === 'connected'
+      connObj.peerConnection &&
+      connObj.peerConnection.connectionState === 'connected'
     ) {
-      window.rtcChannels.peerConnection.close();
+      connObj.peerConnection.close();
     };
   };
   errorManagement(error);

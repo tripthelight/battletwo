@@ -42,19 +42,6 @@ export const selectCompairNumbers = () => {
 
   // NUMBERS에서 1 ~ 10까지 숫자만 추출
   const result = keyList.slice(0, 10);
-
-  /*
-  // NUMBERS에서 숫자 1카드 5장 & 숫자 10카드 5장 추출
-  const result = [];
-  result.push(...Array(5).fill(keyList[0])); // 1카드 5개 추가
-  result.push(...Array(5).fill(keyList[9])); // 10카드 5개 추가
-  */
-
-  // NUMBERS에서 숫자 1카드 10장 추출
-  // const result = [];
-  // result.push(...Array(1).fill(keyList[0])); // 1카드 10개 추가
-
-  // result
   return result;
 };
 

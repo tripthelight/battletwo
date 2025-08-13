@@ -21,6 +21,15 @@ export default (_data) => {
           // null일 수 없음
           // foul: 내가 key를 삭제했음
         } else {
+          if (
+            encryptVal !== '' &&
+            !(
+              encryptVal === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]) || // true
+              encryptVal === findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]) // false
+            )
+          ) {
+            throw { errCase: 'sessionStorageLoss', message: 'tieWait storage key failed.' };
+          };
           if (encryptVal === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) {
             // 같은 카드였던 상태에서 내가 팝업 x 버튼을 먼저 누르고 대기 상태 였던 경우
             LOADING_EVENT.show();
@@ -34,6 +43,7 @@ export default (_data) => {
       }
     }
   }).catch((error) => {
-    errorManagement({ errCase: 'errorComn', message: 'enterBasicBetResult() 함수를 못탐' });
+    request('opponentFouls', { message: 'remote player error' });
+    errorManagement({ errCase: 'errorComn', message: 'enterBasicBetResult() 함수를 못탐', errorDetails: error });
   });
 };

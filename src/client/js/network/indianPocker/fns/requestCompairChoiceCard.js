@@ -22,7 +22,16 @@ export default (_data) => {
     const encryptKey = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
     const encryptVal = window.sessionStorage.getItem(encryptKey);
     if (encryptVal !== null) {
-      if (encryptVal === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) {
+      if (
+        encryptVal !== '' &&
+        !(
+          encryptVal === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]) || // true
+          encryptVal === findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]) // false
+        )
+      ) {
+        throw { errCase: 'sessionStorageLoss', message: 'tieWait storage key failed.' };
+      };
+      if (encryptVal === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) { // true
         request('responseCompairChoiceCard', { result: true, tieWaitConfirmed: true });
         return;
       }
@@ -120,7 +129,7 @@ export default (_data) => {
 
       // 사용 예
       const localMsg = msgState('local');
-      if (localMsg) errorManagement({ errCase: 'foul', message: localMsg });
+      if (localMsg) throw { errCase: 'foul', message: localMsg };
 
       const remoteMsg = msgState('remote');
       if (remoteMsg) request('opponentFouls', { message: remoteMsg });
@@ -131,7 +140,6 @@ export default (_data) => {
     }
   }).catch((error) => {
     console.log('requestCompairChoiceCard.js error : ', error);
-
     request('opponentFouls', { message: 'requestCompairChoiceCard error : ' });
     errorManagement({ errCase: 'errorComn', message: 'requestCompairChoiceCard() 함수를 못탐 : ', errorDetails: error });
   });

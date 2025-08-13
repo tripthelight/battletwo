@@ -28,6 +28,8 @@ export default () => {
 
   // 같은 카드였던 상태에서 내가 팝업 x 버튼 누르고 대기 상태 일 경우
   const encryptKey = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
+  console.log('tie wait :::::::: ', encryptKey);
+
   storageMethod('s', 'SET_ITEM', encryptKey, findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]));
 
   const encryptKey1 = findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85]); // enemyFirstNumber

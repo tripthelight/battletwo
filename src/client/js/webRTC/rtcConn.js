@@ -1,13 +1,10 @@
-import setCookies from '@/client/js/module/cookies/setCookies';
 import getCookies from '@/client/js/module/cookies/getCookies';
 import delCookies from '@/client/js/module/cookies/delCookies';
 import { debug } from '@/client/js/module/debug';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import addNickname from '@/client/js/functions/addNickname';
 import { responseComn } from '@/client/js/network/responseComn';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import findCharCode from '@/client/js/functions/findCharCode';
-import addCharCode from '@/client/js/functions/addCharCode';
 import logout from '@/client/js/auth/logout';
 import authCheck from '@/client/js/auth/authCheck';
 import searchRoom from '@/client/js/auth/searchRoom';
@@ -17,6 +14,7 @@ import insertStorageDate from '@/client/js/functions/insertStorageDate';
 import cardVerification from '@/client/js/views/game/indianPocker/fns/common/cardVerification';
 
 export const encrypt = { keypair: '' };
+export const connObj = { dataChannel: null, peerConnection: null }
 
 export default function webRTC(gameName) {
   return new Promise(async (resolve, reject) => {
@@ -59,9 +57,6 @@ export default function webRTC(gameName) {
         peers[remotePeer].dataChannel = null;
         delete peers[remotePeer];
       };
-      // if (window['rtcChannels']) {
-      //   delete window['rtcChannels'];
-      // };
       window.rtcChannels = {};
     };
 
@@ -69,6 +64,8 @@ export default function webRTC(gameName) {
       if (iceConnected && dataChannelOpen) {
         window.rtcChannels.peerConnection = peers[remotePeer].pc;
         window.rtcChannels.dataChannel = peers[remotePeer].dataChannel;
+        connObj.peerConnection = peers[remotePeer].pc;
+        connObj.dataChannel = peers[remotePeer].dataChannel;
         await responseComn(gameName);
         if (!serverRefresh) {
           await authCheck(gameName, roomName, pid);

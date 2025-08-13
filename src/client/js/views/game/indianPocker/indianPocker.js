@@ -2,27 +2,16 @@ import '@/client/assets/scss/game/indianPocker/common';
 import '@/client/js/common/common';
 
 import reload from '@/client/js/module/reload';
-import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorManagement';
-import insertStorageWs from '@/client/js/functions/insertStorageWs';
 import rtcPeer from '@/client/js/webRTC/rtcPeer';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import makeCard from '@/client/js/views/game/indianPocker/fns/common/makeCard/makeCard';
 import findCharCode from '@/client/js/functions/findCharCode';
-import generateSecretKey from '@/client/js/views/game/indianPocker/fns/common/generateSecretKey';
 
-import insertStorageDate from '@/client/js/functions/insertStorageDate';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
-import initNickName from '@/client/js/functions/initNickName';
-import storageKeys from '@/client/js/functions/dataVerification/storageKeys';
-import setCookies from '@/client/js/module/cookies/setCookies';
 import getCookies from '@/client/js/module/cookies/getCookies';
-import delCookies from '@/client/js/module/cookies/delCookies';
-import waitPeer from '@/client/js/functions/waitPeer';
-import findNickname from '@/client/js/functions/findNickname';
-// import setCookies from '@/client/js/module/cookies/setCookies';
-import login from '@/client/js/auth/login';
 import logout from '@/client/js/auth/logout';
+import { request } from '@/client/js/network/indianPocker/request';
 
 // onMounted
 document.onreadystatechange = async () => {
@@ -72,47 +61,16 @@ document.onreadystatechange = async () => {
           indianPockerGameState.choiceCard();
           break;
         default:
-          return errorManagement({ errCase: 'errorComn', message: '새로고침 했는데 gameState가 없음' });
+          throw { errCase: 'errorComn', message: '새로고침 했는데 gameState가 없음' };
       };
     } else {
       // choiceCard
       indianPockerGameState.choiceCard();
     };
 
-
   } catch (error) {
     console.log('error indianPocker.js >>>>>>>>>>>> ', error);
+    request('opponentFouls', { message: 'remote player error' });
     errorManagement(error);
   }
 };
-
-// 디바운스로 새로고침 방지
-/*
-function debounce(fn, delay) {
-  let timeoutId;
-  return function (...args) {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => fn.apply(this, args), delay);
-  };
-};
-
-const handleRefresh = () => {
-  console.log('마지막 새로고침만 실행');
-};
-
-window.addEventListener('beforeunload', debounce(handleRefresh, 500));
-*/
-
-// 페이지가 언로드되기 직전!
-/* window.addEventListener('pagehide', () => {
-  if (
-    window.rtcChannels &&
-    window.rtcChannels.dataChannel &&
-    window.rtcChannels.peerConnection
-  ) {
-    const peerConnection = window.rtcChannels.peerConnection;
-    peerConnection.close();
-    // 기존 연결 되어 있는 상태에서 새로고침
-    storageMethod('s', 'SET_ITEM', 'reload', true);
-  };
-}); */

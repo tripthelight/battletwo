@@ -15,11 +15,22 @@ export default (_data) => {
     };
 
     // 내가 먼저 X 버튼을 누르고 대기 상태
-    const keyTieWait = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
-    if (window.sessionStorage.getItem(keyTieWait) === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) {
+    const keyTieWaitKey = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
+    const keyTieWaitVal = window.sessionStorage.getItem(keyTieWaitKey);
+
+    if (
+      keyTieWaitVal !== '' &&
+      !(
+        keyTieWaitVal === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]) || // true
+        keyTieWaitVal === findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]) // false
+      )
+    ) {
+      throw { errCase: 'sessionStorageLoss', message: 'tieWait storage key failed.' };
+    };
+    if (keyTieWaitVal === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) {
       request('responseCompairResultBetting', params);
       return;
-    }
+    };
 
     const keyLocalBetUser = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
     const keyLocalBetUserFirst = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
@@ -164,6 +175,8 @@ export default (_data) => {
         break;
     }
   }).catch((error) => {
-    errorManagement({ errCase: 'errorComn', message: 'requestCompairResultBetting() 함수를 못탐' });
+    console.log('error ::: ', error);
+    request('opponentFouls', { message: 'remote player error' });
+    errorManagement({ errCase: 'errorComn', message: 'requestCompairResultBetting() 함수를 못탐', errorDetails: error });
   });
 };

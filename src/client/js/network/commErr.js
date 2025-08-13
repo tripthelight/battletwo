@@ -9,11 +9,6 @@ import { errorManagement } from '@/client/js/module/errorManagement';
 import { text } from '@/client/js/functions/language';
 
 export default function commErr(peerConnection, dataChannel) {
-  // const peerConnection = window.rtcChannels.peerConnection;
-  // const dataChannel = window.rtcChannels.dataChannel;
-
-  // const { peerConnection, dataChannel } = window.rtcChannels;
-
   if (!peerConnection || !dataChannel) {
     errorManagement({ errCase: 'errorComn', message: text.networkLost });
     return;

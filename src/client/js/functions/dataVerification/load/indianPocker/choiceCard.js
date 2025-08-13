@@ -66,8 +66,6 @@ export const CHOICE_CARD_DATA_HANDLER = {
     const encryptKey4 = storageKeys.find((item) => item === findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78])); // betUserFirst
 
     const params = {
-      // encryptVal1: window.sessionStorage.getItem(encryptKey1),
-      // encryptVal2: window.sessionStorage.getItem(encryptKey2),
       encryptVal1: selectCard.local,
       encryptVal2: selectCard.remote,
       encryptVal3: window.sessionStorage.getItem(encryptKey3),
@@ -76,7 +74,18 @@ export const CHOICE_CARD_DATA_HANDLER = {
 
     // 같은 카드였던 상태에서 내가 팝업 x 버튼 먼저 누르고 대기 상태 일 경우
     const encryptKey5 = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
-    if (window.sessionStorage.getItem(encryptKey5) === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) { // true
+    const encryptVal5 = window.sessionStorage.getItem(encryptKey5);
+
+    if (
+      encryptVal5 !== '' &&
+      !(
+        encryptVal5 === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]) || // true
+        encryptVal5 === findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]) // false
+      )
+    ) {
+      throw { errCase: 'sessionStorageLoss', message: 'tieWait storage key failed.' };
+    };
+    if (encryptVal5 === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) { // true
       request('requestCompairChoiceCard', { remoteStorage: params, tieWait: true });
       return;
     }
