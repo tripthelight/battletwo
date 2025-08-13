@@ -2,7 +2,6 @@ import bcrypt from 'bcryptjs';
 import { selectCompairNumbers } from '@/client/store/encryptionStore';
 import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
 import findCharCode from '@/client/js/functions/findCharCode';
-import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { request } from '@/client/js/network/indianPocker/request';
 import storageKeys from '@/client/js/functions/dataVerification/storageKeys';
@@ -25,10 +24,8 @@ export default (_data) => {
       const allExist = sessionStorageKeys.every((key) => setKeys.has(key));
       if (!allExist) {
         // local player 모든 key가 없음
-        const message = 'remote player가 sessionStorage 삭제';
-        request('opponentFouls', { message: message });
-        errorManagement({ errCase: 'sessionStorageLoss', message: '상대가 선택한 카드를 받는 단계에서 local player의 storage안에 key가 모두 없습니다.' });
-        return;
+        request('opponentFouls', { message: 'remote player가 sessionStorage 삭제' });
+        throw { errCase: 'sessionStorageLoss', message: '상대가 선택한 카드를 받는 단계에서 local player의 storage안에 key가 모두 없습니다.' }
       }
 
       const { eNum, pNum } = _data;
@@ -44,18 +41,14 @@ export default (_data) => {
       const compairRemote = eNum !== '' && encryptVal1 !== '' && eNum !== findCardNum(arrNumbs.find(item => bcrypt.compareSync(item.toString(), encryptVal1)));
       // 암호화된 내가 선택한 카드 검증 encryptVal2 -> 암호 hash, pNum -> 숫자
       const compairLocal = pNum !== '' && encryptVal2 !== '' && pNum !== findCardNum(arrNumbs.find(item => bcrypt.compareSync(item.toString(), encryptVal2)));
+
       if (compairRemote || compairLocal) {
-        let message = '';
-        // 상대가 먼저 선택한 카드와 내 enemy card 비교
-        if (compairRemote) {
-          message = '상대가 먼저 선택한 카드와 내 enemy card 다름';
-        }
-        // 내가 먼저 선택한 카드와 상대 enemy card 비교
-        if (compairLocal) {
-          message = '내가 먼저 선택한 카드와 상대 enemy card 다름';
-        }
-        request('opponentFouls', { message });
-        errorManagement({ errCase: 'foul', message });
+        const message = {
+          localFoul: '내가 먼저 선택한 카드와 상대 enemy card 다름',
+          remoteFoul: '상대가 먼저 선택한 카드와 내 enemy card 다름'
+        };
+        request('opponentFouls', { message: compairLocal ? message.remoteFoul : compairRemote ? message.localFoul : '선택한 카드 다름' });
+        throw { errCase: 'foul', message: compairLocal ? message.localFoul : compairRemote ? message.remoteFoul : '선택한 카드 다름' };
       } else {
         // 상대 peer가 선택한 카드 번호 암호화
         const remoteNumIdx = arrNumbs[eNum - 1];
@@ -68,7 +61,15 @@ export default (_data) => {
     })
     .catch((err) => {
       console.log('err ====> ', err);
-
-      return errorManagement({ errCase: 'errorComn', message: 'enemyFirstChoice()의 num을 받지 못했습니다.', errorDetails: err });
+      if (err && err.errCase && err.errCase === 'cardNum') {
+        request('opponentFouls', { message: 'remote player가 card num 조작' });
+      }
+      errorManagement(
+        {
+          errCase: err && err.errCase ? err.errCase : 'errorComn',
+          message: err && err.message ? err.message : 'enemyFirstChoice()의 num을 받지 못했습니다.',
+          errorDetails: err
+        }
+      );
     });
 };

@@ -1,8 +1,12 @@
+import getCookies from '@/client/js/module/cookies/getCookies';
+import delCookies from '@/client/js/module/cookies/delCookies';
 import errorModal from '@/client/components/popup/modal/errorModal';
 import { text } from '@/client/js/functions/language';
 
 // UI 알림 표시 함수
 function showErrorNotification(errCase, component, message, target) {
+  console.log('errCase ????????????? ', errCase);
+
   if (errCase === 'webRTC') {
     // CASE : webRTC error
     switch (component) {
@@ -103,6 +107,9 @@ function showErrorNotification(errCase, component, message, target) {
   };
 
   // disconnected common
+  if (getCookies({ cookieName: 'gc_at' })) {
+    delCookies('gc_at');
+  };
   /* if (window['rtcChannels']) {
     if (
       window.rtcChannels.dataChannel &&

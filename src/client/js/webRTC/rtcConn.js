@@ -23,7 +23,7 @@ export default function webRTC(gameName) {
     /** ==============================================================================================================
      * common variable
      */
-    let signalingServer = new WebSocket(`${process.env.SOCKET_HOST}:${process.env.RTC_PORT}`);
+    const signalingServer = new WebSocket(`${process.env.SOCKET_HOST}:${process.env.RTC_PORT}`);
     const servers = {
       iceServers: [
         {
@@ -118,32 +118,14 @@ export default function webRTC(gameName) {
           };
         };
 
-        if (serverRefresh) {
-          // indianPocker
-          if (gameName === 'indianPocker') {
-            try {
-              await cardVerification();
-              resolve();
-            } catch (error) {
-              rejectComn();
-              reject(error);
-            };
-          };
+        if (gameName === 'indianPocker') {
+          signalingServer.send(JSON.stringify({
+            type: 'requestStorage',
+            gameName: gameName,
+            keypair: encrypt.keypair
+          }));
         } else {
-          // indianPocker
-          if (gameName === 'indianPocker') {
-            if (signalingServer && signalingServer.readyState === WebSocket.OPEN) {
-              signalingServer.send(JSON.stringify({
-                type: 'requestStorage',
-                gameName: gameName,
-                keypair: encrypt.keypair
-              }));
-            } else {
-              reject({ errCase: 'webRTC', component: 'signalingServer', event: 'requestStorage', message: 'Signaling socket error occurred' });
-            };
-          } else {
-            resolve();
-          };
+          resolve();
         };
 
       };
@@ -332,6 +314,9 @@ export default function webRTC(gameName) {
       if (type === 'responseStorage') {
         console.log('data 받음 >>>>>>>>> ', storageData);
         await insertStorageDate(storageData);
+        if (serverRefresh) {
+          await cardVerification();
+        }
         resolve();
       };
     };
@@ -353,6 +338,7 @@ export default function webRTC(gameName) {
         try {
           await handleMessage(event);
         } catch (error) {
+          rejectComn();
           reject({ ...error, errCase: 'webRTC' });
         };
       };

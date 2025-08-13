@@ -1,3 +1,6 @@
+import bcrypt from 'bcryptjs';
+import { selectCompairNumbers } from '@/client/store/encryptionStore';
+import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
 import { request } from '@/client/js/network/indianPocker/request';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import findCharCode from '@/client/js/functions/findCharCode';
@@ -30,8 +33,16 @@ export default (_data) => {
     const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
     const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
 
-    const compairRemote = remoteStorage.encryptVal1 !== encryptVal2;
-    const compairLocal = remoteStorage.encryptVal2 !== encryptVal1;
+    const compairCard = (_card, _peer) => {
+      if (_card === '') return null;
+      const arrNumbs = selectCompairNumbers();
+      const decrypted = arrNumbs.find(n => bcrypt.compareSync(n.toString(), _card));
+      if (decrypted == null) throw { errCase: 'errorComn', message: `${_peer} card num encrypte error.` };
+      return findCardNum(decrypted);
+    };
+
+    const compairRemote = remoteStorage.encryptVal1 !== compairCard(encryptVal2, 'remote');
+    const compairLocal = remoteStorage.encryptVal2 !== compairCard(encryptVal1, 'local');
 
     const encryptKey3 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
     const encryptKey4 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
@@ -73,40 +84,53 @@ export default (_data) => {
     const compairBetUserFirst = getCompairBet(remoteStorage.encryptVal4, encryptVal4);
 
     if (compairRemote || compairLocal || compairBetUser || compairBetUserFirst) {
-      let message = '';
+      const message = {
+        compair: {
+          local: '상대 enemy 선택 카드와 내 선택 카드 다름',
+          remote: '상대 선택 카드와 내 enemy 선택 카드 다름',
+        },
+        bat: {
+          user: '상대 betUser와 내 betUser 검증 실패',
+          first: '상대 betUserFirst와 내 betUserFirst 검증 실패',
+        },
+      };
 
-      // playerFirstNumber / enemyFirstNumber
-      if (compairRemote || compairLocal) {
-        // 상대 선택 카드와 내 enemy 선택 카드 비교
-        if (compairRemote) {
-          message = '상대 선택 카드와 내 enemy 선택 카드 다름';
+      function msgState(peer) {
+        if (peer !== 'local' && peer !== 'remote') {
+          throw { errCase: 'errorComn', message: 'select card parameter error.' };
         }
-        // 상대 enemy 선택 카드와 내 선택 카드 비교
-        if (compairLocal) {
-          message = '상대 enemy 선택 카드와 내 선택 카드 다름';
+
+        // peer에 따라 compair 메시지만 스왑
+        const compairMsg = peer === 'local'
+          ? { remote: message.compair.remote, local: message.compair.local }
+          : { remote: message.compair.local,  local: message.compair.remote };
+
+        const checks = [
+          [() => compairRemote, compairMsg.remote],
+          [() => compairLocal,  compairMsg.local],
+          [() => compairBetUser, message.bat.user],
+          [() => compairBetUserFirst, message.bat.first],
+        ];
+
+        for (const [cond, msg] of checks) {
+          if (cond()) return msg;
         }
+        return null; // 해당 없음
       }
 
-      // betUser / betUserFirst
-      if (compairBetUser || compairBetUserFirst) {
-        // 상대 betUser와 내 betUser 비교
-        if (compairBetUser) {
-          message = '상대 betUser와 내 betUser 검증 실패';
-        }
+      // 사용 예
+      const localMsg = msgState('local');
+      if (localMsg) errorManagement({ errCase: 'foul', message: localMsg });
 
-        // 상대 betUser와 내 betUser 비교
-        if (compairBetUserFirst) {
-          message = '상대 betUserFirst와 내 betUserFirst 검증 실패';
-        }
-      }
+      const remoteMsg = msgState('remote');
+      if (remoteMsg) request('opponentFouls', { message: remoteMsg });
 
-      errorManagement({ errCase: 'foul', message });
-      request('opponentFouls', { message });
     } else {
       // data 검증에 성공하여 PASS
       request('responseCompairChoiceCard', { result: true, tieWaitConfirmed: false });
     }
   }).catch((error) => {
+    request('opponentFouls', { message: 'requestCompairChoiceCard error : ' + error });
     errorManagement({ errCase: 'errorComn', message: 'requestCompairChoiceCard() 함수를 못탐 : ' + error });
   });
 };

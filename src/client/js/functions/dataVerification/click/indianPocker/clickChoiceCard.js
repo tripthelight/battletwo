@@ -13,9 +13,8 @@ export default (storageKeys) => {
   if (allExist) {
     // local player 모든 key가 있음
   } else {
-    // local player 모든 key가 없음
-    const message = '내가 sessionStorage 삭제';
-    request('opponentFouls', { message: message });
+    // local player 모든 key가 없음 or key 조작
+    request('opponentFouls', { message: '상대 peer가 sessionStorage 조작' });
     // errorManagement({ errCase: 'sessionStorageLoss', message: 'choiceCardClick event 에서 storage안에 key가 모두 없습니다.' });
     throw { errCase: 'sessionStorageLoss', message: 'choiceCardClick event 에서 storage안에 key가 모두 없습니다.' };
   }

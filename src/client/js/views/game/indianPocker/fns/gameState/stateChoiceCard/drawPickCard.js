@@ -1,3 +1,6 @@
+import bcrypt from 'bcryptjs';
+import { selectCompairNumbers } from '@/client/store/encryptionStore';
+import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { timeInterval_1, timeInterval_2 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorManagement';
@@ -13,37 +16,29 @@ export default () => {
   // if (!GAME_SCENE) return errorManagement({ errCase: 'elementLoss', message: '#gameScene 엘리먼트가 없습니다.' });
   if (!GAME_SCENE) throw { errCase: 'elementLoss', message: '#gameScene 엘리먼트가 없습니다.' };
   const CHOICE_CARD = GAME_SCENE.querySelector('.choice-card');
-  if (CHOICE_CARD) return;
-
-  // 명령
-  // element | session 변수
-  const ELEM = document.createElement('div');
-  ELEM.classList.add('choice-card');
-  for (let i = 0; i < 2; i++) {
-    const innerUL = document.createElement('ul'); // HTML 요소로 생성
-    for (let j = 0; j < 10; j++) {
-      const choiceCards = document.createElement('li'); // HTML 요소로 생성
-      const choiceCardsBtn = document.createElement('button');
-      const cardBack = document.createElement('img');
-      cardBack.setAttribute('src', SVG_BACK);
-      cardBack.setAttribute('alt', 'card back');
-      choiceCardsBtn.appendChild(cardBack);
-      choiceCards.appendChild(choiceCardsBtn);
-      innerUL.appendChild(choiceCards);
+  if (!CHOICE_CARD) {
+    const ELEM = document.createElement('div');
+    ELEM.classList.add('choice-card');
+    for (let i = 0; i < 2; i++) {
+      const innerUL = document.createElement('ul'); // HTML 요소로 생성
+      for (let j = 0; j < 10; j++) {
+        const choiceCards = document.createElement('li'); // HTML 요소로 생성
+        const choiceCardsBtn = document.createElement('button');
+        const cardBack = document.createElement('img');
+        cardBack.setAttribute('src', SVG_BACK);
+        cardBack.setAttribute('alt', 'card back');
+        choiceCardsBtn.appendChild(cardBack);
+        choiceCards.appendChild(choiceCardsBtn);
+        innerUL.appendChild(choiceCards);
+      }
+      ELEM.appendChild(innerUL);
     }
-    ELEM.appendChild(innerUL);
-  }
-  GAME_SCENE.appendChild(ELEM);
+    GAME_SCENE.appendChild(ELEM);
+  };
 
   // 다음 함수 실행
   // 선플레이어 카드 선택 안내 팝업
-  // setTimeout(drawPickCardInfo, timeInterval_1);
   drawPickCardInfo();
-
-  // local player가 선택한 카드가 있을 때
-  // const localPlayerSelect = window.sessionStorage.ulIndex && window.sessionStorage.liIndex && window.sessionStorage.playerFirstNumber;
-  // remote player가 선택한 카드가 있을 때
-  // const remotePlayerSelect = window.sessionStorage.ulIndexEnemy && window.sessionStorage.liIndexEnemy && window.sessionStorage.enemyFirstNumber;
 
   const createLocalStorageKeys = (arrays) => arrays.map(findCharCode);
   const getSessionStorageValues = (keys) => keys.map((key) => window.sessionStorage.getItem(key));
@@ -59,9 +54,9 @@ export default () => {
       [77, 68, 73, 90, 74, 72, 86, 71, 85, 87], // playerFirstNumber
     ],
     enemy: [
-      [81, 67, 82, 74, 87, 76, 89, 79, 83, 85], // ulIndexEnemy
-      [78, 72, 89, 73, 67, 85, 71, 79, 77, 76], // liIndexEnemy
-      [77, 67, 69, 73, 72, 75, 68, 82, 71, 80], // enemyFirstNumber
+      [78, 72, 89, 73, 67, 85, 71, 79, 77, 76], // ulIndexEnemy
+      [77, 67, 69, 73, 72, 75, 68, 82, 71, 80], // liIndexEnemy
+      [81, 67, 82, 74, 87, 76, 89, 79, 83, 85], // enemyFirstNumber
     ],
   };
 
@@ -70,61 +65,76 @@ export default () => {
   // remote player가 선택한 카드가 있을 때
   const remotePlayerSelect = isPlayerSelected(localPlayerKeys.enemy);
 
-  if (remotePlayerSelect) {
-    const encryptKey1 = findCharCode([78, 72, 89, 73, 67, 85, 71, 79, 77, 76]); // ulIndexEnemy
-    const encryptKey2 = findCharCode([77, 67, 69, 73, 72, 75, 68, 82, 71, 80]); // liIndexEnemy
-    const encryptKey3 = findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85]); // enemyFirstNumber
+  const flipCard = {
+    remote: null,
+    local: null,
+  };
 
-    const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
-    const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
-    const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
+  // 세션 키 매핑
+  const KEYMAP = {
+    remote: {
+      ul: localPlayerKeys.enemy[0], // ulIndexEnemy
+      li: localPlayerKeys.enemy[1], // liIndexEnemy
+      num: localPlayerKeys.enemy[2], // enemyFirstNumber
+    },
+    local: {
+      ul: localPlayerKeys.player[0], // ulIndex
+      li: localPlayerKeys.player[1], // liIndex
+      num: localPlayerKeys.player[2], // playerFirstNumber
+    },
+  };
 
+  // 세션에서 값 읽기
+  const getSessionValByKeyCodes = (codes) => {
+    const key = findCharCode(codes);
+    return window.sessionStorage.getItem(key);
+  };
+
+  // 카드 뒤집기 공통 처리
+  function reveal(side) {
+    const map = KEYMAP[side];
+    if (!map) throw { errCase: 'errorComn', message: 'keymap failed.' };
+
+    // 세션 값
+    const ulIdxStr  = getSessionValByKeyCodes(map.ul);
+    const liIdxStr  = getSessionValByKeyCodes(map.li);
+    const encNumber = getSessionValByKeyCodes(map.num);
+    if (ulIdxStr == null || liIdxStr == null || encNumber == null) {
+      throw { errCase: 'elementLoss', message: 'select card element or cardNum sesstionStorage error.' };
+    };
+    const ulIdx = Number(ulIdxStr);
+    const liIdx = Number(liIdxStr);
+    if (!Number.isInteger(ulIdx) || !Number.isInteger(liIdx)) return;
+
+    // DOM 탐색
     const CONTAINER = document.getElementById('container');
-    const GAME_SCENE = CONTAINER.querySelector('#gameScene');
-    /*
-    const UL_INDEX_ENEMY = GAME_SCENE.querySelectorAll('ul')[window.sessionStorage.ulIndexEnemy];
-    const LI_INDEX_ENEMY = UL_INDEX_ENEMY.querySelectorAll('li')[window.sessionStorage.liIndexEnemy];
-    */
-    const UL_INDEX_ENEMY = GAME_SCENE.querySelectorAll('ul')[encryptVal1];
-    const LI_INDEX_ENEMY = UL_INDEX_ENEMY.querySelectorAll('li')[encryptVal2];
-    const TARGET_TAG_NAME = LI_INDEX_ENEMY.querySelector('img');
-    LI_INDEX_ENEMY.classList.add('show');
-    /*
-    TARGET_TAG_NAME.setAttribute('src', imgSetCardNum(window.sessionStorage.enemyFirstNumber));
-    */
-    TARGET_TAG_NAME.setAttribute('src', imgSetCardNum(encryptVal3));
+    const GAME_SCENE = CONTAINER?.querySelector('#gameScene');
+    const UL = GAME_SCENE?.querySelectorAll('ul')?.[ulIdx];
+    const LI = UL?.querySelectorAll('li')?.[liIdx];
+    const IMG = LI?.querySelector('img');
+    if (!IMG || !LI) throw { errCase: 'elementLoss', message: 'select card element failed.' };
+
+    // 숫자 복호화 및 이미지 반영
+    const arrNumbs = selectCompairNumbers();
+    const decrypted = arrNumbs.find(n => bcrypt.compareSync(n.toString(), encNumber));
+    if (decrypted == null) throw { errCase: 'errorComn', message: 'card num encrypte error.' };
+
+    const cardNum = findCardNum(decrypted);
+
+    flipCard[side] = cardNum;
+
+    IMG.setAttribute('src', imgSetCardNum(cardNum));
+    LI.classList.add('show');
   }
 
-  if (localPlayerSelect) {
-    const encryptKey1 = findCharCode([78, 73, 68, 76, 67, 82, 87, 83, 89, 70]); // ulIndex
-    const encryptKey2 = findCharCode([83, 70, 79, 67, 65, 71, 66, 87, 77, 86]); // liIndex
-    const encryptKey3 = findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]); // playerFirstNumber
+  // 상대 peer가 선택한 카드 있음
+  if (remotePlayerSelect) reveal('remote');
+  // 내가 선택한 카드 있음
+  if (localPlayerSelect) reveal('local');
 
-    const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
-    const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
-    const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
-
-    const CONTAINER = document.getElementById('container');
-    const GAME_SCENE = CONTAINER.querySelector('#gameScene');
-    /*
-    const UL_INDEX_ENEMY = GAME_SCENE.querySelectorAll('ul')[window.sessionStorage.ulIndex];
-    const LI_INDEX_ENEMY = UL_INDEX_ENEMY.querySelectorAll('li')[window.sessionStorage.liIndex];
-    */
-    const UL_INDEX_ENEMY = GAME_SCENE.querySelectorAll('ul')[encryptVal1];
-    const LI_INDEX_ENEMY = UL_INDEX_ENEMY.querySelectorAll('li')[encryptVal2];
-    const TARGET_TAG_NAME = LI_INDEX_ENEMY.querySelector('img');
-    LI_INDEX_ENEMY.classList.add('show');
-    /*
-    TARGET_TAG_NAME.setAttribute('src', imgSetCardNum(window.sessionStorage.playerFirstNumber));
-    */
-    TARGET_TAG_NAME.setAttribute('src', imgSetCardNum(encryptVal3));
-  }
-
-  if (remotePlayerSelect && localPlayerSelect) {
-    flipUserCardCheck();
-    // setTimeout(flipUserCardCheck, timeInterval_2);
-  } else {
+  if (!localPlayerSelect) {
     choiceCardsClick();
-    // setTimeout(choiceCardsClick, timeInterval_2);
+  } else if (remotePlayerSelect && localPlayerSelect) {
+    flipUserCardCheck({ eNum: flipCard.remote, pNum: flipCard.local });
   };
 };

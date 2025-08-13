@@ -1,3 +1,6 @@
+import bcrypt from 'bcryptjs';
+import { selectCompairNumbers } from '@/client/store/encryptionStore';
+import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/network/indianPocker/request';
@@ -8,20 +11,22 @@ import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 export const CHOICE_CARD_DATA_HANDLER = {
   // reload 했을 경우 모든 key가 있는지 먼저 체크
   storageKeyDeleteCheck(storageKeys) {
+    let result = false;
     for (const key of storageKeys) {
-      const value = window.sessionStorage.getItem(key);
-
-      if (value === null) {
-        const message = '새로고침 한 user가 sessionStorage 삭제함';
-        errorManagement({ errCase: 'foul', message });
-        request('opponentFouls', { message });
+      if (!window.sessionStorage.getItem(key)) {
+        result = true;
         break;
-      }
-    }
+      };
+    };
+    return result;
   },
   // gameState : choiceCard에서 reload 한 경우
   handleReload(storageKeys) {
-    this.storageKeyDeleteCheck(storageKeys);
+    if (this.storageKeyDeleteCheck(storageKeys)) {
+      const message = (_peer) => `${_peer} player가 sessionStorage 삭제함`;
+      request('opponentFouls', { message: message('remote') });
+      throw { errCase: 'foul', message: message('local') }
+    };
 
     // 같은 카드였던 상태에서 내가 팝업 x 버튼 먼저 누르고 대기 상태 일 경우
     const encryptKey5 = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
@@ -30,16 +35,54 @@ export const CHOICE_CARD_DATA_HANDLER = {
       return;
     }
 
+    const selectCard = {
+      remote: null,
+      local: null,
+    };
     // player가 선택한 playerFirstNumber, 상대 peer가 선택한 enemyFirstNumber value를 변경했는지 체크하기 위해 보냄
     const encryptKey1 = storageKeys.find((item) => item === findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87])); // playerFirstNumber
+    console.log('encryptKey1 ===========> ', encryptKey1);
+
+    if (encryptKey1) {
+      const encryptVal = window.sessionStorage.getItem(encryptKey1);
+      console.log('encryptVal ===========> ', encryptVal);
+      if (encryptVal !== '') {
+        const arrNumbs = selectCompairNumbers();
+        console.log('arrNumbs ===========> ', arrNumbs);
+        const decrypted = arrNumbs.find(n => bcrypt.compareSync(n.toString(), encryptVal));
+        console.log('decrypted ===========> ', decrypted);
+        if (decrypted) {
+          selectCard.local = findCardNum(decrypted);
+        } else {
+          throw { errCase: 'errorComn', message: 'reload local select card encrypt error.' };
+        }
+      };
+    };
+
     const encryptKey2 = storageKeys.find((item) => item === findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85])); // enemyFirstNumber
+    if (encryptKey2) {
+      const encryptVal = window.sessionStorage.getItem(encryptKey2);
+      if (encryptVal !== '') {
+        const arrNumbs = selectCompairNumbers();
+        const decrypted = arrNumbs.find(n => bcrypt.compareSync(n.toString(), encryptVal));
+        if (decrypted) {
+          selectCard.remote = findCardNum(decrypted);
+        } else {
+          throw { errCase: 'errorComn', message: 'reload remote select card encrypt error.' };
+        }
+      };
+    };
+
+
     // local, remote player 모두 선택 했을 때, betUser/betUserFirst 체크를 위해 보냄
     const encryptKey3 = storageKeys.find((item) => item === findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88])); // betUser
     const encryptKey4 = storageKeys.find((item) => item === findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78])); // betUserFirst
 
     const params = {
-      encryptVal1: window.sessionStorage.getItem(encryptKey1),
-      encryptVal2: window.sessionStorage.getItem(encryptKey2),
+      // encryptVal1: window.sessionStorage.getItem(encryptKey1),
+      // encryptVal2: window.sessionStorage.getItem(encryptKey2),
+      encryptVal1: selectCard.local,
+      encryptVal2: selectCard.remote,
       encryptVal3: window.sessionStorage.getItem(encryptKey3),
       encryptVal4: window.sessionStorage.getItem(encryptKey4),
     };

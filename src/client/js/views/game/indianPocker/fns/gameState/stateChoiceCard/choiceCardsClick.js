@@ -1,8 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
-import { timeInterval_1 } from '@/client/js/functions/variable';
-import { errorManagement } from '@/client/js/module/errorManagement';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import delCookies from '@/client/js/module/cookies/delCookies';
 import pickCardInit from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/pickCardInit';
 import eventHanlerErrorComn from '@/client/js/module/eventHanlerErrorComn';
 
@@ -15,6 +12,16 @@ export default () => {
   // if (!CARDS || CARDS.length <= 0) return errorManagement({ errCase: 'elementLoss', message: '.choice-card 의 li가 없거나 length가 0 입니다.' });
   if (!CARDS || CARDS.length <= 0) throw { errCase: 'elementLoss', message: '.choice-card 의 li가 없거나 length가 0 입니다.' };
 
+  const invalidateCardClick = () => {
+    for (let i = 0; i < CARDS.length; i++) {
+      CARDS[i].onclick = null;
+    };
+  };
+
+  const encryptKey = findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]); // playerFirstNumber
+  console.log('playerFirstNumber key : ', encryptKey);
+
+
   // 명령
   for (let i = 0; i < CARDS.length; i++) {
     // onclick event handler는 try-catch로 감싸도 나중에 브라우저(이벤트 시스템)가 호출
@@ -26,14 +33,14 @@ export default () => {
      * 따라서 choiceCardsClick()을 try-catch로 감싸도,
      * 그 안에서 등록된 이벤트 핸들러의 예외는 절대 못 잡습니다.
      */
-    CARDS[i].onclick = (event) => {
+    CARDS[i].onclick = async (event) => {
       try {
-        pickCardInit(event);
+        await pickCardInit(event);
 
+        invalidateCardClick();
         const encryptKey = findCharCode([68, 71, 87, 77, 85, 66, 65, 84, 88, 69]); // enemyCardChoiceReady
         const encryptVal = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
         storageMethod('s', 'SET_ITEM', encryptKey, encryptVal);
-
       } catch (error) {
         console.log('choiceCardsClick.js onclick error : ');
         eventHanlerErrorComn(error);

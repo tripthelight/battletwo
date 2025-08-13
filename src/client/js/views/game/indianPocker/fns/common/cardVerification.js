@@ -22,6 +22,9 @@ export default async () => {
         if (hasDuplicate) {
           throw { errCase: 'errorComn', message: 'card num Duplicate error' };
         };
+
+        // sessionsStorage cardNum 조작이 있었는지 체크
+
       };
     } else {
       throw { errCase: 'errorComn', message: 'card num Bracket error' };

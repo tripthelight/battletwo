@@ -24,6 +24,7 @@ export default (_code) => {
     case findCharCode([74, 82, 80, 70, 73, 71, 83, 66, 68, 78]):
       return 10;
     default:
-      return errorManagement({ errCase: 'cardNum', message: 'drawEnemyCard.js - not find card' });
+      // return errorManagement({ errCase: 'cardNum', message: 'drawEnemyCard.js - not find card' });
+      throw { errCase: 'cardNum', message: 'drawEnemyCard.js - not find card' }
   }
 };
