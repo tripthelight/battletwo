@@ -76,8 +76,7 @@ export const CHOICE_CARD_DATA_HANDLER = {
 
     // 같은 카드였던 상태에서 내가 팝업 x 버튼 먼저 누르고 대기 상태 일 경우
     const encryptKey5 = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
-    // if (window.sessionStorage.getItem(encryptKey5) === 'true') {
-    if (window.sessionStorage.getItem(encryptKey5) === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) {
+    if (window.sessionStorage.getItem(encryptKey5) === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) { // true
       request('requestCompairChoiceCard', { remoteStorage: params, tieWait: true });
       return;
     }

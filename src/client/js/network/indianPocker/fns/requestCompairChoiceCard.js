@@ -130,7 +130,9 @@ export default (_data) => {
       request('responseCompairChoiceCard', { result: true, tieWaitConfirmed: false });
     }
   }).catch((error) => {
-    request('opponentFouls', { message: 'requestCompairChoiceCard error : ' + error });
-    errorManagement({ errCase: 'errorComn', message: 'requestCompairChoiceCard() 함수를 못탐 : ' + error });
+    console.log('requestCompairChoiceCard.js error : ', error);
+
+    request('opponentFouls', { message: 'requestCompairChoiceCard error : ' });
+    errorManagement({ errCase: 'errorComn', message: 'requestCompairChoiceCard() 함수를 못탐 : ', errorDetails: error });
   });
 };

@@ -126,7 +126,7 @@ battletwo
 - TODO: 
   - 내가 선택 -> 상대가 선택 -> 카드 비교
   - playerFirstNumber, ulIndex, liIndex, betUser, betUserFirst 숫자 및 true, false 암호화 필요
-  - 
+  - 카드 선택에서 비기고 선택한 카드 조작하고 새로고침 하면 새로고침 당한 상대 peer는 아무 반응 없음
 
 
 ## 새로고침 전략 - GPT - 새로고침 시 5초 대기
