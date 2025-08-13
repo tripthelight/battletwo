@@ -14,22 +14,22 @@ export default async (_event) => {
   const encryptKey2 = findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]); // playerFirstNumber
   const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
 
-  // if (window.sessionStorage.playerFirstNumber) {
   if (encryptVal2 === '') {
     const { selectCompairNumbers } = await import('@/client/store/encryptionStore');
     const { default: bcrypt } = await import('bcryptjs');
     const arrNumbs = selectCompairNumbers();
-    const randomValue = arrNumbs[Math.floor(Math.random() * arrNumbs.length)];
+    // 랜덤한 카드 생성
+    // const randomValue = arrNumbs[Math.floor(Math.random() * arrNumbs.length)];
+    // local peer / remote peer 같은 숫자 생성
+    const randomValue = arrNumbs[0];
     const encryptPlayerNum = bcrypt.hashSync(randomValue, 3);
 
     // local player가 선택한 카드가 없을 때
     showChoiceCard(_event, encryptPlayerNum);
-    // setTimeout(showChoiceCard, timeInterval_1, _event, playerNum);
   } else {
     // local player가 선택한 카드가 있을 때
     const message = '내가 선택하기 전 카드 번호 sessionStorage value 조작';
     request('opponentFouls', { message });
     throw { errCase: 'sessionStorageLoss', message }
-    // errorManagement({ errCase: 'sessionStorageLoss', message });
   };
 };

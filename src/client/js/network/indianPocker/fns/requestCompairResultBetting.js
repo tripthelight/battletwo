@@ -16,7 +16,7 @@ export default (_data) => {
 
     // 내가 먼저 X 버튼을 누르고 대기 상태
     const keyTieWait = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
-    if (window.sessionStorage.getItem(keyTieWait) === 'true') {
+    if (window.sessionStorage.getItem(keyTieWait) === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) {
       request('responseCompairResultBetting', params);
       return;
     }
@@ -116,8 +116,10 @@ export default (_data) => {
       case 'tie': // 같음 *********************************************
         /** betUser *************************************************** */
         if (valRemoteBetUser === '' && valLocalBetUser === '') {
+          console.log('비김 1');
           // 정상
           request('responseCompairResultBetting', params);
+          return;
         } else {
           if (valRemoteBetUser !== '') {
             params.compair = false;
@@ -137,8 +139,10 @@ export default (_data) => {
 
         /** betUserFirst ********************************************** */
         if (valRemoteBetUserFirst === '' && valLocalBetUserFirst === '') {
+          console.log('비김 2');
           // 정상
           request('responseCompairResultBetting', params);
+          return;
         } else {
           if (valRemoteBetUserFirst !== '') {
             params.compair = false;

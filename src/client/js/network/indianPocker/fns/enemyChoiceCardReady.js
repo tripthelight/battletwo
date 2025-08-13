@@ -11,11 +11,6 @@ export default (_data) => {
   });
   promise
     .then((_state) => {
-      /*
-      storageMethod('s', 'SET_ITEM', 'enemyCardChoiceReady', _state);
-      if (window.sessionStorage.enemyCardChoiceReady === 'true') LOADING_EVENT.hide();
-      */
-
       if (_state) {
         const encryptKey = findCharCode([68, 71, 87, 77, 85, 66, 65, 84, 88, 69]); // enemyCardChoiceReady
 
@@ -30,18 +25,14 @@ export default (_data) => {
             findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78])
         );
       } else {
+        console.log('비기고 여기 타냐 2');
         LOADING_EVENT.hide();
         const encryptKey = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
         storageMethod('s', 'SET_ITEM', encryptKey, '');
-        setTimeout(choiceCardsClick, timeInterval_1);
-      }
-
-      // if (window.sessionStorage.getItem(encryptKey) === 'true') {
-      //   LOADING_EVENT.hide();
-      //   setTimeout(choiceCardsClick, timeInterval_1);
-      // }
+        choiceCardsClick();
+      };
     })
     .catch((err) => {
-      return errorManagement({ errCase: 'errorComn', message: 'enemyChoiceCardReady()의 _data를 받지 못했습니다.' });
+      return errorManagement({ errCase: 'errorComn', message: 'enemyChoiceCardReady()의 _data를 받지 못했습니다.', errorDetails: err });
     });
 };

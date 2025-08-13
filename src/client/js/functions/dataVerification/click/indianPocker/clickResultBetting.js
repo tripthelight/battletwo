@@ -15,22 +15,16 @@ export default async (storageKeys, result) => {
   const allExist = storageKeys.every((key) => setKeys.has(key));
   if (allExist) {
     // local player 모든 key가 있음
-    // betUser, betUserFirst를 상대 peer와 검증
+    // betUser, betUserFirst를를 상대 peer와 검증
+    // tie일 경우 betUser, betUserFirst 빈값임
     const keyRemoteBetUser = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
     const keyRemoteBetUserFirst = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
     const valRemoteBetUser = window.sessionStorage.getItem(keyRemoteBetUser);
     const valRemoteBetUserFirst = window.sessionStorage.getItem(keyRemoteBetUserFirst);
     request('requestCompairResultBetting', { result: result, resultStorage: { valRemoteBetUser, valRemoteBetUserFirst } });
-
-    // // 이 후 단계 진행
-    // LOADING_EVENT.show();
-    // if (result === 'start' || result === 'end') socketNextStepEvent();
-    // if (result === 'tie') againChoiceCard();
   } else {
     // local player 모든 key가 없음
-    const message = '내가 sessionStorage 삭제';
-    request('opponentFouls', { message: message });
-    // errorManagement({ errCase: 'sessionStorageLoss', message: 'resultBetting click event 에서 storage안에 key가 모두 없습니다.' });
+    request('opponentFouls', { message: '내가 sessionStorage 삭제' });
     throw { errCase: 'sessionStorageLoss', message: 'resultBetting click event 에서 storage안에 key가 모두 없습니다.' };
   }
 };

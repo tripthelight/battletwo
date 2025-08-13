@@ -22,7 +22,7 @@ export default (_data) => {
     const encryptKey = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
     const encryptVal = window.sessionStorage.getItem(encryptKey);
     if (encryptVal !== null) {
-      if (encryptVal === 'true') {
+      if (encryptVal === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) {
         request('responseCompairChoiceCard', { result: true, tieWaitConfirmed: true });
         return;
       }

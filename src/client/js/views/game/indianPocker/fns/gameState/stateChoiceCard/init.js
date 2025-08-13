@@ -1,12 +1,9 @@
-import { errorManagement } from '@/client/js/module/errorManagement';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
-import drawPickCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/drawPickCard';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import dataHandler from '@/client/js/functions/dataVerification/load/dataHandler';
 import storageKeys from '@/client/js/functions/dataVerification/storageKeys';
-import { request } from '@/client/js/network/indianPocker/request';
 
 /**
  * ChoiceCar에서 사용하는 sessionStorage Data
@@ -31,9 +28,6 @@ export default {
       p1: findCharCode([68, 74, 69, 77, 70, 75, 76, 86, 68, 69]), // indianPocker
       p2: findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82]), // choiceCard
     });
-
-    // drawPickCard();
-    // LOADING_EVENT.hide();
   },
   nextStep: () => {
     // storageMethod('s', 'REMOVE_ARR', '', '', ['enemyFirstNumber', 'playerFirstNumber', 'liIndex', 'ulIndex', 'liIndexEnemy', 'ulIndexEnemy', 'enemyCardChoiceReady', 'myNextStepState', 'nextStepChoiceCard']);

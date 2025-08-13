@@ -1,7 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { selectCompairNumbers } from '@/client/store/encryptionStore';
 import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
-import { errorManagement } from '@/client/js/module/errorManagement';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/network/indianPocker/request';
 import storageMethod from '@/client/js/module/storage/storageMethod';
@@ -13,7 +12,7 @@ export const CHOICE_CARD_DATA_HANDLER = {
   storageKeyDeleteCheck(storageKeys) {
     let result = false;
     for (const key of storageKeys) {
-      if (!window.sessionStorage.getItem(key)) {
+      if (window.sessionStorage.getItem(key) === null) {
         result = true;
         break;
       };
@@ -28,29 +27,17 @@ export const CHOICE_CARD_DATA_HANDLER = {
       throw { errCase: 'foul', message: message('local') }
     };
 
-    // 같은 카드였던 상태에서 내가 팝업 x 버튼 먼저 누르고 대기 상태 일 경우
-    const encryptKey5 = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
-    if (window.sessionStorage.getItem(encryptKey5) === 'true') {
-      request('requestCompairChoiceCard', { remoteStorage: params, tieWait: true });
-      return;
-    }
-
     const selectCard = {
       remote: null,
       local: null,
     };
     // player가 선택한 playerFirstNumber, 상대 peer가 선택한 enemyFirstNumber value를 변경했는지 체크하기 위해 보냄
     const encryptKey1 = storageKeys.find((item) => item === findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87])); // playerFirstNumber
-    console.log('encryptKey1 ===========> ', encryptKey1);
-
     if (encryptKey1) {
       const encryptVal = window.sessionStorage.getItem(encryptKey1);
-      console.log('encryptVal ===========> ', encryptVal);
       if (encryptVal !== '') {
         const arrNumbs = selectCompairNumbers();
-        console.log('arrNumbs ===========> ', arrNumbs);
         const decrypted = arrNumbs.find(n => bcrypt.compareSync(n.toString(), encryptVal));
-        console.log('decrypted ===========> ', decrypted);
         if (decrypted) {
           selectCard.local = findCardNum(decrypted);
         } else {
@@ -86,6 +73,14 @@ export const CHOICE_CARD_DATA_HANDLER = {
       encryptVal3: window.sessionStorage.getItem(encryptKey3),
       encryptVal4: window.sessionStorage.getItem(encryptKey4),
     };
+
+    // 같은 카드였던 상태에서 내가 팝업 x 버튼 먼저 누르고 대기 상태 일 경우
+    const encryptKey5 = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
+    // if (window.sessionStorage.getItem(encryptKey5) === 'true') {
+    if (window.sessionStorage.getItem(encryptKey5) === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) {
+      request('requestCompairChoiceCard', { remoteStorage: params, tieWait: true });
+      return;
+    }
 
     request('requestCompairChoiceCard', { remoteStorage: params, tieWait: false });
   },

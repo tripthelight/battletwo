@@ -21,7 +21,7 @@ export default (_data) => {
           // null일 수 없음
           // foul: 내가 key를 삭제했음
         } else {
-          if (encryptVal === 'true') {
+          if (encryptVal === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) {
             // 같은 카드였던 상태에서 내가 팝업 x 버튼을 먼저 누르고 대기 상태 였던 경우
             LOADING_EVENT.show();
           } else if (encryptVal === '') {

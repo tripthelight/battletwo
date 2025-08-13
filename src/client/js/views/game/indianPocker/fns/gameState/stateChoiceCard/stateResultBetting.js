@@ -6,7 +6,7 @@ import findCharCode from '@/client/js/functions/findCharCode';
  * @param {string} _state start: 내가 높음 | end: 내가 낮음 | tie: 같은 카드
  * @returns
  */
-export default (_state) => {
+export default async (_state) => {
   // betUser, betUserFirst data 검증
   dataHandler({
     p1: findCharCode([68, 74, 69, 77, 70, 75, 76, 86, 68, 69]), // indianPocker
@@ -14,8 +14,4 @@ export default (_state) => {
     p3: findCharCode([66, 72, 73, 78, 89, 65, 84, 77, 83, 86]), // clickResultBetting
     clkData: _state, // 선택 결과
   });
-
-  // LOADING_EVENT.show();
-  // if (_state === 'start' || _state === 'end') socketNextStepEvent();
-  // if (_state === 'tie') againChoiceCard();
 };

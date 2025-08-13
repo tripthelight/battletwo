@@ -1,5 +1,4 @@
 import findCharCode from '@/client/js/functions/findCharCode';
-import { timeInterval_1 } from '@/client/js/functions/variable';
 import flipEnemyCardCheck from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipEnemyCardCheck';
 
 export default (params) => {
@@ -10,19 +9,12 @@ export default (params) => {
   const encryptKey2 = findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85]); // enemyFirstNumber
   const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
 
-  // if (window.sessionStorage.enemyFirstNumber && window.sessionStorage.playerFirstNumber) {
   if (
     (pNum && encryptVal1 !== null && encryptVal1 !== '') &&
     (eNum && encryptVal2 !== null && encryptVal2 !== '')
   ) {
-    // const enemyNum = Number(window.sessionStorage.enemyFirstNumber);
-    // const playerNum = Number(window.sessionStorage.playerFirstNumber);
-
-
-
     const playerNum = Number(pNum);
     const enemyNum = Number(eNum);
     flipEnemyCardCheck(enemyNum, playerNum);
-    // setTimeout(flipEnemyCardCheck, timeInterval_1, enemyNum, playerNum);
   }
 };

@@ -10,7 +10,6 @@ import { CHOICE_CARD_DATA_HANDLER } from '@/client/js/functions/dataVerification
 export default (gameState, storageKeys) => {
   // gameState: choiceCard
   if (gameState === findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82])) {
-    // if (window.__customReloadFlag) {
     if (reload) {
       CHOICE_CARD_DATA_HANDLER.handleReload(storageKeys);
     } else {

@@ -18,8 +18,10 @@ export default () => {
     };
   };
 
-  const encryptKey = findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]); // playerFirstNumber
-  console.log('playerFirstNumber key : ', encryptKey);
+  const encryptKey1 = findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]); // playerFirstNumber
+  console.log('playerFirstNumber key : ', encryptKey1);
+  const encryptKey2 = findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85]); // enemyFirstNumber
+  console.log('enemyFirstNumber key : ', encryptKey2);
 
 
   // 명령
