@@ -22,7 +22,7 @@ export default async (_event) => {
     // const randomValue = arrNumbs[Math.floor(Math.random() * arrNumbs.length)];
     // local peer / remote peer 같은 숫자 생성
     const randomValue = arrNumbs[0];
-    const encryptPlayerNum = bcrypt.hashSync(randomValue, 3);
+    const encryptPlayerNum = bcrypt.hashSync(randomValue.toString(), 3);
 
     // local player가 선택한 카드가 없을 때
     showChoiceCard(_event, encryptPlayerNum);
