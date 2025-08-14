@@ -14,29 +14,14 @@ export default () => {
   const ENEMY_BLOCK = GAME_SCENE.querySelector('.enemy-block');
   if (!ENEMY_BLOCK) return errorManagement({ errCase: 'elementLoss', message: '.enemy-block 엘리먼트가 없습니다.' });
 
-  /*
-  let res;
-  const BATTLE_CARD_NUM = JSON.parse(window.sessionStorage.battleCardNum);
-  for (let i = 0; i < BATTLE_CARD_NUM.length; i++) {
-    if (BATTLE_CARD_NUM[i].host === 'enemy') {
-      res = BATTLE_CARD_NUM[i].num;
-    }
-  }
-  */
-
   const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
 
-  // const NUMS_LIST = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-  // const NUM_RES = NUMS_LIST.filter((nums) => bcrypt.compareSync(nums, res));
   const arrNumbs = selectCompairNumbers();
   if (!arrNumbs.length) return errorManagement({ errCase: 'cardNum', message: 'cardNum length 0' });
-  // const NUM_RES = arrNumbs.filter((nums) => bcrypt.compareSync(nums, res));
   const NUM_RES = arrNumbs.filter((nums) => bcrypt.compareSync(nums, BATTLE_CARD_NUM));
   if (!NUM_RES.length) return errorManagement({ errCase: 'cardNum', message: 'num result length 0' });
 
   console.log('NUM_RES >>>>>>>>>>>> ', NUM_RES);
-
-  const NUM_STR = NUM_RES.join();
   // TEST: 중복 카드 테스트용 변수 - 실제 게임에서는 중복 될 수 없으므로 NUM_STR 변수를 적용해야함
   const NUM_DUPLICATION_STR = (NUM_RES.length > 1 ? NUM_RES.slice(0, 1) : NUM_RES).join();
 

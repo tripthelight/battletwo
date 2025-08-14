@@ -1,6 +1,4 @@
-import bcrypt from 'bcryptjs';
-import { selectCompairNumbers } from '@/client/store/encryptionStore';
-import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
+import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
 import findCharCode from '@/client/js/functions/findCharCode';
 import choiceCardsClick from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/choiceCardsClick';
 import drawPickCardInfo from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/drawPickCardInfo';
@@ -112,12 +110,7 @@ export default () => {
     if (!IMG || !LI) throw { errCase: 'elementLoss', message: 'select card element failed.' };
 
     // 숫자 복호화 및 이미지 반영
-    const arrNumbs = selectCompairNumbers();
-    const decrypted = arrNumbs.find(n => bcrypt.compareSync(n.toString(), encNumber));
-    if (decrypted == null) throw { errCase: 'errorComn', message: 'card num encrypte error.' };
-
-    const cardNum = findCardNum(decrypted);
-
+    const cardNum = cardNumDecryption(encNumber);
     flipCard[side] = cardNum;
 
     IMG.setAttribute('src', imgSetCardNum(cardNum));

@@ -1,7 +1,5 @@
+import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
 import booleanCheck from '@/client/js/functions/validation/booleanCheck';
-import bcrypt from 'bcryptjs';
-import { selectCompairNumbers } from '@/client/store/encryptionStore';
-import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/network/indianPocker/request';
 import storageMethod from '@/client/js/module/storage/storageMethod';
@@ -37,13 +35,7 @@ export const CHOICE_CARD_DATA_HANDLER = {
     if (encryptKey1) {
       const encryptVal = window.sessionStorage.getItem(encryptKey1);
       if (encryptVal !== '') {
-        const arrNumbs = selectCompairNumbers();
-        const decrypted = arrNumbs.find(n => bcrypt.compareSync(n.toString(), encryptVal));
-        if (decrypted) {
-          selectCard.local = findCardNum(decrypted);
-        } else {
-          throw { errCase: 'errorComn', message: 'reload local select card encrypt error.' };
-        }
+        selectCard.local = cardNumDecryption(encryptVal);
       };
     };
 
@@ -51,16 +43,9 @@ export const CHOICE_CARD_DATA_HANDLER = {
     if (encryptKey2) {
       const encryptVal = window.sessionStorage.getItem(encryptKey2);
       if (encryptVal !== '') {
-        const arrNumbs = selectCompairNumbers();
-        const decrypted = arrNumbs.find(n => bcrypt.compareSync(n.toString(), encryptVal));
-        if (decrypted) {
-          selectCard.remote = findCardNum(decrypted);
-        } else {
-          throw { errCase: 'errorComn', message: 'reload remote select card encrypt error.' };
-        }
+        selectCard.remote = cardNumDecryption(encryptVal);
       };
     };
-
 
     // local, remote player 모두 선택 했을 때, betUser/betUserFirst 체크를 위해 보냄
     const encryptKey3 = storageKeys.find((item) => item === findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88])); // betUser

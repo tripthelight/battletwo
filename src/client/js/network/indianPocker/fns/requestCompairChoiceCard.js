@@ -1,6 +1,4 @@
-import bcrypt from 'bcryptjs';
-import { selectCompairNumbers } from '@/client/store/encryptionStore';
-import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
+import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
 import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import { request } from '@/client/js/network/indianPocker/request';
 import { errorManagement } from '@/client/js/module/errorManagement';
@@ -31,16 +29,13 @@ export default (_data) => {
     const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
     const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
 
-    const compairCard = (_card, _peer) => {
+    const compairCard = (_card) => {
       if (_card === '') return null;
-      const arrNumbs = selectCompairNumbers();
-      const decrypted = arrNumbs.find(n => bcrypt.compareSync(n.toString(), _card));
-      if (decrypted == null) throw { errCase: 'errorComn', message: `${_peer} card num encrypte error.` };
-      return findCardNum(decrypted);
+      return cardNumDecryption(_card);
     };
 
-    const compairRemote = remoteStorage.encryptVal1 !== compairCard(encryptVal2, 'remote');
-    const compairLocal = remoteStorage.encryptVal2 !== compairCard(encryptVal1, 'local');
+    const compairRemote = remoteStorage.encryptVal1 !== compairCard(encryptVal2); // remote
+    const compairLocal = remoteStorage.encryptVal2 !== compairCard(encryptVal1); // local
 
     const encryptKey3 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
     const encryptKey4 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst

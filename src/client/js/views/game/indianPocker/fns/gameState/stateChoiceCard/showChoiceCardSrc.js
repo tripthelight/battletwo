@@ -1,6 +1,4 @@
-import bcrypt from 'bcryptjs';
-import { selectCompairNumbers } from '@/client/store/encryptionStore';
-import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
+import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/network/indianPocker/request';
 import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipUserCardCheck';
@@ -8,10 +6,7 @@ import imgSetCardNum from '@/client/js/views/game/indianPocker/fns/common/images
 
 export default (_target, _num) => {
   // 명령
-  const arrNumbs = selectCompairNumbers();
-  const decryptCardNumb = arrNumbs.find(item => bcrypt.compareSync(item.toString(), _num));
-  const findCardNumb = findCardNum(decryptCardNumb);
-
+  const findCardNumb = cardNumDecryption(_num);
   _target.setAttribute('src', imgSetCardNum(findCardNumb));
 
   const encryptKey = findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85]); // enemyFirstNumber
@@ -20,8 +15,7 @@ export default (_target, _num) => {
   let remoteNum = encryptVal;
   if (encryptVal !== '') {
     try {
-      const decryptRemoteCardNum = arrNumbs.find(item => bcrypt.compareSync(item.toString(), encryptVal));
-      remoteNum = findCardNum(decryptRemoteCardNum);
+      remoteNum = cardNumDecryption(encryptVal);
     } catch (error) {
       request('opponentFouls', { message: '상대 Peer가 enemyFirstNumber sessionStorage 조작' });
       throw error;

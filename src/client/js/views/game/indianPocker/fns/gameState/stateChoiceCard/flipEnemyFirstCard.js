@@ -1,9 +1,6 @@
-import bcrypt from 'bcryptjs';
-import { selectCompairNumbers } from '@/client/store/encryptionStore';
-import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
+import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { errorManagement } from '@/client/js/module/errorManagement';
-import { timeInterval_1, timeInterval_201 } from '@/client/js/functions/variable';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import randomNumberMinMax from '@/client/js/views/game/indianPocker/fns/common/randomNumberMinMax';
 import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipUserCardCheck';
@@ -32,20 +29,11 @@ export default (params) => {
   if (!ENEMY_CARD_IMG) return errorManagement({ errCase: 'elementLoss', message: '..choice-card 엘리먼트 li의 img가 없습니다' });
 
   // 명령
-  // storageMethod('s', 'SET_ITEM', 'ulIndexEnemy', RANDOM_UL);
-  // storageMethod('s', 'SET_ITEM', 'liIndexEnemy', RANDOM_LI);
-
   storageMethod('s', 'SET_ITEM', encryptKey1, RANDOM_UL);
   storageMethod('s', 'SET_ITEM', encryptKey2, RANDOM_LI);
   ENEMY_CARD_LI.classList.add('show');
-
-  // ENEMY_CARD_IMG.setAttribute('src', imgGetCardNum(ENEMY_NUMBER));
   console.log('ENEMY_NUMBER >>>>>>>>>>>> ', ENEMY_NUMBER);
-
-  const arrNumbs = selectCompairNumbers();
-  const decryptCardNumb = arrNumbs.find(item => bcrypt.compareSync(item.toString(), ENEMY_NUMBER));
-  const findCardNumb = findCardNum(decryptCardNumb);
-
+  const findCardNumb = cardNumDecryption(ENEMY_NUMBER);
   ENEMY_CARD_IMG.setAttribute('src', imgGetCardNum(findCardNumb));
   flipUserCardCheck({ eNum, pNum });
 };
