@@ -1,3 +1,4 @@
+import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
 import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
 import findCharCode from '@/client/js/functions/findCharCode';
 import choiceCardsClick from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/choiceCardsClick';
@@ -97,9 +98,11 @@ export default () => {
     if (ulIdxStr == null || liIdxStr == null || encNumber == null) {
       throw { errCase: 'elementLoss', message: 'select card element or cardNum sesstionStorage error.' };
     };
-    const ulIdx = Number(ulIdxStr);
-    const liIdx = Number(liIdxStr);
-    if (!Number.isInteger(ulIdx) || !Number.isInteger(liIdx)) return;
+    const ulIdx = Number(findCardNum(ulIdxStr)) - 1;
+    const liIdx = Number(findCardNum(liIdxStr)) - 1;
+    if (!Number.isInteger(ulIdx) || !Number.isInteger(liIdx) || ulIdx < 0 || liIdx < 0) {
+      throw { errCase: 'elementLoss', message: 'select card ul li sesstionStorage number error.' };
+    };
 
     // DOM 탐색
     const CONTAINER = document.getElementById('container');

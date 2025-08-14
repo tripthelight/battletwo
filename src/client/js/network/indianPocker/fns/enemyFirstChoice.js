@@ -46,8 +46,6 @@ export default (_data) => {
         request('opponentFouls', { message: compairLocal ? message.remoteFoul : compairRemote ? message.localFoul : '선택한 카드 다름' });
         throw { errCase: 'foul', message: compairLocal ? message.localFoul : compairRemote ? message.remoteFoul : '선택한 카드 다름' };
       } else {
-        console.log('eNum ::::::::: ', eNum);
-
         // 상대 peer가 선택한 카드 번호 암호화
         const encryptRemoteNum =  cardNumEncryption(eNum - 1);
         storageMethod('s', 'SET_ITEM', encryptKey1, encryptRemoteNum);

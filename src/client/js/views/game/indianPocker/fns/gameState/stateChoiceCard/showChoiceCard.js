@@ -2,7 +2,6 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { findIndexElem, findIndex } from '@/client/js/functions/comnExport';
 import showChoiceCardSrc from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/showChoiceCardSrc';
-import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
 import makeSeq from '@/client/js/views/game/indianPocker/fns/common/mappingCardNum';
 
 export default (_event, _playerNum) => {

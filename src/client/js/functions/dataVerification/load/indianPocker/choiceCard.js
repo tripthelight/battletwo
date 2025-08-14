@@ -48,14 +48,14 @@ export const CHOICE_CARD_DATA_HANDLER = {
     };
 
     // local, remote player 모두 선택 했을 때, betUser/betUserFirst 체크를 위해 보냄
-    const encryptKey3 = storageKeys.find((item) => item === findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88])); // betUser
-    const encryptKey4 = storageKeys.find((item) => item === findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78])); // betUserFirst
+    // const encryptKey3 = storageKeys.find((item) => item === findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88])); // betUser
+    // const encryptKey4 = storageKeys.find((item) => item === findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78])); // betUserFirst
 
     const params = {
       encryptVal1: selectCard.local,
       encryptVal2: selectCard.remote,
-      encryptVal3: window.sessionStorage.getItem(encryptKey3),
-      encryptVal4: window.sessionStorage.getItem(encryptKey4),
+      encryptVal3: booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]), // betUser
+      encryptVal4: booleanCheck([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]), // betUserFirst
     };
 
     // 같은 카드였던 상태에서 내가 팝업 x 버튼 먼저 누르고 대기 상태 일 경우

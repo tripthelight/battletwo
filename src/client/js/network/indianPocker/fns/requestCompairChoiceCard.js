@@ -37,11 +37,6 @@ export default (_data) => {
     const compairRemote = remoteStorage.encryptVal1 !== compairCard(encryptVal2); // remote
     const compairLocal = remoteStorage.encryptVal2 !== compairCard(encryptVal1); // local
 
-    const encryptKey3 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
-    const encryptKey4 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
-    const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
-    const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
-
     const getCompairBet = (remote, local) => {
       if (remote !== '') {
         if (!(remote === 'true' || remote === 'false')) {
@@ -73,8 +68,8 @@ export default (_data) => {
       return false;
     };
 
-    const compairBetUser = getCompairBet(remoteStorage.encryptVal3, encryptVal3);
-    const compairBetUserFirst = getCompairBet(remoteStorage.encryptVal4, encryptVal4);
+    const compairBetUser = getCompairBet(remoteStorage.encryptVal3, booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88])); // betUser
+    const compairBetUserFirst = getCompairBet(remoteStorage.encryptVal4, booleanCheck([90, 89, 80, 70, 68, 84, 65, 77, 74, 78])); // betUserFirst
 
     if (compairRemote || compairLocal || compairBetUser || compairBetUserFirst) {
       const message = {
