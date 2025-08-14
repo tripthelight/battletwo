@@ -128,6 +128,14 @@ battletwo
   - playerFirstNumber, ulIndex, liIndex, betUser, betUserFirst 숫자 및 true, false 암호화 필요
   - 카드 선택에서 비기고 선택한 카드 조작하고 새로고침 하면 새로고침 당한 상대 peer는 아무 반응 없음
 
+- NEW TODO:
+  1. 암/복호화 및 중복되는 반복문 공통처리
+  2. ul, li sessionStorage 숫자 암호화
+     1. 처음 선택할 때 ul li 숫자만 겨우 암호화함 - 상대가 받은 ul li는 아직 숫자임 
+  3. 반칙이나 에러 일 경우 연결 끊기를 어떻게 할지 결정
+  4. 에러 예외처리 정리
+
+
 
 ## 새로고침 전략 - GPT - 새로고침 시 5초 대기
 1. Peer A, B → WebRTC 연결 요청

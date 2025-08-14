@@ -1,4 +1,5 @@
 import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
+import cardNumEncryption from '@/client/js/functions/bcrypt/cardNumEncryption';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import { request } from '@/client/js/network/indianPocker/request';
@@ -45,12 +46,10 @@ export default (_data) => {
         request('opponentFouls', { message: compairLocal ? message.remoteFoul : compairRemote ? message.localFoul : '선택한 카드 다름' });
         throw { errCase: 'foul', message: compairLocal ? message.localFoul : compairRemote ? message.remoteFoul : '선택한 카드 다름' };
       } else {
+        console.log('eNum ::::::::: ', eNum);
+
         // 상대 peer가 선택한 카드 번호 암호화
-        const { selectCompairNumbers } = await import('@/client/store/encryptionStore');
-        const { default: bcrypt } = await import('bcryptjs');
-        const arrNumbs = selectCompairNumbers();
-        const remoteNumIdx = arrNumbs[eNum - 1];
-        const encryptRemoteNum = bcrypt.hashSync(remoteNumIdx.toString(), 3);
+        const encryptRemoteNum =  cardNumEncryption(eNum - 1);
         storageMethod('s', 'SET_ITEM', encryptKey1, encryptRemoteNum);
 
         flipEnemyFirstCard({ pNum, eNum });

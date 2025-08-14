@@ -6,10 +6,8 @@ import eventHanlerErrorComn from '@/client/js/module/eventHanlerErrorComn';
 export default () => {
   // element | seeeion 체크
   const CHOICE_CARD = document.querySelector('.choice-card');
-  // if (!CHOICE_CARD) return errorManagement({ errCase: 'elementLoss', message: '.choice-card 엘리먼트가 없습니다.' });
   if (!CHOICE_CARD) throw { errCase: 'elementLoss', message: '.choice-card 엘리먼트가 없습니다.' };
   const CARDS = CHOICE_CARD.querySelectorAll('li');
-  // if (!CARDS || CARDS.length <= 0) return errorManagement({ errCase: 'elementLoss', message: '.choice-card 의 li가 없거나 length가 0 입니다.' });
   if (!CARDS || CARDS.length <= 0) throw { errCase: 'elementLoss', message: '.choice-card 의 li가 없거나 length가 0 입니다.' };
 
   const invalidateCardClick = () => {
@@ -17,12 +15,6 @@ export default () => {
       CARDS[i].onclick = null;
     };
   };
-
-  const encryptKey1 = findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]); // playerFirstNumber
-  console.log('playerFirstNumber key : ', encryptKey1);
-  const encryptKey2 = findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85]); // enemyFirstNumber
-  console.log('enemyFirstNumber key : ', encryptKey2);
-
 
   // 명령
   for (let i = 0; i < CARDS.length; i++) {

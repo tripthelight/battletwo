@@ -28,8 +28,6 @@ export default {
     });
   },
   nextStep: () => {
-    // storageMethod('s', 'REMOVE_ARR', '', '', ['enemyFirstNumber', 'playerFirstNumber', 'liIndex', 'ulIndex', 'liIndexEnemy', 'ulIndexEnemy', 'enemyCardChoiceReady', 'myNextStepState', 'nextStepChoiceCard']);
-
     // 다음 STEP(basicBet) 에서 사용할 betUser, betUserFirst 뺀 key 리스트
     const choiceDeleteData = storageKeys({
       p1: findCharCode([68, 74, 69, 77, 70, 75, 76, 86, 68, 69]), // indianPocker

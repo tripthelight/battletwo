@@ -1,3 +1,4 @@
+import cardNumEncryption from '@/client/js/functions/bcrypt/cardNumEncryption';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/network/indianPocker/request';
 import showChoiceCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/showChoiceCard';
@@ -15,14 +16,10 @@ export default async (_event) => {
   const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
 
   if (encryptVal2 === '') {
-    const { selectCompairNumbers } = await import('@/client/store/encryptionStore');
-    const { default: bcrypt } = await import('bcryptjs');
-    const arrNumbs = selectCompairNumbers();
     // 랜덤한 카드 생성
-    // const randomValue = arrNumbs[Math.floor(Math.random() * arrNumbs.length)];
+    // const encryptPlayerNum = cardNumEncryption(Math.floor(Math.random() * arrNumbs.length));
     // local peer / remote peer 같은 숫자 생성
-    const randomValue = arrNumbs[0];
-    const encryptPlayerNum = bcrypt.hashSync(randomValue.toString(), 3);
+    const encryptPlayerNum = cardNumEncryption(0);
 
     // local player가 선택한 카드가 없을 때
     showChoiceCard(_event, encryptPlayerNum);

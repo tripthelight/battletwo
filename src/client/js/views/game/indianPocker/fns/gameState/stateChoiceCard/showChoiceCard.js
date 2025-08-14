@@ -2,24 +2,21 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { findIndexElem, findIndex } from '@/client/js/functions/comnExport';
 import showChoiceCardSrc from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/showChoiceCardSrc';
+import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
+import makeSeq from '@/client/js/views/game/indianPocker/fns/common/mappingCardNum';
 
 export default (_event, _playerNum) => {
   // element | seeeion 체크
   const TARGET = _event.target;
   if (!TARGET) throw { errCase: 'errorComn', message: 'TARGET이 없습니다.' };
-
   const TARGET_WRAP = TARGET.closest('.choice-card');
   if (!TARGET_WRAP) throw { errCase: 'errorComn', message: 'TARGET의 closest .choice-card가 없습니다.' };
-
   const TARGET_UL = TARGET.closest('ul');
   if (!TARGET_UL) throw { errCase: 'errorComn', message: 'TARGET의 closest ul이 없습니다.' };
-
   const TARGET_LI = TARGET.closest('li');
   if (!TARGET_LI) throw { errCase: 'errorComn', message: 'TARGET의 closest li가 없습니다.' };
-
   const TARGET_TAG_NAME = TARGET.tagName === 'IMG' ? TARGET : TARGET.querySelector('img');
   if (!TARGET_TAG_NAME) throw { errCase: 'errorComn', message: 'TARGET의 tagName이 없습니다.' };
-
   if (TARGET_LI.classList.contains('show')) return;
 
   // 명령
@@ -30,9 +27,15 @@ export default (_event, _playerNum) => {
 
   storageMethod('s', 'SET_ITEM', encryptKey1, _playerNum);
 
-  TARGET_LI.classList.add('show');
+  // 내가 클릭한 카드버튼이 속한 ul의 index : 두줄이니까 0 or 1
+  const uIdx = findIndexElem(TARGET_UL, TARGET_WRAP);
+  const uRes = findCharCode(makeSeq(uIdx)); // makeSeq 는 0 ~ 1 중 하나를 받아서 1 ~ 1 중 +1된 결과를 리턴
+  storageMethod('s', 'SET_ITEM', encryptKey2, uRes);
+  // 내가 클릭한 카드버튼이 속한 ul > li의 index : 10개니까 0 ~ 9 중 하나
+  const lIdx = findIndex(TARGET_LI);
+  const lRes = findCharCode(makeSeq(lIdx)); // makeSeq 는 0 ~ 9 중 하나를 받아서 1 ~ 10 중 +1된 결과를 리턴
+  storageMethod('s', 'SET_ITEM', encryptKey3, lRes);
 
-  storageMethod('s', 'SET_ITEM', encryptKey2, findIndexElem(TARGET_UL, TARGET_WRAP));
-  storageMethod('s', 'SET_ITEM', encryptKey3, findIndex(TARGET_LI));
+  TARGET_LI.classList.add('show');
   showChoiceCardSrc(TARGET_TAG_NAME, _playerNum);
 };

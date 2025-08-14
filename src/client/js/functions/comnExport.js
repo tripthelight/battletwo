@@ -46,10 +46,10 @@ export const removeElem = (elem) => {
 };
 
 export const findIndexElem = (target, elem) => {
-  let ulEl = Array.from(target.closest("." + elem.className).children);
+  const ulEl = Array.from(target.closest("." + elem.className).children);
   return ulEl.indexOf(target);
 };
 export const findIndex = (target) => {
-  let ulEl = Array.from(target.closest("ul").children);
+  const ulEl = Array.from(target.closest("ul").children);
   return ulEl.indexOf(target);
 };
