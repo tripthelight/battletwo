@@ -65,9 +65,6 @@ const WAIT_ENEMY = {
   hide: () => {
     if (document.querySelector('.wait')) {
       document.querySelector('.wait').remove();
-      /* setTimeout(() => {
-        LOADING_EVENT.hide();
-      }, timeInterval_1); */
     }
   },
 };
@@ -89,7 +86,6 @@ export default function waitPeer(len, nickName) {
     default:
       // error
       alert(text.err);
-      // socket.disconnect();
       window.location.href = '/';
       break;
   }

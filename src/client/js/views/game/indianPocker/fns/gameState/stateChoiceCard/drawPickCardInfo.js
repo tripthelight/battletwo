@@ -1,39 +1,30 @@
+import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import findCharCode from '@/client/js/functions/findCharCode';
-import { timeInterval_1 } from '@/client/js/functions/variable';
-import { errorManagement } from '@/client/js/module/errorManagement';
 import { text } from '@/client/js/functions/language';
 import closePopup from '@/client/js/functions/popup';
 
 export default () => {
   // element | seeeion 체크
   const CONTAINER = document.getElementById('container');
-  // if (!CONTAINER) return errorManagement({ errCase: 'elementLoss', message: '#container 엘리먼트가 없습니다.' });
   if (!CONTAINER) throw { errCase: 'elementLoss', message: '#container 엘리먼트가 없습니다.' };
   const CHOICE_CARD_INFO = CONTAINER.querySelector('.choice-card-info');
   if (CHOICE_CARD_INFO) return;
 
-  /*
-  const ENEMY_CARD_CHOICE_READY = window.sessionStorage.enemyCardChoiceReady;
-  if (ENEMY_CARD_CHOICE_READY) return;
-  */
-  const encryptKey = findCharCode([68, 71, 87, 77, 85, 66, 65, 84, 88, 69]); // enemyCardChoiceReady
-  const encryptval = window.sessionStorage.getItem(encryptKey);
-  if (encryptval !== null && encryptval !== '') return;
+  // session storage check
+  const bRes = booleanCheck([68, 71, 87, 77, 85, 66, 65, 84, 88, 69]); // enemyCardChoiceReady
+  if (bRes !== '') return;
 
   // 명령
-  let elem = document.createElement('div');
-  let inner = document.createElement('div');
-  let spanEl = document.createElement('span');
-  let btnClose = document.createElement('button');
-  let bg = document.createElement('div');
+  const elem = document.createElement('div');
+  const inner = document.createElement('div');
+  const spanEl = document.createElement('span');
+  const btnClose = document.createElement('button');
+  const bg = document.createElement('div');
   bg.classList.add('popup-bg');
   inner.classList.add('popup-inner');
   btnClose.setAttribute('aria-label', text.popup.btnClose);
 
   spanEl.innerHTML = text.indianpocker.choiceFirst;
-  btnClose.onclick = () => {
-    closePopup(btnClose);
-  };
 
   btnClose.classList.add('close-popup');
   inner.appendChild(btnClose);
@@ -43,4 +34,8 @@ export default () => {
   elem.classList.add('choice-card-info');
   elem.classList.add('modal-popup');
   CONTAINER.appendChild(elem);
+
+  btnClose.onclick = () => {
+    closePopup(btnClose);
+  };
 };

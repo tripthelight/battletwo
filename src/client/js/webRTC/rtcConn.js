@@ -40,9 +40,11 @@ export default function webRTC(gameName) {
     const peers = {};
     const remotePeer = 'RemotePeer';
 
-    let serverRefresh = false;
-    let iceConnected = false;
-    let dataChannelOpen = false;
+    const readyCheckObj = {
+      serverRefresh: false,
+      iceConnected: false,
+      dataChannelOpen: false
+    };
 
     /** ==============================================================================================================
      * functions
@@ -61,13 +63,13 @@ export default function webRTC(gameName) {
     };
 
     async function checkReady(roomName, pid) {
-      if (iceConnected && dataChannelOpen) {
+      if (readyCheckObj.iceConnected && readyCheckObj.dataChannelOpen) {
         window.rtcChannels.peerConnection = peers[remotePeer].pc;
         window.rtcChannels.dataChannel = peers[remotePeer].dataChannel;
         connObj.peerConnection = peers[remotePeer].pc;
         connObj.dataChannel = peers[remotePeer].dataChannel;
         await responseComn(gameName);
-        if (!serverRefresh) {
+        if (!readyCheckObj.serverRefresh) {
           await authCheck(gameName, roomName, pid);
         };
 
@@ -87,7 +89,7 @@ export default function webRTC(gameName) {
           };
         };
 
-        if (serverRefresh) {
+        if (readyCheckObj.serverRefresh) {
           const decryptkey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
           const decryptVal = window.sessionStorage.getItem(decryptkey);
 
@@ -148,8 +150,8 @@ export default function webRTC(gameName) {
         const oldPc = peers[remotePeer].pc;
         oldPc.close();
         window.rtcChannels = {};
-        iceConnected = false;
-        dataChannelOpen = false;
+        readyCheckObj.iceConnected = false;
+        readyCheckObj.dataChannelOpen = false;
       };
 
       const pc = new RTCPeerConnection(servers);
@@ -158,7 +160,7 @@ export default function webRTC(gameName) {
 
       // Data Channel opened -----------------------
       dataChannel.onopen = async () => {
-        dataChannelOpen = true;
+        readyCheckObj.dataChannelOpen = true;
         await checkReady(roomName, pid);
       };
 
@@ -197,7 +199,7 @@ export default function webRTC(gameName) {
         };
 
         if (event.target.iceConnectionState === 'connected' || event.target.iceConnectionState === 'completed') {
-          iceConnected = true;
+          readyCheckObj.iceConnected = true;
           await checkReady(roomName, pid);
         };
       };
@@ -212,7 +214,7 @@ export default function webRTC(gameName) {
         pc.ondatachannel = (event) => {
           peers[remotePeer].dataChannel = event.channel;
           event.channel.onopen = async () => {
-            dataChannelOpen = true;
+            readyCheckObj.dataChannelOpen = true;
             await checkReady(roomName, pid);
           };
           event.channel.onmessage = (event) => {};
@@ -252,7 +254,7 @@ export default function webRTC(gameName) {
           };
 
           if (event.target.iceConnectionState === 'connected' || event.target.iceConnectionState === 'completed') {
-            iceConnected = true;
+            readyCheckObj.iceConnected = true;
             await checkReady(roomName, pid);
           };
         };
@@ -276,9 +278,9 @@ export default function webRTC(gameName) {
         console.log('entryOrder 받음');
 
         // 새로고침 후 재접속이면, webRTC 서버에서 refresh true로 받음
-        serverRefresh = false;
+        readyCheckObj.serverRefresh = false;
         if (refresh) {
-          serverRefresh = true;
+          readyCheckObj.serverRefresh = true;
         };
 
         if (setOffer === 'true') {
@@ -311,7 +313,7 @@ export default function webRTC(gameName) {
       if (type === 'responseStorage') {
         console.log('data 받음 >>>>>>>>> ', storageData);
         await insertStorageDate(storageData);
-        if (serverRefresh) {
+        if (readyCheckObj.serverRefresh) {
           await cardVerification();
         }
         resolve();

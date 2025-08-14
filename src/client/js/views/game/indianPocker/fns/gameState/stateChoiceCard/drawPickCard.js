@@ -2,8 +2,6 @@ import bcrypt from 'bcryptjs';
 import { selectCompairNumbers } from '@/client/store/encryptionStore';
 import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
 import findCharCode from '@/client/js/functions/findCharCode';
-import { timeInterval_1, timeInterval_2 } from '@/client/js/functions/variable';
-import { errorManagement } from '@/client/js/module/errorManagement';
 import choiceCardsClick from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/choiceCardsClick';
 import drawPickCardInfo from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/drawPickCardInfo';
 import SVG_BACK from '@/client/assets/images/svg/indian_poker/indian_poker_card/back.svg';
@@ -13,7 +11,6 @@ import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState
 export default () => {
   // element | seeeion 체크
   const GAME_SCENE = document.getElementById('gameScene');
-  // if (!GAME_SCENE) return errorManagement({ errCase: 'elementLoss', message: '#gameScene 엘리먼트가 없습니다.' });
   if (!GAME_SCENE) throw { errCase: 'elementLoss', message: '#gameScene 엘리먼트가 없습니다.' };
   const CHOICE_CARD = GAME_SCENE.querySelector('.choice-card');
   if (!CHOICE_CARD) {

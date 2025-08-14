@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { selectCompairNumbers } from '@/client/store/encryptionStore';
 import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
+import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import { request } from '@/client/js/network/indianPocker/request';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import findCharCode from '@/client/js/functions/findCharCode';
@@ -19,22 +20,10 @@ export default (_data) => {
     }
 
     // 같은 카드였던 상태에서 내가 팝업 x 버튼을 먼저 누르고 대기 상태 일 경우
-    const encryptKey = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
-    const encryptVal = window.sessionStorage.getItem(encryptKey);
-    if (encryptVal !== null) {
-      if (
-        encryptVal !== '' &&
-        !(
-          encryptVal === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]) || // true
-          encryptVal === findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]) // false
-        )
-      ) {
-        throw { errCase: 'sessionStorageLoss', message: 'tieWait storage key failed.' };
-      };
-      if (encryptVal === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) { // true
-        request('responseCompairChoiceCard', { result: true, tieWaitConfirmed: true });
-        return;
-      }
+    const bRes = booleanCheck([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]);  // tieWait
+    if (bRes === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) { // true
+      request('responseCompairChoiceCard', { result: true, tieWaitConfirmed: true });
+      return;
     }
 
     const encryptKey1 = findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]); // playerFirstNumber

@@ -1,3 +1,4 @@
+import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import { errorManagement } from '@/client/js/module/errorManagement';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/network/indianPocker/request';
@@ -14,20 +15,10 @@ export default (_data) => {
       result: result,
     };
 
-    // 내가 먼저 X 버튼을 누르고 대기 상태
-    const keyTieWaitKey = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
-    const keyTieWaitVal = window.sessionStorage.getItem(keyTieWaitKey);
 
-    if (
-      keyTieWaitVal !== '' &&
-      !(
-        keyTieWaitVal === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]) || // true
-        keyTieWaitVal === findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]) // false
-      )
-    ) {
-      throw { errCase: 'sessionStorageLoss', message: 'tieWait storage key failed.' };
-    };
-    if (keyTieWaitVal === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) {
+    // 내가 먼저 X 버튼을 누르고 대기 상태
+    const bRes = booleanCheck([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
+    if (bRes === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) {
       request('responseCompairResultBetting', params);
       return;
     };

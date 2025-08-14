@@ -1,3 +1,4 @@
+import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import bcrypt from 'bcryptjs';
 import { selectCompairNumbers } from '@/client/store/encryptionStore';
 import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
@@ -73,19 +74,8 @@ export const CHOICE_CARD_DATA_HANDLER = {
     };
 
     // 같은 카드였던 상태에서 내가 팝업 x 버튼 먼저 누르고 대기 상태 일 경우
-    const encryptKey5 = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
-    const encryptVal5 = window.sessionStorage.getItem(encryptKey5);
-
-    if (
-      encryptVal5 !== '' &&
-      !(
-        encryptVal5 === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]) || // true
-        encryptVal5 === findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]) // false
-      )
-    ) {
-      throw { errCase: 'sessionStorageLoss', message: 'tieWait storage key failed.' };
-    };
-    if (encryptVal5 === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) { // true
+    const bRes = booleanCheck([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
+    if (bRes === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) { // true
       request('requestCompairChoiceCard', { remoteStorage: params, tieWait: true });
       return;
     }
