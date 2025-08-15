@@ -38,7 +38,45 @@ export default (_data) => {
     const compairLocal = remoteStorage.encryptVal2 !== compairCard(encryptVal1); // local
 
     const getCompairBet = (remote, local) => {
-      if (remote !== '') {
+      if (typeof remote !== 'boolean') {
+        if (!(remote === true || remote === false)) {
+          console.log('1 --------------------- ');
+
+          // remote player가 data 조작
+          return true;
+        };
+      };
+      if (local !== '') {
+        if (!(
+          local === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]) || // true
+          local === findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78])) // false
+        ) {
+          console.log('2 --------------------- ');
+          // local player가 data 조작
+          return true;
+        };
+      };
+      if (remote === true && local !== findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78])) {
+        console.log('3 --------------------- ');
+        // local player가 data 조작
+        return true;
+      } else if (remote === false && local !== findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) {
+        console.log('4 --------------------- ');
+        // local player가 data 조작
+        return true;
+      };
+      if (local === true && remote !== findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78])) {
+        console.log('5 --------------------- ');
+        // remote player가 data 조작
+        return true;
+      } else if (local === false && remote !== findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) {
+        console.log('6 --------------------- ');
+        // remote player가 data 조작
+        return true;
+      }
+      return false;
+
+      /* if (remote !== '') {
         if (!(remote === 'true' || remote === 'false')) {
           // remote player가 data 조작
           return true;
@@ -65,8 +103,12 @@ export default (_data) => {
         // remote player가 data 조작
         return true;
       }
-      return false;
+      return false; */
     };
+
+    console.log('상대 betUser :::::::: ', remoteStorage.encryptVal3);
+    console.log('상대 betUserFirst ::: ', remoteStorage.encryptVal4);
+
 
     const compairBetUser = getCompairBet(remoteStorage.encryptVal3, booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88])); // betUser
     const compairBetUserFirst = getCompairBet(remoteStorage.encryptVal4, booleanCheck([90, 89, 80, 70, 68, 84, 65, 77, 74, 78])); // betUserFirst
@@ -108,18 +150,40 @@ export default (_data) => {
 
       // 사용 예
       const localMsg = msgState('local');
-      if (localMsg) throw { errCase: 'foul', message: localMsg };
+      if (localMsg) {
+        throw {
+          errCase: 'foul',
+          message: localMsg,
+          sendMsg: localMsg
+        };
+      };
 
       const remoteMsg = msgState('remote');
-      if (remoteMsg) request('opponentFouls', { message: remoteMsg });
+      if (remoteMsg) {
+        throw {
+          errCase: 'foul',
+          message: remoteMsg,
+          sendMsg: remoteMsg
+        };
+      };
 
     } else {
       // data 검증에 성공하여 PASS
       request('responseCompairChoiceCard', { result: true, tieWaitConfirmed: false });
     }
-  }).catch((error) => {
-    console.log('requestCompairChoiceCard.js error : ', error);
-    request('opponentFouls', { message: 'requestCompairChoiceCard error : ' });
-    errorManagement({ errCase: 'errorComn', message: 'requestCompairChoiceCard() 함수를 못탐 : ', errorDetails: error });
+  }).catch(async (error) => {
+    console.log('error : ', error);
+    console.log('requestCompairChoiceCard.js onclick error : ');
+
+    const { request } = await import('@/client/js/network/indianPocker/request');
+    request('opponentFouls', { message: error?.sendMsg ?? 'remote player error' });
+
+    const { default: eventHanlerErrorComn } = await import('@/client/js/module/eventHanlerErrorComn');
+    const safe = (error && typeof error === 'object') ? error : {};
+    eventHanlerErrorComn({
+      errCase: 'errorComn',
+      errorDetails: error,
+      ...safe
+    });
   });
 };

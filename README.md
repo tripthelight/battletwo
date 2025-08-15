@@ -130,6 +130,7 @@ battletwo
 
 - NEW TODO:
   1. 암/복호화 및 중복되는 반복문 공통처리
+     1. 서로 선택헤서 누가 선인지 안내팝업 뜬 상태에서 새로고침 시 betUser, betUserFirst boolen을 줄 때, boolean 상태 코드 복잡도가 너무 단순함. 더 해석하기 어렵고 복잡하게 해야함
   2. ul, li sessionStorage 숫자 암호화
   3. 반칙이나 에러 일 경우 연결 끊기를 어떻게 할지 결정
   4. 에러 예외처리 정리
