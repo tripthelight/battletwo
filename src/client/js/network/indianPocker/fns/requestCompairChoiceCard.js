@@ -38,7 +38,13 @@ export default (_data) => {
     const compairLocal = remoteStorage.encryptVal2 !== compairCard(encryptVal1); // local
 
     const getCompairBet = (remote, local) => {
-      if (typeof remote !== 'boolean') {
+      if (typeof remote === 'string' && remote !== '') {
+        console.log('0 --------------------- ');
+
+        // remote player가 data 조작
+        return true;
+      };
+      if (typeof remote === 'boolean') {
         if (!(remote === true || remote === false)) {
           console.log('1 --------------------- ');
 

@@ -1,5 +1,6 @@
 import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
 import booleanCheck from '@/client/js/functions/validation/booleanCheck';
+import booleanReturn from '@/client/js/functions/validation/booleanReturn';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/network/indianPocker/request';
 import storageMethod from '@/client/js/module/storage/storageMethod';
@@ -53,51 +54,25 @@ export const CHOICE_CARD_DATA_HANDLER = {
     console.log('betUser :::::::::: ', window.sessionStorage.getItem(findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88])));
     console.log('betUserFirst ::::: ', window.sessionStorage.getItem(findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78])));
 
-    const decodeBool = (nums) => {
+    /* const decodeBool = (nums) => {
       const s = booleanCheck(nums);
       const BT = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]);  // true
       const BF = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
-      if (s === BT) return BT !== BF; // true 난독화
-      if (s === BF) return BT === BF; // false 난독화
-    };
-    // 코드 의미를 숨긴 불필요한 연산 섞기
-    /* const decodeBool = (m) => (() => {
-      // 문자열 생성기
-      const _ = (a) => String.fromCharCode.apply(null, a);
+      if (s === BT) return true; // true 난독화 필요
+      if (s === BF) return false; // false 난독화 필요
+    }; */
 
-      // "true" / "false" 원본 코드(직접 의미 노출 회피)
-      const $ = [
-        [69,67,72,65,74,68,73,80,66,75],     // t
-        [70,74,89,84,79,75,88,87,85,78]      // f
-      ].map(_);
-
-      // 입력 디코딩
-      const x = booleanCheck(m);
-
-      // x와 t/f 일치 여부(불 키워드 없이 연산만으로 판정)
-      const et = +!(x.localeCompare($[0]));  // x==t → 1, else → 0
-      const ef = +!(x.localeCompare($[1]));  // x==f → 1, else → 0
-
-      // t/f 둘 다 아니면 미정 처리
-      if (!((et | ef) ^ 0)) return void 0;
-
-      // 선택 인덱스: f면 1, t면 0
-      const i = ef; // 0 or 1
-
-      // 논리값 생성기(키워드 없이 항상 참/거짓 산출)
-      const T = () => ((1|0) === 1);        // 항상 참
-      const F = () => (((1<<4) & 1) === 1); // 항상 거짓(16&1=0)
-
-      // 선택 실행
-      return [T, F][i]();
-    })(); */
+    // const betUserVal = decodeBool([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);
+    // const betUserFirstVal = decodeBool([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]);
+    // console.log('betUserVal :::::::::: ', betUserVal);
+    // console.log('betUserFirstVal ::::: ', betUserFirstVal);
 
     // local, remote player 모두 선택 했을 때, betUser/betUserFirst 체크를 위해 보냄
     const params = {
       encryptVal1: selectCard.local,
       encryptVal2: selectCard.remote,
-      encryptVal3: decodeBool([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]), // betUser
-      encryptVal4: decodeBool([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]), // betUserFirst
+      encryptVal3: booleanReturn([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]), // betUser
+      encryptVal4: booleanReturn([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]), // betUserFirst
     };
 
     // 같은 카드였던 상태에서 내가 팝업 x 버튼 먼저 누르고 대기 상태 일 경우
