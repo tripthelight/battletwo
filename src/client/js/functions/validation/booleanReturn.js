@@ -29,7 +29,7 @@ export default (() => {
     // s: 입력 nums를 해석한 문자열
     const s  = (0, booleanCheck)(nums);
 
-    // BT/BF: 반드시 "원본 순서"를 유지해야 매칭됨    const BT = call(findCharCode, id([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])); // true 시드
+    // BT/BF: 반드시 "원본 순서"를 유지해야 매칭됨
     const BT = call(findCharCode, id([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])); // true 시드
     const BF = call(findCharCode, id([70, 74, 89, 84, 79, 75, 88, 87, 85, 78])); // false 시드
 
@@ -42,7 +42,7 @@ export default (() => {
       case 2:  return Ω(7) ? T : F;             // 항상 T
       case 1:  return (Ω(8) && !Ω(8)) ? T : F;  // 항상 F
       // default: return void 0;                // 매칭 실패 시 undefined
-      default: return ''                        // 매칭 실패 시 '
+      default: return ''                        // 매칭 실패 시 ''
     }
   };
 })();
