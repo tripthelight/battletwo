@@ -1,6 +1,6 @@
+import { selectCompairNumbers } from '@/client/store/encryptionStore';
 import cardNumEncryption from '@/client/js/functions/bcrypt/cardNumEncryption';
 import findCharCode from '@/client/js/functions/findCharCode';
-import { request } from '@/client/js/network/indianPocker/request';
 import showChoiceCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/showChoiceCard';
 import dataHandler from '@/client/js/functions/dataVerification/click/dataHandler';
 
@@ -17,16 +17,17 @@ export default async (_event) => {
 
   if (encryptVal2 === '') {
     // 랜덤한 카드 생성
-    // const encryptPlayerNum = cardNumEncryption(Math.floor(Math.random() * arrNumbs.length));
+    const encryptPlayerNum = cardNumEncryption(Math.floor(Math.random() * selectCompairNumbers().length));
     // local peer / remote peer 같은 숫자 생성
-    const encryptPlayerNum = cardNumEncryption(0);
+    // const encryptPlayerNum = cardNumEncryption(0);
 
     // local player가 선택한 카드가 없을 때
     showChoiceCard(_event, encryptPlayerNum);
   } else {
-    // local player가 선택한 카드가 있을 때
-    const message = '내가 선택하기 전 카드 번호 sessionStorage value 조작';
-    request('opponentFouls', { message });
-    throw { errCase: 'sessionStorageLoss', message }
+    throw {
+      errCase: 'sessionStorageLoss',
+      message: '내가 선택하기 전 카드 번호 sessionStorage value 조작',
+      sendMsg: '상대가 선택하기 전 카드 번호 sessionStorage value 조작'
+    };
   };
 };

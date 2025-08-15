@@ -38,6 +38,10 @@ export default (_code) => {
       // console.log('NUM 10');
       return decoder(27 + 30, 100 / 2 - 1, 10 * 5 - 2, 42 + 8); // 10 49, 48
     default:
-      throw { errCase: 'cardNum', message: 'drawEnemyCard.js - not find card' }
+      throw {
+        errCase: 'cardNum',
+        message: 'local drawEnemyCard.js - not find card',
+        sendMsg: 'remote drawEnemyCard.js - not find card'
+      }
   }
 };

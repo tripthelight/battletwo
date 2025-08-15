@@ -68,9 +68,13 @@ document.onreadystatechange = async () => {
       indianPockerGameState.choiceCard();
     };
 
+    // console.log('playerFirstNumber :::: ', findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]));
+    // console.log('enemyFirstNumber ::::: ', findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85]));
+
   } catch (error) {
     console.log('error indianPocker.js >>>>>>>>>>>> ', error);
-    request('opponentFouls', { message: 'remote player error' });
+
+    request('opponentFouls', { message: error && error.sendMsg ? error.sendMsg : 'remote player error' });
     errorManagement(error);
   }
 };

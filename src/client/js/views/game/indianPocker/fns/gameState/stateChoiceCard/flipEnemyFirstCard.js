@@ -9,13 +9,30 @@ import imgGetCardNum from '@/client/js/views/game/indianPocker/fns/common/images
 export default (params) => {
   const { eNum, pNum }  = params;
 
-  // element | seeeion 체크
+  // seeeion 체크
   const encryptKey1 = findCharCode([78, 72, 89, 73, 67, 85, 71, 79, 77, 76]); // ulIndexEnemy
   const encryptKey2 = findCharCode([77, 67, 69, 73, 72, 75, 68, 82, 71, 80]); // liIndexEnemy
   const encryptKey3 = findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85]); // enemyFirstNumber
 
+  const encryptKey4 = findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]); // playerFirstNumber
+  const encryptKey5 = findCharCode([78, 73, 68, 76, 67, 82, 87, 83, 89, 70]); // ulIndex
+  const encryptKey6 = findCharCode([83, 70, 79, 67, 65, 71, 66, 87, 77, 86]); // liIndex
+
   const RANDOM_UL = randomNumberMinMax(0, 1);
-  const RANDOM_LI = randomNumberMinMax(0, 9);
+  const RANDOM_LI = randomNumberMinMax(0, 9,
+    (encryptKey4 !== '' && encryptKey5 !== '' && encryptKey6 !== '')
+      ? (() => {
+          // element 체크 + 정리
+          const CHOICE_CARD = document.querySelector('.choice-card');
+          if (!CHOICE_CARD) throw { errCase: 'elementLoss', message: '.choice-card 엘리먼트가 없습니다.' };
+          const CHOICE_CARDS = CHOICE_CARD.querySelectorAll('li');
+          if (!CHOICE_CARDS || CHOICE_CARDS.length <= 0) throw { errCase: 'elementLoss', message: '.choice-card 의 li가 없거나 length가 0보다 작습니다.' };
+
+          // 상대가 선택한 카드의 li index를 제외한 랜덤 숫자 선택
+          return Array.from(CHOICE_CARDS).findIndex(li => li.classList.contains('show'));
+        })()
+      : undefined
+  );
 
   const uRes = findCharCode(makeSeq(RANDOM_UL)); // makeSeq 는 0 ~ 1 중 하나를 받아서 1 ~ 1 중 +1된 결과를 리턴
   const lRes = findCharCode(makeSeq(RANDOM_LI)); // makeSeq 는 0 ~ 9 중 하나를 받아서 1 ~ 10 중 +1된 결과를 리턴

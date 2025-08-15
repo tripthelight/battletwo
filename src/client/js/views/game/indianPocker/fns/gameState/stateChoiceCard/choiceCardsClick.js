@@ -1,7 +1,6 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import pickCardInit from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/pickCardInit';
-import eventHanlerErrorComn from '@/client/js/module/eventHanlerErrorComn';
 
 export default () => {
   // element | seeeion 체크
@@ -36,8 +35,19 @@ export default () => {
         const encryptVal = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
         storageMethod('s', 'SET_ITEM', encryptKey, encryptVal);
       } catch (error) {
+        console.log('error : ', error);
         console.log('choiceCardsClick.js onclick error : ');
-        eventHanlerErrorComn(error);
+
+        const { request } = await import('@/client/js/network/indianPocker/request');
+        request('opponentFouls', { message: error?.sendMsg ?? 'remote player error' });
+
+        const { default: eventHanlerErrorComn } = await import('@/client/js/module/eventHanlerErrorComn');
+        const safe = (error && typeof error === 'object') ? error : {};
+        eventHanlerErrorComn({
+          errCase: 'errorComn',
+          errorDetails: error,
+          ...safe
+        });
       };
     };
   };

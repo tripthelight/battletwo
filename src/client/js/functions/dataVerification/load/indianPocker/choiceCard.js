@@ -22,8 +22,11 @@ export const CHOICE_CARD_DATA_HANDLER = {
   handleReload(storageKeys) {
     if (this.storageKeyDeleteCheck(storageKeys)) {
       const message = (_peer) => `${_peer} player가 sessionStorage 삭제함`;
-      request('opponentFouls', { message: message('remote') });
-      throw { errCase: 'foul', message: message('local') }
+      throw {
+        errCase: 'sessionStorageLoss',
+        message: message('local'),
+        sendMsg: message('remote')
+      };
     };
 
     const selectCard = {
@@ -47,10 +50,10 @@ export const CHOICE_CARD_DATA_HANDLER = {
       };
     };
 
-    // local, remote player 모두 선택 했을 때, betUser/betUserFirst 체크를 위해 보냄
-    // const encryptKey3 = storageKeys.find((item) => item === findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88])); // betUser
-    // const encryptKey4 = storageKeys.find((item) => item === findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78])); // betUserFirst
+    console.log('betUser :::::::::: ', window.sessionStorage.getItem(findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88])));
+    console.log('betUserFirst ::::: ', window.sessionStorage.getItem(findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78])));
 
+    // local, remote player 모두 선택 했을 때, betUser/betUserFirst 체크를 위해 보냄
     const params = {
       encryptVal1: selectCard.local,
       encryptVal2: selectCard.remote,

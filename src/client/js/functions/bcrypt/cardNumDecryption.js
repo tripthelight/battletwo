@@ -6,16 +6,25 @@ export default function (_num) {
   try {
     const arrNumbs = selectCompairNumbers();
     if (!arrNumbs || (arrNumbs && arrNumbs.length === 0)) {
-      throw { message: 'cardNum length 0' };
+      throw {
+        message: 'local cardNum length 0',
+        sendMsg: 'remote cardNum length 0'
+      };
     };
     const decrypted = arrNumbs.find(n => bcrypt.compareSync(n.toString(), _num));
-    if (decrypted === null) throw { message: 'card num encrypte error.' };
+    if (decrypted === null || decrypted === undefined) {
+      throw {
+        message: 'local card num encrypt error.',
+        sendMsg: 'remote card num encrypt error.'
+      };
+    };
     const cardNum = findCardNum(decrypted);
     return cardNum;
   } catch (error) {
     throw {
-      errCase: error && error.errCase ? error.errCase : 'cardNum',
-      message: error && error.message ? error.message : 'card number not found'
+      errCase: error?.errCase ?? 'cardNum',
+      message: error?.message ?? 'local card number not found',
+      sendMsg: error?.sendMsg ?? 'remote card number not found'
     };
-  }
+  };
 };

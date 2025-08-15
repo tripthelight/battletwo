@@ -12,21 +12,24 @@ export default (_target, _num) => {
   const encryptKey = findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85]); // enemyFirstNumber
   const encryptVal = window.sessionStorage.getItem(encryptKey);
 
-  let remoteNum = encryptVal;
-  if (encryptVal !== '') {
+  // 상대가 선택하기 전이 아니라면 값 복호화
+  const safeRemoteNum = (() => {
+    if (encryptVal === '') return encryptVal;
     try {
-      remoteNum = cardNumDecryption(encryptVal);
+      return cardNumDecryption(encryptVal);
     } catch (error) {
-      request('opponentFouls', { message: '상대 Peer가 enemyFirstNumber sessionStorage 조작' });
-      throw error;
+      console.log('error : ', error);
+      throw {
+        errCase: 'sessionStorageLoss',
+        message: '내가 선택하기 전 상대 카드 번호 sessionStorage value 조작',
+        sendMsg: '상대 Peer가 내 카드 번호 sessionStorage value 조작'
+      };
     }
-  };
+  })();
 
+  request('choiceFirst', { eNum: findCardNumb, pNum: safeRemoteNum });
 
-  // local player가 선택한 카드를 remote player에게 보내기 : choiceFirst
-  request('choiceFirst', { eNum: findCardNumb, pNum: remoteNum });
-  // 내가 선택했는데 상대 peer가 선택한 카드가 있는 경우
   if (encryptVal !== '') {
-    flipUserCardCheck({ pNum: findCardNumb, eNum: remoteNum });
-  };
+    flipUserCardCheck({ pNum: findCardNumb, eNum: safeRemoteNum });
+  }
 };

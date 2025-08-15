@@ -1,6 +1,5 @@
-import { errorManagement } from '@/client/js/module/errorManagement';
 import { request } from '@/client/js/network/indianPocker/request';
-import findCharCode from '@/client/js/functions/findCharCode';
+import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 
 /**
  * clickResultBetting
@@ -9,22 +8,36 @@ import findCharCode from '@/client/js/functions/findCharCode';
  * @param {string} result 선플레이어 결과 - [start: 내가 높음 | end: 내가 낮음 | tie: 같은 카드]
  * @returns
  */
-export default async (storageKeys, result) => {
-  const allKeys = Object.keys(sessionStorage);
-  const setKeys = new Set(allKeys);
-  const allExist = storageKeys.every((key) => setKeys.has(key));
-  if (allExist) {
-    // local player 모든 key가 있음
-    // betUser, betUserFirst를를 상대 peer와 검증
-    // tie일 경우 betUser, betUserFirst 빈값임
-    const keyRemoteBetUser = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
-    const keyRemoteBetUserFirst = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
-    const valRemoteBetUser = window.sessionStorage.getItem(keyRemoteBetUser);
-    const valRemoteBetUserFirst = window.sessionStorage.getItem(keyRemoteBetUserFirst);
-    request('requestCompairResultBetting', { result: result, resultStorage: { valRemoteBetUser, valRemoteBetUserFirst } });
-  } else {
-    // local player 모든 key가 없음
-    request('opponentFouls', { message: '내가 sessionStorage 삭제' });
-    throw { errCase: 'sessionStorageLoss', message: 'resultBetting click event 에서 storage안에 key가 모두 없습니다.' };
+export default (storageKeys, result) => {
+  // 필요한 키 모두 있는지 확인
+  const allExist = storageKeys.every((k) => sessionStorage.getItem(k) !== null);
+  if (!allExist) {
+    throw {
+      errCase: 'sessionStorageLoss',
+      message: '내가 상대의 선택카드 받을 때, choiceCard 단계에 필요한 sessionStorage key 조작',
+      sendMsg: '내가 선택한 카드 보낼 때, 상대가 choiceCard 단계에 필요한 sessionStorage key 조작',
+    };
   }
+
+  // betUser, betUserFirst 검증 (tie일 경우 빈값)
+  booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
+  booleanCheck([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
+
+  // 문자열 결과를 바로 값으로 매핑
+  const mapped = ({ start: true, end: false, tie: '' })[result];
+  if (![true, false, ''].includes(mapped)) {
+    throw {
+      errCase: 'errorComn',
+      message: `모두 카드 선택 후 알림팝업의 X 버튼을 눌렀을 때, 알 수 없는 result: ${result}`,
+      sendMsg: `모두 카드 선택 후 알림팝업의 X 버튼을 눌렀을 때, remote의 알 수 없는 result: ${result}`
+    };
+  };
+
+  request('requestCompairResultBetting', {
+    result,
+    resultStorage: {
+      valRemoteBetUser: mapped,
+      valRemoteBetUserFirst: mapped,
+    },
+  });
 };

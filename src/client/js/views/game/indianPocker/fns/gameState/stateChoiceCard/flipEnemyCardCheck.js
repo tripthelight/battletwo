@@ -3,25 +3,35 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 import drawResultCardInfo from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/drawResultCardInfo';
 
 export default (_eNum, _pNum) => {
-  const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
-  const encryptKey2 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
+  try {
+    const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
+    const encryptKey2 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
+    const encryptKey3 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
+    const encryptKey4 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
 
-  if (_eNum > _pNum) {
-    drawResultCardInfo('end');
-    // storageMethod('s', 'SET_ITEM', 'betUser', false);
-    // storageMethod('s', 'SET_ITEM', 'betUserFirst', false);
-    storageMethod('s', 'SET_ITEM', encryptKey1, false);
-    storageMethod('s', 'SET_ITEM', encryptKey2, false);
-  } else if (_eNum < _pNum) {
-    drawResultCardInfo('start');
-    // storageMethod('s', 'SET_ITEM', 'betUser', true);
-    // storageMethod('s', 'SET_ITEM', 'betUserFirst', true);
-    storageMethod('s', 'SET_ITEM', encryptKey1, true);
-    storageMethod('s', 'SET_ITEM', encryptKey2, true);
-  } else if (_eNum === _pNum) {
-    drawResultCardInfo('tie');
-  } else {
-    // return errorManagement({ errCase: 'errorComn', message: 'flipEnemyCardCheck 함수에서 _eNum, _pNum 을 못받았습니다.' });
-    throw { errCase: 'errorComn', message: 'flipEnemyCardCheck 함수에서 _eNum, _pNum 을 못받았습니다.' }
-  }
+    if (_eNum > _pNum) {
+      drawResultCardInfo('end');
+      storageMethod('s', 'SET_ITEM', encryptKey1, encryptKey4);
+      storageMethod('s', 'SET_ITEM', encryptKey2, encryptKey4);
+    } else if (_eNum < _pNum) {
+      drawResultCardInfo('start');
+      storageMethod('s', 'SET_ITEM', encryptKey1, encryptKey3);
+      storageMethod('s', 'SET_ITEM', encryptKey2, encryptKey3);
+    } else if (_eNum === _pNum) {
+      drawResultCardInfo('tie');
+    } else {
+      throw {
+        errCase: 'errorComn',
+        message: 'flipEnemyCardCheck 함수에서 _eNum, _pNum 을 못받음',
+        sendMsg: '상대 Peer의 선택카드 비교 단게에서 error 발생'
+      };
+    };
+  } catch (error) {
+    console.log('error : ', error);
+    throw {
+      errCase: error?.errCase ?? 'errorComn',
+      message: error?.message ?? 'flipEnemyCardCheck error',
+      sendMsg: error?.sendMsg ?? '상대 Peer의 선택카드 비교 단게에서 error 발생'
+    };
+  };
 };

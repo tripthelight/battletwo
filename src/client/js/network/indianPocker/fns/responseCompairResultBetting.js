@@ -1,34 +1,39 @@
-import { errorManagement } from '@/client/js/module/errorManagement';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
-import { request } from '@/client/js/network/indianPocker/request';
 import socketNextStepEvent from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/socketNextStepEvent';
 import againChoiceCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/againChoiceCard';
 
-export default (_data) => {
-  const PROMISE = new Promise((resolve, reject) => {
-    resolve(_data);
-  });
-  PROMISE.then((_data) => {
-    const { compair, result, person } = _data;
+export default async (_data) => {
+  try {
+    const { compair, result } = _data;
 
-    if (compair) {
+    if (
+      compair &&
+      ['start', 'end', 'tie'].includes(result)
+    ) {
       // betUser, betUserFirst 검증 정상
       // 이 후 단계 진행
       LOADING_EVENT.show();
       if (result === 'start' || result === 'end') socketNextStepEvent();
       if (result === 'tie') againChoiceCard();
     } else {
-      if (person === 'local') {
-        // 내가 betUser sessionStorage 조작
-        // 잘못된 접근입니다.
-        errorManagement({ errCase: 'sessionStorageLoss', message: '내가 sessionStorage betUser data 조작' });
-      } else if (person === 'remote') {
-        // 상대가 betUser sessionStorage 조작
-        errorManagement({ errCase: 'foul', message: '상대가 sessionStorage betUser data 조작' });
-        request('opponentFouls', { message: '상대가 sessionStorage betUser data 조작' });
-      }
+      throw {
+        message: '선택 카드 비교 local ERROR.',
+        sendMsg: '선택 카드 비교 remote ERROR.',
+      };
     }
-  }).catch((error) => {
-    errorManagement({ errCase: 'errorComn', message: 'responseCompairResultBetting() 함수를 못탐' });
-  });
+  } catch (error) {
+    console.log('error : ', error);
+    console.log('responseCompairResultBetting.js error : ');
+
+    const { request } = await import('@/client/js/network/indianPocker/request');
+    request('opponentFouls', { message: error?.sendMsg ?? 'remote player error' });
+
+    const { default: eventHanlerErrorComn } = await import('@/client/js/module/eventHanlerErrorComn');
+    const safe = error && typeof error === 'object' ? error : {};
+    eventHanlerErrorComn({
+      errCase: 'errorComn',
+      errorDetails: error,
+      ...safe,
+    });
+  };
 };
