@@ -1,7 +1,8 @@
-import getCookies from '@/client/js/module/cookies/getCookies';
-import delCookies from '@/client/js/module/cookies/delCookies';
 import errorModal from '@/client/components/popup/modal/errorModal';
 import { text } from '@/client/js/functions/language';
+import { getDisConnect } from '@/client/js/webRTC/rtcConn';
+import delCookies from '@/client/js/module/cookies/delCookies';
+import renameSessionStorageKeys from '@/client/js/module/errorHandler/renameSessionStorageKeys';
 
 // UI 알림 표시 함수
 function showErrorNotification(errCase, component, message, target) {
@@ -107,9 +108,9 @@ function showErrorNotification(errCase, component, message, target) {
   };
 
   // disconnected common
-  // if (getCookies({ cookieName: 'gc_at' })) {
-  //   delCookies('gc_at');
-  // };
+  renameSessionStorageKeys();
+  delCookies('gc_at');
+  getDisConnect();
 };
 
 // 오류 복구 로직

@@ -1,6 +1,7 @@
-import { connObj } from '@/client/js/webRTC/rtcConn';
-import storageMethod from '@/client/js/module/storage/storageMethod';
+import { getDisConnect } from '@/client/js/webRTC/rtcConn';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
+import delCookies from '@/client/js/module/cookies/delCookies';
+import renameSessionStorageKeys from '@/client/js/module/errorHandler/renameSessionStorageKeys';
 
 /**
  * CARDS[i].onclick = ...은 등록만 해두는 것이고
@@ -11,20 +12,9 @@ import { errorManagement } from '@/client/js/module/errorHandler/errorManagement
  */
 export default (error) => {
   // delCookies('gc_at');
-  storageMethod('s', 'REMOVE_ALL');
-  if (connObj) {
-    if (
-      connObj.dataChannel &&
-      connObj.dataChannel.readyState === 'open'
-    ) {
-      connObj.dataChannel.close();
-    };
-    if (
-      connObj.peerConnection &&
-      connObj.peerConnection.connectionState === 'connected'
-    ) {
-      connObj.peerConnection.close();
-    };
-  };
+  // storageMethod('s', 'REMOVE_ALL');
+  renameSessionStorageKeys();
+  delCookies('gc_at');
+  getDisConnect();
   errorManagement(error);
 };

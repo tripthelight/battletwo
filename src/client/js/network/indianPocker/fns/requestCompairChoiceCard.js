@@ -76,7 +76,7 @@ export default async (_data) => {
 
       ['local', 'remote'].some(s => {
         const m = msgState(s);
-        if (m) throw throwObj('foul', m);;
+        if (m) throw throwObj('foul', m);
         return false;
       });
 
