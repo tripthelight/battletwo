@@ -52,6 +52,10 @@ document.onreadystatechange = async () => {
 
     await makeCard();
 
+    console.log(findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87])); // playerFirstNumber
+    console.log(findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85])); // enemyFirstNumber
+
+
     if (reload) {
       const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
       const decryptVal = window.sessionStorage.getItem(encryptKey);
