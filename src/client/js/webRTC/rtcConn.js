@@ -136,11 +136,18 @@ export default function webRTC(gameName) {
         };
 
         if (gameName === 'indianPocker') {
-          connObj.signalingServer.send(JSON.stringify({
-            type: 'requestStorage',
-            gameName: gameName,
-            keypair: encrypt.keypair
-          }));
+          console.log('signalingServer =========== ', connObj.signalingServer);
+
+          if (
+            connObj.signalingServer &&
+            connObj.signalingServer.readyState === WebSocket.OPEN
+          ) {
+            connObj.signalingServer.send(JSON.stringify({
+              type: 'requestStorage',
+              gameName: gameName,
+              keypair: encrypt.keypair
+            }));
+          }
         } else {
           resolve();
         };
@@ -152,11 +159,16 @@ export default function webRTC(gameName) {
       // throw { component: 'signalingSocket', event: 'initOnopen', message: 'Failed to send initOnopen' };
       const roomName = await searchRoom();
 
-      connObj.signalingServer.send(JSON.stringify({
-        type: 'entryOrder',
-        gameName,
-        roomName
-      }));
+      if (
+        connObj.signalingServer &&
+        connObj.signalingServer.readyState === WebSocket.OPEN
+      ) {
+        connObj.signalingServer.send(JSON.stringify({
+          type: 'entryOrder',
+          gameName,
+          roomName
+        }));
+      }
     };
 
     async function createPeerConnection(roomName, pid) {
@@ -186,18 +198,28 @@ export default function webRTC(gameName) {
 
       const offer = await pc.createOffer();
       await pc.setLocalDescription(offer);
-      connObj.signalingServer.send(JSON.stringify({
-        type: 'offer',
-        sdp: pc.localDescription
-      }));
+      if (
+        connObj.signalingServer &&
+        connObj.signalingServer.readyState === WebSocket.OPEN
+      ) {
+        connObj.signalingServer.send(JSON.stringify({
+          type: 'offer',
+          sdp: pc.localDescription
+        }));
+      };
 
       // ICE connected ---------------------------------
       pc.onicecandidate = (event) => {
         if (event.candidate) {
-          connObj.signalingServer.send(JSON.stringify({
-            type: 'candidate',
-            candidate: event.candidate
-          }));
+          if (
+            connObj.signalingServer &&
+            connObj.signalingServer.readyState === WebSocket.OPEN
+          ) {
+            connObj.signalingServer.send(JSON.stringify({
+              type: 'candidate',
+              candidate: event.candidate
+            }));
+          };
         };
       };
       pc.oniceconnectionstatechange = async (event) => {
@@ -242,24 +264,32 @@ export default function webRTC(gameName) {
         await pc.setRemoteDescription(new RTCSessionDescription(sdp));
         const answer = await pc.createAnswer();
         await pc.setLocalDescription(answer);
-        connObj.signalingServer.send(JSON.stringify({
-          type: 'answer',
-          sdp: pc.localDescription
-        }));
+        if (
+          connObj.signalingServer &&
+          connObj.signalingServer.readyState === WebSocket.OPEN
+        ) {
+          connObj.signalingServer.send(JSON.stringify({
+            type: 'answer',
+            sdp: pc.localDescription
+          }));
+        };
 
         // ICE connected ---------------------------------
         pc.onicecandidate = (event) => {
           if (event.candidate) {
-            connObj.signalingServer.send(JSON.stringify({
-              type: 'candidate',
-              candidate: event.candidate
-            }));
+            if (
+              connObj.signalingServer &&
+              connObj.signalingServer.readyState === WebSocket.OPEN
+            ) {
+              connObj.signalingServer.send(JSON.stringify({
+                type: 'candidate',
+                candidate: event.candidate
+              }));
+            };
           };
         };
         pc.oniceconnectionstatechange = async (event) => {
           if (event.target.iceConnectionState === 'disconnected') {
-            console.log('반칙 여기 타냐? 2 --------------- ');
-
             if (peers[remotePeer]) {
               // 상대 peer와 연결 끊김 후 새로고침 하면 새로운 peer와 재연결 시도
               await logout();
