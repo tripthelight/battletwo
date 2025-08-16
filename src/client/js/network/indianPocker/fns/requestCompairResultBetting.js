@@ -90,5 +90,5 @@ export default async (_data) => {
   } catch (error) {
     console.log('drawResultCardInfo.js onclick error : ');
     errorManager(error, true);
-  }
+  };
 };

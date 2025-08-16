@@ -10,7 +10,11 @@ import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState
 export default () => {
   // element | seeeion 체크
   const GAME_SCENE = document.getElementById('gameScene');
-  if (!GAME_SCENE) throw { errCase: 'elementLoss', message: '#gameScene 엘리먼트가 없습니다.' };
+  if (!GAME_SCENE) throw {
+    errCase: 'elementLoss',
+    message: 'local peer #gameScene not found.',
+    sendMsg: 'remote peer #gameScene not found.'
+  };
   const CHOICE_CARD = GAME_SCENE.querySelector('.choice-card');
   if (!CHOICE_CARD) {
     const ELEM = document.createElement('div');
@@ -89,7 +93,11 @@ export default () => {
   // 카드 뒤집기 공통 처리
   function reveal(side) {
     const map = KEYMAP[side];
-    if (!map) throw { errCase: 'errorComn', message: 'keymap failed.' };
+    if (!map) throw {
+      errCase: 'errorComn',
+      message: 'local peer keymap failed.',
+      sendMsg: 'remote peer keymap failed.',
+    };
 
     // 세션 값
     const ulIdxStr  = getSessionValByKeyCodes(map.ul);
@@ -118,7 +126,11 @@ export default () => {
     const UL = GAME_SCENE?.querySelectorAll('ul')?.[ulIdx];
     const LI = UL?.querySelectorAll('li')?.[liIdx];
     const IMG = LI?.querySelector('img');
-    if (!IMG || !LI) throw { errCase: 'elementLoss', message: 'select card element failed.' };
+    if (!IMG || !LI) throw {
+      errCase: 'elementLoss',
+      message: 'local peer select card element failed.',
+      sendMsg: 'remote peer select card element failed.'
+    };
 
     // 숫자 복호화 및 이미지 반영
     const cardNum = cardNumDecryption(encNumber);

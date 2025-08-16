@@ -18,12 +18,12 @@ export default async (_data) => {
       if (result === 'tie') againChoiceCard();
     } else {
       throw {
-        message: '선택 카드 비교 local ERROR.',
-        sendMsg: '선택 카드 비교 remote ERROR.',
+        message: 'local peer 선택 카드 비교 ERROR.',
+        sendMsg: 'remote peer 선택 카드 비교 ERROR.',
       };
     }
   } catch (error) {
-    console.log('error : ', error);
+    console.log('responseCompairResultBetting() error : ');
     errorManager(error, true);
   };
 };

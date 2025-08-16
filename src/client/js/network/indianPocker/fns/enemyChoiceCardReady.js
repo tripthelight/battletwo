@@ -26,7 +26,7 @@ export default async (_state) => {
       choiceCardsClick();
     };
   } catch (error) {
-    console.log('enemyChoiceCardReady() error');
+    console.log('enemyChoiceCardReady() error : ');
     errorManager(error, true);
   };
 };

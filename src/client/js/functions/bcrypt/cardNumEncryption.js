@@ -11,8 +11,9 @@ export default function (_idx) {
     return bcrypt.hashSync(hash.toString(), 3);
   } catch (error) {
     throw {
-      errCase: error && error.errCase ? error.errCase : 'cardNum',
-      message: error && error.message ? error.message : 'card number not crypt'
+      errCase: error?.errCase ?? 'cardNum',
+      message: error?.message ?? 'local peer card number not crypt',
+      sendMsg: error?.sendMsg ?? 'remote peer card number not crypt'
     };
   }
 };

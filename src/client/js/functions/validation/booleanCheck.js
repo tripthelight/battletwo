@@ -16,14 +16,19 @@ export default function (_key) {
         ) {
           return encryptval;
         } else {
-          throw { errCase: 'sessionStorageLoss', message: `boolean sessionStorage value error.` };
+          throw {
+            errCase: 'sessionStorageLoss',
+            message: 'local peer boolean sessionStorage value error.',
+            sendMsg: 'remote peer boolean sessionStorage value error.'
+          };
         };
       }
     };
   } catch (error) {
     throw {
-      errCase: error && error.errCase ? error.errCase : 'sessionStorageLoss',
-      message: error && error.message ? error.message : `sessionStorage boolean another error.`
+      errCase: error?.errCase ?? 'sessionStorageLoss',
+      message: error?.message ?? `local peer sessionStorage boolean another error.`,
+      sendMsg: error?.sendMsg ?? `remote peer sessionStorage boolean another error.`,
     };
   }
 }
