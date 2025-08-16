@@ -1,6 +1,6 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 
 export default () => {

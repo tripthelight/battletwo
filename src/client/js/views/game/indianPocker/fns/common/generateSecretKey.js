@@ -1,4 +1,4 @@
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import storageKeys from '@/client/js/functions/dataVerification/storageKeys';
 import { request } from '@/client/js/network/indianPocker/request';
 import encryptionStore from '@/client/store/encryptionStore';

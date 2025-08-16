@@ -1,4 +1,4 @@
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import BattingZoneMoveRt from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMoveRt';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
 import roundEndBetEnemyMoveXY from '@/client/js/views/game/indianPocker/fns/common/roundEndBetEnemyMoveXY';

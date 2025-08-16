@@ -15,6 +15,11 @@ export default async () => {
     storageMethod('s', 'SET_ITEM', encryptKey, JSON.stringify(NUM_ARR));
     console.log('카드 새로 만듬');
   } catch (error) {
-    throw { errCase: 'cardNum', message: 'make card error', errorDetails: error }
+    throw {
+      errCase: 'cardNum',
+      message: 'local peer make card error.',
+      sendMsg: 'remote peer make card error.',
+      errorDetails: error
+    };
   };
 };

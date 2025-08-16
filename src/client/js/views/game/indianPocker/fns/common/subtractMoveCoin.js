@@ -1,6 +1,6 @@
 import pcDraggableCheck from '@/client/js/views/game/indianPocker/fns/common/pcDraggableCheck';
 import addEventsSubtractMoveCoin from '@/client/js/views/game/indianPocker/fns/common/addEventsSubtractMoveCoin';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 
 export default () => {
   const BETTING_ZONE = document.querySelector('.betting-zone');

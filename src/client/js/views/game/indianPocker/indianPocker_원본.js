@@ -2,7 +2,7 @@ import '@/client/assets/scss/game/indianPocker/common';
 import '@/client/js/common/common';
 import reload from '@/client/js/module/reload';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import insertStorageWs from '@/client/js/functions/insertStorageWs';
 import rtcPeer from '@/client/js/webRTC/rtcPeer';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';

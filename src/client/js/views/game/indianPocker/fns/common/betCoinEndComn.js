@@ -1,5 +1,5 @@
 import { timeInterval_1 } from '@/client/js/functions/variable';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import playerCoinsData from '@/client/js/views/game/indianPocker/fns/common/playerCoinsData';
 import { SET_BASIC_BETTING } from '@/client/js/views/game/indianPocker/fns/stateBasicBetting/setBasicBetting';
 

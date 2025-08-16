@@ -1,6 +1,7 @@
 import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/network/indianPocker/request';
+import errorManager from '@/client/js/module/errorHandler/errorManager';
 
 export default async (_data) => {
   try {
@@ -86,19 +87,8 @@ export default async (_data) => {
 
     // 5) 문제 없으면 응답 전송
     request('responseCompairResultBetting', params);
-    // request('responseCompairResultBetting', {...params, result: 'error'});
   } catch (error) {
-    console.log('error : ', error);
     console.log('drawResultCardInfo.js onclick error : ');
-
-    request('opponentFouls', { message: error?.sendMsg ?? 'remote player error' });
-
-    const { default: eventHanlerErrorComn } = await import('@/client/js/module/eventHanlerErrorComn');
-    const safe = error && typeof error === 'object' ? error : {};
-    eventHanlerErrorComn({
-      errCase: 'errorComn',
-      errorDetails: error,
-      ...safe,
-    });
+    errorManager(error, true);
   }
 };

@@ -1,4 +1,4 @@
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import findCharCode from '@/client/js/functions/findCharCode';
 
 export default (_hour, _minute) => {

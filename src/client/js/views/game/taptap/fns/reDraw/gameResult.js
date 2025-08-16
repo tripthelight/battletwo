@@ -1,5 +1,5 @@
 import { text, comnText } from '@/client/js/functions/language';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 
 export default () => {

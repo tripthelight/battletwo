@@ -1,5 +1,5 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { text } from '@/client/js/functions/language';
 import { timeInterval_1, timeInterval_1000, timeInterval_2000, timeInterval_3201, timeInterval_5000 } from '@/client/js/functions/variable';
 import { bottomSheet } from '@/client/components/popup/bottomSheet/bottomSheet';

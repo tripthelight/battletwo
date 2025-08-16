@@ -1,5 +1,5 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { getStyle } from '@/client/js/functions/comnExport';
 import { timeInterval_1, timeInterval_1001 } from '@/client/js/functions/variable';
 

@@ -1,5 +1,5 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import removeCoinActive from '@/client/js/views/game/indianPocker/fns/common/removeCoinActive';
 import playerCoinsData from '@/client/js/views/game/indianPocker/fns/common/playerCoinsData';

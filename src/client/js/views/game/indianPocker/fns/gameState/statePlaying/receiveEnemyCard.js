@@ -1,4 +1,4 @@
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import removeEnemyArrValue from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/removeEnemyArrValue';
 
 export default (_num) => {

@@ -1,5 +1,5 @@
 import { timeInterval_1 } from '@/client/js/functions/variable';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import drewElementComn from '@/client/js/views/game/indianPocker/fns/common/drewElementComn';
 import resultAnimation from '@/client/js/views/game/indianPocker/fns/gameState/stateGameover/resultAnimation';
 

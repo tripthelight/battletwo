@@ -1,6 +1,6 @@
 import { connObj } from '@/client/js/webRTC/rtcConn';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 
 /**
  * CARDS[i].onclick = ...은 등록만 해두는 것이고

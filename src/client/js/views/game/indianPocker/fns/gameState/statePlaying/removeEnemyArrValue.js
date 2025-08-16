@@ -1,7 +1,7 @@
 import validateStore, { updateEnum } from '@/client/store/validateStore';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { request } from '@/client/js/network/indianPocker/request';
 import P1 from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/P1';
 import P2 from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/P2';

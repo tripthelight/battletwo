@@ -1,4 +1,4 @@
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 
 export default function responseEnterChoiceCard(keys) {
   if (!window.__customReloadFlag) return;

@@ -1,5 +1,5 @@
 import { timeInterval_1 } from '@/client/js/functions/variable';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import rfDrawBettingZone from '@/client/js/refresh/indianpoker/refreshPlaying/refreshRoundEndDrew/rfDrawBettingZone';
 
 export default () => {

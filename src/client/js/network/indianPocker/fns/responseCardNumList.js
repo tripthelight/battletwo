@@ -1,5 +1,5 @@
 import validateStore, { updateRandomNum } from '@/client/store/validateStore';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { request } from '@/client/js/network/indianPocker/request';

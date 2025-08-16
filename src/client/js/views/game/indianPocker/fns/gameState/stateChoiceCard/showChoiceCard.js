@@ -7,15 +7,35 @@ import makeSeq from '@/client/js/views/game/indianPocker/fns/common/mappingCardN
 export default (_event, _playerNum) => {
   // element | seeeion 체크
   const TARGET = _event.target;
-  if (!TARGET) throw { errCase: 'errorComn', message: 'TARGET이 없습니다.' };
+  if (!TARGET) throw {
+    errCase: 'elementLoss',
+    message: 'local peer target failed.',
+    sendMsg: 'remote peer target failed.'
+  };
   const TARGET_WRAP = TARGET.closest('.choice-card');
-  if (!TARGET_WRAP) throw { errCase: 'errorComn', message: 'TARGET의 closest .choice-card가 없습니다.' };
+  if (!TARGET_WRAP) throw {
+    errCase: 'elementLoss',
+    message: 'local peer .choice-card in target failed.',
+    sendMsg: 'remote peer .choice-card in target failed.'
+  };
   const TARGET_UL = TARGET.closest('ul');
-  if (!TARGET_UL) throw { errCase: 'errorComn', message: 'TARGET의 closest ul이 없습니다.' };
+  if (!TARGET_UL) throw {
+    errCase: 'elementLoss',
+    message: 'local peer closest ul in target failed.',
+    sendMsg: 'remote peer closest ul in target failed.'
+  };
   const TARGET_LI = TARGET.closest('li');
-  if (!TARGET_LI) throw { errCase: 'errorComn', message: 'TARGET의 closest li가 없습니다.' };
+  if (!TARGET_LI) throw {
+    errCase: 'elementLoss',
+    message: 'local peer closest li in target failed.',
+    sendMsg: 'remote peer closest li in target failed.'
+  };
   const TARGET_TAG_NAME = TARGET.tagName === 'IMG' ? TARGET : TARGET.querySelector('img');
-  if (!TARGET_TAG_NAME) throw { errCase: 'errorComn', message: 'TARGET의 tagName이 없습니다.' };
+  if (!TARGET_TAG_NAME) throw {
+    errCase: 'elementLoss',
+    message: 'local peer tagName in target failed.',
+    sendMsg: 'remote peer tagName in target failed.'
+  };
   if (TARGET_LI.classList.contains('show')) return;
 
   // 명령

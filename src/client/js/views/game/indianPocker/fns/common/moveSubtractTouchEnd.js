@@ -2,7 +2,7 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 import deviceStateStore from '@/client/store/deviceStateStore';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState';

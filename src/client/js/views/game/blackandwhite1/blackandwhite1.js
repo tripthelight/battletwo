@@ -3,7 +3,7 @@ import '@/client/js/common/common';
 import rtcPeer from '@/client/js/webRTC/rtcPeer';
 import reload from '@/client/js/module/reload';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 
 import { request } from '@/client/js/network/blackAndWhite1/request';
 

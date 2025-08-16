@@ -1,7 +1,7 @@
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import { text } from '@/client/js/functions/language';
 import { timeInterval_1 } from '@/client/js/functions/variable';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import btnCallRaiseEventBefore from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/btnCallRaiseEventBefore';
 
 export default () => {

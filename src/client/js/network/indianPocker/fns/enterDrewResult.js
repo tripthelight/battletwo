@@ -1,6 +1,6 @@
 import { timeInterval_100, timeInterval_101, timeInterval_102, timeInterval_1000 } from '@/client/js/functions/variable';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { request } from '@/client/js/network/indianPocker/request';
 import { RF_END_DREW } from '@/client/js/refresh/indianpoker/refreshPlaying/refreshRoundEndDrew/refreshDrewInit';
 import createBattleCardNum from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/createBattleCardNum';

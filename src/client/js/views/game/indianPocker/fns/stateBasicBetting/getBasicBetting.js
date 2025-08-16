@@ -1,6 +1,6 @@
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import EnemyBlockMoveBattingZone from '@/client/js/views/game/indianPocker/fns/common/EnemyBlockMoveBattingZone.js';
 import saveBetCoinSession from '@/client/js/views/game/indianPocker/fns/common/saveBetCoinSession';
 import getTranslateMH from '@/client/js/views/game/indianPocker/fns/common/getTranslateMH.js';

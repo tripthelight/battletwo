@@ -1,5 +1,5 @@
 import { timeInterval_1 } from '@/client/js/functions/variable';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { RULES } from '@/client/js/views/game/indianPocker/fns/rule/rules.js';
 import removeCardElem from '@/client/js/views/game/indianPocker/fns/common/removeCardElem.js';
 import gameEnd from '@/client/js/views/game/indianPocker/fns/common/gameEnd.js';

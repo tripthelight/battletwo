@@ -31,5 +31,5 @@ export default (_target, _num) => {
 
   if (encryptVal !== '') {
     flipUserCardCheck({ pNum: findCardNumb, eNum: safeRemoteNum });
-  }
+  };
 };

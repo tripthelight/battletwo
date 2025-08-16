@@ -1,6 +1,6 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_201 } from '@/client/js/functions/variable';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 
 export default () => {
   const PLAYER_BLOCK = document.querySelector('.player-block');

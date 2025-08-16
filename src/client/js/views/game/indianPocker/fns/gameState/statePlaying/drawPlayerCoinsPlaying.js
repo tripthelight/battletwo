@@ -1,5 +1,5 @@
 import deviceStateStore from '@/client/store/deviceStateStore';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';

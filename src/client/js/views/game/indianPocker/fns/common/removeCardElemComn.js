@@ -1,5 +1,5 @@
 import { timeInterval_1, timeInterval_201 } from '@/client/js/functions/variable';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 
 export default (_ec, _pc, _bb, _bur) => {
   return new Promise((resolve, reject) => {

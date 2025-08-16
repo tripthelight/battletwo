@@ -1,5 +1,5 @@
 import { timeInterval_1 } from '@/client/js/functions/variable';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import drewCheckInfo from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/drewCheckInfo';
 import refreshBetUserCheck from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/refreshBetUserCheck';
 import SVG_BACK from '@/client/assets/images/svg/indian_poker/indian_poker_card/back.svg';

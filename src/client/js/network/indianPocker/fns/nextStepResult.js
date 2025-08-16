@@ -1,6 +1,6 @@
 import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import findCharCode from '@/client/js/functions/findCharCode';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import STATE_CHOICE_CARD from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/init';
 

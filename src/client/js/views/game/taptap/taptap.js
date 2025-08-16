@@ -4,7 +4,7 @@ import '@/client/assets/scss/game/taptap/common';
 import '@/client/js/common/common';
 import rtcPeer from '@/client/js/webRTC/rtcPeer';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import taptapGameState from '@/client/js/gameState/taptap';
 import cowndown from '@/client/js/views/game/taptap/fns/cowndown';
 import countStyle from '@/client/js/views/game/taptap/fns/countStyle';

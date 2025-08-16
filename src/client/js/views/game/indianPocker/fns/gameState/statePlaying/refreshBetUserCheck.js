@@ -1,5 +1,5 @@
 import { timeInterval_1, timeInterval_2 } from '@/client/js/functions/variable';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import moveCoins from '@/client/js/views/game/indianPocker/fns/common/moveCoins';
 import subtractMoveCoin from '@/client/js/views/game/indianPocker/fns/common/subtractMoveCoin';
 import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState';

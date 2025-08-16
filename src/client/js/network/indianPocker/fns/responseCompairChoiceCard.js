@@ -1,15 +1,11 @@
 import booleanCheck from '@/client/js/functions/validation/booleanCheck';
-import { errorManagement } from '@/client/js/module/errorManagement';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import findCharCode from '@/client/js/functions/findCharCode';
 import drawPickCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/drawPickCard';
-import { request } from '@/client/js/network/indianPocker/request';
+import errorManager from '@/client/js/module/errorHandler/errorManager';
 
-export default (_data) => {
-  const PROMISE = new Promise((resolve, reject) => {
-    resolve(_data);
-  });
-  PROMISE.then((_data) => {
+export default async (_data) => {
+  try {
     const { result, tieWaitConfirmed } = _data;
 
     if (result) {
@@ -28,11 +24,10 @@ export default (_data) => {
 
       } else {
         LOADING_EVENT.hide();
-      }
-    }
-  }).catch((error) => {
-    console.log('error : ', error);
-    request('opponentFouls', { message: 'remote player error' });
-    errorManagement({ errCase: 'errorComn', message: 'responseCompairChoiceCard() 함수를 못탐', errorDetails: error });
-  });
+      };
+    };
+  } catch (error) {
+    console.log('responseCompairChoiceCard() error : ');
+    errorManager(error, true);
+  };
 };

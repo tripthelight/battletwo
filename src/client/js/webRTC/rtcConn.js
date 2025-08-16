@@ -3,7 +3,7 @@ import delCookies from '@/client/js/module/cookies/delCookies';
 import { debug } from '@/client/js/module/debug';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { responseComn } from '@/client/js/network/responseComn';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import findCharCode from '@/client/js/functions/findCharCode';
 import logout from '@/client/js/auth/logout';
 import authCheck from '@/client/js/auth/authCheck';
@@ -14,7 +14,7 @@ import insertStorageDate from '@/client/js/functions/insertStorageDate';
 import cardVerification from '@/client/js/views/game/indianPocker/fns/common/cardVerification';
 
 export const encrypt = { keypair: '' };
-export const connObj = { dataChannel: null, peerConnection: null }
+export const connObj = { dataChannel: null, peerConnection: null, serverRefresh: false };
 
 export default function webRTC(gameName) {
   return new Promise(async (resolve, reject) => {
@@ -41,7 +41,6 @@ export default function webRTC(gameName) {
     const remotePeer = 'RemotePeer';
 
     const readyCheckObj = {
-      serverRefresh: false,
       iceConnected: false,
       dataChannelOpen: false
     };
@@ -69,7 +68,7 @@ export default function webRTC(gameName) {
         connObj.peerConnection = peers[remotePeer].pc;
         connObj.dataChannel = peers[remotePeer].dataChannel;
         await responseComn(gameName);
-        if (!readyCheckObj.serverRefresh) {
+        if (!connObj.serverRefresh) {
           await authCheck(gameName, roomName, pid);
         };
 
@@ -80,16 +79,12 @@ export default function webRTC(gameName) {
             const cookie = getCookies({ cookieName: 'gc_at' });
             encrypt.keypair = cookie.slice(-10);
             Object.freeze(encrypt);
-
-            // const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
-            // const encryptVal = findCharCode([74, 75, 71, 90, 87, 79, 85, 69, 65, 88]); // waitEnemy
-            // storageMethod('s', 'SET_ITEM', encryptKey, encryptVal);
           } else {
             reject({ errCase: 'webRTC' });
           };
         };
 
-        if (readyCheckObj.serverRefresh) {
+        if (connObj.serverRefresh) {
           const decryptkey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
           const decryptVal = window.sessionStorage.getItem(decryptkey);
 
@@ -278,9 +273,9 @@ export default function webRTC(gameName) {
         console.log('entryOrder 받음');
 
         // 새로고침 후 재접속이면, webRTC 서버에서 refresh true로 받음
-        readyCheckObj.serverRefresh = false;
+        connObj.serverRefresh = false;
         if (refresh) {
-          readyCheckObj.serverRefresh = true;
+          connObj.serverRefresh = true;
         };
 
         if (setOffer === 'true') {
@@ -313,7 +308,7 @@ export default function webRTC(gameName) {
       if (type === 'responseStorage') {
         console.log('data 받음 >>>>>>>>> ', storageData);
         await insertStorageDate(storageData);
-        if (readyCheckObj.serverRefresh) {
+        if (connObj.serverRefresh) {
           await cardVerification();
         }
         resolve();

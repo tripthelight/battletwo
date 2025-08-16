@@ -1,6 +1,7 @@
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import socketNextStepEvent from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/socketNextStepEvent';
 import againChoiceCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/againChoiceCard';
+import errorManager from '@/client/js/module/errorHandler/errorManager';
 
 export default async (_data) => {
   try {
@@ -23,17 +24,6 @@ export default async (_data) => {
     }
   } catch (error) {
     console.log('error : ', error);
-    console.log('responseCompairResultBetting.js error : ');
-
-    const { request } = await import('@/client/js/network/indianPocker/request');
-    request('opponentFouls', { message: error?.sendMsg ?? 'remote player error' });
-
-    const { default: eventHanlerErrorComn } = await import('@/client/js/module/eventHanlerErrorComn');
-    const safe = error && typeof error === 'object' ? error : {};
-    eventHanlerErrorComn({
-      errCase: 'errorComn',
-      errorDetails: error,
-      ...safe,
-    });
+    errorManager(error, true);
   };
 };

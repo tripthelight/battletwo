@@ -1,5 +1,5 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { getStyle } from '@/client/js/functions/comnExport';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock.js';

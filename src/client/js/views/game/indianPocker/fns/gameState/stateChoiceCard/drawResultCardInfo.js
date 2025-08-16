@@ -1,10 +1,15 @@
 import { text } from '@/client/js/functions/language';
 import stateResultBetting from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/stateResultBetting';
+import errorManager from '@/client/js/module/errorHandler/errorManager';
 
 export default (_state) => {
   // element | seeeion 체크
   const CONTAINER = document.getElementById('container');
-  if (!CONTAINER) throw { errCase: 'elementLoss', message: '#container 엘리먼트가 없습니다.' };
+  if (!CONTAINER) throw {
+    errCase: 'elementLoss',
+    message: 'local peer #container failed.',
+    sendMsg: 'remote peer #container failed.'
+  };
   const CHOICE_CARD_INFO = CONTAINER.querySelector('.choice-card-info');
   if (CHOICE_CARD_INFO) return;
 
@@ -36,19 +41,8 @@ export default (_state) => {
       await stateResultBetting(_state);
       if (document.querySelector('.choice-card-info')) document.querySelector('.choice-card-info').remove();
     } catch (error) {
-      console.log('error : ', error);
       console.log('drawResultCardInfo.js onclick error : ');
-
-      const { request } = await import('@/client/js/network/indianPocker/request');
-      request('opponentFouls', { message: error?.sendMsg ?? 'remote player error' });
-
-      const { default: eventHanlerErrorComn } = await import('@/client/js/module/eventHanlerErrorComn');
-      const safe = (error && typeof error === 'object') ? error : {};
-      eventHanlerErrorComn({
-        errCase: 'errorComn',
-        errorDetails: error,
-        ...safe
-      });
-    }
+      errorManager(error, true);
+    };
   };
 };

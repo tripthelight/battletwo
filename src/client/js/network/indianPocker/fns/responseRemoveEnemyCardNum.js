@@ -1,7 +1,7 @@
 import CryptoJS from 'crypto-js';
 import { request } from '@/client/js/network/indianPocker/request';
 import validateStore, { updateRandomNum } from '@/client/store/validateStore';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import P1 from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/P1';
 import P2 from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/P2';

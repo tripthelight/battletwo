@@ -2,7 +2,7 @@ import CryptoJS from 'crypto-js';
 import { request } from '@/client/js/network/indianPocker/request';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import validateStore, { updateRandomNum } from '@/client/store/validateStore';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import findCharCode from '@/client/js/functions/findCharCode';
 import randomArray from '@/client/js/views/game/indianPocker/fns/common/randomArray';

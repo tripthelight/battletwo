@@ -5,7 +5,7 @@
  * 따라서 이 commErr.js 파일은 사용 안함
  */
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { text } from '@/client/js/functions/language';
 
 export default function commErr(peerConnection, dataChannel) {

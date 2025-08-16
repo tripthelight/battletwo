@@ -13,8 +13,6 @@ export default (params) => {
     (pNum && encryptVal1 !== null && encryptVal1 !== '') &&
     (eNum && encryptVal2 !== null && encryptVal2 !== '')
   ) {
-    const playerNum = Number(pNum);
-    const enemyNum = Number(eNum);
-    flipEnemyCardCheck(enemyNum, playerNum);
+    flipEnemyCardCheck(Number(eNum), Number(pNum));
   }
 };

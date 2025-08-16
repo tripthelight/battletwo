@@ -1,5 +1,5 @@
 import { connObj } from '@/client/js/webRTC/rtcConn';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { RESPONSE_HANDLERS } from '@/client/js/network/indianPocker/responseHandlers';
 
 export function response() {

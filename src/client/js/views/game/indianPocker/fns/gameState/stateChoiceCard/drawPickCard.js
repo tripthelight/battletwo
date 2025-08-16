@@ -96,12 +96,20 @@ export default () => {
     const liIdxStr  = getSessionValByKeyCodes(map.li);
     const encNumber = getSessionValByKeyCodes(map.num);
     if (ulIdxStr == null || liIdxStr == null || encNumber == null) {
-      throw { errCase: 'elementLoss', message: 'select card element or cardNum sesstionStorage error.' };
+      throw {
+        errCase: 'elementLoss',
+        message: 'local peer select card element or cardNum sesstionStorage error.',
+        sendMsg: 'remote peer select card element or cardNum sesstionStorage error.'
+      };
     };
     const ulIdx = Number(findCardNum(ulIdxStr)) - 1;
     const liIdx = Number(findCardNum(liIdxStr)) - 1;
     if (!Number.isInteger(ulIdx) || !Number.isInteger(liIdx) || ulIdx < 0 || liIdx < 0) {
-      throw { errCase: 'elementLoss', message: 'select card ul li sesstionStorage number error.' };
+      throw {
+        errCase: 'elementLoss',
+        message: 'local peer select card ul li sesstionStorage number error.',
+        sendMsg: 'remote peer select card ul li sesstionStorage number error.'
+      };
     };
 
     // DOM 탐색

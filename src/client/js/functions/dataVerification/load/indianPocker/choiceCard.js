@@ -51,22 +51,6 @@ export const CHOICE_CARD_DATA_HANDLER = {
       };
     };
 
-    console.log('betUser :::::::::: ', window.sessionStorage.getItem(findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88])));
-    console.log('betUserFirst ::::: ', window.sessionStorage.getItem(findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78])));
-
-    /* const decodeBool = (nums) => {
-      const s = booleanCheck(nums);
-      const BT = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]);  // true
-      const BF = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
-      if (s === BT) return true; // true 난독화 필요
-      if (s === BF) return false; // false 난독화 필요
-    }; */
-
-    // const betUserVal = decodeBool([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);
-    // const betUserFirstVal = decodeBool([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]);
-    // console.log('betUserVal :::::::::: ', betUserVal);
-    // console.log('betUserFirstVal ::::: ', betUserFirstVal);
-
     // local, remote player 모두 선택 했을 때, betUser/betUserFirst 체크를 위해 보냄
     const params = {
       encryptVal1: selectCard.local,

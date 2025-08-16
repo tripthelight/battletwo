@@ -1,7 +1,7 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1, timeInterval_1000, timeInterval_2000, timeInterval_202, timeInterval_3201, timeInterval_3202, timeInterval_401, timeInterval_402 } from '@/client/js/functions/variable';
 import { request } from '@/client/js/network/indianPocker/request';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import findCharCode from '@/client/js/functions/findCharCode';
 import disabledMoveCoins from '@/client/js/views/game/indianPocker/fns/common/disabledMoveCoins';

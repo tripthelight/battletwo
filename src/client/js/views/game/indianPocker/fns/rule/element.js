@@ -1,4 +1,4 @@
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 
 export const ELEMENT = {
   LIST: ['.enemy-block', '.coins-enemy', '.coins-enemy li', '.enemy-card', '.enemy-card img', '.betting-zone', '.bet-coins', '.bet-coins li', '.player-block', '.coins-player', '.coins-player li', '.player-card', 'player-card img', '.bottom-buttons', '.betting', '.call', '.raise', '.fold', '.all-in'],

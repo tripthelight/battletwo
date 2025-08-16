@@ -1,5 +1,5 @@
 import playerNum from '@/client/js/views/game/indianPocker/fns/common/playerNum.js';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 
 export default () => {
   /*

@@ -1,6 +1,6 @@
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import removeCoinActive from '@/client/js/views/game/indianPocker/fns/common/removeCoinActive';
 import moveCoins from '@/client/js/views/game/indianPocker/fns/common/moveCoins';
 

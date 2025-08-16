@@ -1,4 +1,4 @@
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
 
 export default (event) => {

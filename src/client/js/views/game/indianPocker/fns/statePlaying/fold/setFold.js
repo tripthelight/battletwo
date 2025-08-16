@@ -6,7 +6,7 @@ import flipPlayerCard from '@/client/js/views/game/indianPocker/fns/common/flipP
 import BattingZoneMoveEnemyBlock from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMoveEnemyBlock';
 import BettingZoneMoveComnFold from '@/client/js/views/game/indianPocker/fns/common/BettingZoneMoveComnFold';
 import PlayerBlockMoveEnemyBlock from '@/client/js/views/game/indianPocker/fns/common/PlayerBlockMoveEnemyBlock';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import resultTxtInnerHtml from '@/client/js/views/game/indianPocker/fns/common/resultTxtInnerHtml';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import pcDraggableCheck from '@/client/js/views/game/indianPocker/fns/common/pcDraggableCheck';

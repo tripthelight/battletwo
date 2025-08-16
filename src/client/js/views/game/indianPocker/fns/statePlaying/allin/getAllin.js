@@ -1,6 +1,6 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1, timeInterval_1001 } from '@/client/js/functions/variable.js';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState';
 import { RULES } from '@/client/js/views/game/indianPocker/fns/rule/rules.js';
 import pcDraggableCheck from '@/client/js/views/game/indianPocker/fns/common/pcDraggableCheck.js';

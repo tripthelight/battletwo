@@ -1,5 +1,4 @@
 import booleanCheck from '@/client/js/functions/validation/booleanCheck';
-import findCharCode from '@/client/js/functions/findCharCode';
 import { text } from '@/client/js/functions/language';
 import closePopup from '@/client/js/functions/popup';
 

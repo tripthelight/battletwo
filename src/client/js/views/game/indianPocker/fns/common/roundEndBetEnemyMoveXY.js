@@ -1,5 +1,5 @@
 import { getStyle } from '@/client/js/functions/comnExport';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 
 export default (_cw, _ch, _ty, _state) => {
   const ENEMY_COIN_EL = document.querySelector('.coins-enemy');

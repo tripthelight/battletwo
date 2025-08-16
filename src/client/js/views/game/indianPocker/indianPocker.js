@@ -1,17 +1,14 @@
 import '@/client/assets/scss/game/indianPocker/common';
 import '@/client/js/common/common';
-
 import reload from '@/client/js/module/reload';
-import { errorManagement } from '@/client/js/module/errorManagement';
 import rtcPeer from '@/client/js/webRTC/rtcPeer';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import makeCard from '@/client/js/views/game/indianPocker/fns/common/makeCard/makeCard';
 import findCharCode from '@/client/js/functions/findCharCode';
-
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import getCookies from '@/client/js/module/cookies/getCookies';
 import logout from '@/client/js/auth/logout';
-import { request } from '@/client/js/network/indianPocker/request';
+import errorManager from '@/client/js/module/errorHandler/errorManager';
 
 // onMounted
 document.onreadystatechange = async () => {
@@ -25,13 +22,15 @@ document.onreadystatechange = async () => {
       // 이전에 두 Peer가 연결되었다가 새로고침한 peer는 여기를 탐
       // 게임 중, sessionStorage를 모두 지우고, cookie도 지우고 새로고침 하면 처음부터 새로운 Peer와 재연결 - 게임 나감 처리로 간주
       const refreshFailed = {
-        // cookie: window.sessionStorage.length > 0 && ['gc_at'].some(name => !getCookies({ cookieName: name })),
-        // storage: window.sessionStorage.length === 0 && ['gc_at'].some(name => getCookies({ cookieName: name }))
         cookie: window.sessionStorage.length > 0 && !getCookies({ cookieName: 'gc_at' }),
         storage: window.sessionStorage.length === 0 && getCookies({ cookieName: 'gc_at' })
       };
       if (refreshFailed.cookie || refreshFailed.storage) {
-        throw { errCase: 'cookies', message: 'cookies failed' };
+        throw {
+          errCase: 'cookies',
+          message: 'local peer cookies failed.',
+          sendMsg: 'remote peer cookies failed.'
+        };
       };
     } else {
       await logout();
@@ -56,25 +55,25 @@ document.onreadystatechange = async () => {
       const decryptVal = window.sessionStorage.getItem(encryptKey);
 
       switch (decryptVal) {
-        // case 'choiceCard':
-        case findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82]):
+        case findCharCode([74, 75, 71, 90, 87, 79, 85, 69, 65, 88]): // waitEnemy
+        case findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82]): // choiceCard
           indianPockerGameState.choiceCard();
           break;
         default:
-          throw { errCase: 'errorComn', message: '새로고침 했는데 gameState가 없음' };
+          throw {
+            errCase: 'errorComn',
+            message: 'local peer가 새로고침 했는데 gameState가 없음',
+            sendMsg: 'remote peer가 새로고침 했는데 gameState가 없음'
+          };
       };
     } else {
-      // choiceCard
+      // 처음 진입해서 상대 peer 와 연결 대기 중 새로고침 안하고
+      // 처음 연결 되면
+      // choiceCard 단계로 진입
       indianPockerGameState.choiceCard();
     };
-
-    // console.log('playerFirstNumber :::: ', findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]));
-    // console.log('enemyFirstNumber ::::: ', findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85]));
-
   } catch (error) {
-    console.log('error indianPocker.js >>>>>>>>>>>> ', error);
-
-    request('opponentFouls', { message: error && error.sendMsg ? error.sendMsg : 'remote player error' });
-    errorManagement(error);
-  }
+    console.log('error indianPocker.js >>>>>>>>>>>> ');
+    errorManager(error, false);
+  };
 };

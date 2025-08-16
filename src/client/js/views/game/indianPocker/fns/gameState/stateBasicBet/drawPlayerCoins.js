@@ -7,7 +7,7 @@ import drawBetInfo from '@/client/js/views/game/indianPocker/fns/gameState/state
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
 import REFRESH_STATE_BASIC_BET from '@/client/js/refresh/indianpoker/refreshBasicBet/refreshInit';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import removeUserCoins from '@/client/js/views/game/indianPocker/fns/common/removeUserCoins';
 
 export default () => {

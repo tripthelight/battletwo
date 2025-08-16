@@ -19,10 +19,10 @@ export default (params) => {
     // choiceCardClick
     if (clickEvent === findCharCode([70, 72, 79, 69, 87, 80, 73, 67, 84, 83])) {
       clickChoiceCard(storageKeys);
-    }
+    };
     // resultBettingClick
     if (clickEvent === findCharCode([66, 72, 73, 78, 89, 65, 84, 77, 83, 86])) {
       clickResultBetting(storageKeys, clkData);
-    }
+    };
   }
 };

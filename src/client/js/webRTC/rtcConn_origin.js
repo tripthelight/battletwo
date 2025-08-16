@@ -2,7 +2,7 @@ import { debug } from '@/client/js/module/debug';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import addNickname from '@/client/js/functions/addNickname';
 import { responseComn } from '@/client/js/network/responseComn';
-import { errorManagement } from '@/client/js/module/errorManagement';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import findCharCode from '@/client/js/functions/findCharCode';
 import addCharCode from '@/client/js/functions/addCharCode';
 
