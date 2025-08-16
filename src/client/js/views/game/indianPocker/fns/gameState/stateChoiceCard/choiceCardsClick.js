@@ -1,22 +1,15 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import pickCardInit from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/pickCardInit';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
 
 export default () => {
   // element | seeeion 체크
   const CHOICE_CARD = document.querySelector('.choice-card');
-  if (!CHOICE_CARD) throw {
-    errCase: 'elementLoss',
-    message: 'local peer .choice-card element failed',
-    sendMsg: 'remote peer .choice-card element failed'
-  };
+  if (!CHOICE_CARD) throw throwObj('elementLoss', '.choice-card element failed');
   const CARDS = CHOICE_CARD.querySelectorAll('li');
-  if (!CARDS || CARDS.length <= 0) throw {
-    errCase: 'elementLoss',
-    message: 'local peer .choice-card li undefined / li length failed.',
-    sendMsg: 'remote peer .choice-card li undefined / li length failed.'
-  };
+  if (!CARDS || CARDS.length <= 0) throw throwObj('elementLoss', '.choice-card li undefined / li length failed.');
 
   const invalidateCardClick = () => {
     for (let i = 0; i < CARDS.length; i++) {

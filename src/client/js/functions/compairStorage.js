@@ -1,5 +1,6 @@
 import CRC32 from 'crc-32';
 import { encrypt } from '@/client/js/webRTC/rtcConn'
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export default (_key) => {
   try {
@@ -9,9 +10,6 @@ export default (_key) => {
     };
     return (CRC32.str(_key + encrypt.keypair) >>> 0).toString(16); // 양수 변환 후 16진수로
   } catch (error) {
-    throw {
-      errCase: 'cookies',
-      message: 'cookie keypair failed'
-    };
+    throw throwObj('cookies', 'cookie keypair failed.');
   };
 };

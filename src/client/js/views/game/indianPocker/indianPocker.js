@@ -8,7 +8,9 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import getCookies from '@/client/js/module/cookies/getCookies';
 import logout from '@/client/js/auth/logout';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
+
 
 // onMounted
 document.onreadystatechange = async () => {
@@ -60,11 +62,7 @@ document.onreadystatechange = async () => {
           indianPockerGameState.choiceCard();
           break;
         default:
-          throw {
-            errCase: 'errorComn',
-            message: 'local peer가 새로고침 했는데 gameState가 없음',
-            sendMsg: 'remote peer가 새로고침 했는데 gameState가 없음'
-          };
+          throw throwObj('errorComn', '가 새로고침 했는데 gameState가 없음');
       };
     } else {
       // 처음 진입해서 상대 peer 와 연결 대기 중 새로고침 안하고

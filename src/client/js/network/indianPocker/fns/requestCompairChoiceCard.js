@@ -3,6 +3,7 @@ import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import { request } from '@/client/js/network/indianPocker/request';
 import findCharCode from '@/client/js/functions/findCharCode';
 import compairBoolStr from '@/client/js/functions/validation/compairBoolStr';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
 
 export default async (_data) => {
@@ -35,9 +36,6 @@ export default async (_data) => {
     const compairRemote = remoteStorage.encryptVal1 !== compairCard(encryptVal2); // remote
     const compairLocal = remoteStorage.encryptVal2 !== compairCard(encryptVal1); // local
 
-    console.log('상대 betUser :::::::: ', remoteStorage.encryptVal3);
-    console.log('상대 betUserFirst ::: ', remoteStorage.encryptVal4);
-
     const compairBetUser = compairBoolStr(remoteStorage.encryptVal3, booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88])); // betUser
     const compairBetUserFirst = compairBoolStr(remoteStorage.encryptVal4, booleanCheck([90, 89, 80, 70, 68, 84, 65, 77, 74, 78])); // betUserFirst
 
@@ -55,7 +53,7 @@ export default async (_data) => {
 
       function msgState(peer) {
         if (peer !== 'local' && peer !== 'remote') {
-          throw { errCase: 'errorComn', message: 'select card parameter error.' };
+          throw throwObj('errorComn', 'select card parameter error.');
         }
 
         // peer에 따라 compair 메시지만 스왑
@@ -78,7 +76,7 @@ export default async (_data) => {
 
       ['local', 'remote'].some(s => {
         const m = msgState(s);
-        if (m) throw { errCase: 'foul', message: m, sendMsg: m };
+        if (m) throw throwObj('foul', m);;
         return false;
       });
 

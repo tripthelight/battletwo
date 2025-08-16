@@ -1,11 +1,12 @@
 import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import { text } from '@/client/js/functions/language';
 import closePopup from '@/client/js/functions/popup';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export default () => {
   // element | seeeion 체크
   const CONTAINER = document.getElementById('container');
-  if (!CONTAINER) throw { errCase: 'elementLoss', message: '#container 엘리먼트가 없습니다.' };
+  if (!CONTAINER) throw throwObj('elementLoss', '#container not found.');
   const CHOICE_CARD_INFO = CONTAINER.querySelector('.choice-card-info');
   if (CHOICE_CARD_INFO) return;
 

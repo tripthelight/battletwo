@@ -1,3 +1,5 @@
+import throwObj from '@/client/js/module/errorHandler/throwObj';
+
 export default (res) => {
   /* const makeElegantSeq = (res) => {
     // P0(i): res=0 수열을 생성하는 9차 다항식 계수 (Horner form, 고정 상수)
@@ -21,7 +23,7 @@ export default (res) => {
   }; */
 
   if (!Number.isInteger(res) || res < 0 || res > 9) {
-    throw new Error('res는 0~9 정수여야 합니다.');
+    throw throwObj('errorComn', 'res Number failed.');
   }
 
   // D[i][k] = 위치 i의 k차 전진차분 Δ^k y_i(0)

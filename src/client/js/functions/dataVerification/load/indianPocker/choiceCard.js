@@ -6,6 +6,7 @@ import { request } from '@/client/js/network/indianPocker/request';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import drawPickCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/drawPickCard';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export const CHOICE_CARD_DATA_HANDLER = {
   // reload 했을 경우 모든 key가 있는지 먼저 체크
@@ -22,12 +23,7 @@ export const CHOICE_CARD_DATA_HANDLER = {
   // gameState : choiceCard에서 reload 한 경우
   handleReload(storageKeys) {
     if (this.storageKeyDeleteCheck(storageKeys)) {
-      const message = (_peer) => `${_peer} player가 sessionStorage 삭제함`;
-      throw {
-        errCase: 'sessionStorageLoss',
-        message: message('local'),
-        sendMsg: message('remote')
-      };
+      throw throwObj('sessionStorageLoss', 'delete sessionStorage.');
     };
 
     const selectCard = {

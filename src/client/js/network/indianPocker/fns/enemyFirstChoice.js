@@ -4,6 +4,7 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import storageKeys from '@/client/js/functions/dataVerification/storageKeys';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import flipEnemyFirstCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipEnemyFirstCard';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
 
 export default async (_data) => {
@@ -18,11 +19,7 @@ export default async (_data) => {
     const allExist = sessionStorageKeys.every((key) => setKeys.has(key));
     if (!allExist) {
       // local player 모든 key가 없음
-      throw {
-        errCase: 'sessionStorageLoss',
-        message: '내가 상대의 선택카드 받을 때, choiceCard 단계에 필요한 sessionStorage key 조작',
-        sendMsg: '내가 선택한 카드 보낼 때, 상대가 choiceCard 단계에 필요한 sessionStorage key 조작'
-      };
+      throw throwObj('sessionStorageLoss', 'choiceCard gameState sessionStorage value manipulat.');
     };
 
     const { eNum, pNum } = _data;
@@ -37,11 +34,7 @@ export default async (_data) => {
     const compairLocal = pNum !== '' && encryptVal2 !== '' && pNum !== cardNumDecryption(encryptVal2);
 
     if (compairRemote || compairLocal) {
-      throw {
-        errCase: 'foul',
-        message: '내가 먼저 선택한 카드와 상대 enemy card 다름',
-        sendMsg: '상대가 먼저 선택한 카드와 내 enemy card 다름'
-      };
+      throw throwObj('sessionStorageLoss', 'choiceCard gameState card compaire failed.');
     } else {
       // 상대 peer가 선택한 카드 번호 암호화
       const encryptRemoteNum =  cardNumEncryption(eNum - 1);

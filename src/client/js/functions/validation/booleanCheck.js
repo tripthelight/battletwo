@@ -1,11 +1,12 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export default function (_key) {
   try {
     const encryptKey = findCharCode(_key);
     const encryptval = window.sessionStorage.getItem(encryptKey);
     if (encryptval === null) {
-      throw { errCase: 'sessionStorageLoss', message: `boolean sessionStorage not found.` };
+      throw throwObj('sessionStorageLoss', 'boolean sessionStorage not found.');
     } else {
       if (encryptval === '') {
         return '';
@@ -16,19 +17,14 @@ export default function (_key) {
         ) {
           return encryptval;
         } else {
-          throw {
-            errCase: 'sessionStorageLoss',
-            message: 'local peer boolean sessionStorage value error.',
-            sendMsg: 'remote peer boolean sessionStorage value error.'
-          };
+          throw throwObj('sessionStorageLoss', 'boolean sessionStorage value error.');
         };
       }
     };
   } catch (error) {
-    throw {
-      errCase: error?.errCase ?? 'sessionStorageLoss',
-      message: error?.message ?? `local peer sessionStorage boolean another error.`,
-      sendMsg: error?.sendMsg ?? `remote peer sessionStorage boolean another error.`,
-    };
-  }
-}
+    throw throwObj(
+      error?.errCase ?? 'sessionStorageLoss',
+      error?.message ?? `sessionStorage boolean another error.`
+    );
+  };
+};

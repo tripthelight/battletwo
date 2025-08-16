@@ -1,15 +1,12 @@
 import { text } from '@/client/js/functions/language';
 import stateResultBetting from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/stateResultBetting';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
 
 export default (_state) => {
   // element | seeeion 체크
   const CONTAINER = document.getElementById('container');
-  if (!CONTAINER) throw {
-    errCase: 'elementLoss',
-    message: 'local peer #container failed.',
-    sendMsg: 'remote peer #container failed.'
-  };
+  if (!CONTAINER) throw throwObj('elementLoss', '#container failed.');
   const CHOICE_CARD_INFO = CONTAINER.querySelector('.choice-card-info');
   if (CHOICE_CARD_INFO) return;
 

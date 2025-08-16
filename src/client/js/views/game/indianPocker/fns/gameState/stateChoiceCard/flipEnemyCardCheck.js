@@ -1,6 +1,7 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import drawResultCardInfo from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/drawResultCardInfo';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export default (_eNum, _pNum) => {
   try {
@@ -20,18 +21,13 @@ export default (_eNum, _pNum) => {
     } else if (_eNum === _pNum) {
       drawResultCardInfo('tie');
     } else {
-      throw {
-        errCase: 'errorComn',
-        message: 'flipEnemyCardCheck 함수에서 _eNum, _pNum 을 못받음',
-        sendMsg: '상대 Peer의 선택카드 비교 단게에서 error 발생'
-      };
+      throw throwObj('errorComn', 'flipEnemyCardCheck _eNum, _pNum failed.');
     };
   } catch (error) {
     console.log('error : ', error);
-    throw {
-      errCase: error?.errCase ?? 'errorComn',
-      message: error?.message ?? 'flipEnemyCardCheck error',
-      sendMsg: error?.sendMsg ?? '상대 Peer의 선택카드 비교 단게에서 error 발생'
-    };
+    throw throwObj(
+      error?.errCase ?? 'errorComn',
+      'flipEnemyCardCheck error.'
+    );
   };
 };

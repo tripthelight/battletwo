@@ -5,6 +5,7 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 import randomNumberMinMax from '@/client/js/views/game/indianPocker/fns/common/randomNumberMinMax';
 import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipUserCardCheck';
 import imgGetCardNum from '@/client/js/views/game/indianPocker/fns/common/images/getCards';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export default (params) => {
   const { eNum, pNum }  = params;
@@ -24,9 +25,9 @@ export default (params) => {
       ? (() => {
           // element 체크 + 정리
           const CHOICE_CARD = document.querySelector('.choice-card');
-          if (!CHOICE_CARD) throw { errCase: 'elementLoss', message: '.choice-card 엘리먼트가 없습니다.' };
+          if (!CHOICE_CARD) throw throwObj('elementLoss', '.choice-card failed.');
           const CHOICE_CARDS = CHOICE_CARD.querySelectorAll('li');
-          if (!CHOICE_CARDS || CHOICE_CARDS.length <= 0) throw { errCase: 'elementLoss', message: '.choice-card 의 li가 없거나 length가 0보다 작습니다.' };
+          if (!CHOICE_CARDS || CHOICE_CARDS.length <= 0) throw throwObj('elementLoss', '.choice-card li not found / length 0 error.');
 
           // 상대가 선택한 카드의 li index를 제외한 랜덤 숫자 선택
           return Array.from(CHOICE_CARDS).findIndex(li => li.classList.contains('show'));
@@ -38,35 +39,15 @@ export default (params) => {
   const lRes = findCharCode(makeSeq(RANDOM_LI)); // makeSeq 는 0 ~ 9 중 하나를 받아서 1 ~ 10 중 +1된 결과를 리턴
 
   const ENEMY_NUMBER = window.sessionStorage.getItem(encryptKey3);
-  if (!ENEMY_NUMBER) throw {
-    errCase: 'sessionStorageLoss',
-    message: 'local peer enemyFirstNumber in sessionStorage failed.',
-    sendMsg: 'remote peer enemyFirstNumber in sessionStorage failed.'
-  };
+  if (!ENEMY_NUMBER) throw throwObj('sessionStorageLoss', 'enemyFirstNumber in sessionStorage failed.');
   const CARD_WRAP = document.querySelector('.choice-card');
-  if (!CARD_WRAP) throw {
-    errCase: 'elementLoss',
-    message: 'local peer .choice-card failed.',
-    sendMsg: 'remote peer .choice-card failed.'
-  };
+  if (!CARD_WRAP) throw throwObj('elementLoss', '.choice-card failed.');
   const ENEMY_CARD_UL = CARD_WRAP.querySelectorAll('ul')[RANDOM_UL];
-  if (!ENEMY_CARD_UL) throw {
-    errCase: 'elementLoss',
-    message: 'local peer ul in .choice-card failed.',
-    sendMsg: 'remote peer ul in .choice-card failed.'
-  };
+  if (!ENEMY_CARD_UL) throw throwObj('elementLoss', 'ul in .choice-card failed.');
   const ENEMY_CARD_LI = ENEMY_CARD_UL.querySelectorAll('li')[RANDOM_LI];
-  if (!ENEMY_CARD_LI) throw {
-    errCase: 'elementLoss',
-    message: 'local peer li in .choice-card failed.',
-    sendMsg: 'remote peer li in .choice-card failed.',
-  };
+  if (!ENEMY_CARD_LI) throw throwObj('elementLoss', 'li in .choice-card failed.');
   const ENEMY_CARD_IMG = ENEMY_CARD_LI.querySelector('img');
-  if (!ENEMY_CARD_IMG) throw {
-    errCase: 'elementLoss',
-    message: 'local peer li img in .choice-card failed.',
-    sendMsg: 'remote peer li img in .choice-card failed.'
-  };
+  if (!ENEMY_CARD_IMG) throw throwObj('elementLoss', 'li img in .choice-card failed.');
 
   // 명령
   storageMethod('s', 'SET_ITEM', encryptKey1, uRes);

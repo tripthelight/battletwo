@@ -1,3 +1,5 @@
+import throwObj from '@/client/js/module/errorHandler/throwObj';
+
 /**
  * choiceCardClick
  * @param {Array<string>} storageKeys gameState에 필요한 sessionStorage key list
@@ -11,10 +13,6 @@ export default (storageKeys) => {
     // local player 모든 key가 있음
   } else {
     // local player 모든 key가 없음 or key 조작
-    throw {
-      errCase: 'sessionStorageLoss',
-      message: 'local peer sessionStorage key failed from choiceCardClick event.',
-      sendMsg: 'remote peer sessionStorage key failed from choiceCardClick event.'
-    };
+    throw throwObj('sessionStorageLoss', 'sessionStorage key failed from choiceCardClick event.');
   }
 };

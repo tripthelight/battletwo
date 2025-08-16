@@ -6,15 +6,12 @@ import drawPickCardInfo from '@/client/js/views/game/indianPocker/fns/gameState/
 import SVG_BACK from '@/client/assets/images/svg/indian_poker/indian_poker_card/back.svg';
 import imgSetCardNum from '@/client/js/views/game/indianPocker/fns/common/images/setCards';
 import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipUserCardCheck';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export default () => {
   // element | seeeion 체크
   const GAME_SCENE = document.getElementById('gameScene');
-  if (!GAME_SCENE) throw {
-    errCase: 'elementLoss',
-    message: 'local peer #gameScene not found.',
-    sendMsg: 'remote peer #gameScene not found.'
-  };
+  if (!GAME_SCENE) throw throwObj('elementLoss', '#gameScene not found.');
   const CHOICE_CARD = GAME_SCENE.querySelector('.choice-card');
   if (!CHOICE_CARD) {
     const ELEM = document.createElement('div');
@@ -93,31 +90,19 @@ export default () => {
   // 카드 뒤집기 공통 처리
   function reveal(side) {
     const map = KEYMAP[side];
-    if (!map) throw {
-      errCase: 'errorComn',
-      message: 'local peer keymap failed.',
-      sendMsg: 'remote peer keymap failed.',
-    };
+    if (!map) throw throwObj('errorComn', 'keymap failed.');
 
     // 세션 값
     const ulIdxStr  = getSessionValByKeyCodes(map.ul);
     const liIdxStr  = getSessionValByKeyCodes(map.li);
     const encNumber = getSessionValByKeyCodes(map.num);
     if (ulIdxStr == null || liIdxStr == null || encNumber == null) {
-      throw {
-        errCase: 'elementLoss',
-        message: 'local peer select card element or cardNum sesstionStorage error.',
-        sendMsg: 'remote peer select card element or cardNum sesstionStorage error.'
-      };
+      throw throwObj('elementLoss', 'select card element or cardNum sesstionStorage error.');
     };
     const ulIdx = Number(findCardNum(ulIdxStr)) - 1;
     const liIdx = Number(findCardNum(liIdxStr)) - 1;
     if (!Number.isInteger(ulIdx) || !Number.isInteger(liIdx) || ulIdx < 0 || liIdx < 0) {
-      throw {
-        errCase: 'elementLoss',
-        message: 'local peer select card ul li sesstionStorage number error.',
-        sendMsg: 'remote peer select card ul li sesstionStorage number error.'
-      };
+      throw throwObj('elementLoss', 'select card ul li sesstionStorage number error.');
     };
 
     // DOM 탐색
@@ -126,11 +111,7 @@ export default () => {
     const UL = GAME_SCENE?.querySelectorAll('ul')?.[ulIdx];
     const LI = UL?.querySelectorAll('li')?.[liIdx];
     const IMG = LI?.querySelector('img');
-    if (!IMG || !LI) throw {
-      errCase: 'elementLoss',
-      message: 'local peer select card element failed.',
-      sendMsg: 'remote peer select card element failed.'
-    };
+    if (!IMG || !LI) throw throwObj('elementLoss', 'select card element failed.');
 
     // 숫자 복호화 및 이미지 반영
     const cardNum = cardNumDecryption(encNumber);

@@ -1,6 +1,7 @@
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import socketNextStepEvent from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/socketNextStepEvent';
 import againChoiceCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/againChoiceCard';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
 
 export default async (_data) => {
@@ -17,10 +18,7 @@ export default async (_data) => {
       if (result === 'start' || result === 'end') socketNextStepEvent();
       if (result === 'tie') againChoiceCard();
     } else {
-      throw {
-        message: 'local peer 선택 카드 비교 ERROR.',
-        sendMsg: 'remote peer 선택 카드 비교 ERROR.',
-      };
+      throw throwObj('errorComn', 'select card compair error.');
     }
   } catch (error) {
     console.log('responseCompairResultBetting() error : ');

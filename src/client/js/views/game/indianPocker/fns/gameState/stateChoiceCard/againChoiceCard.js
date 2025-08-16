@@ -5,23 +5,16 @@ import { request } from '@/client/js/network/indianPocker/request';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import choiceCardsClick from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/choiceCardsClick';
 import SVG_BACK from '@/client/assets/images/svg/indian_poker/indian_poker_card/back.svg';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export default () => {
   // element | seeeion 체크
   const CHOICE_CARD_INFO = document.querySelector('.choice-card-info');
   if (CHOICE_CARD_INFO) CHOICE_CARD_INFO.remove();
   const CHOICE_CARD = document.querySelector('.choice-card');
-  if (!CHOICE_CARD) throw {
-    errCase: 'elementLoss',
-    message: 'local peer .choice-card failed.',
-    sendMsg: 'remote peer .choice-card failed.'
-  };
+  if (!CHOICE_CARD) throw throwObj('elementLoss', '.choice-card failed.');
   const CHOICE_CARDS = CHOICE_CARD.querySelectorAll('li');
-  if (!CHOICE_CARDS || CHOICE_CARDS.length <= 0) throw {
-    errCase: 'elementLoss',
-    message: 'local peer .choice-card li undefined / li length failed.',
-    sendMsg: 'remote peer .choice-card li undefined / li length failed.'
-  };
+  if (!CHOICE_CARDS || CHOICE_CARDS.length <= 0) throw throwObj('elementLoss', '.choice-card li undefined / li length failed.');
 
   for (let i = 0; i < CHOICE_CARDS.length; i++) {
     CHOICE_CARDS[i].querySelector('img').setAttribute('src', SVG_BACK);

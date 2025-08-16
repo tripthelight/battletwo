@@ -3,6 +3,7 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/network/indianPocker/request';
 import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipUserCardCheck';
 import imgSetCardNum from '@/client/js/views/game/indianPocker/fns/common/images/setCards';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export default (_target, _num) => {
   // 명령
@@ -19,11 +20,7 @@ export default (_target, _num) => {
       return cardNumDecryption(encryptVal);
     } catch (error) {
       console.log('error : ', error);
-      throw {
-        errCase: 'sessionStorageLoss',
-        message: '내가 선택하기 전 상대 카드 번호 sessionStorage value 조작',
-        sendMsg: '상대 Peer가 내 카드 번호 sessionStorage value 조작'
-      };
+      throw throwObj('sessionStorageLoss', 'cardNum sessionStorage value manipulat.');
     }
   })();
 

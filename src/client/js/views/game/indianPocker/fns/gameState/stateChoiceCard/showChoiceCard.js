@@ -3,39 +3,20 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 import { findIndexElem, findIndex } from '@/client/js/functions/comnExport';
 import showChoiceCardSrc from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/showChoiceCardSrc';
 import makeSeq from '@/client/js/views/game/indianPocker/fns/common/mappingCardNum';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export default (_event, _playerNum) => {
   // element | seeeion 체크
   const TARGET = _event.target;
-  if (!TARGET) throw {
-    errCase: 'elementLoss',
-    message: 'local peer target failed.',
-    sendMsg: 'remote peer target failed.'
-  };
+  if (!TARGET) throw throwObj('elementLoss', 'target failed.');
   const TARGET_WRAP = TARGET.closest('.choice-card');
-  if (!TARGET_WRAP) throw {
-    errCase: 'elementLoss',
-    message: 'local peer .choice-card in target failed.',
-    sendMsg: 'remote peer .choice-card in target failed.'
-  };
+  if (!TARGET_WRAP) throw throwObj('elementLoss', '.choice-card in target failed.');
   const TARGET_UL = TARGET.closest('ul');
-  if (!TARGET_UL) throw {
-    errCase: 'elementLoss',
-    message: 'local peer closest ul in target failed.',
-    sendMsg: 'remote peer closest ul in target failed.'
-  };
+  if (!TARGET_UL) throw throwObj('elementLoss', 'closest ul in target failed.');
   const TARGET_LI = TARGET.closest('li');
-  if (!TARGET_LI) throw {
-    errCase: 'elementLoss',
-    message: 'local peer closest li in target failed.',
-    sendMsg: 'remote peer closest li in target failed.'
-  };
+  if (!TARGET_LI) throw throwObj('elementLoss', 'closest li in target failed.');
   const TARGET_TAG_NAME = TARGET.tagName === 'IMG' ? TARGET : TARGET.querySelector('img');
-  if (!TARGET_TAG_NAME) throw {
-    errCase: 'elementLoss',
-    message: 'local peer tagName in target failed.',
-    sendMsg: 'remote peer tagName in target failed.'
-  };
+  if (!TARGET_TAG_NAME) throw throwObj('elementLoss', 'tagName in target failed.');
   if (TARGET_LI.classList.contains('show')) return;
 
   // 명령

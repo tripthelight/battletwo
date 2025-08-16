@@ -3,6 +3,7 @@ import cardNumEncryption from '@/client/js/functions/bcrypt/cardNumEncryption';
 import findCharCode from '@/client/js/functions/findCharCode';
 import showChoiceCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/showChoiceCard';
 import dataHandler from '@/client/js/functions/dataVerification/click/dataHandler';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export default async (_event) => {
   // sessionStorage 모든 key check
@@ -24,10 +25,6 @@ export default async (_event) => {
     // local player가 선택한 카드가 없을 때
     showChoiceCard(_event, encryptPlayerNum);
   } else {
-    throw {
-      errCase: 'sessionStorageLoss',
-      message: '내가 선택하기 전 카드 번호 sessionStorage value 조작',
-      sendMsg: '상대가 선택하기 전 카드 번호 sessionStorage value 조작'
-    };
+    throw throwObj('sessionStorageLoss', 'cardNum sessionStorage value manipulat.');
   };
 };
