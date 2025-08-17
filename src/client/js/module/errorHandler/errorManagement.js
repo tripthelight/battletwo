@@ -109,7 +109,7 @@ function showErrorNotification(errCase, component, message, target) {
 
   // disconnected common
   renameSessionStorageKeys();
-  delCookies('gc_at');
+  // delCookies('gc_at');
   getDisConnect();
 };
 

@@ -72,7 +72,7 @@ export default function webRTC(gameName) {
      * functions
      */
     function rejectComn() {
-      delCookies('gc_at');
+      // delCookies('gc_at');
       if (connObj.signalingServer) connObj.signalingServer.close();
       if (peers[remotePeer]) {
         peers[remotePeer].pc.close();
@@ -94,14 +94,10 @@ export default function webRTC(gameName) {
 
         // 처음 진입했거나, 두 Peer가 연결된 상태에서 새로고침 한 경우
         if (encrypt.keypair === '') {
-          const cookie = getCookies({ cookieName: 'gc_at' });
-          if (cookie) {
-            // keypair 생성 후 freeze
-            encrypt.keypair = cookie.slice(-10);
-            Object.freeze(encrypt);
-          } else {
-            reject({ errCase: 'webRTC', message: 'init connect cookie error.' });
-          };
+          encrypt.keypair = roomName.replace(/\s+/g, '') // 1. 띄어쓰기 제거
+            .replace(/[^a-zA-Z0-9가-힣]/g, '') // 2. 특수문자 제거
+            .slice(-10); // 3. 맨 뒤 10자리
+          Object.freeze(encrypt);
         };
 
         if (connObj.serverRefresh) {
@@ -152,7 +148,7 @@ export default function webRTC(gameName) {
 
     async function initOnopen() {
       // throw { component: 'signalingSocket', event: 'initOnopen', message: 'Failed to send initOnopen' };
-      const roomName = await searchRoom(gameName);
+      const roomName = await searchRoom();
 
       if (
         connObj.signalingServer &&
@@ -222,7 +218,7 @@ export default function webRTC(gameName) {
           if (peers[remotePeer]) {
             // 상대 peer와 연결 끊김 후 새로고침 하면 새로운 peer와 재연결 시도
             // await logout();
-            delCookies('gc_at');
+            // delCookies('gc_at');
             if (connObj.signalingServer) connObj.signalingServer.close();
             if (pc) pc.close();
             debug.log(`${remotePeer} : ICE 연결 끊김으로 peers에서 제거`);
@@ -287,7 +283,7 @@ export default function webRTC(gameName) {
             if (peers[remotePeer]) {
               // 상대 peer와 연결 끊김 후 새로고침 하면 새로운 peer와 재연결 시도
               // await logout();
-              delCookies('gc_at');
+              // delCookies('gc_at');
               if (connObj.signalingServer) connObj.signalingServer.close();
               if (pc) pc.close();
               debug.log(`${remotePeer} : ICE 연결 끊김으로 peers에서 제거`);

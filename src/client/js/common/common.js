@@ -12,7 +12,7 @@ import '@/client/js/common/resize';
 
 // await logout(window.location.pathname);
 clearStorage(window.location.pathname);
-clearCookies(window.location.pathname);
+// clearCookies(window.location.pathname);
 // storageEvent();
 setInnerHeight();
 deviceCheck();

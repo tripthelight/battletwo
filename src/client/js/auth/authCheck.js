@@ -1,7 +1,7 @@
 import login from '@/client/js/auth/login';
 
 export default async function authCheck(gameName, roomName, pid) {
-  const auth = await fetch(`/api/game/${gameName}/user-info`, {
+  const auth = await fetch(`/api/user-info`, {
     method: 'GET',
     credentials: 'include', // 쿠키(authToken)를 함께 보냄
   });

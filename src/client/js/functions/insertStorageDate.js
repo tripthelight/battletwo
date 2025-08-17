@@ -2,8 +2,6 @@ import encryptionStore, { updateCompair, updateKeypair } from '@/client/store/en
 import CRC32 from 'crc-32';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import findCharCode from '@/client/js/functions/findCharCode';
-import setCookies from '@/client/js/module/cookies/setCookies';
-import bcrypt from 'bcryptjs';
 
 export default async (msgData) => {
   try {

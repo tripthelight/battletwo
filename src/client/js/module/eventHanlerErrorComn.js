@@ -14,7 +14,7 @@ export default (error) => {
   // delCookies('gc_at');
   // storageMethod('s', 'REMOVE_ALL');
   renameSessionStorageKeys();
-  delCookies('gc_at');
+  // delCookies('gc_at');
   getDisConnect();
   errorManagement(error);
 };

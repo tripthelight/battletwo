@@ -13,6 +13,13 @@ export default (name) => {
     return decodeURIComponent(parts.pop().split(';').shift());
   }
   return null; */
-  const m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
-  return m ? decodeURIComponent(m[1]) : null;
+  function getCookieValue(name) {
+    const match = document.cookie
+      .split('; ')
+      .find(row => row.startsWith(name + '='));
+    return match ? match.split('=')[1] : null;
+  };
+
+  // 사용 예시
+  return getCookieValue(name);
 };

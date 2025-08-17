@@ -1,5 +1,5 @@
-export default async function searchRoom(gameName) {
-  const auth = await fetch(`/api/game/${gameName}/search-room`, {
+export default async function searchRoom() {
+  const auth = await fetch(`/api/search-room`, {
     method: 'GET',
     credentials: 'include', // 쿠키(authToken)를 함께 보냄
   });
