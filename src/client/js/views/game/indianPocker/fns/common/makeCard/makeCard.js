@@ -1,6 +1,7 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import encryptCardNumber from '@/client/js/views/game/indianPocker/fns/common/makeCard/encryptCardNumber';
 import findCharCode from '@/client/js/functions/findCharCode';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export default async () => {
   try {
@@ -16,9 +17,10 @@ export default async () => {
     console.log('카드 새로 만듬');
   } catch (error) {
     throw {
-      errCase: 'cardNum',
-      message: 'local peer make card error.',
-      sendMsg: 'remote peer make card error.',
+      ...throwObj(
+        error?.errCase ?? 'cardNum',
+        error?.message ?? 'make card error.'
+      ),
       errorDetails: error
     };
   };

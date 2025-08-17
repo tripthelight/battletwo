@@ -79,6 +79,6 @@ export const CHOICE_CARD_DATA_HANDLER = {
 
     // choiceCard 단계에서 필요한 data insert 후 다음 단계 진행
     drawPickCard();
-    LOADING_EVENT.hide();
+    // LOADING_EVENT.hide();
   },
 };

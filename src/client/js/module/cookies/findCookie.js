@@ -3,10 +3,16 @@
  * @param {string} name Cookies 이름
  */
 export default (name) => {
-  const value = `; ${document.cookie}`;
+  /* const value = `; ${document.cookie}`;
+  console.log('COOKIE - value : ', value);
+
   const parts = value.split(`; ${name}=`);
+  console.log('COOKIE - parts : ', parts);
   if (parts.length === 2) {
+    console.log('COOKIE - length : ', parts.length);
     return decodeURIComponent(parts.pop().split(';').shift());
   }
-  return null;
+  return null; */
+  const m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+  return m ? decodeURIComponent(m[1]) : null;
 };

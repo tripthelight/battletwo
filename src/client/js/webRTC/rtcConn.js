@@ -81,13 +81,10 @@ export default function webRTC(gameName) {
         peers[remotePeer].dataChannel = null;
         delete peers[remotePeer];
       };
-      window.rtcChannels = {};
     };
 
     async function checkReady(roomName, pid) {
       if (readyCheckObj.iceConnected && readyCheckObj.dataChannelOpen) {
-        window.rtcChannels.peerConnection = peers[remotePeer].pc;
-        window.rtcChannels.dataChannel = peers[remotePeer].dataChannel;
         connObj.peerConnection = peers[remotePeer].pc;
         connObj.dataChannel = peers[remotePeer].dataChannel;
         await responseComn(gameName);
@@ -97,13 +94,13 @@ export default function webRTC(gameName) {
 
         // 처음 진입했거나, 두 Peer가 연결된 상태에서 새로고침 한 경우
         if (encrypt.keypair === '') {
-          if (getCookies({ cookieName: 'gc_at' })) {
+          const cookie = getCookies({ cookieName: 'gc_at' });
+          if (cookie) {
             // keypair 생성 후 freeze
-            const cookie = getCookies({ cookieName: 'gc_at' });
             encrypt.keypair = cookie.slice(-10);
             Object.freeze(encrypt);
           } else {
-            reject({ errCase: 'webRTC' });
+            reject({ errCase: 'webRTC', message: 'init connect cookie error.' });
           };
         };
 
@@ -136,8 +133,6 @@ export default function webRTC(gameName) {
         };
 
         if (gameName === 'indianPocker') {
-          console.log('signalingServer =========== ', connObj.signalingServer);
-
           if (
             connObj.signalingServer &&
             connObj.signalingServer.readyState === WebSocket.OPEN
@@ -157,7 +152,7 @@ export default function webRTC(gameName) {
 
     async function initOnopen() {
       // throw { component: 'signalingSocket', event: 'initOnopen', message: 'Failed to send initOnopen' };
-      const roomName = await searchRoom();
+      const roomName = await searchRoom(gameName);
 
       if (
         connObj.signalingServer &&
@@ -179,7 +174,6 @@ export default function webRTC(gameName) {
         // iceConnectionState disconnected를 안탐
         const oldPc = peers[remotePeer].pc;
         oldPc.close();
-        window.rtcChannels = {};
         readyCheckObj.iceConnected = false;
         readyCheckObj.dataChannelOpen = false;
       };
@@ -227,7 +221,8 @@ export default function webRTC(gameName) {
           console.log('반칙 여기 타냐? 1 --------------- ');
           if (peers[remotePeer]) {
             // 상대 peer와 연결 끊김 후 새로고침 하면 새로운 peer와 재연결 시도
-            await logout();
+            // await logout();
+            delCookies('gc_at');
             if (connObj.signalingServer) connObj.signalingServer.close();
             if (pc) pc.close();
             debug.log(`${remotePeer} : ICE 연결 끊김으로 peers에서 제거`);
@@ -235,7 +230,6 @@ export default function webRTC(gameName) {
             delete peers[remotePeer];
             errorManagement({ errCase: 'webRTC', component: 'peerConnection', message: 'createPeerConnection' });
             storageMethod('s', 'REMOVE_ALL');
-            window.rtcChannels = {};
           };
         };
 
@@ -292,7 +286,8 @@ export default function webRTC(gameName) {
           if (event.target.iceConnectionState === 'disconnected') {
             if (peers[remotePeer]) {
               // 상대 peer와 연결 끊김 후 새로고침 하면 새로운 peer와 재연결 시도
-              await logout();
+              // await logout();
+              delCookies('gc_at');
               if (connObj.signalingServer) connObj.signalingServer.close();
               if (pc) pc.close();
               debug.log(`${remotePeer} : ICE 연결 끊김으로 peers에서 제거`);
@@ -300,7 +295,6 @@ export default function webRTC(gameName) {
               delete peers[remotePeer];
               errorManagement({ errCase: 'webRTC', component: 'peerConnection', message: 'handleOffer' });
               storageMethod('s', 'REMOVE_ALL');
-              window.rtcChannels = {};
             };
           };
 

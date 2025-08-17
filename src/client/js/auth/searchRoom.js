@@ -1,18 +1,17 @@
-export default async function searchRoom() {
-  const auth = await fetch('/api/search-room', {
+export default async function searchRoom(gameName) {
+  const auth = await fetch(`/api/game/${gameName}/search-room`, {
     method: 'GET',
     credentials: 'include', // 쿠키(authToken)를 함께 보냄
   });
 
   console.log('auth _________ ', auth);
 
-
   if (auth.ok) {
     const authData = await auth.json();
 
-
     if (authData.status === 'unauthorized') {
       // roomName 없음
+      console.log('authData.message : ', authData.message);
       return null;
     } else {
       // JWT에 roomName 있음

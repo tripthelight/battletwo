@@ -9,7 +9,10 @@ export default async () => {
       throw { message: 'cardNum length failed.' };
     };
 
-    // 카드 배열을 1 ~ 10까지의 숫자로 2세트로 지정
+    console.log('arrNumbs ::::::: ', arrNumbs);
+
+
+    // 카드 배열을 1 ~ 10까지의 숫자로 섞어서 2세트로 지정
     const shuffleNums = shuffleArray([...arrNumbs, ...arrNumbs]);
 
     // 2세트 20개의 카드 번호를 암호화
@@ -17,6 +20,6 @@ export default async () => {
       return bcrypt.hashSync(item.toString(), 3);
     });
   } catch (error) {
-    throw { message: error && error.message ? error.message : 'encrypt card number failed.' };
+    throw { message: error.message ?? 'encrypt card number failed.' };
   };
 };

@@ -1,5 +1,4 @@
 import webRTC from '@/client/js/webRTC/rtcConn';
-import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import initNickName from '@/client/js/functions/initNickName';
 import waitPeer from '@/client/js/functions/waitPeer';
 import findNickname from '@/client/js/functions/findNickname';
@@ -7,8 +6,6 @@ import findNickname from '@/client/js/functions/findNickname';
 export default async function rtcPeer(gameName) {
   return new Promise(async (resolve, reject) => {
     try {
-      LOADING_EVENT.show();
-
       /**
        * 게임화면에 직접 진입 했는데,
        * localStorage에 localPlayer 가 없을 경우,
@@ -17,10 +14,6 @@ export default async function rtcPeer(gameName) {
       await initNickName();
 
       waitPeer(1, findNickname('localPlayer'));
-
-      if (!window.rtcChannels) {
-        window.rtcChannels = {};
-      };
 
       await webRTC(gameName);
 
