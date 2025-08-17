@@ -24,17 +24,11 @@ document.onreadystatechange = async () => {
       // 아직 연결 안되어 대기중에 새로고침하면 여기를 탐
       // 이전에 두 Peer가 연결되었다가 새로고침한 peer는 여기를 탐
       // 게임 중, sessionStorage를 모두 지우고, cookie도 지우고 새로고침 하면 처음부터 새로운 Peer와 재연결 - 게임 나감 처리로 간주
-      // const refreshFailed = {
-      //   cookie: window.sessionStorage.length > 0 && !cookie,
-      //   storage: window.sessionStorage.length === 0 && cookie
-      // };
-      // if (refreshFailed.cookie || refreshFailed.storage) {
-      //   throw throwObj('cookies', 'cookies failed.');
-      // };
+
     } else {
       console.log('처음 진입 ------------ ');
 
-      // await logout();
+      await logout();
       // delCookies('gc_at', `/game/${GAME_NAME}`);
     };
 
