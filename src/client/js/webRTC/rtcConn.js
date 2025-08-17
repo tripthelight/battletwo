@@ -7,6 +7,7 @@ import { errorManagement } from '@/client/js/module/errorHandler/errorManagement
 import findCharCode from '@/client/js/functions/findCharCode';
 import logout from '@/client/js/auth/logout';
 import authCheck from '@/client/js/auth/authCheck';
+import login from '@/client/js/auth/login';
 import searchRoom from '@/client/js/auth/searchRoom';
 import storageKeys from '@/client/js/functions/dataVerification/storageKeys';
 
@@ -89,7 +90,8 @@ export default function webRTC(gameName) {
         connObj.dataChannel = peers[remotePeer].dataChannel;
         await responseComn(gameName);
         if (!connObj.serverRefresh) {
-          await authCheck(gameName, roomName, pid);
+          // await authCheck(gameName, roomName, pid);
+          await login(gameName, roomName, pid);
         };
 
         // 처음 진입했거나, 두 Peer가 연결된 상태에서 새로고침 한 경우
