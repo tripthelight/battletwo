@@ -12,6 +12,26 @@ import logout from '@/client/js/auth/logout';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
 
+
+// 쿠키 조회 코드
+function getGameCookie(gameName) {
+  const name = "gc_at=";
+  const decoded = decodeURIComponent(document.cookie);
+  const cookies = decoded.split("; ");
+
+  for (const c of cookies) {
+    if (c.startsWith(name)) {
+      return c.substring(name.length);
+    }
+  }
+  return null;
+};
+
+// 쿠키 제거 코드
+function deleteGameCookie(gameName) {
+  document.cookie = `gc_at=; path=/game/${gameName}; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+};
+
 // onMounted
 document.onreadystatechange = async () => {
   if (document.readyState !== 'complete') return;
@@ -24,11 +44,24 @@ document.onreadystatechange = async () => {
       // 아직 연결 안되어 대기중에 새로고침하면 여기를 탐
       // 이전에 두 Peer가 연결되었다가 새로고침한 peer는 여기를 탐
       // 게임 중, sessionStorage를 모두 지우고, cookie도 지우고 새로고침 하면 처음부터 새로운 Peer와 재연결 - 게임 나감 처리로 간주
-
+      const cookie = getGameCookie(GAME_NAME);
+      if (cookie) {
+        console.log('cookie 있음 ------------ ', cookie);
+        if (sessionStorage.length === 0) {
+          throw { errCase: 'sessionStorageLoss', message: 'reload sessionStorageLoss failed.' };
+        };
+      } else {
+        console.log('cookie 없음 ------------ ', cookie);
+        if (sessionStorage.length > 0) {
+          throw { errCase: 'cookies', message: 'reload cookies failed.' };
+        };
+      };
     } else {
       console.log('처음 진입 ------------ ');
 
-      await logout();
+      deleteGameCookie(GAME_NAME);
+
+      // await logout();
       // delCookies('gc_at', `/game/${GAME_NAME}`);
     };
 
