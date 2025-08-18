@@ -23,6 +23,8 @@ export default async (_data) => {
     };
 
     const { eNum, pNum } = _data;
+    console.log('내가 받은 상대가 선택한 카드 숫자 ::::::::: ', eNum);
+    console.log('내가 받은 상대가 내가 선택한 카드 숫자 ::::: ', pNum);
     const encryptKey1 = findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85]); // enemyFirstNumber
     const encryptKey2 = findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]); // playerFirstNumber
     const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
@@ -37,7 +39,7 @@ export default async (_data) => {
       throw throwObj('sessionStorageLoss', 'choiceCard gameState card compaire failed.');
     } else {
       // 상대 peer가 선택한 카드 번호 암호화
-      const encryptRemoteNum =  cardNumEncryption(eNum - 1);
+      const encryptRemoteNum =  cardNumEncryption(Number(eNum));
       storageMethod('s', 'SET_ITEM', encryptKey1, encryptRemoteNum);
 
       flipEnemyFirstCard({ pNum, eNum });

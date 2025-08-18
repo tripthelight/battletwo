@@ -40,9 +40,11 @@ export const selectCompairNumbers = () => {
   const encryptedKey = findCharCode([84, 78, 85, 70, 71, 74, 88, 68, 67, 77]); // nums
   const keyList = compair[encryptedKey] || [];
 
-  // NUMBERS에서 1 ~ 10까지 숫자만 추출
-  const result = keyList.slice(0, 10);
-  return result;
+  return keyList; // 1 ~ 40
+
+  // // NUMBERS에서 1 ~ 10까지 숫자만 추출
+  // const result = keyList.slice(0, 10);
+  // return result;
 };
 
 export default encryptionStore;

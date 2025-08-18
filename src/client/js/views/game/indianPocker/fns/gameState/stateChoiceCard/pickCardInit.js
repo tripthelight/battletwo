@@ -17,8 +17,8 @@ export default async (_event) => {
   const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
 
   if (encryptVal2 === '') {
-    // 랜덤한 카드 생성
-    const encryptPlayerNum = cardNumEncryption(Math.floor(Math.random() * selectCompairNumbers().length));
+    // 랜덤한 카드 생성 후 -> 0 ~ 39 을 1 ~ 10 사이로 변환
+    const encryptPlayerNum = cardNumEncryption((((Math.floor(Math.random() * selectCompairNumbers().length)) - 1) % 10) + 1);
     // local peer / remote peer 같은 숫자 생성
     // const encryptPlayerNum = cardNumEncryption(0);
 

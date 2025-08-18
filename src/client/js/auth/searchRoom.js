@@ -8,7 +8,6 @@ export default async function searchRoom() {
 
   if (auth.ok) {
     const authData = await auth.json();
-
     if (authData.status === 'unauthorized') {
       // roomName 없음
       console.log('authData.message : ', authData.message);
@@ -19,7 +18,6 @@ export default async function searchRoom() {
     }
   } else {
     console.log('auth :::::: ', auth);
-
     throw { errCase: 'auth', component: 'searchRoom', event: 'unauthorized', message: 'auth noomName not found' };
   };
 };

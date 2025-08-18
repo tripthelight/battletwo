@@ -129,9 +129,6 @@ app.post('/logout', (req, res) => {
 // --------------------------------
 function verifyJWT(req, res, next) {
   // console.log('verifyJWT ---------------------- ');
-
-  console.log('gc_at :::::::: ', req.cookies?.gc_at);
-
   const authToken = req.cookies?.gc_at || '';
   // if (!token) return res.status(401).json({ message: '토큰 없음' });
   if (!authToken) {

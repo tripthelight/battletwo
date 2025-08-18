@@ -149,7 +149,6 @@ export default function webRTC(gameName) {
     };
 
     async function initOnopen() {
-      // throw { component: 'signalingSocket', event: 'initOnopen', message: 'Failed to send initOnopen' };
       const roomName = await searchRoom();
 
       if (
