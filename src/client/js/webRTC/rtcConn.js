@@ -1,67 +1,15 @@
-import CryptoJS from "crypto-js";
+import setCookies from '@/client/js/module/cookies/setCookies';
 import getCookies from '@/client/js/module/cookies/getCookies';
-import delCookies from '@/client/js/module/cookies/delCookies';
+import roomNameReturnCookie from '@/client/js/module/cookies/roomNameReturnCookie';
 import { debug } from '@/client/js/module/debug';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { responseComn } from '@/client/js/network/responseComn';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import findCharCode from '@/client/js/functions/findCharCode';
-import logout from '@/client/js/auth/logout';
-import authCheck from '@/client/js/auth/authCheck';
-import login from '@/client/js/auth/login';
-import searchRoom from '@/client/js/auth/searchRoom';
 import storageKeys from '@/client/js/functions/dataVerification/storageKeys';
 
 import insertStorageDate from '@/client/js/functions/insertStorageDate';
 import cardVerification from '@/client/js/views/game/indianPocker/fns/common/cardVerification';
-
-// 쿠키 생성 코드
-function setGameCookie(roomName, gameName) {
-  const ciphertext = CryptoJS.AES.encrypt(
-    roomName,
-    (gameName.toLowerCase() + [...gameName.toLowerCase()].reverse().join('') + gameName.toLowerCase()).slice(-16) // 영문 16글자 이상 128bits
-  ).toString();
-
-  document.cookie = `gc_at=${encodeURIComponent(ciphertext)}; path=/game/${gameName}`;
-};
-
-// 쿠키 조회 코드
-function getGameCookie(gameName) {
-  const name = "gc_at=";
-  const decoded = decodeURIComponent(document.cookie);
-  const cookies = decoded.split("; ");
-
-  for (const c of cookies) {
-    if (c.startsWith(name)) {
-      return c.substring(name.length);
-    }
-  }
-  return null;
-};
-
-// cookie에서 roomName 리턴 코드
-function getRoomNameFromCookie(gameName) {
-  const name = "gc_at=";
-  const decoded = decodeURIComponent(document.cookie);
-
-  const cookies = decoded.split("; ");
-
-  for (const c of cookies) {
-    if (c.startsWith(name)) {
-      try {
-        const value = c.substring(name.length);
-        return CryptoJS.AES.decrypt(
-          value,
-          // 영문 16글자 이상 128bits
-          (gameName.toLowerCase() + [...gameName.toLowerCase()].reverse().join('') + gameName.toLowerCase()).slice(-16)
-        ).toString(CryptoJS.enc.Utf8)
-      } catch (e) {
-        throw { errCase: 'errorComn', message: 'cookie roomName failed' };
-      };
-    };
-  };
-  return null;
-}
 
 export const encrypt = { keypair: '' };
 export const connObj = { signalingServer: null, dataChannel: null, peerConnection: null, serverRefresh: false };
@@ -148,11 +96,11 @@ export default function webRTC(gameName) {
         };
 
         if (!connObj.serverRefresh) {
-          const cookie = getGameCookie(gameName);
+          const cookie = getCookies(gameName);
           if (cookie) {
             // 처음진입이라 cookie 없음
           } else {
-            setGameCookie(roomName, gameName);
+            setCookies(roomName, gameName);
           };
           // await authCheck(gameName, roomName, pid);
           // await login(gameName, roomName, pid);
@@ -207,6 +155,7 @@ export default function webRTC(gameName) {
     };
 
     async function initOnopen() {
+      const roomName = roomNameReturnCookie(gameName);
       if (
         connObj.signalingServer &&
         connObj.signalingServer.readyState === WebSocket.OPEN
@@ -214,7 +163,7 @@ export default function webRTC(gameName) {
         connObj.signalingServer.send(JSON.stringify({
           type: 'entryOrder',
           gameName,
-          roomName: getRoomNameFromCookie(gameName)
+          roomName
         }));
       }
     };
