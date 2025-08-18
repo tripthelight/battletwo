@@ -3,6 +3,7 @@ import makeAesSecretKey from './makeAesSecretKey.js';
 export const obfuscationList = {
   indianPocker: () => {
     return {
+      /*
       BOOLEAN: {
         k: 'HWXQCUPGOE', // [72, 87, 88, 81, 67, 85, 80, 71, 79, 69]
         v: {
@@ -10,6 +11,7 @@ export const obfuscationList = {
           false: 'FJYTOKXWUN', // [70, 74, 89, 84, 79, 75, 88, 87, 85, 78]
         },
       },
+      */
       SECRET_KEY: {
         k: 'SXIEUDBLPN', // [83, 88, 73, 69, 85, 68, 66, 76, 80, 78]
         v: makeAesSecretKey(),
@@ -27,6 +29,7 @@ export const obfuscationList = {
           NUM_8: 'SJRWTDGUXH', // [83, 74, 82, 87, 84, 68, 71, 85, 88, 72]
           NUM_9: 'HJZUTOXFQA', // [72, 74, 90, 85, 84, 79, 88, 70, 81, 65]
           NUM_10: 'JRPFIGSBDN', // [74, 82, 80, 70, 73, 71, 83, 66, 68, 78]
+          /*
           NUM_11: 'RNQUKJXEFZ', // [82, 78, 81, 85, 75, 74, 88, 69, 70, 90]
           NUM_12: 'KWURNSMYFZ', // [75, 87, 85, 82, 78, 83, 77, 89, 70, 90]
           NUM_13: 'KBIGNZLWEM', // [75, 66, 73, 71, 78, 90, 76, 87, 69, 77]
@@ -57,8 +60,10 @@ export const obfuscationList = {
           NUM_38: 'TIGNFOXYLH', // [84, 73, 71, 78, 70, 79, 88, 89, 76, 72]
           NUM_39: 'OMKHFTNCLG', // [79, 77, 75, 72, 70, 84, 78, 67, 76, 71]
           NUM_40: 'ZSIKJDPFTO', // [90, 83, 73, 75, 74, 68, 80, 70, 84, 79]
+          */
         },
       },
+      /*
       GAME_STATE_ALL_KEYS: {
         k: 'XBAHZDVKUI', // [88, 66, 65, 72, 90, 68, 86, 75, 85, 73]
       },
@@ -85,9 +90,11 @@ export const obfuscationList = {
           gameOver: 'AFOILUXWVK', // [65, 70, 79, 73, 76, 85, 88, 87, 86, 75]
         },
       },
+      */
       /**
        * choice card
        */
+      /*
       // s: sessionStorage keys
       PLAYER_FIRST_CARD_NUM: {
         k: 'MDIZJHVGUW', // [77, 68, 73, 90, 74, 72, 86, 71, 85, 87]
@@ -135,6 +142,7 @@ export const obfuscationList = {
         k: 'BHINYATMSV', // [66, 72, 73, 78, 89, 65, 84, 77, 83, 86]
       },
       // e: click event
+      */
     };
   },
 };

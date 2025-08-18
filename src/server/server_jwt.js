@@ -85,7 +85,6 @@ app.post('/login', async (req, res) => {
     // // httpOnly 쿠키에 JWT auth token 저장
 
     res.setHeader('Set-Cookie', `gc_at=${authToken}; ${cookieOptions}`);
-    console.log('gc_at cookie 생성');
 
     // // httpOnly 쿠키에 JWT keypair token 저장
     // res.setHeader('Set-Cookie', `gc_kp=${keypairToken}; ${cookieOptions}`);

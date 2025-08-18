@@ -4,13 +4,10 @@ import shuffleArray from '@/client/js/views/game/indianPocker/fns/common/makeCar
 
 export default async () => {
   try {
-    const arrNumbs = selectCompairNumbers();
+    const arrNumbs = selectCompairNumbers(); // 1 ~ 40
     if (!arrNumbs || (arrNumbs && arrNumbs.length === 0)) {
       throw { message: 'cardNum length failed.' };
     };
-
-    console.log('arrNumbs ::::::: ', arrNumbs);
-
 
     // 카드 배열을 1 ~ 10까지의 숫자로 섞어서 2세트로 지정
     const shuffleNums = shuffleArray([...arrNumbs, ...arrNumbs]);

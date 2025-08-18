@@ -11,7 +11,7 @@ import storageKeys from '@/client/js/functions/dataVerification/storageKeys';
 import insertStorageDate from '@/client/js/functions/insertStorageDate';
 import cardVerification from '@/client/js/views/game/indianPocker/fns/common/cardVerification';
 
-export const encrypt = { keypair: '' };
+export const encrypt = { keypair: '', code: '' };
 export const connObj = { signalingServer: null, dataChannel: null, peerConnection: null, serverRefresh: false };
 export function getDisConnect () {
   // disconnect peerConnection
@@ -87,18 +87,11 @@ export default function webRTC(gameName) {
         connObj.dataChannel = peers[remotePeer].dataChannel;
         await responseComn(gameName);
 
-        // 처음 진입했거나, 두 Peer가 연결된 상태에서 새로고침 한 경우
-        if (encrypt.keypair === '') {
-          encrypt.keypair = roomName.replace(/\s+/g, '') // 1. 띄어쓰기 제거
-            .replace(/[^a-zA-Z0-9가-힣]/g, '') // 2. 특수문자 제거
-            .slice(-10); // 3. 맨 뒤 10자리
-          Object.freeze(encrypt);
-        };
-
         if (!connObj.serverRefresh) {
           const cookie = getCookies(gameName);
           if (cookie) {
             // 처음진입이라 cookie 없음
+            reject({ errCase: 'errorComn', message: 'server refresh cookie error.' });
           } else {
             setCookies(roomName, gameName);
           };
@@ -106,7 +99,14 @@ export default function webRTC(gameName) {
           // await login(gameName, roomName, pid);
         };
 
-
+        // 처음 진입했거나, 두 Peer가 연결된 상태에서 새로고침 한 경우
+        if (encrypt.keypair === '') {
+          encrypt.code = getCookies(gameName);
+          encrypt.keypair = encrypt.code
+            .replace(/\s+/g, '') // 띄어쓰기 제거
+            .replace(/[^a-zA-Z0-9가-힣]/g, '') // 특수문자 제거
+            .slice(-10); // 맨 뒤 10자리
+        };
 
         if (connObj.serverRefresh) {
           const decryptkey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
@@ -144,7 +144,7 @@ export default function webRTC(gameName) {
             connObj.signalingServer.send(JSON.stringify({
               type: 'requestStorage',
               gameName: gameName,
-              keypair: encrypt.keypair
+              gameCode: encrypt.code
             }));
           }
         } else {

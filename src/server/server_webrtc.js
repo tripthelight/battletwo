@@ -291,26 +291,6 @@ WSS.on('connection', async (socket) => {
           await roomsMapInit({ parsedData, socket });
 
           /**
-           * 최초 진입 - insertStorageWs
-           */
-          if (parsedData.type === 'requestStorage') {
-            // 각 게임에 필요한 암호화된 sessionStorage 생성
-            const STORAGE_DATA = await MAKE_STORAGE.findGame(parsedData.gameName, parsedData.keypair);
-
-            if (Object.keys(STORAGE_DATA).length === 0) {
-              console.log('사용자가 최초 진입 시 battleTwo에 없는 gameName을 보냄');
-              socket.send(JSON.stringify({ type: 'requestStorageError' }));
-            } else {
-              socket.send(
-                JSON.stringify({
-                  type: 'responseStorage',
-                  storageData: STORAGE_DATA,
-                }),
-              );
-            }
-          }
-
-          /**
            * webRTC connect - rtcPeer > webRTC
            */
           if (parsedData.type === 'entryOrder') {
@@ -334,6 +314,26 @@ WSS.on('connection', async (socket) => {
             await offerAnserCandidateDataProcess({ parsedData, socket }).catch(() => {
               socket.send(JSON.stringify({ type: 'otherLeaves', msg: '2' }));
             });
+          };
+
+          /**
+           * requestStorage
+           */
+          if (parsedData.type === 'requestStorage') {
+            // 각 게임에 필요한 암호화된 sessionStorage 생성
+            const STORAGE_DATA = await MAKE_STORAGE.findGame(parsedData.gameName, parsedData.gameCode);
+
+            if (Object.keys(STORAGE_DATA).length === 0) {
+              console.log('사용자가 최초 진입 시 battleTwo에 없는 gameName을 보냄');
+              socket.send(JSON.stringify({ type: 'requestStorageError' }));
+            } else {
+              socket.send(
+                JSON.stringify({
+                  type: 'responseStorage',
+                  storageData: STORAGE_DATA,
+                }),
+              );
+            }
           };
 
           /* if (parsedData.type === 'connectEnd') {

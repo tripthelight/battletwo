@@ -5,15 +5,16 @@ import findCharCode from '@/client/js/functions/findCharCode';
 
 export default async (msgData) => {
   try {
-    const { storageData, keypair } = msgData;
+    // const { storageData, keypair } = msgData;
+    const { storageData } = msgData;
 
     // 내가 sessionStorage key를 암호화 할 때 사용할 keypair가 포함되어 있음
     console.log('storageData >>>>>>>>>>>>> ', storageData);
     // 상대 peer의 AES secret key
-    console.log('keypair >>>>>>>>>>>>>>>>> ', keypair);
+    // console.log('keypair >>>>>>>>>>>>>>>>> ', keypair);
 
     encryptionStore.dispatch(updateCompair({ compair: Object.assign({}, storageData) }));
-    encryptionStore.dispatch(updateKeypair({ keypair: keypair }));
+    // encryptionStore.dispatch(updateKeypair({ keypair: keypair }));
 
     const encryptKey = findCharCode([83, 88, 73, 69, 85, 68, 66, 76, 80, 78]); // SECRET_KEY
     const encryptVal = window.sessionStorage.getItem(encryptKey);
