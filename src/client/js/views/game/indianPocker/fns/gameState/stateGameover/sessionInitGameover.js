@@ -14,8 +14,24 @@ export default () => {
   setTimeout(() => {
     // 필요없는 세션 삭제
     // const D_ARR = ['betUser', 'betCoinPos', 'betUserFirst', 'battleCardNum', 'basicBettingState', 'extFirstBet', 'roundEnd', 'cardNum', 'betState', 'gameReady', 'coinsPlayerBet', 'coinsEnemyExtBet', 'betCoin', 'coinsPlayerExtBet', 'coinsEnemyBet'];
-    const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
-    const D_ARR = ['betUser', 'betCoinPos', 'betUserFirst', 'battleCardNum', 'basicBettingState', 'extFirstBet', 'roundEnd', 'cardNum', encryptKey1, 'gameReady', 'coinsPlayerBet', 'coinsEnemyExtBet', 'betCoin', 'coinsPlayerExtBet', 'coinsEnemyBet'];
+
+    const D_ARR = [
+      'betUser',
+      'betCoinPos',
+      'betUserFirst',
+      'battleCardNum',
+      'basicBettingState',
+      findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]). // extFirstBet
+      findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]), // roundEnd
+      'cardNum',
+      findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]), // betState
+      'gameReady',
+      'coinsPlayerBet',
+      'coinsEnemyExtBet',
+      'betCoin',
+      'coinsPlayerExtBet',
+      'coinsEnemyBet'
+    ];
     storageMethod('s', 'REMOVE_ARR', '', '', D_ARR);
 
     // 게임 결과를 localStorage에 저장

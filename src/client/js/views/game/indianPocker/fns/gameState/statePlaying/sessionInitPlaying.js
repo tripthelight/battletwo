@@ -10,10 +10,13 @@ export default () => {
   storageMethod('s', 'REMOVE_ITEM', 'dropState');
 
   // storageMethod('s', 'SET_ITEM', 'betState', 'extraBetting');
-  const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
-  storageMethod('s', 'SET_ITEM', encryptKey1, 'extraBetting');
-  const EXT_FIRST_BET = window.sessionStorage.extFirstBet;
-  if (!EXT_FIRST_BET) storageMethod('s', 'SET_ITEM', 'extFirstBet', false);
+  const encryptKey4 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
+  storageMethod('s', 'SET_ITEM', encryptKey4, 'extraBetting');
+
+  const encryptKey5 = findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]); // extFirstBet
+  const decryptVal5 = window.sessionStorage.getItem(encryptKey5);
+  const encryptVal5 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
+  if (decryptVal5 === null) storageMethod('s', 'SET_ITEM', encryptKey5, encryptVal5);
 
   // 명령
   setTimeout(() => {

@@ -13,6 +13,13 @@ export default async (msgData) => {
     // 상대 peer의 AES secret key
     // console.log('keypair >>>>>>>>>>>>>>>>> ', keypair);
 
+    // cardNum 10개와 coinNum 30개 합쳐서, coinNum을 40으로 재지정
+    const keyLen10 = Object.keys(storageData).find(k => storageData[k].length === 10);
+    const keyLen30 = Object.keys(storageData).find(k => storageData[k].length === 30);
+    if (keyLen10 && keyLen30) {
+      storageData[keyLen30] = [...storageData[keyLen30], ...storageData[keyLen10]];
+    };
+
     encryptionStore.dispatch(updateCompair({ compair: Object.assign({}, storageData) }));
     // encryptionStore.dispatch(updateKeypair({ keypair: keypair }));
 

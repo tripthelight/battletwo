@@ -4,7 +4,7 @@ import CryptoJS from 'crypto-js';
 // indianPocker 안의 모든 value에 uniqueCodeByTime() 값 붙이기
 export default (obj, keypair) => {
   const cryptoException = (str) => ['SXIEUDBLPN'].includes(str); // AES secret key일 경우 hash 생성 안함
-  const numsException = (str) => ['TNUFGJXDCM'].includes(str); // NUMS의 v는 shuffle
+  const numsException = (str) => ['TNUFGJXDCM', 'OQTDZWUGXS'].includes(str); // NUMS의 v는 shuffle
 
   const result = {};
 

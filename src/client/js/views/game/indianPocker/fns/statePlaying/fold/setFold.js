@@ -1,3 +1,4 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import { timeInterval_1, timeInterval_1000, timeInterval_2000, timeInterval_3201, timeInterval_5000 } from '@/client/js/functions/variable';
 import { bottomSheet } from '@/client/components/popup/bottomSheet/bottomSheet';
 import { text } from '@/client/js/functions/language';
@@ -29,7 +30,18 @@ export const SET_FOLD = {
     if (COINS_PLAYER_LI.length > 0) for (let i = 0; i < COINS_PLAYER_LI.length; i++) COINS_PLAYER_LI[i].remove();
     if (Number(P_COINS) > 0) for (let i = 0; i < Number(P_COINS); i++) COINS_PLAYER.appendChild(document.createElement('li'));
     */
-    const D_ARR = ['coinsEnemyBet', 'coinsPlayerBet', 'coinsEnemyExtBet', 'coinsPlayerExtBet', 'betCoin', 'betCoinPos', 'extFirstBet', 'drewReady', 'drewState'];
+    // const D_ARR = ['coinsEnemyBet', 'coinsPlayerBet', 'coinsEnemyExtBet', 'coinsPlayerExtBet', 'betCoin', 'betCoinPos', 'extFirstBet', 'drewReady', 'drewState'];
+    const D_ARR = [
+      'coinsEnemyBet',
+      'coinsPlayerBet',
+      'coinsEnemyExtBet',
+      'coinsPlayerExtBet',
+      'betCoin',
+      'betCoinPos',
+      findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
+      'drewReady',
+      'drewState'
+    ];
     storageMethod('s', 'REMOVE_ARR', '', '', D_ARR);
     pcDraggableCheck('coins-player', false);
     setTimeout(

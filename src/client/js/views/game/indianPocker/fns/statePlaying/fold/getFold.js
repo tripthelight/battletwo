@@ -1,3 +1,4 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { text } from '@/client/js/functions/language';
@@ -82,7 +83,18 @@ export const GET_FOLD = {
     }, timeInterval_3201);
   },
   nextRound: () => {
-    const D_ARR = ['coinsEnemyBet', 'coinsPlayerBet', 'coinsEnemyExtBet', 'coinsPlayerExtBet', 'betCoin', 'betCoinPos', 'extFirstBet', 'drewReady', 'drewState'];
+    // const D_ARR = ['coinsEnemyBet', 'coinsPlayerBet', 'coinsEnemyExtBet', 'coinsPlayerExtBet', 'betCoin', 'betCoinPos', 'extFirstBet', 'drewReady', 'drewState'];
+    const D_ARR = [
+      'coinsEnemyBet',
+      'coinsPlayerBet',
+      'coinsEnemyExtBet',
+      'coinsPlayerExtBet',
+      'betCoin',
+      'betCoinPos',
+      findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet,
+      'drewReady',
+      'drewState'
+    ];
     storageMethod('s', 'REMOVE_ARR', '', '', D_ARR);
 
     setTimeout(() => {

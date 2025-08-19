@@ -9,8 +9,6 @@ import basicBetMainCheck from '@/client/js/views/game/indianPocker/fns/common/ba
 
 export default {
   main: () => {
-    // basicBet
-    // const encryptVal = findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]); // basicBet
     const encodeKey = [98, 97, 115, 105, 99, 66, 101, 116]; // basicBet
     storageMethod('s', 'REMOVE_ITEM', 'betResulting');
     if (basicBetMainCheck()) {
@@ -19,26 +17,27 @@ export default {
       const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
       const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
       const encryptKey2 = findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
-      // if (window.sessionStorage.betState && window.sessionStorage.betState === 'basicBetting') {
       if (encryptVal1 !== null && encryptVal1 === encryptKey2) {
         sessionInit();
         LOADING_EVENT.hide();
         // 상대가 call, fold 애니메이션 중 새로고침 했고
         // 나는 새로고침 안했을 경우
         // 상대를 기본배팅 시키기 위해 request 보내야 됨
-        // request('remoteReloadBasicBet', encryptVal);
         request('remoteReloadBasicBet', encodeKey);
       } else {
         // choiceCard 결과 안내팝업 누르고 여기로 진입함
         LOADING_EVENT.show();
-        if (window.sessionStorage.basicBetReady && window.sessionStorage.basicBetReady === 'false') {
-          storageMethod('s', 'SET_ITEM', 'roundEnd', false);
+        const encryptKey3 = findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]); // basicBetReady
+        const decryptVal3 = window.sessionStorage.getItem(encryptKey3);
+        const encryptVal3 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
+
+        if (decryptVal3 === encryptVal3) {
+          const encryptKey4 = findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]); // roundEnd
+          storageMethod('s', 'SET_ITEM', encryptKey4, encryptVal3);
           sessionInit();
           LOADING_EVENT.hide();
         }
-        // request('enterBasicBet', encryptVal);
         // choiceCard 결과 안내팝업 누르고 여기로 진입한 peer 둘 다 request 보냄
-
         request('enterBasicBet', encodeKey);
       };
     };

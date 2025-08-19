@@ -1,3 +1,4 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import STATE_BASIC_BET from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/init';
 
@@ -23,7 +24,25 @@ export default (reloadState) => {
         storageMethod('s', 'SET_ITEM', 'coinsPlayer', window.sessionStorage.coinsPlayerRemoteFold);
       }
 
-      const D_ARR = ['coinsEnemyBet', 'coinsPlayerBet', 'coinsEnemyExtBet', 'coinsPlayerExtBet', 'betCoin', 'betCoinPos', 'extFirstBet', 'drewReady', 'drewState', 'dropState', 'coinsEnemyLocalFold', 'coinsPlayerLocalFold', 'coinsEnemyRemoteFold', 'coinsPlayerRemoteFold', 'foldUser', 'foldState'];
+      // const D_ARR = ['coinsEnemyBet', 'coinsPlayerBet', 'coinsEnemyExtBet', 'coinsPlayerExtBet', 'betCoin', 'betCoinPos', 'extFirstBet', 'drewReady', 'drewState', 'dropState', 'coinsEnemyLocalFold', 'coinsPlayerLocalFold', 'coinsEnemyRemoteFold', 'coinsPlayerRemoteFold', 'foldUser', 'foldState'];
+      const D_ARR = [
+        'coinsEnemyBet',
+        'coinsPlayerBet',
+        'coinsEnemyExtBet',
+        'coinsPlayerExtBet',
+        'betCoin',
+        'betCoinPos',
+        findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
+        'drewReady',
+        'drewState',
+        'dropState',
+        'coinsEnemyLocalFold',
+        'coinsPlayerLocalFold',
+        'coinsEnemyRemoteFold',
+        'coinsPlayerRemoteFold',
+        'foldUser',
+        'foldState'
+      ];
       storageMethod('s', 'REMOVE_ARR', '', '', D_ARR);
 
       storageMethod('s', 'SET_ITEM', 'betCoin', []);

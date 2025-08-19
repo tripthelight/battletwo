@@ -342,10 +342,10 @@ WSS.on('connection', async (socket) => {
             const DIFF_SOCKET = ROOMS_MAP[socket.gameName].get(socket.roomName).find((ws) => ws !== socket);
 
             if (DIFF_SOCKET) {
-              console.log('DIFF_SOCKET 있음');
+              // DIFF_SOCKET 있음
               DIFF_SOCKET.send(JSON.stringify({ type: 'otherLeaves' }));
             } else {
-              console.log('DIFF_SOCKET 없음');
+              // DIFF_SOCKET 없음
             }
           };
         })

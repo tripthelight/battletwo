@@ -1,3 +1,4 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { comnText } from '@/client/js/functions/language';
 import disabledMoveCoins from '@/client/js/views/game/indianPocker/fns/common/disabledMoveCoins';
@@ -17,8 +18,13 @@ export default (_state) => {
   document.querySelector('.coins-player').classList.add('disabled');
   document.querySelector('.betting-zone').classList.add('disabled');
 
+  const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
+  const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
+
   storageMethod('s', 'SET_ITEM', 'betUser', false);
-  storageMethod('s', 'SET_ITEM', 'extFirstBet', true);
+
+  const encryptKey2 = findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]); // extFirstBet
+  storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal_1);
   // 배팅된 칩의 betState: 'end'
   if (_state === comnText.fold) return;
   storageMethod(

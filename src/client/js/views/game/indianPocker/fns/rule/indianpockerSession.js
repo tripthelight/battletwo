@@ -10,7 +10,9 @@ export default (_name) => {
     case 'BUF':
       return window.sessionStorage.betUserFirst;
     case 'EFB':
-      return window.sessionStorage.extFirstBet;
+      const encryptKey = findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]); // extFirstBet
+      const decryptVal = window.sessionStorage.getItem(encryptKey);
+      return decryptVal;
     case 'CP':
       return window.sessionStorage.coinsPlayer && Number(window.sessionStorage.coinsPlayer) > 0 ? Number(window.sessionStorage.coinsPlayer) : 0;
     case 'CPB':

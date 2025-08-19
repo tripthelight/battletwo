@@ -1,3 +1,4 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1, timeInterval_1001 } from '@/client/js/functions/variable.js';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
@@ -12,7 +13,10 @@ import subtractMoveCoin from '@/client/js/views/game/indianPocker/fns/common/sub
 export const GET_ALLIN = {
   receiveAllinBet: (_data) => {
     storageMethod('s', 'SET_ITEM', 'betUser', true);
-    storageMethod('s', 'SET_ITEM', 'extFirstBet', true);
+    storageMethod('s', 'SET_ITEM',
+      findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
+      findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]) // true
+    );
     storageMethod('s', 'SET_ITEM', 'coinsEnemy', _data.coinCount);
     storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', _data.coinBet);
     storageMethod('s', 'SET_ITEM', 'coinsEnemyExtBet', _data.extBet);

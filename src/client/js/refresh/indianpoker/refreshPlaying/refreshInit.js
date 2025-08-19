@@ -1,3 +1,4 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import { GET_ROUND_END } from '@/client/js/views/game/indianPocker/fns/statePlaying/roundEnd/getRoundEnd';
 import { request } from '@/client/js/network/indianPocker/request';
 import storageMethod from '@/client/js/module/storage/storageMethod';
@@ -32,6 +33,10 @@ export default {
 
       const P_NUM = playerNum(PLAYER_CARD_NUM);
       const E_NUM = playerNum(BATTLE_CARD_NUM);
+      const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
+      const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
+      const encryptKey5 = findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]); // roundEnd
+      const encryptKey6 = findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]); // extFirstBet
 
       if (Number(P_NUM) > Number(E_NUM) || Number(P_NUM) < Number(E_NUM)) {
         const coinsEnemyBet = window.sessionStorage.coinsEnemyBet;
@@ -50,7 +55,7 @@ export default {
 
         storageMethod('s', 'SET_ITEM', 'betUser', RESULT);
         storageMethod('s', 'SET_ITEM', 'basicBettingState', false);
-        storageMethod('s', 'SET_ITEM', 'extFirstBet', false);
+        storageMethod('s', 'SET_ITEM', encryptKey6, encryptVal_2);
         storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', 0);
         storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', 0);
         storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 0);
@@ -66,8 +71,8 @@ export default {
         storageMethod('s', 'SET_ITEM', 'drewReady', true);
         storageMethod('s', 'SET_ITEM', 'betUser', window.sessionStorage.betUserFirst);
         storageMethod('s', 'SET_ITEM', 'drewState', true);
-        storageMethod('s', 'SET_ITEM', 'roundEnd', false);
-        storageMethod('s', 'SET_ITEM', 'extFirstBet', false);
+        storageMethod('s', 'SET_ITEM', encryptKey5, encryptVal_2);
+        storageMethod('s', 'SET_ITEM', encryptKey6, encryptVal_2);
         storageMethod('s', 'SET_ITEM', 'battleCardNum', '');
         request('drewRefresh', true);
 

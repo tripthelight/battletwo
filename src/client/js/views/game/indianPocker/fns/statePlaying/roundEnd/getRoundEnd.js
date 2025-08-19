@@ -154,10 +154,21 @@ export const GET_ROUND_END = {
       storageMethod('s', 'REMOVE_ITEM', 'drewState');
     } else if (Number(cardNum.player) === Number(cardNum.enemy)) {
       result = 'drew';
+
+      const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
+      const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
+
       storageMethod('s', 'SET_ITEM', 'betUser', window.sessionStorage.betUserFirst);
       storageMethod('s', 'SET_ITEM', 'drewState', true);
-      storageMethod('s', 'SET_ITEM', 'roundEnd', false);
-      storageMethod('s', 'SET_ITEM', 'extFirstBet', false);
+
+      storageMethod('s', 'SET_ITEM',
+        findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]), // roundEnd
+        encryptVal_2 // false
+      );
+      storageMethod('s', 'SET_ITEM',
+        findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
+        encryptVal_2 // false
+      );
     } else {
       console.log('error - getRoundEnd.js - cardNumCompare !result');
       errorManagement({ errCase: 'errorComn' });
@@ -214,7 +225,9 @@ export const GET_ROUND_END = {
     storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 0);
     storageMethod('s', 'SET_ITEM', 'coinsEnemyExtBet', 0);
     // 새로고침 을 위해 roundEnd seeeion 추가
-    storageMethod('s', 'SET_ITEM', 'roundEnd', true);
+    const encryptKey3 = findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]); // roundEnd
+    const encryptVal3 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
+    storageMethod('s', 'SET_ITEM', encryptKey3, encryptVal3);
     switch (_result) {
       case 'win':
         storageMethod('s', 'SET_ITEM', 'betUser', true);

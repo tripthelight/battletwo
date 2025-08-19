@@ -1,3 +1,4 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import EnemyBlockMoveBattingZone from '@/client/js/views/game/indianPocker/fns/common/EnemyBlockMoveBattingZone';
@@ -8,7 +9,10 @@ import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
 
 export const GET_RAISE = {
   receiveRaiseBet: (_data) => {
-    storageMethod('s', 'SET_ITEM', 'extFirstBet', true);
+    storageMethod('s', 'SET_ITEM',
+      findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
+      findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]) // true
+    );
     GET_RAISE.sessionRaiseBet(_data);
   },
   sessionRaiseBet: (_data) => {

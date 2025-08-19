@@ -1,3 +1,4 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { comnText } from '@/client/js/functions/language';
@@ -70,7 +71,10 @@ export default {
       });
       promise
         .then((_data) => {
-          storageMethod('s', 'SET_ITEM', 'extFirstBet', true);
+          const encryptKey = findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]); // extFirstBet
+          const encryptVal = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
+
+          storageMethod('s', 'SET_ITEM', encryptKey, encryptVal);
           GET_BETTING.sessionExtraBet(_data);
         })
         .catch((error) => {

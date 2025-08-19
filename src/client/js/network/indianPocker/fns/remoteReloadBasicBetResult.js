@@ -9,16 +9,19 @@ export default (_data) => {
   });
   PROMISE.then((_data) => {
     // basicBet
-      if (JSON.stringify(_data) === JSON.stringify([98, 97, 115, 105, 99, 66, 101, 116])) {
-      const encryptVal = findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]); // basicBet
-      const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
+    if (JSON.stringify(_data) === JSON.stringify([98, 97, 115, 105, 99, 66, 101, 116])) {
       // basicBet
       const reloadUser = window.sessionStorage.playingReloadUser;
       if (reloadUser && reloadUser === 'true') {
         storageMethod('s', 'REMOVE_ITEM', 'playingReloadUser');
-        // storageMethod('s', 'SET_ITEM', 'betState', 'basicBet');
-        storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal);
-        storageMethod('s', 'SET_ITEM', 'roundEnd', false);
+
+        const encryptKey2 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
+        const encryptVal2 = findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]); // basicBet
+        storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal2);
+
+        const encryptKey3 = findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]); // roundEnd
+        const encryptVal3 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
+        storageMethod('s', 'SET_ITEM', encryptKey3, encryptVal3);
         sessionInit();
       }
     }
