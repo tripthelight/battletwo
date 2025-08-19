@@ -91,6 +91,7 @@ export const obfuscationList = {
         },
       },
       */
+
       /**
        * choice card
        */
@@ -133,6 +134,20 @@ export const obfuscationList = {
         k: 'OXMTWVSEYI', // [79, 88, 77, 84, 87, 86, 83, 69, 89, 73]
       },
       // e: sessionStorage keys
+
+      /**
+       * basic bet
+       */
+      /*
+      // s: sessionStorage keys
+      BET_STATE: {
+        k: 'FMPXWVSYKA', // [70, 77, 80, 88, 87, 86, 83, 89, 75, 65]
+      },
+      BASIC_BETTING: {
+        k: 'FTKWJCIMPA', // [70, 84, 75, 87, 74, 67, 73, 77, 80, 65]
+      },
+      // e: sessionStorage keys
+
       // s: click event
       // choiceCardClick
       CHOICE_CARD_CLICK: {

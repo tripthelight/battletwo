@@ -1,3 +1,4 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import insertStorageDate from '@/client/js/functions/insertStorageDate';
 
 export const signalingSocket = new WebSocket(`${process.env.SOCKET_HOST}:${process.env.RTC_PORT}`);

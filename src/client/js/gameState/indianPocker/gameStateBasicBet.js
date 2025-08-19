@@ -1,4 +1,3 @@
-import { timeInterval_1, timeInterval_2 } from '@/client/js/functions/variable';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import STATE_BASIC_BET from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/init';
 
@@ -36,9 +35,7 @@ export default (reloadState) => {
     // 이전에 FOLD한 PLAYER 가 있는데, 둘 다 새로고침 안하고 진입한 경우
     const D_FOLD_ARR = ['coinsEnemyLocalFold', 'coinsPlayerLocalFold', 'coinsEnemyRemoteFold', 'coinsPlayerRemoteFold', 'foldUser', 'foldState'];
     storageMethod('s', 'REMOVE_ARR', '', '', D_FOLD_ARR);
-  }
+  };
 
-  setTimeout(() => {
-    STATE_BASIC_BET.main();
-  }, timeInterval_1);
+  STATE_BASIC_BET.main();
 };

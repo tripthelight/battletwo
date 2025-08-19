@@ -15,8 +15,6 @@ const objkeypair = {
 
 export const MAKE_STORAGE = {
   indianPocker: async (_keypair) => {
-    console.log('_keypair ::::::: ', _keypair);
-
     /*
     if (objkeypair.newPair === '') {
       objkeypair.newPair = uniqueCodeByTime();

@@ -1,3 +1,4 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import storageMethod from '@/client/js/module/storage/storageMethod';
@@ -12,7 +13,9 @@ export default () => {
   // 명령
   setTimeout(() => {
     // 필요없는 세션 삭제
-    const D_ARR = ['betUser', 'betCoinPos', 'betUserFirst', 'battleCardNum', 'basicBettingState', 'extFirstBet', 'roundEnd', 'cardNum', 'betState', 'gameReady', 'coinsPlayerBet', 'coinsEnemyExtBet', 'betCoin', 'coinsPlayerExtBet', 'coinsEnemyBet'];
+    // const D_ARR = ['betUser', 'betCoinPos', 'betUserFirst', 'battleCardNum', 'basicBettingState', 'extFirstBet', 'roundEnd', 'cardNum', 'betState', 'gameReady', 'coinsPlayerBet', 'coinsEnemyExtBet', 'betCoin', 'coinsPlayerExtBet', 'coinsEnemyBet'];
+    const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
+    const D_ARR = ['betUser', 'betCoinPos', 'betUserFirst', 'battleCardNum', 'basicBettingState', 'extFirstBet', 'roundEnd', 'cardNum', encryptKey1, 'gameReady', 'coinsPlayerBet', 'coinsEnemyExtBet', 'betCoin', 'coinsPlayerExtBet', 'coinsEnemyBet'];
     storageMethod('s', 'REMOVE_ARR', '', '', D_ARR);
 
     // 게임 결과를 localStorage에 저장

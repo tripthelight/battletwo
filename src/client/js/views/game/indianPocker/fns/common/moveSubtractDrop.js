@@ -1,6 +1,6 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import deviceStateStore from '@/client/store/deviceStateStore';
-import { timeInterval_1 } from '@/client/js/functions/variable';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
@@ -67,7 +67,11 @@ export default (event) => {
   const PLAYER_COINS_BET_NUM = Number(PLAYER_COINS_BET);
   storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', PLAYER_COINS_BET_NUM - 1);
 
-  if (window.sessionStorage.betState === 'extraBetting') {
+  const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
+  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+
+  // if (window.sessionStorage.betState === 'extraBetting') {
+  if (encryptVal1 === 'extraBetting') {
     if (window.sessionStorage.coinsPlayerExtBet) {
       if (Number(window.sessionStorage.coinsPlayerExtBet) > 0) {
         storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', Number(window.sessionStorage.coinsPlayerExtBet) - 1);
@@ -80,6 +84,6 @@ export default (event) => {
 
   PLAYER_BLOCK.classList.remove('over');
 
-  setTimeout(moveCoins, timeInterval_1);
-  setTimeout(BTN_STATE.CHANGE, timeInterval_1);
+  moveCoins();
+  BTN_STATE.CHANGE();
 };

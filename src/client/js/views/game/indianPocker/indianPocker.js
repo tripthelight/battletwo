@@ -15,6 +15,8 @@ import errorManager from '@/client/js/module/errorHandler/errorManager';
 document.onreadystatechange = async () => {
   if (document.readyState !== 'complete') return;
   try {
+    LOADING_EVENT.show();
+
     const GAME_NAME = 'indianPocker';
 
     // 새로고침 트리거
@@ -22,20 +24,17 @@ document.onreadystatechange = async () => {
       // 아직 연결 안되어 대기중에 새로고침하면 여기를 탐
       // 이전에 두 Peer가 연결되었다가 새로고침한 peer는 여기를 탐
       // 게임 중, sessionStorage를 모두 지우고, cookie도 지우고 새로고침 하면 처음부터 새로운 Peer와 재연결 - 게임 나감 처리로 간주
-      const cookie = getCookies(GAME_NAME);
-      if (cookie) {
-        console.log('cookie 있음 ------------ ', cookie);
+      if (getCookies(GAME_NAME)) {
         if (sessionStorage.length === 0) {
           throw { errCase: 'sessionStorageLoss', message: 'reload sessionStorageLoss failed.' };
         };
       } else {
-        console.log('cookie 없음 ------------ ', cookie);
         if (sessionStorage.length > 0) {
           throw { errCase: 'cookies', message: 'reload cookies failed.' };
         };
       };
+      await new Promise(resolve => setTimeout(resolve, 1000));
     } else {
-      console.log('처음 진입 ------------ ');
       delCookies(GAME_NAME);
     };
 
@@ -44,17 +43,12 @@ document.onreadystatechange = async () => {
     // window.sessionStorage.length가 0보다 크고,
     // gc_at 쿠키가 있으면 이 단계로 진입
 
-    LOADING_EVENT.show();
-
     await rtcPeer(GAME_NAME);
 
     // webRTC 연결 후,
     // gameState가 있으면 이 단계로 진입
 
     await makeCard();
-
-    console.log('playerFirstNumber :::: ', findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87])); // playerFirstNumber
-    console.log('enemyFirstNumber :::::', findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85])); // enemyFirstNumber
 
     if (reload) {
       const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
@@ -64,6 +58,9 @@ document.onreadystatechange = async () => {
         case findCharCode([74, 75, 71, 90, 87, 79, 85, 69, 65, 88]): // waitEnemy
         case findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82]): // choiceCard
           indianPockerGameState.choiceCard();
+          break;
+        case findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]): // basicBet
+          indianPockerGameState.basicBet();
           break;
         default:
           throw throwObj('sessionStorageLoss', 'reload gameState not found');

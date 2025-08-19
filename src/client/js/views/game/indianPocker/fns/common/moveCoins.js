@@ -1,4 +1,3 @@
-import { timeInterval_1 } from '@/client/js/functions/variable';
 import pcDraggableCheck from '@/client/js/views/game/indianPocker/fns/common/pcDraggableCheck';
 import coinsActiveAni from '@/client/js/views/game/indianPocker/fns/common/coinsActiveAni';
 import lastBettingCheck from '@/client/js/views/game/indianPocker/fns/common/lastBettingCheck';
@@ -9,18 +8,16 @@ export default () => {
   const COINS = document.querySelector('.coins-player');
   if (!COINS) return;
 
-  setTimeout(() => {
-    COINS.classList.remove('disabled');
-    pcDraggableCheck('coins-player', true);
-    coinsActiveAni();
+  COINS.classList.remove('disabled');
+  pcDraggableCheck('coins-player', true);
+  coinsActiveAni();
 
-    // 상대가 추가배팅할 코인이 없으면 내 코인을 움직여서는 안됨
-    const moveState = lastBettingCheck();
-    if (moveState) return;
+  // 상대가 추가배팅할 코인이 없으면 내 코인을 움직여서는 안됨
+  const moveState = lastBettingCheck();
+  if (moveState) return;
 
-    let moveCoins = COINS.querySelectorAll('li');
-    [].forEach.call(moveCoins, (item) => {
-      addEventsMoveCoin(item);
-    });
-  }, timeInterval_1);
+  let moveCoins = COINS.querySelectorAll('li');
+  [].forEach.call(moveCoins, (item) => {
+    addEventsMoveCoin(item);
+  });
 };

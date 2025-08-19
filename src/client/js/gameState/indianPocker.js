@@ -17,7 +17,7 @@ export default {
   },
   basicBet: (reloadState) => {
     const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
-    storageMethod('s', 'SET_ITEM', encryptKey, findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]));
+    storageMethod('s', 'SET_ITEM', encryptKey, findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68])); // basicBet
     gameStateBasicBet(reloadState);
   },
   playing: () => {

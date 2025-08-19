@@ -5,7 +5,6 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/network/indianPocker/request';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import drawPickCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/drawPickCard';
-import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export const CHOICE_CARD_DATA_HANDLER = {
@@ -79,6 +78,5 @@ export const CHOICE_CARD_DATA_HANDLER = {
 
     // choiceCard 단계에서 필요한 data insert 후 다음 단계 진행
     drawPickCard();
-    // LOADING_EVENT.hide();
   },
 };

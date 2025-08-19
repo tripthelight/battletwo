@@ -1,4 +1,3 @@
-import { timeInterval_1 } from '@/client/js/functions/variable';
 import drawBettingZoneCoins from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/drawBettingZoneCoins';
 
 export default () => {
@@ -9,12 +8,10 @@ export default () => {
   if (BETTING_ZONE) return drawBettingZoneCoins();
 
   // 명령
-  setTimeout(() => {
-    let elem = document.createElement('div');
-    elem.classList.add('betting-zone');
-    GAME_SCENE.appendChild(elem);
+  const elem = document.createElement('div');
+  elem.classList.add('betting-zone');
+  GAME_SCENE.appendChild(elem);
 
-    // 다음 함수 실행
-    setTimeout(drawBettingZoneCoins, timeInterval_1);
-  }, timeInterval_1);
+  // 다음 함수 실행
+  drawBettingZoneCoins();
 };

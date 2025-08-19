@@ -1,4 +1,3 @@
-import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import drawBettingZone from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/drawBettingZone';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
@@ -25,32 +24,30 @@ export default () => {
   }
 
   // 명령
-  setTimeout(() => {
-    let elem = COINS_ENEMY ? COINS_ENEMY : document.createElement('ul');
-    let liEl = new Object();
-    let minuteEl = new Object();
-    let hourEl = new Object();
-    elem.classList.add('coins');
-    elem.classList.add('coins-enemy');
-    let coinCount = Number(window.sessionStorage.coinsEnemy);
+  const elem = COINS_ENEMY ? COINS_ENEMY : document.createElement('ul');
+  let liEl = new Object();
+  let minuteEl = new Object();
+  let hourEl = new Object();
+  elem.classList.add('coins');
+  elem.classList.add('coins-enemy');
+  const coinCount = Number(window.sessionStorage.coinsEnemy);
 
-    console.log('coinCount ENEMY ============ > ', coinCount);
+  console.log('coinCount ENEMY ============ > ', coinCount);
 
-    for (let i = 0; i < coinCount; i++) {
-      liEl = document.createElement('li');
-      minuteEl = document.createElement('span');
-      hourEl = document.createElement('span');
-      minuteEl.classList.add('m');
-      hourEl.classList.add('h');
-      liEl.appendChild(minuteEl);
-      liEl.appendChild(hourEl);
-      elem.appendChild(liEl);
-      // 시, 분 animate()
-      enemyBetState ? posClock(hourEl, minuteEl) : animateClock(hourEl, minuteEl, false);
-    }
-    ENEMY_BLOCK.appendChild(elem);
+  for (let i = 0; i < coinCount; i++) {
+    liEl = document.createElement('li');
+    minuteEl = document.createElement('span');
+    hourEl = document.createElement('span');
+    minuteEl.classList.add('m');
+    hourEl.classList.add('h');
+    liEl.appendChild(minuteEl);
+    liEl.appendChild(hourEl);
+    elem.appendChild(liEl);
+    // 시, 분 animate()
+    enemyBetState ? posClock(hourEl, minuteEl) : animateClock(hourEl, minuteEl, false);
+  }
+  ENEMY_BLOCK.appendChild(elem);
 
-    // 다음 함수 실행
-    setTimeout(drawBettingZone, timeInterval_1);
-  }, timeInterval_1);
+  // 다음 함수 실행
+  drawBettingZone();
 };

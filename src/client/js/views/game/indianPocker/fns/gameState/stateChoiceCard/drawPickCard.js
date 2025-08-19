@@ -37,10 +37,6 @@ export default () => {
   // 선플레이어 카드 선택 안내 팝업
   drawPickCardInfo();
 
-  console.log('ulIndex ::::::::::::: ', findCharCode([78, 73, 68, 76, 67, 82, 87, 83, 89, 70])); // ulIndex
-  console.log('liIndex ::::::::::::: ', findCharCode([83, 70, 79, 67, 65, 71, 66, 87, 77, 86])); // liIndex
-  console.log('playerFirstNumber ::: ', findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87])); // playerFirstNumber
-
   const createLocalStorageKeys = (arrays) => arrays.map(findCharCode);
   const getSessionStorageValues = (keys) => keys.map((key) => window.sessionStorage.getItem(key));
   const isPlayerSelected = (arrays) => {

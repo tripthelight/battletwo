@@ -9,11 +9,9 @@ export default (event) => {
   const BATTING_ZONE = document.querySelector('.betting-zone');
 
   // 명령
-  setTimeout(() => {
-    if (BATTING_ZONE.classList.contains('over')) {
-      BATTING_ZONE.classList.remove('over');
-    }
-    reactiveState.pcActiveEl.target.style.transform = 'translate(' + reactiveState.pcMoveX + 'px, ' + reactiveState.pcMoveY + 'px)';
-    setTimeout(betCoinEndComn, timeInterval_1, reactiveState.pcActiveEl);
-  }, timeInterval_1);
+  if (BATTING_ZONE.classList.contains('over')) {
+    BATTING_ZONE.classList.remove('over');
+  }
+  reactiveState.pcActiveEl.target.style.transform = 'translate(' + reactiveState.pcMoveX + 'px, ' + reactiveState.pcMoveY + 'px)';
+  betCoinEndComn(reactiveState.pcActiveEl);
 };

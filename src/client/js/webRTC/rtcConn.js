@@ -220,19 +220,25 @@ export default function webRTC(gameName) {
       };
       pc.oniceconnectionstatechange = async (event) => {
         if (event.target.iceConnectionState === 'disconnected') {
-          console.log('반칙 여기 타냐? 1 --------------- ');
+          if (connObj.signalingServer && connObj.signalingServer.readyState === WebSocket.OPEN) {
+            connObj.signalingServer.send(JSON.stringify({
+              type: 'connectEnd',
+            }));
+          };
           if (peers[remotePeer]) {
             // 상대 peer와 연결 끊김 후 새로고침 하면 새로운 peer와 재연결 시도
             // await logout();
             // delCookies('gc_at');
-            if (connObj.signalingServer) connObj.signalingServer.close();
-            if (pc) pc.close();
-            debug.log(`${remotePeer} : ICE 연결 끊김으로 peers에서 제거`);
-            console.log(`${remotePeer} : ICE 연결 끊김으로 peers에서 제거`);
+            console.log(`
+              ${remotePeer} : ICE 연결 끊김으로 peers에서 제거
+              readyState : ${connObj.signalingServer.readyState}
+            `);
             delete peers[remotePeer];
-            errorManagement({ errCase: 'webRTC', component: 'peerConnection', message: 'createPeerConnection' });
-            storageMethod('s', 'REMOVE_ALL');
           };
+          if (connObj.signalingServer && connObj.signalingServer.readyState === WebSocket.OPEN) connObj.signalingServer.close();
+          if (pc) pc.close();
+          errorManagement({ errCase: 'webRTC', component: 'peerConnection', message: 'createPeerConnection' });
+          storageMethod('s', 'REMOVE_ALL');
         };
 
         if (event.target.iceConnectionState === 'connected' || event.target.iceConnectionState === 'completed') {
@@ -286,18 +292,25 @@ export default function webRTC(gameName) {
         };
         pc.oniceconnectionstatechange = async (event) => {
           if (event.target.iceConnectionState === 'disconnected') {
+            if (connObj.signalingServer && connObj.signalingServer.readyState === WebSocket.OPEN) {
+              connObj.signalingServer.send(JSON.stringify({
+                type: 'connectEnd',
+              }));
+            };
             if (peers[remotePeer]) {
               // 상대 peer와 연결 끊김 후 새로고침 하면 새로운 peer와 재연결 시도
               // await logout();
               // delCookies('gc_at');
-              if (connObj.signalingServer) connObj.signalingServer.close();
-              if (pc) pc.close();
-              debug.log(`${remotePeer} : ICE 연결 끊김으로 peers에서 제거`);
-              console.log(`${remotePeer} : ICE 연결 끊김으로 peers에서 제거`);
+              console.log(`
+                ${remotePeer} : ICE 연결 끊김으로 peers에서 제거
+                readyState : ${connObj.signalingServer.readyState}
+              `);
               delete peers[remotePeer];
-              errorManagement({ errCase: 'webRTC', component: 'peerConnection', message: 'handleOffer' });
-              storageMethod('s', 'REMOVE_ALL');
             };
+            if (connObj.signalingServer && connObj.signalingServer.readyState === WebSocket.OPEN) connObj.signalingServer.close();
+            if (pc) pc.close();
+            errorManagement({ errCase: 'webRTC', component: 'peerConnection', message: 'createPeerConnection' });
+            storageMethod('s', 'REMOVE_ALL');
           };
 
           if (event.target.iceConnectionState === 'connected' || event.target.iceConnectionState === 'completed') {
@@ -353,7 +366,12 @@ export default function webRTC(gameName) {
 
       } else if (type === 'otherLeaves') {
         console.log('otherLeaves 받음');
-        throw { errCase: 'webRTC', component: 'peerConnection', message: 'otherLeaves' };
+        if (peers[remotePeer]) {
+          delete peers[remotePeer];
+        };
+        if (connObj.signalingServer && connObj.signalingServer.readyState === WebSocket.OPEN) connObj.signalingServer.close();
+        errorManagement({ errCase: 'webRTC', component: 'peerConnection', message: 'createPeerConnection' });
+        storageMethod('s', 'REMOVE_ALL');
       };
 
       // indianPocker

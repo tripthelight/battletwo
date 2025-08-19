@@ -1,3 +1,4 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import { timeInterval_1, timeInterval_2 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import moveCoins from '@/client/js/views/game/indianPocker/fns/common/moveCoins';
@@ -16,8 +17,12 @@ export default () => {
   if (!COINS_PLAYER) return;
   const BET_USER = window.sessionStorage.betUser;
   if (!BET_USER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'betUser 세션이 없습니다.' });
-  const BAT_STATE = window.sessionStorage.betState;
-  if (!BAT_STATE) return errorManagement({ errCase: 'sessionStorageLoss', message: 'betState 세션이 없습니다.' });
+  // const BAT_STATE = window.sessionStorage.betState;
+  // if (!BAT_STATE) return errorManagement({ errCase: 'sessionStorageLoss', message: 'betState 세션이 없습니다.' });
+  const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
+  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  if (encryptVal1 === null) return errorManagement({ errCase: 'sessionStorageLoss', message: 'betState 세션이 없습니다.' });
+
 
   // 명령
   setTimeout(() => {
@@ -27,7 +32,8 @@ export default () => {
       COINS_PLAYER.classList.remove('disabled');
 
       // 다음 함수 실행
-      if (BAT_STATE === 'basicBetting') {
+      // if (BAT_STATE === 'basicBetting') {
+      if (encryptKey1 === findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65])) {// basicBetting
         setTimeout(moveCoins, timeInterval_1);
       }
       if (BAT_STATE === 'extraBetting') {

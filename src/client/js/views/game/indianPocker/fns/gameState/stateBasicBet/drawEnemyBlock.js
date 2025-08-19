@@ -1,4 +1,3 @@
-import { timeInterval_1 } from '@/client/js/functions/variable';
 import drawEnemyCoins from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/drawEnemyCoins';
 
 export default () => {
@@ -9,12 +8,10 @@ export default () => {
   if (ENEMY_BLOCK) return drawEnemyCoins();
 
   // 명령
-  setTimeout(() => {
-    let elem = document.createElement('div');
-    elem.classList.add('enemy-block');
-    GAME_SCENE.appendChild(elem);
+  const elem = document.createElement('div');
+  elem.classList.add('enemy-block');
+  GAME_SCENE.appendChild(elem);
 
-    // 다음 함수 실행
-    setTimeout(drawEnemyCoins, timeInterval_1);
-  }, timeInterval_1);
+  // 다음 함수 실행
+  drawEnemyCoins();
 };

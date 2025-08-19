@@ -24,9 +24,6 @@ export default (_target, _num) => {
     }
   })();
 
-  console.log('내가 보낸 내가 선택한 카드 숫자 ::::: ', findCardNumb);
-  console.log('내가 보낸 상대가 선택한 카드 숫자 ::: ', safeRemoteNum);
-
   request('choiceFirst', { eNum: findCardNumb, pNum: safeRemoteNum });
 
   if (encryptVal !== '') {

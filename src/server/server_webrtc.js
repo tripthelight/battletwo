@@ -309,7 +309,9 @@ WSS.on('connection', async (socket) => {
             });
           }
 
-          // if (parsedData.type === 'offer' || parsedData.type === 'answer' || parsedData.type === 'candidate') {
+          /**
+           * offer, answer, candidate
+           */
           if (['offer', 'answer', 'candidate'].includes(parsedData.type)) {
             await offerAnserCandidateDataProcess({ parsedData, socket }).catch(() => {
               socket.send(JSON.stringify({ type: 'otherLeaves', msg: '2' }));
@@ -336,10 +338,16 @@ WSS.on('connection', async (socket) => {
             }
           };
 
-          /* if (parsedData.type === 'connectEnd') {
-            console.log('webRTC 연결 완료, socket 삭제');
-            socket = null;
-          }; */
+          if (parsedData.type === 'connectEnd') {
+            const DIFF_SOCKET = ROOMS_MAP[socket.gameName].get(socket.roomName).find((ws) => ws !== socket);
+
+            if (DIFF_SOCKET) {
+              console.log('DIFF_SOCKET 있음');
+              DIFF_SOCKET.send(JSON.stringify({ type: 'otherLeaves' }));
+            } else {
+              console.log('DIFF_SOCKET 없음');
+            }
+          };
         })
         .catch((err) => {
           if (err.type === 'foul') {

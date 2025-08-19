@@ -406,7 +406,10 @@ export const GET_ROUND_END = {
     storageMethod('s', 'SET_ITEM', 'betCoin', []);
     storageMethod('s', 'SET_ITEM', 'betCoinPos', []);
     storageMethod('s', 'SET_ITEM', 'basicBettingState', false);
-    storageMethod('s', 'SET_ITEM', 'betState', 'basicBetting');
+    // storageMethod('s', 'SET_ITEM', 'betState', 'basicBetting');
+    const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
+    const encryptVal1 = findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
+    storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal1);
     setTimeout(GET_ROUND_END.goNextRound, timeInterval_402, _result);
   },
 };

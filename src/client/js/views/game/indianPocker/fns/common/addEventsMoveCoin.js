@@ -18,21 +18,17 @@ export default (el) => {
       const BATTING_ZONE = document.querySelector('.betting-zone');
       if (!BATTING_ZONE) return;
 
-      setTimeout(() => {
-        BATTING_ZONE.addEventListener('drop', moveDrop, false);
-        BATTING_ZONE.addEventListener('dragover', moveDragover, false);
-        BATTING_ZONE.addEventListener('dragleave', moveDragleave, false);
-        el.addEventListener('dragstart', moveDragStart, false);
-        el.addEventListener('drag', moveDrag, false);
-        el.addEventListener('dragend', moveDragEnd, false);
-      }, timeInterval_1);
+      BATTING_ZONE.addEventListener('drop', moveDrop, false);
+      BATTING_ZONE.addEventListener('dragover', moveDragover, false);
+      BATTING_ZONE.addEventListener('dragleave', moveDragleave, false);
+      el.addEventListener('dragstart', moveDragStart, false);
+      el.addEventListener('drag', moveDrag, false);
+      el.addEventListener('dragend', moveDragEnd, false);
       break;
     case 'mobile':
-      setTimeout(() => {
-        el.addEventListener('touchstart', moveTouchStart, false);
-        el.addEventListener('touchmove', moveTouchMove, false);
-        el.addEventListener('touchend', moveTouchEnd, false);
-      }, timeInterval_1);
+      el.addEventListener('touchstart', moveTouchStart, false);
+      el.addEventListener('touchmove', moveTouchMove, false);
+      el.addEventListener('touchend', moveTouchEnd, false);
       break;
     default:
       break;
