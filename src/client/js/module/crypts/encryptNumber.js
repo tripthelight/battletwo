@@ -99,3 +99,84 @@ export function decToHex(num, padLength = 0) {
   const hexStr = num.toString(16).padStart(padLength, "0");
   return "0x" + hexStr;
 };
+
+// Node/브라우저 겸용 atob
+const _atob = globalThis.atob || (s => Buffer.from(s, "base64").toString("binary"));
+
+function makeLUT() {
+  // "ew|br|p6|cz|os|k2|d4|iu|a5|ft|nx|lq|h1|jv|m3|gy" 를 각 파트별 Base64로 캡슐화
+  const base64 = "ZXc|YnI|cDY|Y3o|b3M|azI|ZDQ|aXU|YTU|ZnQ|bng|bHE|aDE|anY|bTM|Z3k";
+  const keys   = "0123456789ABCDEF";
+  const values = base64.split("|").map(_atob); // ["ew","br",...,"gy"]
+
+  const lut = Object.create(null);            // 문자 -> HEX 키
+  for (let i = 0; i < values.length; i++) {
+    for (const ch of values[i]) lut[ch] = keys[i];
+  };
+  return lut;
+};
+
+const LUT = makeLUT();
+
+/*
+0 -> e, w
+1 -> b, r
+2 -> p, 6
+3 -> c, z
+4 -> o, s
+5 -> k, 2
+6 -> d, 4
+7 -> i, u
+8 -> a, 5
+9 -> f, t
+A -> n, x
+B -> l, q
+C -> h, 1
+D -> j, v
+E -> m, 3
+F -> g, y
+*/
+export function encryptNumOfStr(str) {
+  if (typeof str !== "string") {
+    // 입력은 문자열이어야 합니다.
+    throw throwObj('errorComn', 'encrypt number string param failed.');
+  };
+
+  let result = "";
+  const invalids = [];
+
+  for (let i = 0; i < str.length; i++) {
+    const ch = str[i];
+    const mapped = LUT[ch];
+    if (mapped === undefined) {
+      invalids.push({ ch, index: i });
+    } else {
+      result += mapped;
+    };
+  };
+
+  if (invalids.length) {
+    // 예: Unsupported characters: '9'(idx:0), '9'(idx:1)
+    const msg = invalids
+      .map(({ ch, index }) => `'${ch}'(idx:${index})`)
+      .join(", ");
+    // 매핑 불가 문자가 포함되어 있습니다
+    throw throwObj('errorComn', `encrypt number string param error : ${msg}`);
+  };
+
+  const r = parseInt(result, 16);
+  if (Number.isNaN(r)) {
+    throw throwObj('errorComn', 'encrypt number string result failed.');
+  };
+  return r;
+};
+// 사용
+// const coinsPlayerToken = decryptHex8To32(window.sessionStorage.getItem('coinsPlayer')); // decrypt code -> number 20
+// const coinsEnemyToken = decryptHex8To32(window.sessionStorage.getItem('coinsEnemy')); // decrypt code -> number 20
+// console.log('coinsPlayerToken :::::: ', coinsPlayerToken); // number 20
+// console.log('coinsEnemyToken ::::::: ', coinsEnemyToken); // number 20
+
+// const coinsPlayerCode = encrypt32ToHex8(coinsPlayerToken); // number 20 -> decrypt code
+// const coinsEnemyCode = encrypt32ToHex8(coinsEnemyToken); // number 20 -> decrypt code
+// console.log('coinsPlayerCode :::::: ', coinsPlayerCode); // decrypt code
+// console.log('coinsEnemyCode ::::::: ', coinsEnemyCode); // decrypt code

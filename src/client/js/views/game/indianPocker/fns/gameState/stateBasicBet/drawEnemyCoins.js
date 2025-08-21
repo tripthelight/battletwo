@@ -1,3 +1,4 @@
+import { decryptHex8To32 } from '@/client/js/module/crypts/encryptNumber';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import drawBettingZone from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/drawBettingZone';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
@@ -30,7 +31,8 @@ export default () => {
   let hourEl = new Object();
   elem.classList.add('coins');
   elem.classList.add('coins-enemy');
-  const coinCount = Number(window.sessionStorage.coinsEnemy);
+  // const coinCount = Number(window.sessionStorage.coinsEnemy);
+  const coinCount = decryptHex8To32(window.sessionStorage.getItem('coinsEnemy'));
 
   console.log('coinCount ENEMY ============ > ', coinCount);
 

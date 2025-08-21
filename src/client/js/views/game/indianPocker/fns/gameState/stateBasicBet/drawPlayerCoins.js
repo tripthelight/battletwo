@@ -1,4 +1,5 @@
 import deviceStateStore from '@/client/store/deviceStateStore';
+import { decryptHex8To32 } from '@/client/js/module/crypts/encryptNumber';
 import gameResultCheck from '@/client/js/views/game/indianPocker/fns/common/gameResultCheck';
 import gameEnd from '@/client/js/views/game/indianPocker/fns/common/gameEnd';
 import bettingCoin from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/bettingCoin';
@@ -31,7 +32,7 @@ export default () => {
   let hourEl = new Object();
   elem.classList.add('coins');
   elem.classList.add('coins-player');
-  const coinCount = Number(window.sessionStorage.coinsPlayer);
+  const coinCount = decryptHex8To32(window.sessionStorage.getItem('coinsPlayer'));
 
   console.log('coinCount PLAYER ============ > ', coinCount);
 

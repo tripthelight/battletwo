@@ -1,4 +1,6 @@
-import { timeInterval_1 } from '@/client/js/functions/variable';
+import errorManager from '@/client/js/module/errorHandler/errorManager';
+import { encrypt32ToHex8, decryptHex8To32 } from '@/client/js/module/crypts/encryptNumber';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import EnemyBlockMoveBattingZone from '@/client/js/views/game/indianPocker/fns/common/EnemyBlockMoveBattingZone.js';
@@ -7,16 +9,32 @@ import getTranslateMH from '@/client/js/views/game/indianPocker/fns/common/getTr
 
 export const GET_BASIC_BETTING = {
   receiveBasicBetting: (_data) => {
-    let promise = new Promise((resolve, reject) => {
+    const PROMISE = new Promise((resolve, reject) => {
       resolve(_data);
     });
-    promise
+    PROMISE
       .then((_data) => {
         // 기본 배팅만 탐
         if (_data.state) return _data;
       })
       .then((_data) => {
-        storageMethod('s', 'SET_ITEM', 'coinsEnemy', _data.coinCount);
+        const { coinCount, betCount, originCount } = _data;
+        // 상대 peer에게 받은 기본배팅 하기 전 코인 개수와
+        // 내가 가지고 있는 상대 코인 개수가 맞는지 검증 필요
+        const enemyCoinsNum = decryptHex8To32(window.sessionStorage.getItem('coinsEnemy'));
+        if (
+          betCount !== 1 ||
+          originCount !== enemyCoinsNum ||
+          coinCount + betCount !== enemyCoinsNum ||
+          coinCount + betCount !== originCount ||
+          enemyCoinsNum - betCount !== coinCount
+        ) {
+          throw throwObj('foul', 'basic bet coin compair failed.');
+        };
+        return _data;
+      })
+      .then((_data) => {
+        storageMethod('s', 'SET_ITEM', 'coinsEnemy', encrypt32ToHex8(_data.coinCount));
         return _data;
       })
       .then((_data) => {
@@ -37,7 +55,11 @@ export const GET_BASIC_BETTING = {
             })
             .catch((err) => {
               console.log('error EnemyBlockMoveBattingZone()');
-              errorManagement({ errCase: 'errorComn' });
+              // errorManagement({ errCase: 'errorComn' });
+              throw {
+                ...throwObj('errorComn', 'EnemyBlockMoveBattingZone failed.'),
+                errorDetails: err
+              };
             });
         });
         ENEMY_MOVE_COIN_INCREASE.then(() => {
@@ -59,7 +81,8 @@ export const GET_BASIC_BETTING = {
                 COINS[i].remove();
               }
             }
-            const ENEMY_COINS = Number(window.sessionStorage.coinsEnemy);
+            // const ENEMY_COINS = Number(window.sessionStorage.coinsEnemy);
+            const ENEMY_COINS = Number(_data.coinCount);
             if (ENEMY_COINS > 0) {
               let coinsElem = new Object();
               let minuteEl = new Object();
@@ -102,80 +125,84 @@ export const GET_BASIC_BETTING = {
             let minuteEl = new Object();
             let hourEl = new Object();
 
-            setTimeout(() => {
-              const COINS_WIDTH = COINS[0] ? COINS[0].clientWidth : COINS_P[0] ? COINS_P[0].clientWidth : 0;
-              const COINS_HEIGHT = COINS[0] ? COINS[0].clientHeight : COINS_P[0] ? COINS_P[0].clientHeight : 0;
-              const BET_COINS = BETTING_ZONE.querySelector('.bet-coins');
-              let elemLi;
-              let x = 0;
-              let y = 0;
-              if (BET_COINS) {
-                // EMEMY의 기본배팅을 받고 PLAYER 기본배팅 =========================
-                const PLAYER_COIN = BET_COIN_ARR.filter((item) => item.host === 'player');
-                const BET_COINS_LIST = BET_COINS.querySelectorAll('li');
-                if (BET_COINS_LIST.length === BET_COIN_LIST.length) return;
-                for (let i = 0; i < BET_COIN_LIST.length; i++) {
-                  if (i === BET_COIN_LIST.length - 1 && BET_COIN_LIST[i].host === 'enemy') {
-                    elemLi = document.createElement('li');
-
-                    minuteEl = document.createElement('span');
-                    hourEl = document.createElement('span');
-                    minuteEl.classList.add('m');
-                    hourEl.classList.add('h');
-                    elemLi.appendChild(minuteEl);
-                    elemLi.appendChild(hourEl);
-                    minuteEl.style.transform = `translate(-50%, -96%) rotate(${PLAYER_COIN[0]?.tm ?? 0}deg)`;
-                    hourEl.style.transform = `translate(-50%, -86%) rotate(${PLAYER_COIN[0]?.th ?? 0}deg)`;
-
-                    if (BET_COIN_LIST[i].host === 'enemy') elemLi.classList.add('e');
-                    let xRes = BET_COIN_LIST[i].translateX < 0 ? BET_COIN_LIST[i].translateX + COINS_WIDTH : BET_COIN_LIST[i].translateX;
-                    x = BET_COIN_LIST[i].offsetLeft + xRes;
-                    y = BET_COIN_LIST[i].translateY - ENEMY_COIN_UL.clientHeight + COINS_HEIGHT;
-                    elemLi.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
-                    BET_COINS.appendChild(elemLi);
-                    saveBetCoinSession('enemy', x, y);
-                  }
-                }
-              } else {
-                // PLAYER 첫 기본 배팅 ============================================
-                // ENEMY의 첫 기본배팅을 받음
-                const ENEMY_COIN = BET_COIN_ARR.filter((item) => item.host === 'enemy');
-                let elem = document.createElement('ul');
-                elem.classList.add('bet-coins');
-                for (let i = 0; i < BET_COIN_LIST.length; i++) {
+            const COINS_WIDTH = COINS[0] ? COINS[0].clientWidth : COINS_P[0] ? COINS_P[0].clientWidth : 0;
+            const COINS_HEIGHT = COINS[0] ? COINS[0].clientHeight : COINS_P[0] ? COINS_P[0].clientHeight : 0;
+            const BET_COINS = BETTING_ZONE.querySelector('.bet-coins');
+            let elemLi;
+            let x = 0;
+            let y = 0;
+            if (BET_COINS) {
+              // EMEMY의 기본배팅을 받고 PLAYER 기본배팅 =========================
+              const PLAYER_COIN = BET_COIN_ARR.filter((item) => item.host === 'player');
+              const BET_COINS_LIST = BET_COINS.querySelectorAll('li');
+              if (BET_COINS_LIST.length === BET_COIN_LIST.length) return;
+              for (let i = 0; i < BET_COIN_LIST.length; i++) {
+                if (i === BET_COIN_LIST.length - 1 && BET_COIN_LIST[i].host === 'enemy') {
                   elemLi = document.createElement('li');
+
                   minuteEl = document.createElement('span');
                   hourEl = document.createElement('span');
                   minuteEl.classList.add('m');
                   hourEl.classList.add('h');
                   elemLi.appendChild(minuteEl);
                   elemLi.appendChild(hourEl);
-                  elem.appendChild(elemLi);
-                  minuteEl.style.transform = `translate(-50%, -96%) rotate(${ENEMY_COIN[0].tm}deg)`;
-                  hourEl.style.transform = `translate(-50%, -86%) rotate(${ENEMY_COIN[0].th}deg)`;
+                  minuteEl.style.transform = `translate(-50%, -96%) rotate(${PLAYER_COIN[0]?.tm ?? 0}deg)`;
+                  hourEl.style.transform = `translate(-50%, -86%) rotate(${PLAYER_COIN[0]?.th ?? 0}deg)`;
+
                   if (BET_COIN_LIST[i].host === 'enemy') elemLi.classList.add('e');
                   let xRes = BET_COIN_LIST[i].translateX < 0 ? BET_COIN_LIST[i].translateX + COINS_WIDTH : BET_COIN_LIST[i].translateX;
                   x = BET_COIN_LIST[i].offsetLeft + xRes;
                   y = BET_COIN_LIST[i].translateY - ENEMY_COIN_UL.clientHeight + COINS_HEIGHT;
                   elemLi.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
-                  elem.appendChild(elemLi);
+                  BET_COINS.appendChild(elemLi);
+                  saveBetCoinSession('enemy', x, y);
                 }
-                BETTING_ZONE.appendChild(elem);
-                saveBetCoinSession('enemy', x, y);
               }
-            }, timeInterval_1);
+            } else {
+              // PLAYER 첫 기본 배팅 ============================================
+              // ENEMY의 첫 기본배팅을 받음
+              const ENEMY_COIN = BET_COIN_ARR.filter((item) => item.host === 'enemy');
+              let elem = document.createElement('ul');
+              elem.classList.add('bet-coins');
+              for (let i = 0; i < BET_COIN_LIST.length; i++) {
+                elemLi = document.createElement('li');
+                minuteEl = document.createElement('span');
+                hourEl = document.createElement('span');
+                minuteEl.classList.add('m');
+                hourEl.classList.add('h');
+                elemLi.appendChild(minuteEl);
+                elemLi.appendChild(hourEl);
+                elem.appendChild(elemLi);
+                minuteEl.style.transform = `translate(-50%, -96%) rotate(${ENEMY_COIN[0].tm}deg)`;
+                hourEl.style.transform = `translate(-50%, -86%) rotate(${ENEMY_COIN[0].th}deg)`;
+                if (BET_COIN_LIST[i].host === 'enemy') elemLi.classList.add('e');
+                let xRes = BET_COIN_LIST[i].translateX < 0 ? BET_COIN_LIST[i].translateX + COINS_WIDTH : BET_COIN_LIST[i].translateX;
+                x = BET_COIN_LIST[i].offsetLeft + xRes;
+                y = BET_COIN_LIST[i].translateY - ENEMY_COIN_UL.clientHeight + COINS_HEIGHT;
+                elemLi.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+                elem.appendChild(elemLi);
+              }
+              BETTING_ZONE.appendChild(elem);
+              saveBetCoinSession('enemy', x, y);
+            };
           }).catch((err) => {
             console.log('error REMOVE_ENEMY_BET_COIN');
-            errorManagement({ errCase: 'errorComn' });
+            throw {
+              ...throwObj('errorComn', 'REMOVE_ENEMY_BET_COIN failed.'),
+              errorDetails: err
+            };
           });
         }).catch((err) => {
           console.log('error ENEMY_MOVE_COIN_INCREASE');
-          errorManagement({ errCase: 'errorComn' });
+          throw {
+            ...throwObj('errorComn', 'ENEMY_MOVE_COIN_INCREASE failed.'),
+            errorDetails: err
+          };
         });
       })
       .catch((err) => {
-        console.log('error receiveBasicBetting');
-        errorManagement({ errCase: 'errorComn' });
+        console.log('error getBasicBetting receiveBasicBetting : ');
+        errorManager(err, true);
       });
   },
 };
