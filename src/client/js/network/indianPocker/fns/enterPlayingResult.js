@@ -1,3 +1,4 @@
+import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { timeInterval_1000 } from '@/client/js/functions/variable';
 import findCharCode from '@/client/js/functions/findCharCode';
@@ -7,35 +8,38 @@ import createBattleCardNum from '@/client/js/views/game/indianPocker/fns/gameSta
 export default (_data) => {
   console.log('_data >>>>>>>>>>>>>>>>>>> ', _data);
 
-  const promise = new Promise((resolve, reject) => {
+  const PROMISE = new Promise((resolve, reject) => {
     resolve(_data);
   });
-  promise
+  PROMISE
     .then((_data) => {
-      // playing
-      const encryptVal = findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]); // playing
-      // if (_data === 'playing') {
-      if (_data === encryptVal) {
-        // gameState: sessionStorage.getItem('gameState'),
+      const arr = [
+        [112, 108, 97, 121, 105, 110, 103], // playing
+        [110, 111]  // no
+      ];
+      if (JSON.stringify(_data) === JSON.stringify(arr[0])) {
         const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
         const decryptVal = window.sessionStorage.getItem(encryptKey);
-        // if (window.sessionStorage.gameState !== 'playing') request('enterPlaying', 'no');
+        const encryptVal = findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]); // playing
+        // gameState !== 'playing'
         if (decryptVal !== encryptVal) {
-          request('enterPlaying', 'no');
+          request('enterPlaying', arr[1]);
         }
-        // if (window.sessionStorage.gameState === 'playing') {
+        // gameState === 'playing'
         if (decryptVal === encryptVal) {
-          if (window.sessionStorage.betUser === 'true') {
+          const decryptVal2 = booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
+          if (decryptVal2 === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) { // true
             createBattleCardNum();
           }
         }
-      } else if (_data === 'no') {
+      } else if (JSON.stringify(_data) === JSON.stringify(arr[1])) {
         setTimeout(() => {
-          request('enterPlaying', encryptVal);
+          request('enterPlaying', arr[0]);
         }, timeInterval_1000);
       }
     })
     .catch((error) => {
-      errorManagement({ errCase: 'errorComn', message: `enterPlayingResult() 함수를 못탐 11 :::  ${error}` });
+      console.log('error : ', error);
+      errorManagement({ errCase: 'errorComn', message: `enterPlayingResult() 함수를 못탐` });
     });
 };

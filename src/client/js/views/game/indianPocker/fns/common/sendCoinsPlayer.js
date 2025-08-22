@@ -17,6 +17,5 @@ export default () => {
   request('basicBetting', { coinCount, betCount, originCount });
 
   // if (window.sessionStorage.betState === 'basicBetting') setTimeout(betStateCheck, timeInterval_1);
-  if (encryptVal1 === encryptKey2) betStateCheck();
-
+  // if (encryptVal1 === encryptKey2) betStateCheck();
 };

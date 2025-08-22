@@ -27,7 +27,6 @@ export default (_data) => {
     };
   }).catch((error) => {
     console.log('error : ', error);
-
-    errorManagement({ errCase: 'errorComn', message: 'enterBasicBetResult() 함수를 못탐' });
+    errorManagement({ errCase: 'errorComn', message: 'enterBasicBetResult() function error.' });
   });
 };

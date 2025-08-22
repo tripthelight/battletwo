@@ -7,6 +7,7 @@ import STATE_BASIC_BET from '@/client/js/views/game/indianPocker/fns/gameState/s
 import pcDraggableCheck from '@/client/js/views/game/indianPocker/fns/common/pcDraggableCheck';
 import sendCoinsPlayer from '@/client/js/views/game/indianPocker/fns/common/sendCoinsPlayer';
 import stopEnemyTime from '@/client/js/views/game/indianPocker/fns/common/stopEnemyTime';
+import { request } from '@/client/js/network/indianPocker/request';
 
 export const SET_BASIC_BETTING = {
   setBasicBetting: (_event) => {
@@ -35,12 +36,13 @@ export const SET_BASIC_BETTING = {
     const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
     const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
     const encryptKey2 = findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
-    // if (window.sessionStorage.betState === 'basicBetting') {
     if (encryptVal1 === encryptKey2) {
-      console.log('여기는 타고..');
+      console.log('기본 배팅 진입');
       if (window.sessionStorage.basicBettingState === 'true') {
-        console.log('여기는 안타겠네..');
+        console.log('내가 먼저 배팅하고 상대의 배팅 코인을 받음');
         if (window.sessionStorage.coinsEnemyBet) {
+          // 상대의 gameState를 playing으로 변경시키기
+          request('basicBettingCompleted');
           SET_BASIC_BETTING.basicBetCheck();
         };
       };
@@ -71,6 +73,7 @@ export const SET_BASIC_BETTING = {
       sendCoinsPlayer();
     } else if (_host === 'enemy') {
       console.log('enemy >>>> ');
+      console.log('나는 상대의 기본 배팅 코인을 받음 ---------- ');
       // enemy의 기본배팅을 받았을 경우 enemy의 시간이 멈춰야 됨
       stopEnemyTime();
       SET_BASIC_BETTING.enemyBetStateCheck();

@@ -16,6 +16,7 @@ export const REQUEST_HANDLERS = {
   choiceFirst: (v) => ({ type: 'choiceFirst', ...v }),
   choiceDrewCard: (v) => ({ type: 'choiceDrewCard', value: v }),
   basicBetting: (v) => ({ type: 'basicBetting', state: true, ...v }),
+  basicBettingCompleted: (v) => ({ type: 'basicBettingCompleted' }),
   drewReadyCheck: () => ({ type: 'drewReadyCheck', state: true }),
   enterPlaying: (v) => ({ type: 'enterPlaying', gameState: v }),
   cardNum: (v) => ({ type: 'enemyCardNum', cardNum: v }),

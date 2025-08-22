@@ -2,7 +2,6 @@ import errorManager from '@/client/js/module/errorHandler/errorManager';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import EnemyBlockMoveBattingZone from '@/client/js/views/game/indianPocker/fns/common/EnemyBlockMoveBattingZone.js';
 import saveBetCoinSession from '@/client/js/views/game/indianPocker/fns/common/saveBetCoinSession';
 import getTranslateMH from '@/client/js/views/game/indianPocker/fns/common/getTranslateMH.js';
@@ -132,6 +131,8 @@ export const GET_BASIC_BETTING = {
             let x = 0;
             let y = 0;
             if (BET_COINS) {
+              console.log('1 =============== ');
+
               // EMEMY의 기본배팅을 받고 PLAYER 기본배팅 =========================
               const PLAYER_COIN = BET_COIN_ARR.filter((item) => item.host === 'player');
               const BET_COINS_LIST = BET_COINS.querySelectorAll('li');
@@ -159,6 +160,7 @@ export const GET_BASIC_BETTING = {
                 }
               }
             } else {
+              console.log('2 =============== ');
               // PLAYER 첫 기본 배팅 ============================================
               // ENEMY의 첫 기본배팅을 받음
               const ENEMY_COIN = BET_COIN_ARR.filter((item) => item.host === 'enemy');

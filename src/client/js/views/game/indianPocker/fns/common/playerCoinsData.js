@@ -1,5 +1,4 @@
 import deviceStateStore from '@/client/store/deviceStateStore';
-import { timeInterval_1 } from '@/client/js/functions/variable';
 import getTranslateXValue from '@/client/js/views/game/indianPocker/fns/common/getTranslateXValue';
 import getTranslateYValue from '@/client/js/views/game/indianPocker/fns/common/getTranslateYValue';
 import getTranslateXY from '@/client/js/views/game/indianPocker/fns/common/getTranslateXY';
