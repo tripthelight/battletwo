@@ -1,5 +1,5 @@
 import errorManager from '@/client/js/module/errorHandler/errorManager';
-import { encrypt32ToHex8, decryptHex8To32 } from '@/client/js/module/crypts/encryptNumber';
+import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
@@ -21,7 +21,7 @@ export const GET_BASIC_BETTING = {
         const { coinCount, betCount, originCount } = _data;
         // 상대 peer에게 받은 기본배팅 하기 전 코인 개수와
         // 내가 가지고 있는 상대 코인 개수가 맞는지 검증 필요
-        const enemyCoinsNum = decryptHex8To32(window.sessionStorage.getItem('coinsEnemy'));
+        const enemyCoinsNum = dec(window.sessionStorage.getItem('coinsEnemy'));
         if (
           betCount !== 1 ||
           originCount !== enemyCoinsNum ||
@@ -34,7 +34,7 @@ export const GET_BASIC_BETTING = {
         return _data;
       })
       .then((_data) => {
-        storageMethod('s', 'SET_ITEM', 'coinsEnemy', encrypt32ToHex8(_data.coinCount));
+        storageMethod('s', 'SET_ITEM', 'coinsEnemy', enc(_data.coinCount));
         return _data;
       })
       .then((_data) => {

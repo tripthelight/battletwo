@@ -11,6 +11,8 @@ import renameSessionStorageKeys from '@/client/js/module/errorHandler/renameSess
  * 그 안에서 등록된 이벤트 핸들러의 예외는 절대 못 잡습니다.
  */
 export default (error) => {
+  console.log('파울 받음 ----------> ');
+
   // delCookies('gc_at');
   // storageMethod('s', 'REMOVE_ALL');
   renameSessionStorageKeys();

@@ -1,5 +1,5 @@
 import deviceStateStore from '@/client/store/deviceStateStore';
-import { timeInterval_1 } from '@/client/js/functions/variable';
+import errorManager from '@/client/js/module/errorHandler/errorManager';
 import moveDrop from '@/client/js/views/game/indianPocker/fns/common/moveDrop';
 import moveDragover from '@/client/js/views/game/indianPocker/fns/common/moveDragover';
 import moveDragleave from '@/client/js/views/game/indianPocker/fns/common/moveDragleave';
@@ -10,6 +10,18 @@ import moveTouchStart from '@/client/js/views/game/indianPocker/fns/common/moveT
 import moveTouchMove from '@/client/js/views/game/indianPocker/fns/common/moveTouchMove';
 import moveTouchEnd from '@/client/js/views/game/indianPocker/fns/common/moveTouchEnd';
 
+// addEventListener 내부에 화살표 함수로 삽입하면 매번 새로운 함수 객체를 만들어 등록하므로 중복 실행됨
+// 핸들러를 바깥으로 빼 동일 참조 유지
+function onDrop(event) {
+  event.preventDefault();
+  try {
+    moveDrop();
+  } catch (error) {
+    console.log('error moveDrop() : ');
+    errorManager(error, true);
+  };
+};
+
 export default (el) => {
   const deviceState = deviceStateStore.getState().deviceStateState.deviceState;
 
@@ -18,7 +30,9 @@ export default (el) => {
       const BATTING_ZONE = document.querySelector('.betting-zone');
       if (!BATTING_ZONE) return;
 
-      BATTING_ZONE.addEventListener('drop', moveDrop, false);
+      // BATTING_ZONE.addEventListener('drop', moveDrop, false);
+      BATTING_ZONE.removeEventListener('drop', onDrop);
+      BATTING_ZONE.addEventListener('drop', onDrop, false);
       BATTING_ZONE.addEventListener('dragover', moveDragover, false);
       BATTING_ZONE.addEventListener('dragleave', moveDragleave, false);
       el.addEventListener('dragstart', moveDragStart, false);

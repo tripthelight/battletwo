@@ -8,7 +8,7 @@ export default () => {
   const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
   const encryptKey2 = findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
   // if (window.sessionStorage.betState === 'basicBetting') {
-  if (encryptVal1 ===encryptKey2) {
+  if (encryptVal1 === encryptKey2) {
     SET_BASIC_BETTING.basicBettingBetStateCheck();
   // } else if (window.sessionStorage.betState === 'extraBetting') {
   } else if (encryptVal1 === 'extraBetting') {

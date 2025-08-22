@@ -1,5 +1,5 @@
-import { decryptHex8To32 } from '@/client/js/module/crypts/encryptNumber';
-import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
+import { dec } from '@/client/js/module/crypts/obf8lower';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import drawBettingZone from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/drawBettingZone';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
@@ -12,7 +12,7 @@ export default () => {
   // enemy 코인 모두 제거
   if (COINS_ENEMY) removeUserCoins(COINS_ENEMY);
   const ENEMY_BLOCK = document.querySelector('.enemy-block');
-  if (!ENEMY_BLOCK) return errorManagement({ errCase: 'elementLoss', message: '.enemy-block 엘리먼트가 없습니다' });
+  if (!ENEMY_BLOCK) throw throwObj('elementLoss', '.enemy-block element not found.')
 
   const BET_COIN_POS = window.sessionStorage.betCoinPos;
   let betCoinPosArr = [];
@@ -32,7 +32,7 @@ export default () => {
   elem.classList.add('coins');
   elem.classList.add('coins-enemy');
   // const coinCount = Number(window.sessionStorage.coinsEnemy);
-  const coinCount = decryptHex8To32(window.sessionStorage.getItem('coinsEnemy'));
+  const coinCount = dec(window.sessionStorage.getItem('coinsEnemy'));
 
   console.log('coinCount ENEMY ============ > ', coinCount);
 

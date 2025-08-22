@@ -1,4 +1,4 @@
-import { decryptHex8To32 } from '@/client/js/module/crypts/encryptNumber';
+import { dec } from '@/client/js/module/crypts/obf8lower';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/network/indianPocker/request';
 import betStateCheck from '@/client/js/views/game/indianPocker/fns/common/betStateCheck';
@@ -11,7 +11,7 @@ export default () => {
   // if (window.sessionStorage.betState === 'extraBetting' && window.sessionStorage.betUser === 'true') return betStateCheck();
   if (encryptVal1 === 'extraBetting' && window.sessionStorage.betUser === 'true') return betStateCheck();
   // 기본 배팅일 때 만 탐
-  const coinCount = decryptHex8To32(window.sessionStorage.getItem('coinsPlayer'));
+  const coinCount = dec(window.sessionStorage.getItem('coinsPlayer'));
   const betCount = Number(window.sessionStorage.getItem('coinsPlayerBet'));
   const originCount = coinCount + betCount;
   request('basicBetting', { coinCount, betCount, originCount });

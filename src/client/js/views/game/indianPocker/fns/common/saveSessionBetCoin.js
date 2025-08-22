@@ -1,4 +1,4 @@
-import { decryptHex8To32, encrypt32ToHex8 } from '@/client/js/module/crypts/encryptNumber';
+import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import findCharCode from '@/client/js/functions/findCharCode';
 // import { pcOffsetLeft, pcOffsetTop } from '@/client/js/views/game/indianPocker/fns/common/variable';
@@ -22,8 +22,8 @@ export default (data) => {
   }
   arr.push(ACTIVE_COIN);
   // 칩 넣기
-  const PLAYER_NUMB = decryptHex8To32(window.sessionStorage.getItem('coinsPlayer')) - 1;
-  const PLAYER_COINS = encrypt32ToHex8(PLAYER_NUMB);
+  const PLAYER_NUMB = dec(window.sessionStorage.getItem('coinsPlayer')) - 1;
+  const PLAYER_COINS = enc(PLAYER_NUMB);
   storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(arr));
   storageMethod('s', 'SET_ITEM', 'coinsPlayer', PLAYER_COINS);
   storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', JSON.parse(window.sessionStorage.betCoin).filter((coins) => coins.host === 'player').length);

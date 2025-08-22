@@ -1,7 +1,9 @@
-import { encrypt32ToHex8, encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
+import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
+import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import removeElement from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/removeElement';
+
 
 export default () => {
   const COINS_PLAYER = window.sessionStorage.coinsPlayer;
@@ -24,9 +26,8 @@ export default () => {
   storageMethod('s', 'REMOVE_ITEM', findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85])); // basicBetReady
 
   if (!COINS_PLAYER && !COINS_ENEMY) {
-    const token = encrypt32ToHex8(encryptNumOfStr('ewrs')); // 20
-    storageMethod('s', 'SET_ITEM', 'coinsPlayer', token);
-    storageMethod('s', 'SET_ITEM', 'coinsEnemy', token);
+    storageMethod('s', 'SET_ITEM', 'coinsPlayer', enc(encryptNumOfStr('ewro')));
+    storageMethod('s', 'SET_ITEM', 'coinsEnemy', enc(encryptNumOfStr('wwbo')));
   };
 
   if (window.sessionStorage.coinsPlayerBet && Number(window.sessionStorage.coinsPlayerBet) === 1) {

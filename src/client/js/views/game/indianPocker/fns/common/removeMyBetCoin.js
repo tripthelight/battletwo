@@ -1,3 +1,4 @@
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import findCharCode from '@/client/js/functions/findCharCode';
@@ -49,7 +50,14 @@ export default (_data) => {
     }
     COINS[i].remove();
   }
-  let playerCoins = Number(_data.coinsPlayer);
+
+  const playerCoins = Number(_data.coinsPlayer);
+
+  if (timeDegArr.length !== playerCoins) {
+    // coinsPlayer sessionStorage value를 조작했거나,
+    // ul.coins-player > li 개수 조작
+    throw throwObj('sessionStorageLoss', 'coins length element or storage value failed.');
+  };
 
   // 배팅존에 코인 넣고 player block 코인 다시 그리기
   console.log('playing 단계에서 기본배팅 타냐 ??? ');
@@ -68,6 +76,9 @@ export default (_data) => {
     if (decryptVal === encryptVal1) {
       // 기본배팅일 경우 -> gameState : basicBet
       // 기본 배팅이 끝나면 시간이 멈춰야 됨
+      if (!timeDegArr[i]) {
+        throw throwObj('elementLoss', 'coins length element failed.');
+      };
       minuteEl.style.transform = `translate(-50%, -96%) rotate(${timeDegArr[i][0]}deg)`;
       hourEl.style.transform = `translate(-50%, -86%) rotate(${timeDegArr[i][1]}deg)`;
     }

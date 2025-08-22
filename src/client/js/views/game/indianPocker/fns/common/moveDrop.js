@@ -3,8 +3,7 @@ import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/va
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import betCoinEndComn from '@/client/js/views/game/indianPocker/fns/common/betCoinEndComn';
 
-export default (event) => {
-  event.preventDefault();
+export default () => {
   if (window.sessionStorage.dropState === 'false') return;
   const BATTING_ZONE = document.querySelector('.betting-zone');
 
