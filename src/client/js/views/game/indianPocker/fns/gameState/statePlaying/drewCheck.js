@@ -1,3 +1,4 @@
+import booleanReturn from '@/client/js/functions/validation/booleanReturn';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1, timeInterval_2 } from '@/client/js/functions/variable.js';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
@@ -22,16 +23,21 @@ export default () => {
   setTimeout(() => {
     const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet;
     if (COINS_ENEMY_EXT_BET === undefined || COINS_PLAYER === null) return errorManagement({ errCase: 'sessionStorageLoss', message: 'drew 상태에서 coinsEnemyExtBet 세션이 없습니다' });
-    const BET_USER = window.sessionStorage.betUser;
-    if (!BET_USER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'drew 상태에서 betUser 세션이 없습니다' });
+    // const BET_USER = window.sessionStorage.betUser;
+    // if (!BET_USER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'drew 상태에서 betUser 세션이 없습니다' });
     const BET_USER_FIRST = window.sessionStorage.betUserFirst;
     if (!BET_USER_FIRST) return errorManagement({ errCase: 'sessionStorageLoss', message: 'drew 상태에서 betUserFirst 세션이 없습니다' });
 
-    const BET_USER_RES = BET_USER === 'true' ? true : BET_USER === 'false' ? false : errorManagement({ errCase: 'sessionStorageLoss', message: 'betUser 세션이 true나 false가 아닙니다' });
+    // const BET_USER_RES = BET_USER === 'true' ? true : BET_USER === 'false' ? false : errorManagement({ errCase: 'sessionStorageLoss', message: 'betUser 세션이 true나 false가 아닙니다' });
+    const decryptVal1 = booleanReturn([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser - true or false or error
+    if (decryptVal1 === '')  return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 betUser 세션이 없습니다.' });
+
     const BET_USER_FIRST_RES = BET_USER_FIRST === 'true' ? true : BET_USER_FIRST === 'false' ? false : errorManagement({ errCase: 'sessionStorageLoss', message: 'betUserFirst 세션이 true나 false가 아닙니다' });
 
-    if (BET_USER_FIRST_RES && !BET_USER_RES) return;
-    if (!BET_USER_FIRST_RES && BET_USER_RES) return;
+    // if (BET_USER_FIRST_RES && !BET_USER_RES) return;
+    // if (!BET_USER_FIRST_RES && BET_USER_RES) return;
+    if (BET_USER_FIRST_RES && !decryptVal1) return;
+    if (!BET_USER_FIRST_RES && decryptVal1) return;
 
     if (Number(COINS_ENEMY_EXT_BET) === 0 && (Number(COINS_ENEMY) === 0 || Number(COINS_PLAYER) === 0)) {
       storageMethod('s', 'SET_ITEM', 'drewFlipCardMode', true);

@@ -37,6 +37,7 @@ export default {
       const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
       const encryptKey5 = findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]); // roundEnd
       const encryptKey6 = findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]); // extFirstBet
+      const encryptKey7 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
 
       if (Number(P_NUM) > Number(E_NUM) || Number(P_NUM) < Number(E_NUM)) {
         const coinsEnemyBet = window.sessionStorage.coinsEnemyBet;
@@ -53,7 +54,7 @@ export default {
           storageMethod('s', 'SET_ITEM', RESULT ? 'coinsPlayer' : 'coinsEnemy', Number(C_RES));
         }
 
-        storageMethod('s', 'SET_ITEM', 'betUser', RESULT);
+        storageMethod('s', 'SET_ITEM', encryptKey7, RESULT); // betUser
         storageMethod('s', 'SET_ITEM', 'basicBettingState', false);
         storageMethod('s', 'SET_ITEM', encryptKey6, encryptVal_2);
         storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', 0);
@@ -69,7 +70,7 @@ export default {
         // storageMethod('s', 'REMOVE_ITEM', 'drewReady');
         storageMethod('s', 'SET_ITEM', 'roundEndReload', true);
         storageMethod('s', 'SET_ITEM', 'drewReady', true);
-        storageMethod('s', 'SET_ITEM', 'betUser', window.sessionStorage.betUserFirst);
+        storageMethod('s', 'SET_ITEM', encryptKey7, window.sessionStorage.betUserFirst); // betUser
         storageMethod('s', 'SET_ITEM', 'drewState', true);
         storageMethod('s', 'SET_ITEM', encryptKey5, encryptVal_2);
         storageMethod('s', 'SET_ITEM', encryptKey6, encryptVal_2);

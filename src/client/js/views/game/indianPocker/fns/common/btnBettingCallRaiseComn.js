@@ -6,6 +6,10 @@ import disabledSubtractMoveCoin from '@/client/js/views/game/indianPocker/fns/co
 import pcDraggableAllDisabled from '@/client/js/views/game/indianPocker/fns/common/pcDraggableAllDisabled';
 
 export default (_state) => {
+  const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
+  const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
+  const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
+
   disabledMoveCoins();
   disabledSubtractMoveCoin();
   pcDraggableAllDisabled('bet-coins', false);
@@ -18,10 +22,8 @@ export default (_state) => {
   document.querySelector('.coins-player').classList.add('disabled');
   document.querySelector('.betting-zone').classList.add('disabled');
 
-  const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
-  const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
-
-  storageMethod('s', 'SET_ITEM', 'betUser', false);
+  // storageMethod('s', 'SET_ITEM', 'betUser', false); // betUser
+  storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_2); // betUser
 
   const encryptKey2 = findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]); // extFirstBet
   storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal_1);

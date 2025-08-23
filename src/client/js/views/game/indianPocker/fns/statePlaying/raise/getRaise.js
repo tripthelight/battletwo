@@ -16,7 +16,11 @@ export const GET_RAISE = {
     GET_RAISE.sessionRaiseBet(_data);
   },
   sessionRaiseBet: (_data) => {
-    storageMethod('s', 'SET_ITEM', 'betUser', true);
+    const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
+    const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
+
+    // storageMethod('s', 'SET_ITEM', 'betUser', true);
+    storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_1); // betUser, true
     storageMethod('s', 'SET_ITEM', 'coinsEnemy', _data.coinCount);
     storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', _data.coinBet);
     storageMethod('s', 'SET_ITEM', 'coinsEnemyExtBet', _data.extBet);

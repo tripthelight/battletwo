@@ -157,8 +157,12 @@ export const GET_ROUND_END = {
 
       const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
       const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
+      const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
 
-      storageMethod('s', 'SET_ITEM', 'betUser', window.sessionStorage.betUserFirst);
+      // storageMethod('s', 'SET_ITEM', 'betUser', window.sessionStorage.betUserFirst);
+      // TODO: betUserFirst는 true / false 평문임 - 암호화 필요
+      storageMethod('s', 'SET_ITEM', encryptKey1, window.sessionStorage.betUserFirst);
+
       storageMethod('s', 'SET_ITEM', 'drewState', true);
 
       storageMethod('s', 'SET_ITEM',
@@ -180,8 +184,15 @@ export const GET_ROUND_END = {
     setTimeout(GET_ROUND_END.savsSessionResult, timeInterval_1, result);
   },
   savsSessionResult: (_result) => {
-    const BET_USER = window.sessionStorage.betUser;
-    if (!BET_USER) {
+    const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
+    const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
+    const encryptKey1 = findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]); // roundEnd
+    const encryptKey2 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
+    const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+
+    // const BET_USER = window.sessionStorage.betUser;
+    // if (!BET_USER) {
+    if (encryptVal2 === null) { // betUser key null
       console.log('error - getRoundEnd.js - !BET_USER');
       errorManagement({ errCase: 'errorComn' });
     }
@@ -225,16 +236,16 @@ export const GET_ROUND_END = {
     storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 0);
     storageMethod('s', 'SET_ITEM', 'coinsEnemyExtBet', 0);
     // 새로고침 을 위해 roundEnd seeeion 추가
-    const encryptKey3 = findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]); // roundEnd
-    const encryptVal3 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
-    storageMethod('s', 'SET_ITEM', encryptKey3, encryptVal3);
+    storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_1); // roundEnd, true
     switch (_result) {
       case 'win':
-        storageMethod('s', 'SET_ITEM', 'betUser', true);
+        // storageMethod('s', 'SET_ITEM', 'betUser', true);
+        storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal_1); // betUser, true
         storageMethod('s', 'SET_ITEM', 'coinsPlayer', Number(COINS_PLAYER) + RESULT);
         break;
       case 'lose':
-        storageMethod('s', 'SET_ITEM', 'betUser', false);
+        // storageMethod('s', 'SET_ITEM', 'betUser', false);
+        storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal_2); // betUser, false
         storageMethod('s', 'SET_ITEM', 'coinsEnemy', Number(COINS_ENEMY) + RESULT);
         break;
       case 'drew':

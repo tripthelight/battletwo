@@ -1,3 +1,4 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import { timeInterval_100, timeInterval_101, timeInterval_102, timeInterval_1000 } from '@/client/js/functions/variable';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
@@ -31,7 +32,12 @@ export default (_data) => {
             setTimeout(() => {
               if (!window.sessionStorage.drewReady || window.sessionStorage.drewReady !== 'true') request('enterDrew', false);
               if (window.sessionStorage.drewReady && window.sessionStorage.drewReady === 'true') {
-                if (window.sessionStorage.betUser === 'true') createBattleCardNum();
+                // if (window.sessionStorage.betUser === 'true') createBattleCardNum();
+                // betUser === 'true'
+                const decryptVal = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
+                const encryptKey = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
+                const encryptVal = window.sessionStorage.getItem(encryptKey);
+                if (encryptVal === decryptVal) createBattleCardNum(); // betUser === true
               }
             }, timeInterval_102);
           }, timeInterval_101);

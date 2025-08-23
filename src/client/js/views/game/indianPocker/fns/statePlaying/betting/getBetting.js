@@ -1,3 +1,4 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { comnText } from '@/client/js/functions/language';
@@ -8,13 +9,17 @@ import betUserCheck from '@/client/js/views/game/indianPocker/fns/gameState/stat
 
 export const GET_BETTING = {
   sessionExtraBet: (_data) => {
-    let promise = new Promise(function (resolve, reject) {
+    const PROMISE = new Promise(function (resolve, reject) {
       resolve(_data);
     });
-    promise
+    PROMISE
       .then((_data) => {
+        const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
+        const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
+        const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
+
         // storageMethod('s', 'SET_ITEM', 'betUser', Boolean(_data.bet));
-        storageMethod('s', 'SET_ITEM', 'betUser', true);
+        storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_1); // betUser, true
         storageMethod('s', 'SET_ITEM', 'coinsEnemy', _data.coinCount);
         storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', _data.coinBet);
         storageMethod('s', 'SET_ITEM', 'coinsEnemyExtBet', _data.extBet);

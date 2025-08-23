@@ -1,5 +1,6 @@
 import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import findCharCode from '@/client/js/functions/findCharCode';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export default (() => {
   // 불투명 술어(보기에 난해하지만 항상 같은 결과)
@@ -43,6 +44,7 @@ export default (() => {
       case 1:  return (Ω(8) && !Ω(8)) ? T : F;  // 항상 F
       // default: return void 0;                // 매칭 실패 시 undefined
       default: return ''                        // 매칭 실패 시 ''
+      // default: throw throwObj('sessionStorageLoss', 'boolean sessionStorage value return error.');                        // 매칭 실패 시 ''
     }
   };
 })();

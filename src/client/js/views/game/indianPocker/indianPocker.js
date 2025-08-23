@@ -71,6 +71,10 @@ document.onreadystatechange = async () => {
       // choiceCard 단계로 진입
       indianPockerGameState.choiceCard();
     };
+
+    console.log('betUser : ', findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]));
+
+
   } catch (error) {
     console.log('error indianPocker.js >>>>>>>>>>>> ');
     errorManager(error, false);

@@ -1,3 +1,4 @@
+import booleanReturn from '@/client/js/functions/validation/booleanReturn';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { timeInterval_1, timeInterval_2 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
@@ -15,8 +16,10 @@ export default () => {
   if (!PLAYER_BLOCK) return;
   const COINS_PLAYER = document.querySelector('.coins-player');
   if (!COINS_PLAYER) return;
-  const BET_USER = window.sessionStorage.betUser;
-  if (!BET_USER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'betUser 세션이 없습니다.' });
+  // const BET_USER = window.sessionStorage.betUser;
+  // if (!BET_USER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'betUser 세션이 없습니다.' });
+  const decryptVal1 = booleanReturn([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser - true or false or error
+  if (decryptVal1 === '')  return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 betUser 세션이 없습니다.' });
   // const BAT_STATE = window.sessionStorage.betState;
   // if (!BAT_STATE) return errorManagement({ errCase: 'sessionStorageLoss', message: 'betState 세션이 없습니다.' });
   const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
@@ -26,7 +29,8 @@ export default () => {
 
   // 명령
   setTimeout(() => {
-    if (BET_USER === 'true') {
+    // if (BET_USER === 'true') {
+    if (decryptVal1) { // betUser === true
       ENEMY_CARD.classList.add('disabled');
       PLAYER_BLOCK.classList.remove('disabled');
       COINS_PLAYER.classList.remove('disabled');
@@ -41,7 +45,8 @@ export default () => {
         setTimeout(subtractMoveCoin, timeInterval_1);
         setTimeout(BTN_STATE.SHOW, timeInterval_2);
       }
-    } else if (BET_USER === 'false') {
+    // } else if (BET_USER === 'false') {
+    } else if (!decryptVal1) { // betUser === false
       ENEMY_CARD.classList.remove('disabled');
       PLAYER_BLOCK.classList.add('disabled');
       COINS_PLAYER.classList.add('disabled');

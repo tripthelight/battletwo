@@ -71,12 +71,17 @@ export const SET_FOLD = {
     }, timeInterval_3201);
   },
   setFold: (_num) => {
-    const promise = new Promise((resolve, reject) => {
+    const PROMISE = new Promise((resolve, reject) => {
       resolve(_num);
     });
-    promise
+    PROMISE
       .then((_numRes) => {
-        storageMethod('s', 'SET_ITEM', 'betUser', false);
+        const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
+        const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
+        const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
+
+        // storageMethod('s', 'SET_ITEM', 'betUser', false);
+        storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_2); // betUser, false
         storageMethod('s', 'REMOVE_ITEM', 'drewState');
         flipPlayerCardComn(flipPlayerCard, _numRes);
 

@@ -18,10 +18,10 @@ import resultTxtInnerHtml from '@/client/js/views/game/indianPocker/fns/common/r
 
 export const GET_FOLD = {
   receivefold: (_data) => {
-    const promise = new Promise((resolve, reject) => {
+    const PROMISE = new Promise((resolve, reject) => {
       resolve(_data);
     });
-    promise
+    PROMISE
       .then((_data) => {
         /*
         flipPlayerCardComn(flipPlayerCard, playerNumRes());
@@ -33,12 +33,16 @@ export const GET_FOLD = {
         GET_FOLD.roundResultDisplay();
         BattingZoneMovePlayerBlock('win').then((_state) => {
           BettingZoneMoveComn(_state).then((_stateNext) => {
+            const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
+            const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
+
             const COINS_PLAYER = window.sessionStorage.coinsPlayer;
             const PLAYER_BET = window.sessionStorage.coinsPlayerBet;
             const ENEMY_BET = window.sessionStorage.coinsEnemyBet;
             storageMethod('s', 'SET_ITEM', 'coinsPlayer', Number(COINS_PLAYER) + Number(PLAYER_BET) + Number(ENEMY_BET));
             foldSendResultComn();
-            storageMethod('s', 'SET_ITEM', 'betUser', true);
+            // storageMethod('s', 'SET_ITEM', 'betUser', true);
+            storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_1); // betUser, true
             if (_data.penalty) {
               // 상대 카드가 10일 때
               bottomSheet.show(text.indianpocker.benefit, timeInterval_5000);

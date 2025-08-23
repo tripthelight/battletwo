@@ -1,7 +1,13 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import deviceStateStore from '@/client/store/deviceStateStore';
 
 export default () => {
-  const BET_USER = window.sessionStorage.betUser;
+  const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
+  const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
+  // const BET_USER = window.sessionStorage.betUser;
+  const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
+  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+
   const COINS_ENEMY = window.sessionStorage.coinsEnemy;
   const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet ?? 0;
   const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet ?? 0;
@@ -10,7 +16,12 @@ export default () => {
   const C_E_B = Number(COINS_ENEMY_BET);
   const P_E_B = Number(COINS_PLAYER_BET);
 
-  const STATE = BET_USER && BET_USER === 'true' && COINS_ENEMY && Number(COINS_ENEMY) === 0 && C_E_B === P_E_B;
+  // const STATE = BET_USER && BET_USER === 'true' && COINS_ENEMY && Number(COINS_ENEMY) === 0 && C_E_B === P_E_B;
+  const STATE =
+    encryptVal1 === encryptVal_1 && // betUser === true
+    COINS_ENEMY &&
+    Number(COINS_ENEMY) === 0 &&
+    C_E_B === P_E_B;
 
   if (!STATE) return false;
 
