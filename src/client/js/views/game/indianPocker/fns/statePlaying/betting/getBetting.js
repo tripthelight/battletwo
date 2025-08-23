@@ -1,4 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import { enc } from '@/client/js/module/crypts/obf8lower';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { comnText } from '@/client/js/functions/language';
@@ -17,10 +18,11 @@ export const GET_BETTING = {
         const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
         const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
         const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
+        const encryptKey2 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
 
         // storageMethod('s', 'SET_ITEM', 'betUser', Boolean(_data.bet));
         storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_1); // betUser, true
-        storageMethod('s', 'SET_ITEM', 'coinsEnemy', _data.coinCount);
+        storageMethod('s', 'SET_ITEM', encryptKey2, enc(_data.coinCount));
         storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', _data.coinBet);
         storageMethod('s', 'SET_ITEM', 'coinsEnemyExtBet', _data.extBet);
         GET_BETTING.drawExtEnemyBet(_data);
@@ -72,14 +74,19 @@ export const GET_BETTING = {
     setTimeout(GET_BETTING.redrawCoinsEnemy, timeInterval_1, _data);
   },
   redrawCoinsEnemy: (_data) => {
-    const COINS_ENEMY = window.sessionStorage.coinsEnemy;
-    const COINS_ENEMY_NUM = Number(COINS_ENEMY) || 0;
+    // const COINS_ENEMY = window.sessionStorage.coinsEnemy;
+    // const COINS_ENEMY_NUM = Number(COINS_ENEMY) || 0;
+    const encryptKey1 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
+    const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+    const decryptVal1 = encryptVal1 ? dec(encryptVal1) : 0; // coinsEnemy value number
+
     const COINS_ENEMY_EL = document.querySelector('.coins-enemy');
     if (!COINS_ENEMY_EL) return;
     let liEl = new Object();
     let minuteEl = new Object();
     let hourEl = new Object();
-    for (let i = 0; i < COINS_ENEMY_NUM; i++) {
+    // for (let i = 0; i < COINS_ENEMY_NUM; i++) {
+    for (let i = 0; i < decryptVal1; i++) {
       liEl = document.createElement('li');
       minuteEl = document.createElement('span');
       hourEl = document.createElement('span');

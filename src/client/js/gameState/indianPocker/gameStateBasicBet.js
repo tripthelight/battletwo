@@ -13,17 +13,18 @@ export default (reloadState) => {
       const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
       const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
       const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
+      const encryptKey2 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]);  // coinsEnemy
       // storageMethod('s', 'SET_ITEM', 'betState', 'basicBetting');
       // storageMethod('s', 'SET_ITEM', 'basicBetReady', false);
       if (reloadState === 'foldLocal') {
         // FOLD를 실행한 PLAY가 새고로침
-        storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_2); // betUser
-        storageMethod('s', 'SET_ITEM', 'coinsEnemy', window.sessionStorage.coinsEnemyLocalFold);
+        storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_2); // betUser, false
+        storageMethod('s', 'SET_ITEM', encryptKey2, window.sessionStorage.coinsEnemyLocalFold); // coinsEnemy,
         storageMethod('s', 'SET_ITEM', 'coinsPlayer', window.sessionStorage.coinsPlayerLocalFold);
       } else if (reloadState === 'foldRemote') {
         // FOLD를 받은 PLAY가 새고로침
         storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_1); // betUser
-        storageMethod('s', 'SET_ITEM', 'coinsEnemy', window.sessionStorage.coinsEnemyRemoteFold);
+        storageMethod('s', 'SET_ITEM', encryptKey2, window.sessionStorage.coinsEnemyRemoteFold); // coinsEnemy,
         storageMethod('s', 'SET_ITEM', 'coinsPlayer', window.sessionStorage.coinsPlayerRemoteFold);
       }
 

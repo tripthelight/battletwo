@@ -18,7 +18,7 @@ export default () => {
     const D_ARR = [
       findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]), // betUser
       'betCoinPos',
-      'betUserFirst',
+      findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]), // betUserFirst
       'battleCardNum',
       'basicBettingState',
       findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]). // extFirstBet

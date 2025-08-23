@@ -5,19 +5,19 @@ import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export default (_eNum, _pNum) => {
   try {
+    const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
+    const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
     const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
     const encryptKey2 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
-    const encryptKey3 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
-    const encryptKey4 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
 
     if (_eNum > _pNum) {
       drawResultCardInfo('end');
-      storageMethod('s', 'SET_ITEM', encryptKey1, encryptKey4);
-      storageMethod('s', 'SET_ITEM', encryptKey2, encryptKey4);
+      storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_2);
+      storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal_2);
     } else if (_eNum < _pNum) {
       drawResultCardInfo('start');
-      storageMethod('s', 'SET_ITEM', encryptKey1, encryptKey3);
-      storageMethod('s', 'SET_ITEM', encryptKey2, encryptKey3);
+      storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_1);
+      storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal_1);
     } else if (_eNum === _pNum) {
       drawResultCardInfo('tie');
     } else {

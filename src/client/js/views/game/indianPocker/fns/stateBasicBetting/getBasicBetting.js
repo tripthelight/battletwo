@@ -1,5 +1,6 @@
-import errorManager from '@/client/js/module/errorHandler/errorManager';
+import findCharCode from '@/client/js/functions/findCharCode';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
+import errorManager from '@/client/js/module/errorHandler/errorManager';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import EnemyBlockMoveBattingZone from '@/client/js/views/game/indianPocker/fns/common/EnemyBlockMoveBattingZone.js';
@@ -8,6 +9,8 @@ import getTranslateMH from '@/client/js/views/game/indianPocker/fns/common/getTr
 
 export const GET_BASIC_BETTING = {
   receiveBasicBetting: (_data) => {
+    const encryptKey1 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
+
     const PROMISE = new Promise((resolve, reject) => {
       resolve(_data);
     });
@@ -20,20 +23,23 @@ export const GET_BASIC_BETTING = {
         const { coinCount, betCount, originCount } = _data;
         // 상대 peer에게 받은 기본배팅 하기 전 코인 개수와
         // 내가 가지고 있는 상대 코인 개수가 맞는지 검증 필요
-        const enemyCoinsNum = dec(window.sessionStorage.getItem('coinsEnemy'));
+        const encryptVal = window.sessionStorage.getItem(encryptKey1);
+        if (encryptVal === null) throw throwObj('sessionStorageLoss', 'basic bet sessionStorage enemy coins failed.');
+        const decryptVal = dec(encryptVal); // coinsEnemy value number
         if (
           betCount !== 1 ||
-          originCount !== enemyCoinsNum ||
-          coinCount + betCount !== enemyCoinsNum ||
+          originCount !== decryptVal ||
+          coinCount + betCount !== decryptVal ||
           coinCount + betCount !== originCount ||
-          enemyCoinsNum - betCount !== coinCount
+          decryptVal - betCount !== coinCount
         ) {
           throw throwObj('foul', 'basic bet coin compair failed.');
         };
         return _data;
       })
       .then((_data) => {
-        storageMethod('s', 'SET_ITEM', 'coinsEnemy', enc(_data.coinCount));
+        // storageMethod('s', 'SET_ITEM', 'coinsEnemy', enc(_data.coinCount));
+        storageMethod('s', 'SET_ITEM', encryptKey1, enc(_data.coinCount));
         return _data;
       })
       .then((_data) => {

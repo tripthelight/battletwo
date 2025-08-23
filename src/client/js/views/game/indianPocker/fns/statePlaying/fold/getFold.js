@@ -63,7 +63,7 @@ export const GET_FOLD = {
       });
   },
   redrawCoinsEnemy: () => {
-    const COINS_ENEMY_RES = window.sessionStorage.coinsEnemy;
+    // const COINS_ENEMY_RES = window.sessionStorage.coinsEnemy;
     const ENEMY_COINS = document.querySelector('.coins-enemy');
     const ENEMY_COINS_LI = ENEMY_COINS.querySelectorAll('li');
     // if (ENEMY_COINS_LI.length > 0) for (let i = 0; i < ENEMY_COINS_LI.length; i++) ENEMY_COINS_LI[i].remove();

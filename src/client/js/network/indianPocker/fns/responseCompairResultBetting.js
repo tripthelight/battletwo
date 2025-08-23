@@ -5,6 +5,8 @@ import throwObj from '@/client/js/module/errorHandler/throwObj';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
 
 export default async (_data) => {
+  console.log('_data ---------------- ', _data);
+
   try {
     const { compair, result } = _data;
 

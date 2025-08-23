@@ -1,3 +1,5 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { getStyle } from '@/client/js/functions/comnExport';
@@ -9,9 +11,19 @@ export default () => {
     if (!BETTING_ZONE) return errorManagement({ errCase: 'elementLoss', message: 'fold 버튼 페널티 받을 시 .betting-zone 엘리먼트가 없습니다' });
     const COINS_PLAYER = window.sessionStorage.coinsPlayer;
     if (!COINS_PLAYER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'fold 버튼 페널티 받을 시 coinsPlayer 세션이 없습니다' });
-    const COINS_ENEMY = window.sessionStorage.coinsEnemy;
-    if (!COINS_ENEMY) return errorManagement({ errCase: 'sessionStorageLoss', message: 'fold 버튼 페널티 받을 시 coinsEnemy 세션이 없습니다' });
-    if (Number(COINS_ENEMY) === 0) return resolve('nextRound'); // 다음 함수 실행
+
+    // const COINS_ENEMY = window.sessionStorage.coinsEnemy;
+    // if (!COINS_ENEMY) return errorManagement({ errCase: 'sessionStorageLoss', message: 'fold 버튼 페널티 받을 시 coinsEnemy 세션이 없습니다' });
+    // if (Number(COINS_ENEMY) === 0) return resolve('nextRound'); // 다음 함수 실행
+    const encryptKey1_1 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
+    const encryptVal1_1 = window.sessionStorage.getItem(encryptKey1_1);
+    if (encryptVal1_1 === null) return errorManagement({ errCase: 'sessionStorageLoss', message: 'fold 버튼 페널티 받을 시 coinsEnemy 세션이 없습니다' });
+    const decryptVal1_1 = dec(encryptVal1_1); // coinsEnemy value number
+    if (decryptVal1_1 === 0) return resolve('nextRound'); // 다음 함수 실행
+
+
+
+
     const COINS_ENEMY_EL = document.querySelector('.coins-enemy');
     if (!COINS_ENEMY_EL) return errorManagement({ errCase: 'elementLoss', message: 'fold 버튼 페널티 받을 시 .coins-enemy 엘리먼트가 없습니다' });
     const ENEMY_COINS = COINS_ENEMY_EL.querySelectorAll('li');
@@ -22,7 +34,8 @@ export default () => {
     const PLAYER_COINS = COINS_PLAYER_EL.querySelectorAll('li');
     const LAST_PLAYER_EL = PLAYER_COINS.length > 0 ? PLAYER_COINS[PLAYER_COINS.length - 1] : 0;
 
-    const PENALTY_COINS = Number(COINS_ENEMY) >= 10 ? 10 : Number(COINS_ENEMY);
+    // const PENALTY_COINS = Number(COINS_ENEMY) >= 10 ? 10 : Number(COINS_ENEMY);
+    const PENALTY_COINS = decryptVal1_1 >= 10 ? 10 : decryptVal1_1;
     const EPL = getStyle(COINS_ENEMY_EL, 'padding-left');
     const PPL = getStyle(COINS_PLAYER_EL, 'padding-left');
     const PPR = getStyle(COINS_PLAYER_EL, 'padding-right');
@@ -71,10 +84,20 @@ export default () => {
     }
 
     setTimeout(() => {
+      const encryptKey1_2 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
+      const encryptVal1_2 = window.sessionStorage.getItem(encryptKey1_2);
+      const decryptVal1_2 = dec(encryptVal1_2); // coinsEnemy value number
+
       const P_RESULT = Number(window.sessionStorage.coinsPlayer) + Number(PENALTY_COINS);
-      const E_RESULT = Number(window.sessionStorage.coinsEnemy) - Number(PENALTY_COINS);
+
+      // const E_RESULT = Number(window.sessionStorage.coinsEnemy) - Number(PENALTY_COINS);
+      const E_RESULT = decryptVal1_2 - Number(PENALTY_COINS);
+
       storageMethod('s', 'SET_ITEM', 'coinsPlayer', P_RESULT);
-      storageMethod('s', 'SET_ITEM', 'coinsEnemy', E_RESULT);
+
+      // storageMethod('s', 'SET_ITEM', 'coinsEnemy', E_RESULT);
+      storageMethod('s', 'SET_ITEM', encryptKey1_2, enc(E_RESULT));
+
       setTimeout(resolve, timeInterval_1);
     }, timeInterval_1001);
   });

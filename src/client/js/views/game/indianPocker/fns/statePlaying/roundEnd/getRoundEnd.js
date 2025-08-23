@@ -1,9 +1,11 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import { enc } from '@/client/js/module/crypts/obf8lower';
 import storageMethod from '@/client/js/module/storage/storageMethod';
+import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import { timeInterval_1, timeInterval_1000, timeInterval_2000, timeInterval_202, timeInterval_3201, timeInterval_3202, timeInterval_401, timeInterval_402 } from '@/client/js/functions/variable';
 import { request } from '@/client/js/network/indianPocker/request';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
-import findCharCode from '@/client/js/functions/findCharCode';
 import disabledMoveCoins from '@/client/js/views/game/indianPocker/fns/common/disabledMoveCoins';
 import playerNumRes from '@/client/js/views/game/indianPocker/fns/common/playerNumRes';
 import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState';
@@ -158,10 +160,10 @@ export const GET_ROUND_END = {
       const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
       const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
       const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
+      const encryptVal2 = booleanCheck([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]);  // betUserFirst
 
       // storageMethod('s', 'SET_ITEM', 'betUser', window.sessionStorage.betUserFirst);
-      // TODO: betUserFirst는 true / false 평문임 - 암호화 필요
-      storageMethod('s', 'SET_ITEM', encryptKey1, window.sessionStorage.betUserFirst);
+      storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal2);
 
       storageMethod('s', 'SET_ITEM', 'drewState', true);
 
@@ -189,6 +191,8 @@ export const GET_ROUND_END = {
     const encryptKey1 = findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]); // roundEnd
     const encryptKey2 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
     const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+    const encryptKey3 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]);  // coinsEnemy
+    const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
 
     // const BET_USER = window.sessionStorage.betUser;
     // if (!BET_USER) {
@@ -201,8 +205,9 @@ export const GET_ROUND_END = {
       console.log('error - getRoundEnd.js - !COINS_PLAYER');
       errorManagement({ errCase: 'errorComn' });
     }
-    const COINS_ENEMY = window.sessionStorage.coinsEnemy;
-    if (!COINS_ENEMY) {
+    // const COINS_ENEMY = window.sessionStorage.coinsEnemy;
+    // if (!COINS_ENEMY) {
+    if (encryptVal3 === null) {
       console.log('error - getRoundEnd.js - !COINS_ENEMY');
       errorManagement({ errCase: 'errorComn' });
     }
@@ -246,7 +251,7 @@ export const GET_ROUND_END = {
       case 'lose':
         // storageMethod('s', 'SET_ITEM', 'betUser', false);
         storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal_2); // betUser, false
-        storageMethod('s', 'SET_ITEM', 'coinsEnemy', Number(COINS_ENEMY) + RESULT);
+        storageMethod('s', 'SET_ITEM', encryptKey3, enc(Number(COINS_ENEMY) + RESULT)); // coinsEnemy
         break;
       case 'drew':
         break;
@@ -417,9 +422,15 @@ export const GET_ROUND_END = {
     const COINS_PLAYER = window.sessionStorage.coinsPlayer;
     if (!COINS_PLAYER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'call | raise 결과에서 coinsPlayer 세션이 없습니다' });
     const PNUM = Number(COINS_PLAYER);
-    const COINS_ENEMY = window.sessionStorage.coinsEnemy;
-    if (!COINS_ENEMY) return errorManagement({ errCase: 'sessionStorageLoss', message: 'call | raise 결과에서 coinsEnemy 세션이 없습니다' });
-    const ENUM = Number(COINS_ENEMY);
+
+    // const COINS_ENEMY = window.sessionStorage.coinsEnemy;
+    // if (!COINS_ENEMY) return errorManagement({ errCase: 'sessionStorageLoss', message: 'call | raise 결과에서 coinsEnemy 세션이 없습니다' });
+    // const ENUM = Number(COINS_ENEMY);
+    const encryptKey2 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
+    const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+    if (encryptVal2 === null) return errorManagement({ errCase: 'sessionStorageLoss', message: 'call | raise 결과에서 coinsEnemy 세션이 없습니다' });
+    const decryptVal2 = dec(encryptVal2); // coinsEnemy value number
+
     /*
     for (let i = 0; i < PLAYER_COINS.length; i++) PLAYER_COINS[i].remove();
     for (let j = 0; j < PNUM; j++) CPINS_PLAYER.appendChild(document.createElement('li'));

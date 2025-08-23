@@ -1,3 +1,5 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { request } from '@/client/js/network/indianPocker/request';
 
@@ -19,12 +21,17 @@ export default (myCardNum) => {
 
   // fold 일 경우 coinsEnemy, coinsPlayer의 결과
   const firstCalc = () => {
-    const COINS_ENEMY = window.sessionStorage.coinsEnemy;
+    // const COINS_ENEMY = window.sessionStorage.coinsEnemy;
+    const encryptKey1 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
+    const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+    const decryptVal1 = encryptVal1 ? dec(encryptVal1) : 0; // coinsEnemy value number
+
     const COINS_PLAYER = window.sessionStorage.coinsPlayer;
     const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
     const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet;
     const COINS_PLAYER_EXT_BET = window.sessionStorage.coinsPlayerExtBet;
-    const FOLD_CE = COINS_ENEMY && Number(COINS_ENEMY) >= 0 ? Number(COINS_ENEMY) : 0;
+    // const FOLD_CE = COINS_ENEMY && Number(COINS_ENEMY) >= 0 ? Number(COINS_ENEMY) : 0;
+    const FOLD_CE = encryptVal1 && decryptVal1 >= 0 ? decryptVal1 : 0;
     const FOLD_CP = COINS_PLAYER && Number(COINS_PLAYER) >= 0 ? Number(COINS_PLAYER) : 0;
     const FOLD_CEB = COINS_ENEMY_BET && Number(COINS_ENEMY_BET) >= 0 ? Number(COINS_ENEMY_BET) : 0;
     const FOLD_CPB = COINS_PLAYER_BET && Number(COINS_PLAYER_BET) >= 0 ? Number(COINS_PLAYER_BET) : 0;

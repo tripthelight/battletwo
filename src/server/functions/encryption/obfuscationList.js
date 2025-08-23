@@ -158,6 +158,18 @@ export const obfuscationList = {
       EXT_FIRST_BET: {
         k: 'MLCXOWSZYV', // [77, 76, 67, 88, 79, 87, 83, 90, 89, 86]
       },
+      BET_USER: {
+        k: 'HFUCSDYRMX', // [72, 70, 85, 67, 83, 68, 89, 82, 77, 88]
+      },
+      BET_USER_FIRST: {
+        k: 'ZYPFDTAMJN', // [90, 89, 80, 70, 68, 84, 65, 77, 74, 78]
+      },
+      COINS_ENEMY: {
+        k: 'SNTDBPGACW', // [83, 78, 84, 68, 66, 80, 71, 65, 67, 87]
+      },
+      COINS_PLAYER: {
+        k: '', // []
+      },
       // e: sessionStorage keys
 
       // s: click event

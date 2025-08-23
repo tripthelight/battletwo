@@ -1,3 +1,5 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import booleanReturn from '@/client/js/functions/validation/booleanReturn';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
@@ -18,6 +20,11 @@ export default () => {
   const BET_STATE = booleanReturn([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser - true or false or error
   if (BET_STATE === '')  return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 betUser 세션이 없습니다.' });
 
+
+  const encryptKey = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
+  const encryptVal = window.sessionStorage.getItem(encryptKey);
+  const decryptVel = encryptVal ? dec(encryptVal) : 0; // coinsEnemy value number ?? 0
+
   // 명령
   setTimeout(() => {
     // 새로 고침 시 여기를 탐
@@ -27,8 +34,9 @@ export default () => {
     let hourEl = new Object();
     elem.classList.add('coins');
     elem.classList.add('coins-enemy');
-    let coinCount = Number(window.sessionStorage.coinsEnemy);
-    for (let i = 0; i < coinCount; i++) {
+    // let coinCount = Number(window.sessionStorage.coinsEnemy);
+    // for (let i = 0; i < coinCount; i++) {
+    for (let i = 0; i < decryptVel; i++) {
       liEl = document.createElement('li');
       minuteEl = document.createElement('span');
       hourEl = document.createElement('span');

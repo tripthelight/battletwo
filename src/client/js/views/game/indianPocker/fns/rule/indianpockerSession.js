@@ -1,4 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import { dec } from '@/client/js/module/crypts/obf8lower';
 
 export default (_name) => {
   switch (_name) {
@@ -12,11 +13,14 @@ export default (_name) => {
       const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
       return encryptVal2;
     case 'BUF':
-      return window.sessionStorage.betUserFirst;
-    case 'EFB':
-      const encryptKey3 = findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]); // extFirstBet
+      // return window.sessionStorage.betUserFirst;
+      const encryptKey3 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
       const decryptVal3 = window.sessionStorage.getItem(encryptKey3);
       return decryptVal3;
+    case 'EFB':
+      const encryptKey4 = findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]); // extFirstBet
+      const decryptVal4 = window.sessionStorage.getItem(encryptKey4);
+      return decryptVal4;
     case 'CP':
       return window.sessionStorage.coinsPlayer && Number(window.sessionStorage.coinsPlayer) > 0 ? Number(window.sessionStorage.coinsPlayer) : 0;
     case 'CPB':
@@ -24,7 +28,11 @@ export default (_name) => {
     case 'CPEB':
       return window.sessionStorage.coinsPlayerExtBet && Number(window.sessionStorage.coinsPlayerExtBet) > 0 ? Number(window.sessionStorage.coinsPlayerExtBet) : 0;
     case 'CE':
-      return window.sessionStorage.coinsEnemy && Number(window.sessionStorage.coinsEnemy) > 0 ? Number(window.sessionStorage.coinsEnemy) : 0;
+      // return window.sessionStorage.coinsEnemy && Number(window.sessionStorage.coinsEnemy) > 0 ? Number(window.sessionStorage.coinsEnemy) : 0;
+      const encryptKey8 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
+      const encryptVal8 = window.sessionStorage.getItem(encryptKey8);
+      const decryptVal8 = encryptVal8 ? dec(encryptVal8) : 0; // coinsEnemy value number
+      return encryptVal8 !== null && decryptVal8 > 0 ? decryptVal8 : 0;
     case 'CEB':
       return window.sessionStorage.coinsEnemyBet && Number(window.sessionStorage.coinsEnemyBet) > 0 ? Number(window.sessionStorage.coinsEnemyBet) : 0;
     case 'CEEB':

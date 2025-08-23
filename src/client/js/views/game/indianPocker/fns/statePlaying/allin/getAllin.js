@@ -1,4 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1, timeInterval_1001 } from '@/client/js/functions/variable.js';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
@@ -16,10 +17,11 @@ export const GET_ALLIN = {
     const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
     const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
     const encryptKey2 = findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]); // extFirstBet
+    const encryptKey3 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
 
     storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_1); // betUser, true
     storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal_1); // extFirstBet, true
-    storageMethod('s', 'SET_ITEM', 'coinsEnemy', _data.coinCount);
+    storageMethod('s', 'SET_ITEM', encryptKey3, enc(_data.coinCount));
     storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', _data.coinBet);
     storageMethod('s', 'SET_ITEM', 'coinsEnemyExtBet', _data.extBet);
     storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 0);

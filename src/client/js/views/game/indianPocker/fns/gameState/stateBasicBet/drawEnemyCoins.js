@@ -1,3 +1,4 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import { dec } from '@/client/js/module/crypts/obf8lower';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import drawBettingZone from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/drawBettingZone';
@@ -32,11 +33,15 @@ export default () => {
   elem.classList.add('coins');
   elem.classList.add('coins-enemy');
   // const coinCount = Number(window.sessionStorage.coinsEnemy);
-  const coinCount = dec(window.sessionStorage.getItem('coinsEnemy'));
+  // const coinCount = dec(window.sessionStorage.getItem('coinsEnemy'));
+  const encryptKey2 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
+  const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+  const decryptVal2 = dec(encryptVal2);
 
-  console.log('coinCount ENEMY ============ > ', coinCount);
+  console.log('coinCount ENEMY ============ > ', decryptVal2);
 
-  for (let i = 0; i < coinCount; i++) {
+  // for (let i = 0; i < coinCount; i++) {
+  for (let i = 0; i < decryptVal2; i++) {
     liEl = document.createElement('li');
     minuteEl = document.createElement('span');
     hourEl = document.createElement('span');

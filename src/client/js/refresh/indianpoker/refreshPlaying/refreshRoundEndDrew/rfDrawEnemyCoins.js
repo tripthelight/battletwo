@@ -1,3 +1,5 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import { dec } from '@/client/js/module/crypts/obf8lower';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import rfDrawBettingZone from '@/client/js/refresh/indianpoker/refreshPlaying/refreshRoundEndDrew/rfDrawBettingZone';
@@ -11,15 +13,20 @@ export default () => {
   const ENEMY_BLOCK = document.querySelector('.enemy-block');
   if (!ENEMY_BLOCK) return errorManagement({ errCase: 'elementLoss', message: '.enemy-block 엘리먼트가 없습니다' });
 
+  const encryptKey = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
+  const encryptVal = window.sessionStorage.getItem(encryptKey);
+  const decryptVal = dec(encryptVal); // coinsEnemy value number
+
   // 명령
   setTimeout(() => {
     let elem = document.createElement('ul');
     let li;
     elem.classList.add('coins');
     elem.classList.add('coins-enemy');
-    let coinCount = Number(window.sessionStorage.coinsEnemy);
+    // let coinCount = Number(window.sessionStorage.coinsEnemy);
 
-    for (let i = 0; i < coinCount; i++) {
+    // for (let i = 0; i < coinCount; i++) {
+    for (let i = 0; i < decryptVal; i++) {
       li = document.createElement('li');
       elem.appendChild(li);
     }

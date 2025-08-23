@@ -1,4 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import { enc } from '@/client/js/module/crypts/obf8lower';
 import { timeInterval_1, timeInterval_1000, timeInterval_2000, timeInterval_3201, timeInterval_5000 } from '@/client/js/functions/variable';
 import { bottomSheet } from '@/client/components/popup/bottomSheet/bottomSheet';
 import { text } from '@/client/js/functions/language';
@@ -14,10 +15,11 @@ import pcDraggableCheck from '@/client/js/views/game/indianPocker/fns/common/pcD
 import { GET_ROUND_END } from '@/client/js/views/game/indianPocker/fns/statePlaying/roundEnd/getRoundEnd';
 import cardHideAnimationComn from '@/client/js/views/game/indianPocker/fns/common/cardHideAnimationComn';
 
+
 export const SET_FOLD = {
   foldPenaltySessionModify: (_statePenalty) => {
     const P_COINS = Number(window.sessionStorage.coinsPlayer);
-    const E_COINS = Number(window.sessionStorage.coinsEnemy);
+    // const E_COINS = Number(window.sessionStorage.coinsEnemy);
     const COINS_ENEMY = document.querySelector('.coins-enemy');
     if (!COINS_ENEMY) errorManagement({ errCase: 'elementLoss', message: 'fold ani 완료 후 .coins-enemy 엘리먼트가 없습니다' });
     const COINS_PLAYER = document.querySelector('.coins-player');
@@ -95,18 +97,28 @@ export const SET_FOLD = {
         BattingZoneMoveEnemyBlock('fold').then((_state) => {
           BettingZoneMoveComnFold().then(() => {
             // storageMethod('s', 'SET_ITEM', 'coinsEnemy', Number(window.sessionStorage) + _numRes);
-            const COINS_ENEMY = window.sessionStorage.coinsEnemy;
+            // const COINS_ENEMY = window.sessionStorage.coinsEnemy;
+            const encryptKey1 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
+            const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+            const decryptVal1 = encryptVal1 ? dec(encryptVal1) : 0; // coinsEnemy value number
+
             const COINS_PLAYER = window.sessionStorage.coinsPlayer;
             const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
             const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet;
             const COINS_PLAYER_EXT_BET = window.sessionStorage.coinsPlayerExtBet;
-            const FOLD_CE = COINS_ENEMY && Number(COINS_ENEMY) >= 0 ? Number(COINS_ENEMY) : 0;
+
+            // const FOLD_CE = COINS_ENEMY && Number(COINS_ENEMY) >= 0 ? Number(COINS_ENEMY) : 0;
+            const FOLD_CE = encryptVal1 && Number(decryptVal1) >= 0 ? Number(decryptVal1) : 0;
+
             const FOLD_CP = COINS_PLAYER && Number(COINS_PLAYER) >= 0 ? Number(COINS_PLAYER) : 0;
             const FOLD_CEB = COINS_ENEMY_BET && Number(COINS_ENEMY_BET) >= 0 ? Number(COINS_ENEMY_BET) : 0;
             const FOLD_CPB = COINS_PLAYER_BET && Number(COINS_PLAYER_BET) >= 0 ? Number(COINS_PLAYER_BET) : 0;
             const FOLD_CPEB = COINS_PLAYER_EXT_BET && Number(COINS_PLAYER_EXT_BET) >= 0 ? Number(COINS_PLAYER_EXT_BET) : 0;
             const RES_E = Number(FOLD_CEB + FOLD_CPB - FOLD_CPEB);
-            storageMethod('s', 'SET_ITEM', 'coinsEnemy', FOLD_CE + RES_E);
+
+            // storageMethod('s', 'SET_ITEM', 'coinsEnemy', FOLD_CE + RES_E);
+            storageMethod('s', 'SET_ITEM', encryptKey1, enc(FOLD_CE + RES_E));
+
             storageMethod('s', 'SET_ITEM', 'coinsPlayer', FOLD_CP + FOLD_CPEB);
             if (_num === 10) {
               bottomSheet.show(text.indianpocker.penalty, timeInterval_5000);

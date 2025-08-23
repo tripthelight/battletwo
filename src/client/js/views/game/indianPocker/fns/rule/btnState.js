@@ -1,3 +1,5 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import { dec } from '@/client/js/module/crypts/obf8lower';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { timeInterval_1, timeInterval_200 } from '@/client/js/functions/variable';
 import { request } from '@/client/js/network/indianPocker/request';
@@ -104,14 +106,20 @@ export const BTN_STATE = {
     const BOTTOM_BUTTONS_EL = document.querySelector('.bottom-buttons');
     if (!BOTTOM_BUTTONS_EL) return;
 
-    const COINS_ENEMY = window.sessionStorage.coinsEnemy ?? 0;
+    // const COINS_ENEMY = window.sessionStorage.coinsEnemy ?? 0;
+    const encryptKey1 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
+    const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+    const decryptVal1 = encryptVal1 ? dec(encryptVal1) : 0; // coinsEnemy value number
+
     const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet ?? 0;
     const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet ?? 0;
     const COINS_PLAYER = window.sessionStorage.coinsPlayer ?? 0;
     const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet ?? 0;
     const COINS_PLAYER_EXT_BET = window.sessionStorage.coinsPlayerExtBet ?? 0;
 
-    const C_E = Number(COINS_ENEMY);
+    // const C_E = Number(COINS_ENEMY);
+    const C_E = Number(decryptVal1);
+
     const C_E_B = Number(COINS_ENEMY_BET);
     const C_E_E_B = Number(COINS_ENEMY_EXT_BET);
     const P_E = Number(COINS_PLAYER);

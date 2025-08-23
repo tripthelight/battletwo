@@ -1,4 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import { dec } from '@/client/js/module/crypts/obf8lower';
 import deviceStateStore from '@/client/store/deviceStateStore';
 
 export default () => {
@@ -8,7 +9,10 @@ export default () => {
   const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
   const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
 
-  const COINS_ENEMY = window.sessionStorage.coinsEnemy;
+  // const COINS_ENEMY = window.sessionStorage.coinsEnemy;
+  const encryptKey2 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
+  const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+
   const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet ?? 0;
   const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet ?? 0;
   const PLAYER_COINS_BLOCK = document.querySelector('.coins-player');
@@ -19,8 +23,8 @@ export default () => {
   // const STATE = BET_USER && BET_USER === 'true' && COINS_ENEMY && Number(COINS_ENEMY) === 0 && C_E_B === P_E_B;
   const STATE =
     encryptVal1 === encryptVal_1 && // betUser === true
-    COINS_ENEMY &&
-    Number(COINS_ENEMY) === 0 &&
+    encryptVal2 &&
+    dec(encryptVal2) === 0 &&
     C_E_B === P_E_B;
 
   if (!STATE) return false;

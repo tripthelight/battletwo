@@ -1,16 +1,27 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import { dec } from '@/client/js/module/crypts/obf8lower';
+
 export default {
   CALL: () => {},
   ALLIN_OLD: () => {
     const COINS_PLAYER = window.sessionStorage.coinsPlayer;
     const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet;
     const COINS_PLAYER_EXT_BET = window.sessionStorage.coinsPlayerExtBet;
-    const COINS_ENEMY = window.sessionStorage.coinsEnemy;
+
+    // const COINS_ENEMY = window.sessionStorage.coinsEnemy;
+    const encryptKey4 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
+    const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
+    const decryptVal4 = encryptVal4 ? dec(encryptVal4) : 0; // coinsEnemy value number
+
     const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
     const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet;
     const AI_CP = COINS_PLAYER && Number(COINS_PLAYER) > 0 ? Number(COINS_PLAYER) : 0;
     const AI_CPB = COINS_PLAYER_BET && Number(COINS_PLAYER_BET) > 0 ? Number(COINS_PLAYER_BET) : 0;
     const AI_CPEB = COINS_PLAYER_EXT_BET && Number(COINS_PLAYER_EXT_BET) > 0 ? Number(COINS_PLAYER_EXT_BET) : 0;
-    const AI_CE = COINS_ENEMY && Number(COINS_ENEMY) > 0 ? Number(COINS_ENEMY) : 0;
+
+    // const AI_CE = COINS_ENEMY && Number(COINS_ENEMY) > 0 ? Number(COINS_ENEMY) : 0;
+    const AI_CE = encryptVal4 && Number(decryptVal4) > 0 ? Number(decryptVal4) : 0;
+
     const AI_CEB = COINS_ENEMY_BET && Number(COINS_ENEMY_BET) > 0 ? Number(COINS_ENEMY_BET) : 0;
     const AI_CEEB = COINS_ENEMY_EXT_BET && Number(COINS_ENEMY_EXT_BET) > 0 ? Number(COINS_ENEMY_EXT_BET) : 0;
     let aiResD = 0;
@@ -160,13 +171,21 @@ export default {
     const COINS_PLAYER = window.sessionStorage.coinsPlayer;
     const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet;
     const COINS_PLAYER_EXT_BET = window.sessionStorage.coinsPlayerExtBet;
-    const COINS_ENEMY = window.sessionStorage.coinsEnemy;
+
+    // const COINS_ENEMY = window.sessionStorage.coinsEnemy;
+    const encryptKey4 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
+    const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
+    const decryptVal4 = encryptVal4 ? dec(encryptVal4) : 0; // coinsEnemy value number
+
     const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
     const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet;
     const AI_CP = COINS_PLAYER && Number(COINS_PLAYER) > 0 ? Number(COINS_PLAYER) : 0;
     const AI_CPB = COINS_PLAYER_BET && Number(COINS_PLAYER_BET) > 0 ? Number(COINS_PLAYER_BET) : 0;
     const AI_CPEB = COINS_PLAYER_EXT_BET && Number(COINS_PLAYER_EXT_BET) > 0 ? Number(COINS_PLAYER_EXT_BET) : 0;
-    const AI_CE = COINS_ENEMY && Number(COINS_ENEMY) > 0 ? Number(COINS_ENEMY) : 0;
+
+    // const AI_CE = COINS_ENEMY && Number(COINS_ENEMY) > 0 ? Number(COINS_ENEMY) : 0;
+    const AI_CE = encryptVal4 && Number(decryptVal4) > 0 ? Number(decryptVal4) : 0;
+
     const AI_CEB = COINS_ENEMY_BET && Number(COINS_ENEMY_BET) > 0 ? Number(COINS_ENEMY_BET) : 0;
     const AI_CEEB = COINS_ENEMY_EXT_BET && Number(COINS_ENEMY_EXT_BET) > 0 ? Number(COINS_ENEMY_EXT_BET) : 0;
     const CALL_COUNT = AI_CEB - Number(AI_CPB - AI_CPEB);

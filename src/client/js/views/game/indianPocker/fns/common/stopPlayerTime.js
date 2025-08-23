@@ -1,3 +1,5 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import { dec, enc } from '@/client/js/module/crypts/obf8lower';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
@@ -89,13 +91,19 @@ export default (_state) => {
   // coins enemy 코인 모두 지우기
   for (let i = 0; i < COINS_E.length; i++) {
     COINS_E[i].remove();
-  }
+  };
 
-  const ENEMY_COIN_LEN = window.sessionStorage.coinsEnemy;
-  if (!ENEMY_COIN_LEN || parseInt(ENEMY_COIN_LEN) < 1) return;
+  // const ENEMY_COIN_LEN = window.sessionStorage.coinsEnemy;
+  // if (!ENEMY_COIN_LEN || parseInt(ENEMY_COIN_LEN) < 1) return;
+  const encryptKey2 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
+  const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+  if (encryptVal2 === null) return;
+  const decryptVal2 = enc(encryptVal2); // coinsEnemy value number
+  if (decryptVal2 < 1) return;
 
   // coins enemy 코인 다시 그리기
-  for (let i = 0; i < parseInt(ENEMY_COIN_LEN); i++) {
+  // for (let i = 0; i < parseInt(ENEMY_COIN_LEN); i++) {
+  for (let i = 0; i < parseInt(decryptVal2); i++) {
     liEl = document.createElement('li');
     minuteEl = document.createElement('span');
     hourEl = document.createElement('span');

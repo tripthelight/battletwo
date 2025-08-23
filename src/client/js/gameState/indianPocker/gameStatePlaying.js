@@ -14,21 +14,21 @@ export default () => {
   storageMethod('s', 'REMOVE_ITEM', 'foldUser');
   storageMethod('s', 'REMOVE_ITEM', 'foldState');
 
-    const BET_RESULTING = window.sessionStorage.betResulting;
-    if (BET_RESULTING && BET_RESULTING === 'true') {
-      if (reload) {
-        REFRESH_STATE_PLAYING.main();
-      }
-    } else {
-      // if (window.sessionStorage.drewState && window.sessionStorage.drewState === "true") return STATE_PLAYING.drew();
-      console.log('여기를 탔다는 건데....');
-      STATE_PLAYING.main();
-      LOADING_EVENT.show();
-      // refresh event
-      if (reload) {
-        REFRESH_STATE_PLAYING.main();
-      }
+  const BET_RESULTING = window.sessionStorage.betResulting;
+  if (BET_RESULTING && BET_RESULTING === 'true') {
+    if (reload) {
+      REFRESH_STATE_PLAYING.main();
     }
+  } else {
+    // if (window.sessionStorage.drewState && window.sessionStorage.drewState === "true") return STATE_PLAYING.drew();
+    console.log('여기를 탔다는 건데....');
+    STATE_PLAYING.main();
+    LOADING_EVENT.show();
+    // refresh event
+    if (reload) {
+      REFRESH_STATE_PLAYING.main();
+    }
+  }
 
   /* setTimeout(() => {
     const BET_RESULTING = window.sessionStorage.betResulting;
