@@ -4,7 +4,6 @@ import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import removeElement from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/removeElement';
 
-
 export default () => {
   const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
   const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
@@ -26,7 +25,8 @@ export default () => {
   storageMethod('s', 'SET_ITEM', encryptKey4, encryptVal4); // betState, basicBetting
   storageMethod('s', 'SET_ITEM', encryptKey3, encryptVal_2); // extFirstBet, false
 
-  storageMethod('s', 'REMOVE_ITEM', 'drewReady');
+  // storageMethod('s', 'REMOVE_ITEM', 'drewReady');
+  storageMethod('s', 'REMOVE_ITEM', 'drewReady'); // drewReady
   storageMethod('s', 'REMOVE_ITEM', encryptKey6); // basicBetReady
 
   // if (!COINS_PLAYER && !COINS_ENEMY) {

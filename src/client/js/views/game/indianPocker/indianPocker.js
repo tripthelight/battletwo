@@ -11,6 +11,9 @@ import delCookies from '@/client/js/module/cookies/delCookies';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
 
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+
 // onMounted
 document.onreadystatechange = async () => {
   if (document.readyState !== 'complete') return;
@@ -72,8 +75,12 @@ document.onreadystatechange = async () => {
       indianPockerGameState.choiceCard();
     };
 
-    console.log('betUser : ', findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]));
-
+    const t1 = X.enc(decodeTF('smra'));
+    console.log('encrypt true ::::: ', t1);
+    console.log('decrypt true ::::: ', X.dec(t1));
+    const f1 = X.enc(decodeTF('joben'));
+    console.log('encrypt false ::::: ', f1);
+    console.log('decrypt false ::::: ', X.dec(f1));
 
   } catch (error) {
     console.log('error indianPocker.js >>>>>>>>>>>> ');
