@@ -1,3 +1,5 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import { dec } from '@/client/js/module/crypts/obf8lower';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import resultAnimation from '@/client/js/views/game/indianPocker/fns/gameState/stateGameover/resultAnimation';
@@ -27,10 +29,14 @@ export default () => {
       const COINS_PLAYER = PLAYER_BLOCK.querySelector('.coins-player');
       if (COINS_PLAYER) {
         for (let i = 0; i < COINS.length; i++) COINS[i].remove();
-        for (let i = 0; i < Number(window.sessionStorage.coinsPlayer); i++) COINS_PLAYER.appendChild(document.createElement('li'));
-      }
-    }
-  }
+        const encryptKey2 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
+        const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+        const decryptVal2 = dec(encryptVal2); // coinsPlayer value number
+        // for (let i = 0; i < Number(window.sessionStorage.coinsPlayer); i++) COINS_PLAYER.appendChild(document.createElement('li'));
+        for (let i = 0; i < Number(decryptVal2); i++) COINS_PLAYER.appendChild(document.createElement('li'));
+      };
+    };
+  };
 
   if (ENEMY_BLOCK && BETTING_ZONE && PLAYER_BLOCK) return resultAnimation();
   // 다음 함수 실행

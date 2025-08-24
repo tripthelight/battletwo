@@ -1,4 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import { enc } from '@/client/js/module/crypts/obf8lower';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { text } from '@/client/js/functions/language';
@@ -36,10 +37,17 @@ export const GET_FOLD = {
             const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
             const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
 
-            const COINS_PLAYER = window.sessionStorage.coinsPlayer;
+            // const COINS_PLAYER = window.sessionStorage.coinsPlayer;
+            const encryptKey2 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer
+            const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+            const decryptVal2 = dec(encryptVal2); // coinsPlayer value number
+
             const PLAYER_BET = window.sessionStorage.coinsPlayerBet;
             const ENEMY_BET = window.sessionStorage.coinsEnemyBet;
-            storageMethod('s', 'SET_ITEM', 'coinsPlayer', Number(COINS_PLAYER) + Number(PLAYER_BET) + Number(ENEMY_BET));
+
+            // storageMethod('s', 'SET_ITEM', 'coinsPlayer', Number(COINS_PLAYER) + Number(PLAYER_BET) + Number(ENEMY_BET));
+            storageMethod('s', 'SET_ITEM', encryptKey2, enc(Number(decryptVal2) + Number(PLAYER_BET) + Number(ENEMY_BET)));
+
             foldSendResultComn();
             // storageMethod('s', 'SET_ITEM', 'betUser', true);
             storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_1); // betUser, true

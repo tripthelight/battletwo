@@ -1,4 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import { dec } from '@/client/js/module/crypts/obf8lower';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { comnText } from '@/client/js/functions/language';
@@ -10,27 +11,39 @@ import { GET_FOLD } from '@/client/js/views/game/indianPocker/fns/statePlaying/f
 import { requestBatting } from '@/client/js/network/indianPocker/batting/requestBatting';
 import { request } from '@/client/js/network/indianPocker/request';
 
+function bettingEventSetParams() {
+  const encryptKey1 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
+  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  const decryptVal1 = dec(encryptVal1); // coinsPlayer value number
+  return {
+    coinCount: decryptVal1,
+    coinBet: Number(window.sessionStorage.coinsPlayerBet),
+    extBet: Number(window.sessionStorage.coinsPlayerExtBet),
+  };
+};
+
 export default {
   SET: {
     FIRST_EXT_BET: () => {
-      request('firstExtBet', {
+      /* request('firstExtBet', {
         coinCount: Number(window.sessionStorage.coinsPlayer),
         coinBet: Number(window.sessionStorage.coinsPlayerBet),
         extBet: Number(window.sessionStorage.coinsPlayerExtBet),
         state: comnText.betting,
-      });
+      }); */
       // storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 0);
+      request('firstExtBet', {
+        ...bettingEventSetParams(),
+        state: comnText.betting,
+      });
     },
     ALL_IN: () => {
-      console.log('coinCount >>>>>>>> ', window.sessionStorage.coinsPlayer);
-      console.log('coinBet >>>>>>>> ', window.sessionStorage.coinsPlayerBet);
-      console.log('extBet >>>>>>>> ', window.sessionStorage.coinsPlayerExtBet);
-
-      request('allInBet', {
+      /* request('allInBet', {
         coinCount: Number(window.sessionStorage.coinsPlayer),
         coinBet: Number(window.sessionStorage.coinsPlayerBet),
         extBet: Number(window.sessionStorage.coinsPlayerExtBet),
-      });
+      }); */
+      request('allInBet', bettingEventSetParams());
     },
     CALL: () => {
       const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
@@ -38,19 +51,24 @@ export default {
         return errorManagement({ errCase: 'errorComn', message: 'error CALL request !BATTLE_CARD_NUM' });
       }
 
-      request('call', {
+      /* request('call', {
         coinCount: Number(window.sessionStorage.coinsPlayer),
         coinBet: Number(window.sessionStorage.coinsPlayerBet),
         extBet: Number(window.sessionStorage.coinsPlayerExtBet),
         playerCardNum: BATTLE_CARD_NUM,
+      }); */
+      request('call', {
+        ...bettingEventSetParams(),
+        playerCardNum: BATTLE_CARD_NUM,
       });
     },
     RAISE: () => {
-      request('raise', {
+      /* request('raise', {
         coinCount: Number(window.sessionStorage.coinsPlayer),
         coinBet: Number(window.sessionStorage.coinsPlayerBet),
         extBet: Number(window.sessionStorage.coinsPlayerExtBet),
-      });
+      }); */
+      request('raise', bettingEventSetParams());
     },
     FOLD: (_penalty) => {
       const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');

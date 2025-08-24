@@ -1,3 +1,5 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import { dec, enc } from '@/client/js/module/crypts/obf8lower';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import INDIANPOCKER_RULES from '@/client/js/views/game/indianPocker/fns/rules/rules.js';
 import PlayerBlockMoveBattingZone from '@/client/js/views/game/indianPocker/fns/common/PlayerBlockMoveBattingZone.js';
@@ -20,11 +22,19 @@ export default () => {
     BattingZoneMovePlayerBlock(_resultCoins).then((_aiCoins) => {
       BettingZoneMoveAllin(_aiCoins).then((_aiCoinsRes) => {
         BattingZoneMoveAllinTime(_aiCoinsRes).then((_aiCoinsRes) => {
-          const COINS_PLAYER_RES = window.sessionStorage.coinsPlayer;
-          const CP_RES = Number(COINS_PLAYER_RES) - _aiCoinsRes.ep + _aiCoinsRes.rc;
+          const encryptKey1 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
+          const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+          const decryptVal1 = dec(encryptVal1); // coinsPlayer value number
+
+          // const COINS_PLAYER_RES = window.sessionStorage.coinsPlayer;
+          // const CP_RES = Number(COINS_PLAYER_RES) - _aiCoinsRes.ep + _aiCoinsRes.rc;
+          const CP_RES = Number(decryptVal1) - _aiCoinsRes.ep + _aiCoinsRes.rc;
           const COINS_PLAYER_BET_RES = window.sessionStorage.coinsPlayerBet;
           const CPB_RES = COINS_PLAYER_BET_RES && Number(COINS_PLAYER_BET_RES) > 0 ? Number(COINS_PLAYER_BET_RES) : 0;
-          storageMethod('s', 'SET_ITEM', 'coinsPlayer', Number(CP_RES));
+
+          // storageMethod('s', 'SET_ITEM', 'coinsPlayer', Number(CP_RES));
+          storageMethod('s', 'SET_ITEM', encryptKey1, enc(Number(CP_RES)));
+
           storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', Number(CPB_RES) + _aiCoinsRes.ep - _aiCoinsRes.rc);
           // storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', '_aiCoinsRes.epeb');
           storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', _aiCoinsRes.epeb);

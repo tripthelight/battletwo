@@ -18,7 +18,11 @@ export default () => {
     encryptKey3 === encryptVal_1 // betUser === true
   ) return betStateCheck();
   // 기본 배팅일 때 만 탐
-  const coinCount = dec(window.sessionStorage.getItem('coinsPlayer'));
+  const encryptKey4 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer
+  const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
+  // const coinCount = dec(window.sessionStorage.getItem('coinsPlayer'));
+  const coinCount = dec(encryptVal4); // coinsPlayer value number
+
   const betCount = Number(window.sessionStorage.getItem('coinsPlayerBet'));
   const originCount = coinCount + betCount;
   request('basicBetting', { coinCount, betCount, originCount });

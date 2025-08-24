@@ -1,4 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import { enc } from '@/client/js/module/crypts/obf8lower';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import deviceStateStore from '@/client/store/deviceStateStore';
 import { timeInterval_1 } from '@/client/js/functions/variable';
@@ -84,10 +85,18 @@ export default (e) => {
   LI.style.animationDelay = COINS_PLAYER.length * 0.1 + 's';
 
   // 칩 빼기
-  const PLAYER_COINS = window.sessionStorage.coinsPlayer;
-  if (!PLAYER_COINS) return errorManagement({ errCase: 'errorComn', message: 'coinsPlayer 세션을 찾을 수 없습니다.' });
-  const PLAYER_COINS_NUM = Number(PLAYER_COINS);
-  storageMethod('s', 'SET_ITEM', 'coinsPlayer', PLAYER_COINS_NUM + 1);
+  // const PLAYER_COINS = window.sessionStorage.coinsPlayer;
+  // if (!PLAYER_COINS) return errorManagement({ errCase: 'errorComn', message: 'coinsPlayer 세션을 찾을 수 없습니다.' });
+  const encryptKey3 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
+  const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
+  if (encryptVal3 === null) return errorManagement({ errCase: 'errorComn', message: 'coinsPlayer 세션을 찾을 수 없습니다.' });
+
+  // const PLAYER_COINS_NUM = Number(PLAYER_COINS);
+  const decryptVal3 = dec(encryptVal3); // coinsPlayer value number
+
+  // storageMethod('s', 'SET_ITEM', 'coinsPlayer', PLAYER_COINS_NUM + 1);
+  storageMethod('s', 'SET_ITEM', 'coinsPlayer', enc(decryptVal3 + 1));
+
   const PLAYER_COINS_BET = window.sessionStorage.coinsPlayerBet;
   if (!PLAYER_COINS_BET) return errorManagement({ errCase: 'errorComn', message: 'coinsPlayerBet 세션을 찾을 수 없습니다.' });
   const PLAYER_COINS_BET_NUM = Number(PLAYER_COINS_BET);

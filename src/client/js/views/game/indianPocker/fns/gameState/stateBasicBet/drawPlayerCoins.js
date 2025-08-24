@@ -1,5 +1,6 @@
-import deviceStateStore from '@/client/store/deviceStateStore';
+import findCharCode from '@/client/js/functions/findCharCode';
 import { dec } from '@/client/js/module/crypts/obf8lower';
+import deviceStateStore from '@/client/store/deviceStateStore';
 import gameResultCheck from '@/client/js/views/game/indianPocker/fns/common/gameResultCheck';
 import gameEnd from '@/client/js/views/game/indianPocker/fns/common/gameEnd';
 import bettingCoin from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/bettingCoin';
@@ -32,11 +33,16 @@ export default () => {
   let hourEl = new Object();
   elem.classList.add('coins');
   elem.classList.add('coins-player');
-  const coinCount = dec(window.sessionStorage.getItem('coinsPlayer'));
+  // const coinCount = dec(window.sessionStorage.getItem('coinsPlayer'));
 
-  console.log('coinCount PLAYER ============ > ', coinCount);
+  const encryptKey2 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer
+  const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+  const decryptVal2 = dec(encryptVal2); // coinsPlayer value number
 
-  for (let i = 0; i < coinCount; i++) {
+  console.log('coinCount PLAYER ============ > ', decryptVal2);
+
+  // for (let i = 0; i < coinCount; i++) {
+  for (let i = 0; i < Number(decryptVal2); i++) {
     liEl = document.createElement('li');
     minuteEl = document.createElement('span');
     hourEl = document.createElement('span');

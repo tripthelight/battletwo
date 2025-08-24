@@ -168,7 +168,7 @@ export const obfuscationList = {
         k: 'SNTDBPGACW', // [83, 78, 84, 68, 66, 80, 71, 65, 67, 87]
       },
       COINS_PLAYER: {
-        k: '', // []
+        k: 'QCEDGMSZAJ', // [81, 67, 69, 68, 71, 77, 83, 90, 65, 74]
       },
       // e: sessionStorage keys
 

@@ -1,6 +1,6 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import findCharCode from '@/client/js/functions/findCharCode';
 // import { pcOffsetLeft, pcOffsetTop } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import removeMyBetCoin from '@/client/js/views/game/indianPocker/fns/common/removeMyBetCoin';
@@ -22,10 +22,20 @@ export default (data) => {
   }
   arr.push(ACTIVE_COIN);
   // 칩 넣기
-  const PLAYER_NUMB = dec(window.sessionStorage.getItem('coinsPlayer')) - 1;
-  const PLAYER_COINS = enc(PLAYER_NUMB);
+  // const PLAYER_NUMB = dec(window.sessionStorage.getItem('coinsPlayer')) - 1;
+  // const PLAYER_COINS = enc(PLAYER_NUMB);
+  const encryptKey2 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer
+  const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+  const decryptVal2_1 = dec(encryptVal2); // coinsPlayer value number
+  const decryptVal2_2 = Number(decryptVal2_1) - 1;
+  const decryptVal2_3 = enc(decryptVal2_2);
+
+
   storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(arr));
-  storageMethod('s', 'SET_ITEM', 'coinsPlayer', PLAYER_COINS);
+
+  // storageMethod('s', 'SET_ITEM', 'coinsPlayer', PLAYER_COINS);
+  storageMethod('s', 'SET_ITEM', encryptKey2, decryptVal2_3);
+
   storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', JSON.parse(window.sessionStorage.betCoin).filter((coins) => coins.host === 'player').length);
 
   const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
@@ -38,5 +48,6 @@ export default (data) => {
       storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 1);
     }
   };
-  removeMyBetCoin({ coinsPlayer: PLAYER_NUMB, index: data.activeLi });
+  // removeMyBetCoin({ coinsPlayer: PLAYER_NUMB, index: data.activeLi });
+  removeMyBetCoin({ coinsPlayer: decryptVal2_2, index: data.activeLi });
 };

@@ -193,6 +193,8 @@ export const GET_ROUND_END = {
     const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
     const encryptKey3 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]);  // coinsEnemy
     const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
+    const encryptKey4 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer
+    const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
 
     // const BET_USER = window.sessionStorage.betUser;
     // if (!BET_USER) {
@@ -200,8 +202,9 @@ export const GET_ROUND_END = {
       console.log('error - getRoundEnd.js - !BET_USER');
       errorManagement({ errCase: 'errorComn' });
     }
-    const COINS_PLAYER = window.sessionStorage.coinsPlayer;
-    if (!COINS_PLAYER) {
+    // const COINS_PLAYER = window.sessionStorage.coinsPlayer;
+    // if (!COINS_PLAYER) {
+    if (encryptVal4 === null) {
       console.log('error - getRoundEnd.js - !COINS_PLAYER');
       errorManagement({ errCase: 'errorComn' });
     }
@@ -246,7 +249,9 @@ export const GET_ROUND_END = {
       case 'win':
         // storageMethod('s', 'SET_ITEM', 'betUser', true);
         storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal_1); // betUser, true
-        storageMethod('s', 'SET_ITEM', 'coinsPlayer', Number(COINS_PLAYER) + RESULT);
+        // storageMethod('s', 'SET_ITEM', 'coinsPlayer', Number(COINS_PLAYER) + RESULT);
+        const decryptVal4 = dec(encryptVal4); // coinsPlayer value number
+        storageMethod('s', 'SET_ITEM', encryptKey4, enc(Number(decryptVal4) + RESULT)); // coinsPlayer
         break;
       case 'lose':
         // storageMethod('s', 'SET_ITEM', 'betUser', false);
@@ -419,9 +424,14 @@ export const GET_ROUND_END = {
     const CPINS_PLAYER = document.querySelector('.coins-player');
     if (!CPINS_PLAYER) return errorManagement({ errCase: 'elementLoss', message: 'call | raise 결과에서 .coins-player 엘리먼트가 없습니다' });
     const PLAYER_COINS = CPINS_PLAYER.querySelectorAll('li');
-    const COINS_PLAYER = window.sessionStorage.coinsPlayer;
-    if (!COINS_PLAYER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'call | raise 결과에서 coinsPlayer 세션이 없습니다' });
-    const PNUM = Number(COINS_PLAYER);
+
+    // const COINS_PLAYER = window.sessionStorage.coinsPlayer;
+    // if (!COINS_PLAYER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'call | raise 결과에서 coinsPlayer 세션이 없습니다' });
+    // const PNUM = Number(COINS_PLAYER);
+    const encryptKey1 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer
+    const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+    if (encryptVal1 === null) return errorManagement({ errCase: 'sessionStorageLoss', message: 'call | raise 결과에서 coinsPlayer 세션이 없습니다' });
+    const decryptVal1 = dec(encryptVal1); // coinsPlayer value number
 
     // const COINS_ENEMY = window.sessionStorage.coinsEnemy;
     // if (!COINS_ENEMY) return errorManagement({ errCase: 'sessionStorageLoss', message: 'call | raise 결과에서 coinsEnemy 세션이 없습니다' });
@@ -442,9 +452,9 @@ export const GET_ROUND_END = {
     storageMethod('s', 'SET_ITEM', 'betCoinPos', []);
     storageMethod('s', 'SET_ITEM', 'basicBettingState', false);
     // storageMethod('s', 'SET_ITEM', 'betState', 'basicBetting');
-    const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
-    const encryptVal1 = findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
-    storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal1);
+    const encryptKey3 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
+    const encryptVal3 = findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
+    storageMethod('s', 'SET_ITEM', encryptKey3, encryptVal3);
     setTimeout(GET_ROUND_END.goNextRound, timeInterval_402, _result);
   },
 };

@@ -25,8 +25,12 @@ export default () => {
   if (encryptVal2 === null) return errorManagement({ errCase: 'sessionStorageLoss', message: 'drew 상태에서 coinsEnemy 세션이 없습니다' });
   const decryptVal2 = dec(encryptVal2); // coinsEnemy value number
 
-  const COINS_PLAYER = window.sessionStorage.coinsPlayer;
-  if (COINS_PLAYER === undefined || COINS_PLAYER === null) return errorManagement({ errCase: 'sessionStorageLoss', message: 'drew 상태에서 coinsPlayer 세션이 없습니다' });
+  // const COINS_PLAYER = window.sessionStorage.coinsPlayer;
+  // if (COINS_PLAYER === undefined || COINS_PLAYER === null) return errorManagement({ errCase: 'sessionStorageLoss', message: 'drew 상태에서 coinsPlayer 세션이 없습니다' });
+  const encryptKey3 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer
+  const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
+  if (encryptVal3 === null) return errorManagement({ errCase: 'sessionStorageLoss', message: 'drew 상태에서 coinsPlayer 세션이 없습니다' });
+  const decryptVal3 = dec(encryptVal3); // coinsPlayer value number
 
   setTimeout(() => {
     const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet;
@@ -42,7 +46,7 @@ export default () => {
 
     // const BET_USER_FIRST_RES = BET_USER_FIRST === 'true' ? true : BET_USER_FIRST === 'false' ? false : errorManagement({ errCase: 'sessionStorageLoss', message: 'betUserFirst 세션이 true나 false가 아닙니다' });
     const decryptVal_2 = booleanReturn([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUser - true or false or error
-    if (decryptVal_2 === '')  return errorManagement({ errCase: 'sessionStorageLoss', message: 'betUserFirst 세션이 true나 false가 아닙니다' });
+    if (decryptVal_2 === '') return errorManagement({ errCase: 'sessionStorageLoss', message: 'betUserFirst 세션이 true나 false가 아닙니다' });
 
     // if (BET_USER_FIRST_RES && !BET_USER_RES) return;
     // if (!BET_USER_FIRST_RES && BET_USER_RES) return;
@@ -53,8 +57,8 @@ export default () => {
     if (
       Number(COINS_ENEMY_EXT_BET) === 0 &&
       (
-        Number(decryptVal2) === 0 ||
-        Number(COINS_PLAYER) === 0
+        Number(decryptVal2) === 0 || // coinsEnemy === 0
+        Number(decryptVal3) === 0 // coinsPlayer === 0
       )
     ) {
       storageMethod('s', 'SET_ITEM', 'drewFlipCardMode', true);

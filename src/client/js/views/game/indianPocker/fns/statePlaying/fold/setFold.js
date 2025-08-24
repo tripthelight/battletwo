@@ -1,5 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
-import { enc } from '@/client/js/module/crypts/obf8lower';
+import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import { timeInterval_1, timeInterval_1000, timeInterval_2000, timeInterval_3201, timeInterval_5000 } from '@/client/js/functions/variable';
 import { bottomSheet } from '@/client/components/popup/bottomSheet/bottomSheet';
 import { text } from '@/client/js/functions/language';
@@ -18,14 +18,14 @@ import cardHideAnimationComn from '@/client/js/views/game/indianPocker/fns/commo
 
 export const SET_FOLD = {
   foldPenaltySessionModify: (_statePenalty) => {
-    const P_COINS = Number(window.sessionStorage.coinsPlayer);
+    // const P_COINS = Number(window.sessionStorage.coinsPlayer);
     // const E_COINS = Number(window.sessionStorage.coinsEnemy);
     const COINS_ENEMY = document.querySelector('.coins-enemy');
     if (!COINS_ENEMY) errorManagement({ errCase: 'elementLoss', message: 'fold ani 완료 후 .coins-enemy 엘리먼트가 없습니다' });
     const COINS_PLAYER = document.querySelector('.coins-player');
     if (!COINS_PLAYER) errorManagement({ errCase: 'elementLoss', message: 'fold ani 완료 후 .coins-player 엘리먼트가 없습니다' });
-    const COINS_ENEMY_LI = COINS_ENEMY.querySelectorAll('li');
-    const COINS_PLAYER_LI = COINS_PLAYER.querySelectorAll('li');
+    // const COINS_ENEMY_LI = COINS_ENEMY.querySelectorAll('li');
+    // const COINS_PLAYER_LI = COINS_PLAYER.querySelectorAll('li');
     /*
     if (COINS_ENEMY_LI.length > 0) for (let i = 0; i < COINS_ENEMY_LI.length; i++) COINS_ENEMY_LI[i].remove();
     if (Number(E_COINS) > 0) for (let i = 0; i < Number(E_COINS); i++) COINS_ENEMY.appendChild(document.createElement('li'));
@@ -102,24 +102,32 @@ export const SET_FOLD = {
             const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
             const decryptVal1 = encryptVal1 ? dec(encryptVal1) : 0; // coinsEnemy value number
 
-            const COINS_PLAYER = window.sessionStorage.coinsPlayer;
+            // const COINS_PLAYER = window.sessionStorage.coinsPlayer;
+            const encryptKey2 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer
+            const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+            const decryptVal2 = encryptVal2 ? dec(encryptVal2) : 0; // coinsPlayer value number
+
             const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
             const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet;
             const COINS_PLAYER_EXT_BET = window.sessionStorage.coinsPlayerExtBet;
 
             // const FOLD_CE = COINS_ENEMY && Number(COINS_ENEMY) >= 0 ? Number(COINS_ENEMY) : 0;
-            const FOLD_CE = encryptVal1 && Number(decryptVal1) >= 0 ? Number(decryptVal1) : 0;
+            const FOLD_CE = encryptVal1 !== null && Number(decryptVal1) >= 0 ? Number(decryptVal1) : 0;
 
-            const FOLD_CP = COINS_PLAYER && Number(COINS_PLAYER) >= 0 ? Number(COINS_PLAYER) : 0;
+            // const FOLD_CP = COINS_PLAYER && Number(COINS_PLAYER) >= 0 ? Number(COINS_PLAYER) : 0;
+            const FOLD_CP = encryptVal2 !== null && Number(decryptVal2) >= 0 ? Number(decryptVal2) : 0;
+
             const FOLD_CEB = COINS_ENEMY_BET && Number(COINS_ENEMY_BET) >= 0 ? Number(COINS_ENEMY_BET) : 0;
             const FOLD_CPB = COINS_PLAYER_BET && Number(COINS_PLAYER_BET) >= 0 ? Number(COINS_PLAYER_BET) : 0;
             const FOLD_CPEB = COINS_PLAYER_EXT_BET && Number(COINS_PLAYER_EXT_BET) >= 0 ? Number(COINS_PLAYER_EXT_BET) : 0;
             const RES_E = Number(FOLD_CEB + FOLD_CPB - FOLD_CPEB);
 
             // storageMethod('s', 'SET_ITEM', 'coinsEnemy', FOLD_CE + RES_E);
-            storageMethod('s', 'SET_ITEM', encryptKey1, enc(FOLD_CE + RES_E));
+            storageMethod('s', 'SET_ITEM', encryptKey1, enc(FOLD_CE + RES_E)); // coinsEnemy
 
-            storageMethod('s', 'SET_ITEM', 'coinsPlayer', FOLD_CP + FOLD_CPEB);
+            // storageMethod('s', 'SET_ITEM', 'coinsPlayer', FOLD_CP + FOLD_CPEB);
+            storageMethod('s', 'SET_ITEM', encryptKey2, enc(FOLD_CP + FOLD_CPEB)); // coinsPlayer
+
             if (_num === 10) {
               bottomSheet.show(text.indianpocker.penalty, timeInterval_5000);
               PlayerBlockMoveEnemyBlock().then(() => {
@@ -132,8 +140,8 @@ export const SET_FOLD = {
         });
       })
       .catch((error) => {
-        console.log('error setFold');
-        return errorManagement({ errCase: 'errorComn' });
+        console.log('error setFold : ', error);
+        return errorManagement({ errCase: 'errorComn', errorDetails: error });
       });
   },
 };

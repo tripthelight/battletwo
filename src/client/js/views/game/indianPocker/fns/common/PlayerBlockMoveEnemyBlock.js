@@ -7,9 +7,17 @@ import { getStyle } from '@/client/js/functions/comnExport';
 
 export default () => {
   return new Promise((resolve, reject) => {
-    const COINS_PLAYER = window.sessionStorage.coinsPlayer;
-    if (!COINS_PLAYER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'fold 버튼 페널티 시 coinsPlayer 세션이 없습니다' });
-    if (Number(COINS_PLAYER) === 0) return resolve('nextRound'); // 다음 함수 실행
+    // const COINS_PLAYER = window.sessionStorage.coinsPlayer;
+    // if (!COINS_PLAYER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'fold 버튼 페널티 시 coinsPlayer 세션이 없습니다' });
+    const encryptKey1_1 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer
+    const encryptVal1_1 = window.sessionStorage.getItem(encryptKey1_1);
+    if (encryptVal1_1 === null) return errorManagement({ errCase: 'sessionStorageLoss', message: 'fold 버튼 페널티 시 coinsPlayer 세션이 없습니다' });
+
+    // if (Number(COINS_PLAYER) === 0) return resolve('nextRound'); // 다음 함수 실행
+    const decryptVal1_1 = dec(encryptVal1_1); // coinsPlayer value number
+    if (Number(decryptVal1_1) === 0) return resolve('nextRound'); // 다음 함수 실행
+
+
     const COINS_PLAYER_EL = document.querySelector('.coins-player');
     if (!COINS_PLAYER_EL) return errorManagement({ errCase: 'elementLoss', message: 'fold 버튼 페널티 시 .coins-player 엘리먼트가 없습니다' });
     const PLAYER_COINS = COINS_PLAYER_EL.querySelectorAll('li');
@@ -17,16 +25,19 @@ export default () => {
 
     // const COINS_ENEMY = window.sessionStorage.coinsEnemy;
     // if (!COINS_ENEMY) return errorManagement({ errCase: 'sessionStorageLoss', message: 'fold 버튼 페널티 시 coinsEnemy 세션이 없습니다' });
-    const encryptKey2 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
-    const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
-    if (encryptVal2 === null) return errorManagement({ errCase: 'sessionStorageLoss', message: 'fold 버튼 페널티 시 coinsEnemy 세션이 없습니다' });
+    const encryptKey2_1 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
+    const encryptVal2_1 = window.sessionStorage.getItem(encryptKey2_1);
+    if (encryptVal2_1 === null) return errorManagement({ errCase: 'sessionStorageLoss', message: 'fold 버튼 페널티 시 coinsEnemy 세션이 없습니다' });
 
     const BETTING_ZONE = document.querySelector('.betting-zone');
     if (!BETTING_ZONE) return errorManagement({ errCase: 'elementLoss', message: 'fold 버튼 페널티 시 .betting-zone 엘리먼트가 없습니다' });
     const COINS_ENEMY_EL = document.querySelector('.coins-enemy');
     if (!COINS_ENEMY_EL) return errorManagement({ errCase: 'elementLoss', message: 'fold 버튼 페널티 시 .coins-enemy 엘리먼트가 없습니다' });
     const ENEMY_COINS = COINS_ENEMY_EL.querySelectorAll('li');
-    const PENALTY_COINS = Number(COINS_PLAYER) >= 10 ? 10 : Number(COINS_PLAYER);
+
+    // const PENALTY_COINS = Number(COINS_PLAYER) >= 10 ? 10 : Number(COINS_PLAYER);
+    const PENALTY_COINS = Number(decryptVal1_1) >= 10 ? 10 : Number(decryptVal1_1);
+
     const LAST_ENEMY_EL = ENEMY_COINS.length > 0 ? ENEMY_COINS[ENEMY_COINS.length - 1] : 0;
     const PPL = getStyle(COINS_PLAYER_EL, 'padding-left');
     const EPB = getStyle(COINS_ENEMY_EL, 'padding-bottom');
@@ -34,7 +45,8 @@ export default () => {
     let ch = ENEMY_COINS[0] ? ENEMY_COINS[0].getBoundingClientRect().height : PLAYER_COINS[0] ? PLAYER_COINS[0].getBoundingClientRect().height : 0;
     let lastOsLeft = LAST_ENEMY_EL === 0 ? 0 : LAST_ENEMY_EL.offsetLeft;
     let basicTop = Number(BETTING_ZONE.clientHeight);
-    let playerIdx = Number(COINS_PLAYER) - 1;
+    // let playerIdx = Number(COINS_PLAYER) - 1;
+    let playerIdx = Number(decryptVal1_1) - 1;
     let xIndex = 1;
     let yIndex = 0;
     let moves = [];
@@ -66,17 +78,25 @@ export default () => {
       mIdx = mIdx + 1;
     }
     setTimeout(() => {
-      const decryptVal2 = dec(encryptVal2); // coinsEnemy value number
+      const encryptKey1_2 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer
+      const encryptVal1_2 = window.sessionStorage.getItem(encryptKey1_2);
+      const decryptVal1_2 = dec(encryptVal1_2); // coinsPlayer value number
 
-      const P_RESULT = Number(window.sessionStorage.coinsPlayer) - Number(PENALTY_COINS);
+      const encryptKey2_2 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
+      const encryptVal2_2 = window.sessionStorage.getItem(encryptKey2_2);
+      const decryptVal2_2 = dec(encryptVal2_2); // coinsEnemy value number
+
+      // const P_RESULT = Number(window.sessionStorage.coinsPlayer) - Number(PENALTY_COINS);
+      const P_RESULT = Number(decryptVal1_2) - Number(PENALTY_COINS);
 
       // const E_RESULT = Number(window.sessionStorage.coinsEnemy) + Number(PENALTY_COINS);
-      const E_RESULT = decryptVal2 + Number(PENALTY_COINS);
+      const E_RESULT = Number(decryptVal2_2) + Number(PENALTY_COINS);
 
-      storageMethod('s', 'SET_ITEM', 'coinsPlayer', P_RESULT);
+      // storageMethod('s', 'SET_ITEM', 'coinsPlayer', P_RESULT);
+      storageMethod('s', 'SET_ITEM', encryptKey1_2, enc(P_RESULT));
 
       // storageMethod('s', 'SET_ITEM', 'coinsEnemy', E_RESULT);
-      storageMethod('s', 'SET_ITEM', encryptKey2, enc(E_RESULT));
+      storageMethod('s', 'SET_ITEM', encryptKey2_2, enc(E_RESULT));
 
       setTimeout(resolve, timeInterval_1);
     }, timeInterval_1001);

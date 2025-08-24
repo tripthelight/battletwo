@@ -6,8 +6,12 @@ import { errorManagement } from '@/client/js/module/errorHandler/errorManagement
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 
 export default () => {
-  const COINS_PLAYER = window.sessionStorage.coinsPlayer;
-  if (!COINS_PLAYER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'gameover 체크에서 coinsPlayer 세션이 없습니다.' });
+  // const COINS_PLAYER = window.sessionStorage.coinsPlayer;
+  // if (!COINS_PLAYER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'gameover 체크에서 coinsPlayer 세션이 없습니다.' });
+  const encryptKey1 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer
+  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  if (encryptVal1 === null) return errorManagement({ errCase: 'sessionStorageLoss', message: 'gameover 체크에서 coinsPlayer 세션이 없습니다.' });
+  const decryptVal1 = dec(encryptVal1); // coinsEnemy value number
 
   // const COINS_ENEMY = window.sessionStorage.coinsEnemy;
   // if (!COINS_ENEMY) return errorManagement({ errCase: 'sessionStorageLoss', message: 'gameover 체크에서 coinsEnemy 세션이 없습니다.' });
@@ -17,10 +21,11 @@ export default () => {
   const decryptVal2 = dec(encryptVal2); // coinsEnemy value number
 
   setTimeout(() => {
-    if (Number(COINS_PLAYER) === 0) storageMethod('s', 'SET_ITEM', 'result', false);
+    // if (Number(COINS_PLAYER) === 0) storageMethod('s', 'SET_ITEM', 'result', false);
+    if (Number(decryptVal1) === 0) storageMethod('s', 'SET_ITEM', 'result', false);
 
     // if (Number(COINS_ENEMY) === 0) storageMethod('s', 'SET_ITEM', 'result', true);
-    if (decryptVal2 === 0) storageMethod('s', 'SET_ITEM', 'result', true);
+    if (Number(decryptVal2) === 0) storageMethod('s', 'SET_ITEM', 'result', true);
 
     setTimeout(() => {
       indianPockerGameState.gameOver();

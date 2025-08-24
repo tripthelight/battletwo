@@ -1,6 +1,6 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import booleanCheck from '@/client/js/functions/validation/booleanCheck';
-import { dec } from '@/client/js/module/crypts/obf8lower';
+import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import { GET_ROUND_END } from '@/client/js/views/game/indianPocker/fns/statePlaying/roundEnd/getRoundEnd';
 import { request } from '@/client/js/network/indianPocker/request';
 import storageMethod from '@/client/js/module/storage/storageMethod';
@@ -43,6 +43,8 @@ export default {
       const encryptVal7 = booleanCheck([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
       const encryptKey8 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
       const encryptVal8 = window.sessionStorage.getItem(encryptKey8);
+      const encryptKey9 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
+      const encryptVal9 = window.sessionStorage.getItem(encryptKey9);
 
       if (Number(P_NUM) > Number(E_NUM) || Number(P_NUM) < Number(E_NUM)) {
         const coinsEnemyBet = window.sessionStorage.coinsEnemyBet;
@@ -52,13 +54,14 @@ export default {
         const RESULT = Number(P_NUM) > Number(E_NUM) ? true : false;
 
         if (coinsEnemyBetRes && coinsPlayerBetRes) {
-          const COINS_PLAYER = Number(window.sessionStorage.coinsPlayer);
+          // const COINS_PLAYER = Number(window.sessionStorage.coinsPlayer);
+          const COINS_PLAYER = dec(encryptVal9); // coinsPlayer value number
           // const COINS_ENEMY = Number(window.sessionStorage.coinsEnemy);
           const COINS_ENEMY = dec(encryptVal8); // coinsEnemy value number
           const RES = Number(coinsEnemyBet) + Number(coinsPlayerBet);
           const C_RES = RESULT ? COINS_PLAYER + RES : COINS_ENEMY + RES;
           // storageMethod('s', 'SET_ITEM', RESULT ? 'coinsPlayer' : 'coinsEnemy', Number(C_RES));
-          storageMethod('s', 'SET_ITEM', RESULT ? 'coinsPlayer' : encryptKey8, Number(C_RES));
+          storageMethod('s', 'SET_ITEM', RESULT ? encryptKey9 : encryptKey8, enc(Number(C_RES)));
         }
 
         storageMethod('s', 'SET_ITEM', encryptKey7, RESULT); // betUser

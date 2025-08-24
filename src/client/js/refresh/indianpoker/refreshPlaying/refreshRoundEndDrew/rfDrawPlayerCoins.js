@@ -1,3 +1,5 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import { dec } from '@/client/js/module/crypts/obf8lower';
 import deviceStateStore from '@/client/store/deviceStateStore.js';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 
@@ -14,12 +16,17 @@ export default () => {
 
   // 명령
   setTimeout(() => {
+    const encryptKey = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
+    const encryptVal = window.sessionStorage.getItem(encryptKey);
+    const decryptVal = dec(encryptVal); // coinsPlayer value number
+
     let elem = document.createElement('ul');
     let li;
     elem.classList.add('coins');
     elem.classList.add('coins-player');
-    let coinCount = Number(window.sessionStorage.coinsPlayer);
-    for (let i = 0; i < coinCount; i++) {
+    // let coinCount = Number(window.sessionStorage.coinsPlayer);
+    // for (let i = 0; i < coinCount; i++) {
+    for (let i = 0; i < Number(decryptVal); i++) {
       li = document.createElement('li');
       const deviceState = deviceStateStore.getState().deviceStateState.deviceState;
       if (deviceState === 'pc') li.setAttribute('draggable', true);

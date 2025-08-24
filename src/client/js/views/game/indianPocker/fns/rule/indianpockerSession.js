@@ -22,7 +22,11 @@ export default (_name) => {
       const decryptVal4 = window.sessionStorage.getItem(encryptKey4);
       return decryptVal4;
     case 'CP':
-      return window.sessionStorage.coinsPlayer && Number(window.sessionStorage.coinsPlayer) > 0 ? Number(window.sessionStorage.coinsPlayer) : 0;
+      // return window.sessionStorage.coinsPlayer && Number(window.sessionStorage.coinsPlayer) > 0 ? Number(window.sessionStorage.coinsPlayer) : 0;
+      const encryptKey5 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
+      const encryptVal5 = window.sessionStorage.getItem(encryptKey5);
+      const decryptVal5 = encryptVal5 ? dec(encryptVal5) : 0; // coinsPlayer value number
+      return encryptVal5 !== null && decryptVal5 > 0 ? decryptVal5 : 0;
     case 'CPB':
       return window.sessionStorage.coinsPlayerBet && Number(window.sessionStorage.coinsPlayerBet) > 0 ? Number(window.sessionStorage.coinsPlayerBet) : 0;
     case 'CPEB':

@@ -18,14 +18,21 @@ export default (_state) => {
     COINS[i].remove();
   }
 
-  const PLAYER_COIN_LEN = window.sessionStorage.coinsPlayer;
-  if (!PLAYER_COIN_LEN || parseInt(PLAYER_COIN_LEN) < 1) return;
+  // const PLAYER_COIN_LEN = window.sessionStorage.coinsPlayer;
+  // if (!PLAYER_COIN_LEN || parseInt(PLAYER_COIN_LEN) < 1) return;
+  const encryptKey1 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer
+  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  if (encryptVal1 === null) return;
+  const decryptVal1 = dec(encryptVal1); // coinsPlayer value number
+  if (decryptVal1 < 1) return;
+
   let liEl = new Object();
   let minuteEl = new Object();
   let hourEl = new Object();
 
   // coins player 코인 다시 그리기
-  for (let i = 0; i < parseInt(PLAYER_COIN_LEN); i++) {
+  // for (let i = 0; i < parseInt(PLAYER_COIN_LEN); i++) {
+  for (let i = 0; i < parseInt(decryptVal1); i++) {
     liEl = document.createElement('li');
     minuteEl = document.createElement('span');
     hourEl = document.createElement('span');

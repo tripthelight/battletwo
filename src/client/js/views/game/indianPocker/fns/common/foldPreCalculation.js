@@ -1,5 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
-import { enc, dec } from '@/client/js/module/crypts/obf8lower';
+import { dec } from '@/client/js/module/crypts/obf8lower';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { request } from '@/client/js/network/indianPocker/request';
 
@@ -26,13 +26,18 @@ export default (myCardNum) => {
     const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
     const decryptVal1 = encryptVal1 ? dec(encryptVal1) : 0; // coinsEnemy value number
 
-    const COINS_PLAYER = window.sessionStorage.coinsPlayer;
+    // const COINS_PLAYER = window.sessionStorage.coinsPlayer;
+    const encryptKey2 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
+    const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+    const decryptVal2 = encryptVal2 ? dec(encryptVal2) : 0; // coinsPlayer value number
+
     const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
     const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet;
     const COINS_PLAYER_EXT_BET = window.sessionStorage.coinsPlayerExtBet;
     // const FOLD_CE = COINS_ENEMY && Number(COINS_ENEMY) >= 0 ? Number(COINS_ENEMY) : 0;
-    const FOLD_CE = encryptVal1 && decryptVal1 >= 0 ? decryptVal1 : 0;
-    const FOLD_CP = COINS_PLAYER && Number(COINS_PLAYER) >= 0 ? Number(COINS_PLAYER) : 0;
+    const FOLD_CE = encryptVal1 && Number(decryptVal1) >= 0 ? Number(decryptVal1) : 0;
+    // const FOLD_CP = COINS_PLAYER && Number(COINS_PLAYER) >= 0 ? Number(COINS_PLAYER) : 0;
+    const FOLD_CP = encryptVal2 && Number(decryptVal2) >= 0 ? Number(decryptVal2) : 0;
     const FOLD_CEB = COINS_ENEMY_BET && Number(COINS_ENEMY_BET) >= 0 ? Number(COINS_ENEMY_BET) : 0;
     const FOLD_CPB = COINS_PLAYER_BET && Number(COINS_PLAYER_BET) >= 0 ? Number(COINS_PLAYER_BET) : 0;
     const FOLD_CPEB = COINS_PLAYER_EXT_BET && Number(COINS_PLAYER_EXT_BET) >= 0 ? Number(COINS_PLAYER_EXT_BET) : 0;

@@ -1,3 +1,5 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import { dec } from '@/client/js/module/crypts/obf8lower';
 import booleanReturn from '@/client/js/functions/validation/booleanReturn';
 import deviceStateStore from '@/client/store/deviceStateStore';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
@@ -16,8 +18,8 @@ export default () => {
   // const BET_USER = window.sessionStorage.betUser;
   // if (!BET_USER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'betUser not found' });
   // const BET_STATE = BET_USER === 'true' ? true : false;
-  const BET_STATE = booleanReturn([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser - true or false or error
-  if (BET_STATE === '')  return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 betUser 세션이 없습니다.' });
+  const decryptVal1 = booleanReturn([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser - true or false or error
+  if (decryptVal1 === '')  return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 betUser 세션이 없습니다.' });
 
   // 명령
   setTimeout(() => {
@@ -28,9 +30,14 @@ export default () => {
     let hourEl = new Object();
     elem.classList.add('coins');
     elem.classList.add('coins-player');
-    let coinCount = Number(window.sessionStorage.coinsPlayer);
+    // let coinCount = Number(window.sessionStorage.coinsPlayer);
+    const encryptKey2 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
+    const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+    const decryptVal2 = dec(encryptVal2); // coinsPlayer value number
     // coinCount가 0일 수 있음
-    for (let i = 0; i < coinCount; i++) {
+    // for (let i = 0; i < coinCount; i++) {
+    // decryptVal2가 0일 수 있음
+    for (let i = 0; i < Number(decryptVal2); i++) {
       liEl = document.createElement('li');
       minuteEl = document.createElement('span');
       hourEl = document.createElement('span');
@@ -42,7 +49,7 @@ export default () => {
       if (deviceState === 'pc') liEl.setAttribute('draggable', true);
       elem.appendChild(liEl);
       // 내 차례면 player coin은 시간이 가고고, 내 차례가 아니면 player coin은 시간이 멈춤
-      BET_STATE ? animateClock(hourEl, minuteEl, false) : posClock(hourEl, minuteEl);
+      decryptVal1 ? animateClock(hourEl, minuteEl, false) : posClock(hourEl, minuteEl);
     }
     PLAYER_BLOCK.appendChild(elem);
 
