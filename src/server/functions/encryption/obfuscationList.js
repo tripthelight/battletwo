@@ -145,9 +145,9 @@ export const obfuscationList = {
       // s: sessionStorage keys
       BET_STATE: {
         k: 'FMPXWVSYKA', // [70, 77, 80, 88, 87, 86, 83, 89, 75, 65]
-      },
-      BASIC_BETTING: {
-        k: 'FTKWJCIMPA', // [70, 84, 75, 87, 74, 67, 73, 77, 80, 65]
+        v: {
+          basicBetting: 'FTKWJCIMPA', // [70, 84, 75, 87, 74, 67, 73, 77, 80, 65]
+        },
       },
       ROUND_END: {
         k: 'SNVODIGWRU', // [83, 78, 86, 79, 68, 73, 71, 87, 82, 85]
@@ -169,6 +169,9 @@ export const obfuscationList = {
       },
       COINS_PLAYER: {
         k: 'QCEDGMSZAJ', // [81, 67, 69, 68, 71, 77, 83, 90, 65, 74]
+      },
+      COINS_PLAYER_BET: {
+        k: 'XOVJHPGFEM', // [88, 79, 86, 74, 72, 80, 71, 70, 69, 77]
       },
       // e: sessionStorage keys
 

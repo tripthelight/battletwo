@@ -14,11 +14,17 @@ export default () => {
   const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
 
   const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet ?? 0;
-  const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet ?? 0;
+
+  // const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet ?? 0;
+  const encryptKey4 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]); // coinsPlayerBet
+  const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
+  const decryptVal4 = encryptVal4 !== null ? dec(encryptVal4) : 0; // coinsPlayerBet value number
+
   const PLAYER_COINS_BLOCK = document.querySelector('.coins-player');
   const PLAYER_COINS = PLAYER_COINS_BLOCK.querySelectorAll('li');
   const C_E_B = Number(COINS_ENEMY_BET);
-  const P_E_B = Number(COINS_PLAYER_BET);
+  // const P_E_B = Number(COINS_PLAYER_BET);
+  const P_E_B = Number(decryptVal4);
 
   // const STATE = BET_USER && BET_USER === 'true' && COINS_ENEMY && Number(COINS_ENEMY) === 0 && C_E_B === P_E_B;
   const STATE =

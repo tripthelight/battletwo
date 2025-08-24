@@ -1,5 +1,6 @@
 import findCharCode from '@/client/js/functions/findCharCode';
-import { enc } from '@/client/js/module/crypts/obf8lower';
+import { enc, dec } from '@/client/js/module/crypts/obf8lower';
+import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import { timeInterval_1, timeInterval_1000, timeInterval_2000, timeInterval_202, timeInterval_3201, timeInterval_3202, timeInterval_401, timeInterval_402 } from '@/client/js/functions/variable';
@@ -195,6 +196,8 @@ export const GET_ROUND_END = {
     const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
     const encryptKey4 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer
     const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
+    const encryptKey5 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]); // coinsPlayerBet
+    const encryptVal5 = window.sessionStorage.getItem(encryptKey5);
 
     // const BET_USER = window.sessionStorage.betUser;
     // if (!BET_USER) {
@@ -214,11 +217,14 @@ export const GET_ROUND_END = {
       console.log('error - getRoundEnd.js - !COINS_ENEMY');
       errorManagement({ errCase: 'errorComn' });
     }
-    const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet;
-    if (!COINS_PLAYER_BET) {
+
+    // const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet;
+    // if (!COINS_PLAYER_BET) {
+    if (encryptVal5 === null) {
       console.log('error - getRoundEnd.js - !COINS_PLAYER_BET');
       errorManagement({ errCase: 'errorComn' });
     }
+
     const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
     if (!COINS_ENEMY_BET) {
       console.log('error - getRoundEnd.js - !COINS_ENEMY_BET');
@@ -239,7 +245,13 @@ export const GET_ROUND_END = {
     const PNUM = Number(COINS_PLAYER_BET);
     const ENUM = Number(COINS_ENEMY_BET);
     const RESULT = Number(PNUM) + Number(ENUM);
-    if (_result !== 'drew') storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', 0);
+
+    // if (_result !== 'drew') storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', 0);
+    if (_result !== 'drew') storageMethod('s', 'SET_ITEM',
+      encryptKey5,
+      enc(dec(encryptVal3) + encryptNumOfStr(new TextDecoder().decode(new Uint8Array([119, 101, 119, 119])))) // 'weww' : 0000
+    );
+
     if (_result !== 'drew') storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', 0);
     storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 0);
     storageMethod('s', 'SET_ITEM', 'coinsEnemyExtBet', 0);

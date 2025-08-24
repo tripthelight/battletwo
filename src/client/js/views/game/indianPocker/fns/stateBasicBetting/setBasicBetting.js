@@ -1,6 +1,7 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import { dec } from '@/client/js/module/crypts/obf8lower';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
-import findCharCode from '@/client/js/functions/findCharCode';
 import removeCoinActive from '@/client/js/views/game/indianPocker/fns/common/removeCoinActive';
 import playerCoinsData from '@/client/js/views/game/indianPocker/fns/common/playerCoinsData';
 import STATE_BASIC_BET from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/init';
@@ -24,10 +25,18 @@ export const SET_BASIC_BETTING = {
     // if (BASIC_BET !== 'basicBetting') return false;
     const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
     const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
-    const encryptKey2 = findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
-    if (encryptVal1 !== encryptKey2) return false;
-    const PLAY_CHECK = window.sessionStorage.coinsPlayerBet;
-    if (!PLAY_CHECK || Number(PLAY_CHECK) !== 1) return false;
+    const decryptVal1 = findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
+    if (encryptVal1 !== decryptVal1) return false;
+
+
+    // const PLAY_CHECK = window.sessionStorage.coinsPlayerBet;
+    // if (!PLAY_CHECK || Number(PLAY_CHECK) !== 1) return false;
+    const encryptKey2 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]); // coinsPlayerBet
+    const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+    if (encryptVal2 === null) return false;
+    const decryptVal2 = dec(encryptVal2); // coinsPlayerBet value number
+    if (Number(decryptVal2) !== 1) return false;
+
     const ENEMY_CHECK = window.sessionStorage.coinsEnemyBet;
     if (!ENEMY_CHECK || Number(ENEMY_CHECK) !== 1) return false;
     STATE_BASIC_BET.nextStep();
@@ -35,8 +44,8 @@ export const SET_BASIC_BETTING = {
   enemyBetStateCheck: () => {
     const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
     const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
-    const encryptKey2 = findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
-    if (encryptVal1 === encryptKey2) {
+    const decryptVal1 = findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
+    if (encryptVal1 === decryptVal1) {
       console.log('기본 배팅 진입');
       if (window.sessionStorage.basicBettingState === 'true') {
         console.log('내가 먼저 배팅하고 상대의 배팅 코인을 받음');
@@ -55,10 +64,10 @@ export const SET_BASIC_BETTING = {
 
     const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
     const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
-    const encryptKey2 = findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
+    const decryptVal1 = findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
 
     // if (window.sessionStorage.betState === 'basicBetting') {
-    if (encryptVal1 === encryptKey2) {
+    if (encryptVal1 === decryptVal1) {
       if (COIN_BET_ARR.length > 0) {
         for (let i = 0; i < COIN_BET_ARR.length; i++) {
           COIN_BET_ARR[i].betState = 'end';

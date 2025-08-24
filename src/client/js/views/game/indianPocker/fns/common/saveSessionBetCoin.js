@@ -29,14 +29,18 @@ export default (data) => {
   const decryptVal2_1 = dec(encryptVal2); // coinsPlayer value number
   const decryptVal2_2 = Number(decryptVal2_1) - 1;
   const decryptVal2_3 = enc(decryptVal2_2);
-
+  const encryptKey3 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]);  // coinsPlayerBet
 
   storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(arr));
 
   // storageMethod('s', 'SET_ITEM', 'coinsPlayer', PLAYER_COINS);
   storageMethod('s', 'SET_ITEM', encryptKey2, decryptVal2_3);
 
-  storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', JSON.parse(window.sessionStorage.betCoin).filter((coins) => coins.host === 'player').length);
+  // storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', JSON.parse(window.sessionStorage.betCoin).filter((coins) => coins.host === 'player').length);
+  storageMethod('s', 'SET_ITEM',
+    encryptKey3,
+    enc(JSON.parse(window.sessionStorage.betCoin).filter((coins) => coins.host === 'player').length)
+  );
 
   const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
   const encryptVal1 = window.sessionStorage.getItem(encryptKey1);

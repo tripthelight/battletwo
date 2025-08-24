@@ -29,16 +29,27 @@ export default () => {
           // const COINS_PLAYER_RES = window.sessionStorage.coinsPlayer;
           // const CP_RES = Number(COINS_PLAYER_RES) - _aiCoinsRes.ep + _aiCoinsRes.rc;
           const CP_RES = Number(decryptVal1) - _aiCoinsRes.ep + _aiCoinsRes.rc;
-          const COINS_PLAYER_BET_RES = window.sessionStorage.coinsPlayerBet;
-          const CPB_RES = COINS_PLAYER_BET_RES && Number(COINS_PLAYER_BET_RES) > 0 ? Number(COINS_PLAYER_BET_RES) : 0;
+
+          // const COINS_PLAYER_BET_RES = window.sessionStorage.coinsPlayerBet;
+          const encryptKey2 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]);  // coinsPlayerBet
+          const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+          const decryptVal2_1 = encryptVal2 ? dec(encryptVal2) : 0; // coinsPlayerBet value number
+
+          // const CPB_RES = COINS_PLAYER_BET_RES && Number(COINS_PLAYER_BET_RES) > 0 ? Number(COINS_PLAYER_BET_RES) : 0;
+          const CPB_RES = encryptVal2 !== null && Number(decryptVal2_1) > 0 ? Number(decryptVal2_1) : 0;
 
           // storageMethod('s', 'SET_ITEM', 'coinsPlayer', Number(CP_RES));
-          storageMethod('s', 'SET_ITEM', encryptKey1, enc(Number(CP_RES)));
+          storageMethod('s', 'SET_ITEM', encryptKey1, enc(Number(CP_RES))); // coinsPlayer
 
-          storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', Number(CPB_RES) + _aiCoinsRes.ep - _aiCoinsRes.rc);
+          const decryptVal2_2 = Number(CPB_RES) + _aiCoinsRes.ep - _aiCoinsRes.rc;
+          // storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', Number(CPB_RES) + _aiCoinsRes.ep - _aiCoinsRes.rc);
+          storageMethod('s', 'SET_ITEM', encryptKey2, enc(decryptVal2_2)); // coinsPlayerBet
+
           // storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', '_aiCoinsRes.epeb');
           storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', _aiCoinsRes.epeb);
-          if (Number(window.sessionStorage.coinsPlayerBet) === Number(window.sessionStorage.coinsEnemyBet)) {
+
+          // if (Number(window.sessionStorage.coinsPlayerBet) === Number(window.sessionStorage.coinsEnemyBet)) {
+          if (Number(decryptVal2_2) === Number(window.sessionStorage.coinsEnemyBet)) {
             // ENEMY 올인을 받고, PLAYER도 올인
             // RULES.CALL();
             BTN_STATE.HANDLER('call');

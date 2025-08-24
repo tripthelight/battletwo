@@ -32,7 +32,7 @@ export default (reloadState) => {
       // const D_ARR = ['coinsEnemyBet', 'coinsPlayerBet', 'coinsEnemyExtBet', 'coinsPlayerExtBet', 'betCoin', 'betCoinPos', 'extFirstBet', 'drewReady', 'drewState', 'dropState', 'coinsEnemyLocalFold', 'coinsPlayerLocalFold', 'coinsEnemyRemoteFold', 'coinsPlayerRemoteFold', 'foldUser', 'foldState'];
       const D_ARR = [
         'coinsEnemyBet',
-        'coinsPlayerBet',
+        findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]), // coinsPlayerBet
         'coinsEnemyExtBet',
         'coinsPlayerExtBet',
         'betCoin',

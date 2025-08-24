@@ -1,6 +1,7 @@
 import findCharCode from '@/client/js/functions/findCharCode';
-import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
+import booleanCheck from '@/client/js/functions/validation/booleanCheck';
+import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import { GET_ROUND_END } from '@/client/js/views/game/indianPocker/fns/statePlaying/roundEnd/getRoundEnd';
 import { request } from '@/client/js/network/indianPocker/request';
 import storageMethod from '@/client/js/module/storage/storageMethod';
@@ -48,17 +49,29 @@ export default {
 
       if (Number(P_NUM) > Number(E_NUM) || Number(P_NUM) < Number(E_NUM)) {
         const coinsEnemyBet = window.sessionStorage.coinsEnemyBet;
-        const coinsPlayerBet = window.sessionStorage.coinsPlayerBet;
+
+        // const coinsPlayerBet = window.sessionStorage.coinsPlayerBet;
+        const encryptKey2 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]); // coinsPlayerBet
+        const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+        const decryptVal2_1 = encryptVal2 ? dec(encryptVal2) : 0; // coinsPlayerBet value number
+
         const coinsEnemyBetRes = coinsEnemyBet && Number(coinsEnemyBet) > 0;
-        const coinsPlayerBetRes = coinsPlayerBet && Number(coinsPlayerBet) > 0;
+
+        // const coinsPlayerBetRes = coinsPlayerBet && Number(coinsPlayerBet) > 0;
+        const decryptVal2_2 = encryptVal2 !== null && Number(decryptVal2_1) > 0;
+
         const RESULT = Number(P_NUM) > Number(E_NUM) ? true : false;
 
-        if (coinsEnemyBetRes && coinsPlayerBetRes) {
+        // if (coinsEnemyBetRes && coinsPlayerBetRes) {
+        if (coinsEnemyBetRes && decryptVal2_2) {
           // const COINS_PLAYER = Number(window.sessionStorage.coinsPlayer);
           const COINS_PLAYER = dec(encryptVal9); // coinsPlayer value number
           // const COINS_ENEMY = Number(window.sessionStorage.coinsEnemy);
           const COINS_ENEMY = dec(encryptVal8); // coinsEnemy value number
-          const RES = Number(coinsEnemyBet) + Number(coinsPlayerBet);
+
+          // const RES = Number(coinsEnemyBet) + Number(coinsPlayerBet);
+          const RES = Number(coinsEnemyBet) + Number(decryptVal2_1);
+
           const C_RES = RESULT ? COINS_PLAYER + RES : COINS_ENEMY + RES;
           // storageMethod('s', 'SET_ITEM', RESULT ? 'coinsPlayer' : 'coinsEnemy', Number(C_RES));
           storageMethod('s', 'SET_ITEM', RESULT ? encryptKey9 : encryptKey8, enc(Number(C_RES)));
@@ -67,7 +80,7 @@ export default {
         storageMethod('s', 'SET_ITEM', encryptKey7, RESULT); // betUser
         storageMethod('s', 'SET_ITEM', 'basicBettingState', false);
         storageMethod('s', 'SET_ITEM', encryptKey6, encryptVal_2); // extFirstBet, false
-        storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', 0);
+        storageMethod('s', 'SET_ITEM', encryptKey2, encryptNumOfStr(new TextDecoder().decode(new Uint8Array([119, 101, 101, 101])))); // coinsPlayerBet, 0
         storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', 0);
         storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 0);
         storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', 0);

@@ -26,7 +26,7 @@ export default () => {
       'cardNum',
       findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]), // betState
       'gameReady',
-      'coinsPlayerBet',
+      findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]), // coinsPlayerBet
       'coinsEnemyExtBet',
       'betCoin',
       'coinsPlayerExtBet',

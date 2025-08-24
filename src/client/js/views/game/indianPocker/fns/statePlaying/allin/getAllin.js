@@ -31,8 +31,14 @@ export const GET_ALLIN = {
     setTimeout(() => {
       EnemyBlockMoveBattingZone('allin').then(() => {
         const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
-        const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet;
-        if (Number(COINS_ENEMY_BET) === Number(COINS_PLAYER_BET)) {
+
+        // const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet;
+        const encryptKey8 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]); // coinsPlayerBet
+        const encryptVal8 = window.sessionStorage.getItem(encryptKey8);
+        const decryptVal8 = dec(encryptVal8); // coinsPlayerBet value number
+
+        // if (Number(COINS_ENEMY_BET) === Number(COINS_PLAYER_BET)) {
+        if (Number(COINS_ENEMY_BET) === Number(decryptVal8)) {
           // PLAYER 올인을 받고 ENEMY 올인 함
           // RULES.CALL();
           BTN_STATE.HANDLER('call');

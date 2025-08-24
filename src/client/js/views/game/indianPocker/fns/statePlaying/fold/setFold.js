@@ -35,7 +35,7 @@ export const SET_FOLD = {
     // const D_ARR = ['coinsEnemyBet', 'coinsPlayerBet', 'coinsEnemyExtBet', 'coinsPlayerExtBet', 'betCoin', 'betCoinPos', 'extFirstBet', 'drewReady', 'drewState'];
     const D_ARR = [
       'coinsEnemyBet',
-      'coinsPlayerBet',
+      findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]), // coinsPlayerBet
       'coinsEnemyExtBet',
       'coinsPlayerExtBet',
       'betCoin',
@@ -100,15 +100,20 @@ export const SET_FOLD = {
             // const COINS_ENEMY = window.sessionStorage.coinsEnemy;
             const encryptKey1 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
             const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
-            const decryptVal1 = encryptVal1 ? dec(encryptVal1) : 0; // coinsEnemy value number
+            const decryptVal1 = encryptVal1 !== null ? dec(encryptVal1) : 0; // coinsEnemy value number
 
             // const COINS_PLAYER = window.sessionStorage.coinsPlayer;
             const encryptKey2 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer
             const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
-            const decryptVal2 = encryptVal2 ? dec(encryptVal2) : 0; // coinsPlayer value number
+            const decryptVal2 = encryptVal2 !== null ? dec(encryptVal2) : 0; // coinsPlayer value number
 
             const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
-            const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet;
+
+            // const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet;
+            const encryptKey4 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]); // coinsPlayerBet
+            const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
+            const decryptVal4 = encryptVal4 !== null ? dec(encryptVal4) : 0; // coinsPlayerBet value number
+
             const COINS_PLAYER_EXT_BET = window.sessionStorage.coinsPlayerExtBet;
 
             // const FOLD_CE = COINS_ENEMY && Number(COINS_ENEMY) >= 0 ? Number(COINS_ENEMY) : 0;
@@ -118,7 +123,10 @@ export const SET_FOLD = {
             const FOLD_CP = encryptVal2 !== null && Number(decryptVal2) >= 0 ? Number(decryptVal2) : 0;
 
             const FOLD_CEB = COINS_ENEMY_BET && Number(COINS_ENEMY_BET) >= 0 ? Number(COINS_ENEMY_BET) : 0;
-            const FOLD_CPB = COINS_PLAYER_BET && Number(COINS_PLAYER_BET) >= 0 ? Number(COINS_PLAYER_BET) : 0;
+
+            // const FOLD_CPB = COINS_PLAYER_BET && Number(COINS_PLAYER_BET) >= 0 ? Number(COINS_PLAYER_BET) : 0;
+            const FOLD_CPB = encryptVal4 !== null && Number(decryptVal4) >= 0 ? Number(decryptVal4) : 0;
+
             const FOLD_CPEB = COINS_PLAYER_EXT_BET && Number(COINS_PLAYER_EXT_BET) >= 0 ? Number(COINS_PLAYER_EXT_BET) : 0;
             const RES_E = Number(FOLD_CEB + FOLD_CPB - FOLD_CPEB);
 

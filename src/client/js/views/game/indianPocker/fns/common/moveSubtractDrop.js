@@ -1,5 +1,6 @@
 import findCharCode from '@/client/js/functions/findCharCode';
-import { enc } from '@/client/js/module/crypts/obf8lower';
+import { enc, dec } from '@/client/js/module/crypts/obf8lower';
+import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import deviceStateStore from '@/client/store/deviceStateStore';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
@@ -61,21 +62,27 @@ export default (event) => {
   // 칩 빼기
   // const PLAYER_COINS = window.sessionStorage.coinsPlayer;
   // if (!PLAYER_COINS) return errorManagement({ errCase: 'errorComn', message: 'coinsPlayer 세션을 찾을 수 없습니다.' });
+  // const PLAYER_COINS_NUM = Number(PLAYER_COINS);
+  // storageMethod('s', 'SET_ITEM', 'coinsPlayer', PLAYER_COINS_NUM + 1);
   const encryptKey4 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
   const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
   if (encryptVal4 === null) return errorManagement({ errCase: 'errorComn', message: 'coinsPlayer 세션을 찾을 수 없습니다.' });
+  storageMethod('s', 'SET_ITEM',
+    encryptKey4,
+    enc(dec(encryptVal4) + encryptNumOfStr(new TextDecoder().decode(new Uint8Array([101, 101, 119, 114])))) // 'eewr' : 0001
+  );
 
-  // const PLAYER_COINS_NUM = Number(PLAYER_COINS);
-  const decryptVal4 = dec(encryptVal4); // coinsPlayer value number
-
-  // storageMethod('s', 'SET_ITEM', 'coinsPlayer', PLAYER_COINS_NUM + 1);
-  storageMethod('s', 'SET_ITEM', encryptKey4, enc(decryptVal4 + 1));
-
-
-  const PLAYER_COINS_BET = window.sessionStorage.coinsPlayerBet;
-  if (!PLAYER_COINS_BET) return errorManagement({ errCase: 'errorComn', message: 'coinsPlayerBet 세션을 찾을 수 없습니다.' });
-  const PLAYER_COINS_BET_NUM = Number(PLAYER_COINS_BET);
-  storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', PLAYER_COINS_BET_NUM - 1);
+  // const PLAYER_COINS_BET = window.sessionStorage.coinsPlayerBet;
+  // if (!PLAYER_COINS_BET) return errorManagement({ errCase: 'errorComn', message: 'coinsPlayerBet 세션을 찾을 수 없습니다.' });
+  // const PLAYER_COINS_BET_NUM = Number(PLAYER_COINS_BET);
+  // storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', PLAYER_COINS_BET_NUM - 1);
+  const encryptKey5 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]);  // coinsPlayerBet
+  const encryptVal5 = window.sessionStorage.getItem(encryptKey5);
+  if (encryptVal5 === null) return errorManagement({ errCase: 'errorComn', message: 'coinsPlayerBet 세션을 찾을 수 없습니다.' });
+  storageMethod('s', 'SET_ITEM',
+    encryptKey5,
+    enc(dec(encryptVal5) - encryptNumOfStr(new TextDecoder().decode(new Uint8Array([119, 119, 119, 98])))) // 'wwwb' : 0001
+  );
 
   const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
   const encryptVal1 = window.sessionStorage.getItem(encryptKey1);

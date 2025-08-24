@@ -32,14 +32,25 @@ export default (myCardNum) => {
     const decryptVal2 = encryptVal2 ? dec(encryptVal2) : 0; // coinsPlayer value number
 
     const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
-    const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet;
+
+    // const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet;
+    const encryptKey4 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]); // coinsPlayerBet
+    const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
+    const decryptVal4 = encryptVal4 ? dec(encryptVal4) : 0; // coinsPlayerBet value number
+
     const COINS_PLAYER_EXT_BET = window.sessionStorage.coinsPlayerExtBet;
+
     // const FOLD_CE = COINS_ENEMY && Number(COINS_ENEMY) >= 0 ? Number(COINS_ENEMY) : 0;
-    const FOLD_CE = encryptVal1 && Number(decryptVal1) >= 0 ? Number(decryptVal1) : 0;
+    const FOLD_CE = encryptVal1 !== null && Number(decryptVal1) >= 0 ? Number(decryptVal1) : 0;
+
     // const FOLD_CP = COINS_PLAYER && Number(COINS_PLAYER) >= 0 ? Number(COINS_PLAYER) : 0;
-    const FOLD_CP = encryptVal2 && Number(decryptVal2) >= 0 ? Number(decryptVal2) : 0;
+    const FOLD_CP = encryptVal2 !== null && Number(decryptVal2) >= 0 ? Number(decryptVal2) : 0;
+
     const FOLD_CEB = COINS_ENEMY_BET && Number(COINS_ENEMY_BET) >= 0 ? Number(COINS_ENEMY_BET) : 0;
-    const FOLD_CPB = COINS_PLAYER_BET && Number(COINS_PLAYER_BET) >= 0 ? Number(COINS_PLAYER_BET) : 0;
+
+    // const FOLD_CPB = COINS_PLAYER_BET && Number(COINS_PLAYER_BET) >= 0 ? Number(COINS_PLAYER_BET) : 0;
+    const FOLD_CPB = encryptVal4 !== null && Number(decryptVal4) >= 0 ? Number(decryptVal4) : 0;
+
     const FOLD_CPEB = COINS_PLAYER_EXT_BET && Number(COINS_PLAYER_EXT_BET) >= 0 ? Number(COINS_PLAYER_EXT_BET) : 0;
     const RES_E = Number(FOLD_CEB + FOLD_CPB - FOLD_CPEB);
 

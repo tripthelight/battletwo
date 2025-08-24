@@ -1,5 +1,6 @@
 import findCharCode from '@/client/js/functions/findCharCode';
-import { enc } from '@/client/js/module/crypts/obf8lower';
+import { enc, dec } from '@/client/js/module/crypts/obf8lower';
+import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import deviceStateStore from '@/client/store/deviceStateStore';
 import { timeInterval_1 } from '@/client/js/functions/variable';
@@ -87,20 +88,27 @@ export default (e) => {
   // 칩 빼기
   // const PLAYER_COINS = window.sessionStorage.coinsPlayer;
   // if (!PLAYER_COINS) return errorManagement({ errCase: 'errorComn', message: 'coinsPlayer 세션을 찾을 수 없습니다.' });
+  // const PLAYER_COINS_NUM = Number(PLAYER_COINS);
+  // storageMethod('s', 'SET_ITEM', 'coinsPlayer', PLAYER_COINS_NUM + 1);
   const encryptKey3 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
   const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
   if (encryptVal3 === null) return errorManagement({ errCase: 'errorComn', message: 'coinsPlayer 세션을 찾을 수 없습니다.' });
+  storageMethod('s', 'SET_ITEM',
+    encryptKey3,
+    enc(dec(encryptVal3) + encryptNumOfStr(new TextDecoder().decode(new Uint8Array([119, 101, 101, 98])))) // 'weeb' : 0001
+  );
 
-  // const PLAYER_COINS_NUM = Number(PLAYER_COINS);
-  const decryptVal3 = dec(encryptVal3); // coinsPlayer value number
-
-  // storageMethod('s', 'SET_ITEM', 'coinsPlayer', PLAYER_COINS_NUM + 1);
-  storageMethod('s', 'SET_ITEM', 'coinsPlayer', enc(decryptVal3 + 1));
-
-  const PLAYER_COINS_BET = window.sessionStorage.coinsPlayerBet;
-  if (!PLAYER_COINS_BET) return errorManagement({ errCase: 'errorComn', message: 'coinsPlayerBet 세션을 찾을 수 없습니다.' });
-  const PLAYER_COINS_BET_NUM = Number(PLAYER_COINS_BET);
-  storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', PLAYER_COINS_BET_NUM - 1);
+  // const PLAYER_COINS_BET = window.sessionStorage.coinsPlayerBet;
+  // if (!PLAYER_COINS_BET) return errorManagement({ errCase: 'errorComn', message: 'coinsPlayerBet 세션을 찾을 수 없습니다.' });
+  // const PLAYER_COINS_BET_NUM = Number(PLAYER_COINS_BET);
+  // storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', PLAYER_COINS_BET_NUM - 1);
+  const encryptKey4 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]);  // coinsPlayerBet
+  const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
+  if (encryptVal4 === null) return errorManagement({ errCase: 'errorComn', message: 'coinsPlayerBet 세션을 찾을 수 없습니다.' });
+  storageMethod('s', 'SET_ITEM',
+    encryptKey4,
+    enc(dec(encryptVal4) - encryptNumOfStr(new TextDecoder().decode(new Uint8Array([101, 101, 101, 114])))) // 'eeer' : 0001
+  );
 
   console.log('모바일 칩빼기 >>>>>>>>>>> ');
 

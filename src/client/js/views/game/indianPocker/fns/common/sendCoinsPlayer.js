@@ -23,7 +23,11 @@ export default () => {
   // const coinCount = dec(window.sessionStorage.getItem('coinsPlayer'));
   const coinCount = dec(encryptVal4); // coinsPlayer value number
 
-  const betCount = Number(window.sessionStorage.getItem('coinsPlayerBet'));
+  const encryptKey5 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]); // coinsPlayerBet
+  const encryptVal5 = window.sessionStorage.getItem(encryptKey5);
+  // const betCount = Number(window.sessionStorage.getItem('coinsPlayerBet'));
+  const betCount = dec(encryptVal5);;
+
   const originCount = coinCount + betCount;
   request('basicBetting', { coinCount, betCount, originCount });
 
