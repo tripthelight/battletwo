@@ -26,7 +26,7 @@ export default async (_data) => {
     const encryptKey3 = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
     const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
     if (encryptVal3 !== '' && X.dec(encryptVal3)) { // tieWait === true
-      request('requestCompairChoiceCard', { remoteStorage: params, tieWait: true });
+      request('responseCompairChoiceCard', { result: true, tieWaitConfirmed: true });
       return;
     };
 
