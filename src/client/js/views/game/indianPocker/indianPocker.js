@@ -75,12 +75,20 @@ document.onreadystatechange = async () => {
       indianPockerGameState.choiceCard();
     };
 
-    const t1 = X.enc(decodeTF('smra'));
-    console.log('encrypt true ::::: ', t1);
-    console.log('decrypt true ::::: ', X.dec(t1));
-    const f1 = X.enc(decodeTF('joben'));
-    console.log('encrypt false ::::: ', f1);
-    console.log('decrypt false ::::: ', X.dec(f1));
+    console.log('────────────────');
+    console.log('betUser :::::::: ', findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]));
+    console.log('betUserFirst ::: ', findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]));
+    console.log('true ::::::::::: ', findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]));
+    console.log('false :::::::::: ', findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]));
+    console.log('────────────────');
+
+
+    // const t1 = X.enc(decodeTF('smra'));
+    // console.log('encrypt true ::::: ', t1);
+    // console.log('decrypt true ::::: ', X.dec(t1));
+    // const f1 = X.enc(decodeTF('joben'));
+    // console.log('encrypt false ::::: ', f1);
+    // console.log('decrypt false ::::: ', X.dec(f1));
 
   } catch (error) {
     console.log('error indianPocker.js >>>>>>>>>>>> ');

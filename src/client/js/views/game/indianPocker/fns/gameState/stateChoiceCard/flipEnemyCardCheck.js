@@ -10,6 +10,10 @@ export default (_eNum, _pNum) => {
     const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
     const encryptKey2 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
 
+    console.log('true --------------- ', encryptVal_1);
+    console.log('false -------------- ', encryptVal_2);
+
+
     if (_eNum > _pNum) {
       drawResultCardInfo('end');
       storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_2);
