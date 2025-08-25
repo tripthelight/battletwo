@@ -118,22 +118,22 @@ export const obfuscationList = {
       LI_INDEX_ENEMY: {
         k: 'MCEIHKDRGP', // [77, 67, 69, 73, 72, 75, 68, 82, 71, 80]
       },
-      ENEMY_CARD_CHOICE_READY: {
+      ENEMY_CARD_CHOICE_READY: { // true/false
         k: 'DGWMUBATXE', // [68, 71, 87, 77, 85, 66, 65, 84, 88, 69]
       },
-      BET_USER: {
+      BET_USER: { // true/false/''
         k: 'HFUCSDYRMX', // [72, 70, 85, 67, 83, 68, 89, 82, 77, 88]
       },
-      BET_USER_FIRST: {
+      BET_USER_FIRST: { // true/false/''
         k: 'ZYPFDTAMJN', // [90, 89, 80, 70, 68, 84, 65, 77, 74, 78]
       },
-      MY_NEXT_STEP_STATE: {
+      MY_NEXT_STEP_STATE: { // true/false
         k: 'RICMUXFSGW', // [82, 73, 67, 77, 85, 88, 70, 83, 71, 87]
       },
-      NEXT_STEP_CHOICE_CARD: {
+      NEXT_STEP_CHOICE_CARD: { // true/false
         k: 'DOJURSQVHM', // [68, 79, 74, 85, 82, 83, 81, 86, 72, 77]
       },
-      TIE_WAIT: {
+      TIE_WAIT: { // true/false
         k: 'OXMTWVSEYI', // [79, 88, 77, 84, 87, 86, 83, 69, 89, 73]
       },
       // e: sessionStorage keys

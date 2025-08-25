@@ -1,4 +1,7 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import textDE from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import pickCardInit from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/pickCardInit';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
@@ -26,9 +29,11 @@ export default () => {
         await pickCardInit(event);
 
         invalidateCardClick();
-        const encryptKey = findCharCode([68, 71, 87, 77, 85, 66, 65, 84, 88, 69]); // enemyCardChoiceReady
-        const encryptVal = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
-        storageMethod('s', 'SET_ITEM', encryptKey, encryptVal);
+
+        storageMethod('s', 'SET_ITEM',
+          findCharCode([68, 71, 87, 77, 85, 66, 65, 84, 88, 69]), // enemyCardChoiceReady
+          X.enc(decodeTF(textDE([120, 111, 98, 116, 117]))) // "xobtu" : false
+        );
       } catch (error) {
         console.log('choiceCardsClick.js onclick error : ');
         errorManager(error, true);

@@ -2,6 +2,17 @@
 import { encrypt } from '@/client/js/webRTC/rtcConn.js';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 
+/*
+t -> c, k, s
+r -> f, m, w
+u -> h, p, r
+e -> a, n, u
+f -> d, j, x
+a -> g, o, q
+l -> b, l, v
+s -> e, i, t
+*/
+
 // ──────────────────────────────────────────────────────────────────────────────
 // decode 함수 (기본 export)
 // - 호출 시점에 encrypt.keypair 확인

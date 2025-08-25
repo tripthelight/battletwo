@@ -71,9 +71,9 @@ function deriveKey32FromEncryptKeypair() {
   return h >>> 0;
 }
 
-// 키로 초기화된 FNV-1a(32) 변형: u32 입력 4바이트를 섞음
-const K32 = deriveKey32FromEncryptKeypair();
 function fnv1a32WithKey(u32) {
+  // 키로 초기화된 FNV-1a(32) 변형: u32 입력 4바이트를 섞음
+  const K32 = deriveKey32FromEncryptKeypair();
   // offset_basis ^ K32 로 키 결합
   let h = (0x811c9dc5 ^ K32) >>> 0;
   // 리틀엔디언으로 4바이트 순차 처리

@@ -1,5 +1,6 @@
-import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
+import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import { request } from '@/client/js/network/indianPocker/request';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
 
@@ -13,12 +14,18 @@ export default async (_data) => {
     const params = { compair: true, result };
 
     // 1) 내가 먼저 X 버튼 눌러 대기하는 특수 케이스 선처리
-    const TIE_WAIT_FLAG = booleanCheck([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
-    const TIE_WAIT_EXPECT = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]);
-    if (TIE_WAIT_FLAG === TIE_WAIT_EXPECT) {
+    // const TIE_WAIT_FLAG = booleanCheck([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
+    // const TIE_WAIT_EXPECT = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
+    // if (TIE_WAIT_FLAG === TIE_WAIT_EXPECT) {
+    //   request('responseCompairResultBetting', params);
+    //   return;
+    // }
+    const encryptKey = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
+    const encryptVal = window.sessionStorage.getItem(encryptKey);
+    if (encryptVal !== '' && X.dec(encryptVal)) { // tieWait === true
       request('responseCompairResultBetting', params);
       return;
-    }
+    };
 
     // 2) 로컬 저장값 읽기
     const valLocalBetUser = booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser

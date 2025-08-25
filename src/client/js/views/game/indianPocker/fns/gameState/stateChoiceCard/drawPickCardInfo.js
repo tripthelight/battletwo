@@ -1,4 +1,5 @@
-import booleanCheck from '@/client/js/functions/validation/booleanCheck';
+import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
 import { text } from '@/client/js/functions/language';
 import closePopup from '@/client/js/functions/popup';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
@@ -11,8 +12,9 @@ export default () => {
   if (CHOICE_CARD_INFO) return;
 
   // session storage check
-  const bRes = booleanCheck([68, 71, 87, 77, 85, 66, 65, 84, 88, 69]); // enemyCardChoiceReady
-  if (bRes !== '') return;
+  const encryptKey1 = findCharCode([68, 71, 87, 77, 85, 66, 65, 84, 88, 69]); // enemyCardChoiceReady
+  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  if (encryptVal1 !== '' && typeof X.dec(encryptVal1) === 'boolean') return;
 
   // 명령
   const elem = document.createElement('div');

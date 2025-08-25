@@ -75,12 +75,12 @@ document.onreadystatechange = async () => {
       indianPockerGameState.choiceCard();
     };
 
-    console.log('────────────────');
-    console.log('betUser :::::::: ', findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]));
-    console.log('betUserFirst ::: ', findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]));
-    console.log('true ::::::::::: ', findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]));
-    console.log('false :::::::::: ', findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]));
-    console.log('────────────────');
+    // console.log('────────────────');
+    // console.log('betUser :::::::: ', findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]));
+    // console.log('betUserFirst ::: ', findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]));
+    // console.log('true ::::::::::: ', findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]));
+    // console.log('false :::::::::: ', findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]));
+    // console.log('────────────────');
 
 
     // const t1 = X.enc(decodeTF('smra'));
