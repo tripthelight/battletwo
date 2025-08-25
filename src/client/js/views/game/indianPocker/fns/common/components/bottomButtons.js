@@ -1,4 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
 import { comnText } from '@/client/js/functions/language';
 import { ELEMENT } from '@/client/js/views/game/indianPocker/fns/rule/element';
 
@@ -17,8 +18,9 @@ export default {
 
     const encryptKey1 = findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]); // extFirstBet
     const decryptVal1 = window.sessionStorage.getItem(encryptKey1);
-    const encryptVal1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
-    if (decryptVal1 === encryptVal1) {
+    // const encryptVal1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
+    // if (decryptVal1 === encryptVal1) {
+    if (decryptVal1 !== null && decryptVal1 !== '' && X.dec(decryptVal1)) {
       btnCallRaise.classList.add('call');
       btnCallRaise.innerHTML = comnText.call;
     } else {

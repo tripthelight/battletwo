@@ -1,5 +1,8 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { enc } from '@/client/js/module/crypts/obf8lower';
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import textDE from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
@@ -13,7 +16,7 @@ export const GET_CALL = {
     if (document.querySelector('.check-drew-info')) document.querySelector('.check-drew-info').remove();
     storageMethod('s', 'SET_ITEM',
       findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
-      findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]) // true
+      X.enc(decodeTF(textDE([115, 102, 104, 97]))) // "sfha" : true
     );
     GET_CALL.sessionCallBet(_data);
   },

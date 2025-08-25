@@ -82,8 +82,8 @@ export default {
 
         storageMethod('s', 'SET_ITEM', encryptKey7, RESULT); // betUser
         storageMethod('s', 'SET_ITEM', 'basicBettingState', false);
-        storageMethod('s', 'SET_ITEM', encryptKey6, encryptVal_2); // extFirstBet, false
-        storageMethod('s', 'SET_ITEM', encryptKey2, encryptNumOfStr(new TextDecoder().decode(new Uint8Array([119, 101, 101, 101])))); // coinsPlayerBet, 0
+        storageMethod('s', 'SET_ITEM', encryptKey6, X.enc(decodeTF(textDE([120, 103, 98, 105, 110])))); // extFirstBet, "xgbin" : false
+        storageMethod('s', 'SET_ITEM', encryptKey2, encryptNumOfStr(textDE([119, 101, 101, 101]))); // coinsPlayerBet, 0
         storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', 0);
         storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 0);
         storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', 0);
@@ -99,7 +99,7 @@ export default {
         storageMethod('s', 'SET_ITEM', encryptKey7, encryptVal7); // betUser, betUserFirst
         storageMethod('s', 'SET_ITEM', 'drewState', true);
         storageMethod('s', 'SET_ITEM', encryptKey5, X.enc(decodeTF(textDE([120, 113, 108, 101, 97])))); // roundEnd, "xqlea" : false
-        storageMethod('s', 'SET_ITEM', encryptKey6, encryptVal_2); // extFirstBet, false
+        storageMethod('s', 'SET_ITEM', encryptKey6, X.enc(decodeTF(textDE([106, 111, 98, 116, 117])))); // extFirstBet, "jobtu" : false
         storageMethod('s', 'SET_ITEM', 'battleCardNum', '');
         request('drewRefresh', true);
 

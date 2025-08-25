@@ -1,5 +1,6 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { dec } from '@/client/js/module/crypts/obf8lower';
+import X from '@/client/js/module/crypts/bool-obf';
 
 export default (_name) => {
   switch (_name) {
@@ -15,12 +16,13 @@ export default (_name) => {
     case 'BUF':
       // return window.sessionStorage.betUserFirst;
       const encryptKey3 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
-      const decryptVal3 = window.sessionStorage.getItem(encryptKey3);
-      return decryptVal3;
+      const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
+      return encryptVal3;
     case 'EFB':
       const encryptKey4 = findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]); // extFirstBet
-      const decryptVal4 = window.sessionStorage.getItem(encryptKey4);
-      return decryptVal4;
+      const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
+      // return decryptVal4;
+      return X.dec(encryptVal4); // {boolean} true / false
     case 'CP':
       // return window.sessionStorage.coinsPlayer && Number(window.sessionStorage.coinsPlayer) > 0 ? Number(window.sessionStorage.coinsPlayer) : 0;
       const encryptKey5 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer

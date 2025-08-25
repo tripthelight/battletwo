@@ -1,5 +1,8 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import textDE from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1, timeInterval_1001 } from '@/client/js/functions/variable.js';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
@@ -20,7 +23,10 @@ export const GET_ALLIN = {
     const encryptKey3 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
 
     storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_1); // betUser, true
-    storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal_1); // extFirstBet, true
+    storageMethod('s', 'SET_ITEM',
+      encryptKey2, // extFirstBet
+      X.enc(decodeTF(textDE([99, 119, 112, 110]))) // "cwpn" : true
+    );
     storageMethod('s', 'SET_ITEM', encryptKey3, enc(_data.coinCount));
     storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', _data.coinBet);
     storageMethod('s', 'SET_ITEM', 'coinsEnemyExtBet', _data.extBet);

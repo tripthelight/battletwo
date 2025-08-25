@@ -1,6 +1,9 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import textDE from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import removeElement from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/removeElement';
 
@@ -23,7 +26,10 @@ export default () => {
   const encryptKey6 = findCharCode([72, 81, 73, 79, 83, 70, 78, 80, 75, 88]); // basicBetReady
 
   storageMethod('s', 'SET_ITEM', encryptKey4, encryptVal4); // betState, basicBetting
-  storageMethod('s', 'SET_ITEM', encryptKey3, encryptVal_2); // extFirstBet, false
+  storageMethod('s', 'SET_ITEM',
+    encryptKey3, // extFirstBet
+    X.enc(decodeTF(textDE([106, 111, 98, 116, 97]))) // "jobta" : false
+  );
 
   // storageMethod('s', 'REMOVE_ITEM', 'drewReady');
   storageMethod('s', 'REMOVE_ITEM', 'drewReady'); // drewReady

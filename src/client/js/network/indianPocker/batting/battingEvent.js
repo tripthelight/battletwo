@@ -1,5 +1,8 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { dec } from '@/client/js/module/crypts/obf8lower';
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import textDE from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { comnText } from '@/client/js/functions/language';
@@ -87,15 +90,15 @@ export default {
   },
   GET: {
     FIRST_EXT_BET_RESULT: (_data) => {
-      const promise = new Promise((resolve, reject) => {
+      const PROMISE = new Promise((resolve, reject) => {
         resolve(_data);
       });
-      promise
+      PROMISE
         .then((_data) => {
-          const encryptKey = findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]); // extFirstBet
-          const encryptVal = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
-
-          storageMethod('s', 'SET_ITEM', encryptKey, encryptVal);
+          storageMethod('s', 'SET_ITEM',
+            findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
+            X.enc(decodeTF(textDE([115, 102, 112, 97]))) // "sfpa" : true
+          );
           GET_BETTING.sessionExtraBet(_data);
         })
         .catch((error) => {
@@ -104,10 +107,10 @@ export default {
         });
     },
     ALL_IN_BET_RESULT: (_data) => {
-      let promise = new Promise((resolve, reject) => {
+      const PROMISE = new Promise((resolve, reject) => {
         resolve(_data);
       });
-      promise
+      PROMISE
         .then((_data) => {
           console.log('all in data >>>>>>>>> ', _data);
 
@@ -119,10 +122,10 @@ export default {
         });
     },
     CALL_RESULT: (_data) => {
-      const promise = new Promise((resolve, reject) => {
+      const PROMISE = new Promise((resolve, reject) => {
         resolve(_data);
       });
-      promise
+      PROMISE
         .then((_data) => {
           // 새로고침 시 상대 카드번호 필요하여 storage에 저장
           // 한 라운드가 끝난 후 삭제 필요
@@ -135,10 +138,10 @@ export default {
         });
     },
     RAISE_RESULT: (_data) => {
-      let promise = new Promise((resolve, reject) => {
+      const PROMISE = new Promise((resolve, reject) => {
         resolve(_data);
       });
-      promise
+      PROMISE
         .then((_data) => {
           GET_RAISE.receiveRaiseBet(_data);
         })
@@ -148,10 +151,10 @@ export default {
         });
     },
     FOLD_RESULT: (_data) => {
-      const promise = new Promise((resolve, reject) => {
+      const PROMISE = new Promise((resolve, reject) => {
         resolve(_data);
       });
-      promise
+      PROMISE
         .then((_data) => {
           // 새로고침 시 상대 카드번호 필요하여 storage에 저장
           // 한 라운드가 끝난 후 삭제 필요
@@ -164,10 +167,10 @@ export default {
         });
     },
     FOLD_ENEMY: (_data) => {
-      const promise = new Promise((resolve, reject) => {
+      const PROMISE = new Promise((resolve, reject) => {
         resolve(_data);
       });
-      promise
+      PROMISE
         .then((_data) => {
           GET_FOLD.sendFoldData(_data);
         })

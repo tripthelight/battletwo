@@ -149,13 +149,13 @@ export const obfuscationList = {
           basicBetting: 'FTKWJCIMPA', // [70, 84, 75, 87, 74, 67, 73, 77, 80, 65]
         },
       },
-      ROUND_END: {
+      ROUND_END: { // true/false
         k: 'SNVODIGWRU', // [83, 78, 86, 79, 68, 73, 71, 87, 82, 85]
       },
-      BASIC_BET_READY: {
+      BASIC_BET_READY: { // true/false
         k: 'HQIOSFNPKX', // [72, 81, 73, 79, 83, 70, 78, 80, 75, 88]
       },
-      EXT_FIRST_BET: {
+      EXT_FIRST_BET: { // true/false
         k: 'MLCXOWSZYV', // [77, 76, 67, 88, 79, 87, 83, 90, 89, 86]
       },
       BET_USER: {

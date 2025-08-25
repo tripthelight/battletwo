@@ -1,4 +1,7 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import textDE from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import drawEnemyBlockPlaying from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/drawEnemyBlockPlaying';
@@ -15,8 +18,10 @@ export default () => {
 
   const encryptKey5 = findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]); // extFirstBet
   const decryptVal5 = window.sessionStorage.getItem(encryptKey5);
-  const encryptVal5 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
-  if (decryptVal5 === null) storageMethod('s', 'SET_ITEM', encryptKey5, encryptVal5);
+  if (decryptVal5 === null) storageMethod('s', 'SET_ITEM',
+    encryptKey5, // extFirstBet
+    X.enc(decodeTF(textDE([100, 103, 108, 116, 117]))) // "dgltu" : false
+  );
 
   // 명령
   setTimeout(() => {

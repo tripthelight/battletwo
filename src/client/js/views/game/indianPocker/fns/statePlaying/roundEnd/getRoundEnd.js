@@ -177,7 +177,7 @@ export const GET_ROUND_END = {
       );
       storageMethod('s', 'SET_ITEM',
         findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
-        encryptVal_2 // false
+        X.enc(decodeTF(textDE([120, 111, 118, 116, 97]))) // "xovta" : false
       );
     } else {
       console.log('error - getRoundEnd.js - cardNumCompare !result');

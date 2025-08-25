@@ -31,15 +31,16 @@ export default () => {
   if (Number(decryptVal2) > 0 && Number(decryptVal3) > 0) return;
 
   const encryptKey4 = findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]); // extFirstBet
-  const decryptVal4 = window.sessionStorage.getItem(encryptKey4);
-  if (decryptVal4 === null) return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 extFirstBet 세션이 없습니다.' });
-  if (decryptVal4 === encryptVal_1) return; // extFirstBet === true
+  const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
+  if (encryptVal4 === null) return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 extFirstBet 세션이 없습니다.' });
+  if (encryptVal4 === '') return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 extFirstBet 세션 값이 없습니다.' });
+  if (X.dec(encryptVal4)) return; // extFirstBet === true
 
   // 명령
   setTimeout(() => {
     // if (EXT_FIRST_BET === 'false' && (Number(COINS_PLAYER) === 0 || Number(COINS_ENEMY) === 0)) {
     if (
-      decryptVal4 === encryptVal_2 && // extFirstBet === false
+      encryptVal4 === encryptVal_2 && // extFirstBet === false
       (
         Number(decryptVal2) === 0 || // coinsPlayer === 0
         Number(decryptVal3) === 0 // coinsEnemy === 0
