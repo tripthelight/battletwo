@@ -120,3 +120,4 @@ battletwo
   - 시놀로지 NAS로 구축 해볼 예정
 - TODO: 
   - 기본배팅 완료 후 enterPlayingResult.js에서 실행되는 betUser가 true인 peer의 createBattleCardNum.js 단계에서 에러남
+  - drewReady 암호화 중 - refreshInit.js 작업 중 betUser 에 RESULT(true/false) 평문이 들어가는 부분이 있어 확인 중

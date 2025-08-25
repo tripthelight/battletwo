@@ -158,10 +158,10 @@ export const obfuscationList = {
       EXT_FIRST_BET: { // true/false
         k: 'MLCXOWSZYV', // [77, 76, 67, 88, 79, 87, 83, 90, 89, 86]
       },
-      BET_USER: {
+      BET_USER: { // true/false/''
         k: 'HFUCSDYRMX', // [72, 70, 85, 67, 83, 68, 89, 82, 77, 88]
       },
-      BET_USER_FIRST: {
+      BET_USER_FIRST: { // true/false/''
         k: 'ZYPFDTAMJN', // [90, 89, 80, 70, 68, 84, 65, 77, 74, 78]
       },
       COINS_ENEMY: {
@@ -182,6 +182,9 @@ export const obfuscationList = {
       },
       RESULT_BETTING_CLICK: {
         k: 'BHINYATMSV', // [66, 72, 73, 78, 89, 65, 84, 77, 83, 86]
+      },
+      DREW_READY: { // true/false
+        k: 'RCFEDVXJSN', // [82, 67, 70, 69, 68, 86, 88, 74, 83, 78]
       },
       // e: click event
       */

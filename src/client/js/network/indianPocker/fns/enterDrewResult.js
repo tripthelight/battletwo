@@ -1,4 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
 import { timeInterval_100, timeInterval_101, timeInterval_102, timeInterval_1000 } from '@/client/js/functions/variable';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
@@ -30,21 +31,49 @@ export default (_data) => {
             storageMethod('s', 'REMOVE_ITEM', 'roundEndReload');
             // setSocketEnterDrewCheck(true);
             setTimeout(() => {
-              if (!window.sessionStorage.drewReady || window.sessionStorage.drewReady !== 'true') request('enterDrew', false);
+              /* if (!window.sessionStorage.drewReady || window.sessionStorage.drewReady !== 'true') request('enterDrew', false);
               if (window.sessionStorage.drewReady && window.sessionStorage.drewReady === 'true') {
                 // if (window.sessionStorage.betUser === 'true') createBattleCardNum();
                 // betUser === 'true'
                 const decryptVal = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
-                const encryptKey = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
-                const encryptVal = window.sessionStorage.getItem(encryptKey);
-                if (encryptVal === decryptVal) createBattleCardNum(); // betUser === true
-              }
+                const encryptKey2 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
+                const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+                if (encryptVal2 === decryptVal) createBattleCardNum(); // betUser === true
+              } */
+              const encryptKey1 = findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78]); // drewReady
+              const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+              if (
+                (encryptVal1 === null || encryptVal1 === '') ||
+                (encryptVal1 !== null && encryptVal1 !== '' && !X.dec(encryptVal1))
+              ) request('enterDrew', false);
+              if (encryptVal1 !== null && encryptVal1 !== '' && X.dec(encryptVal1)) {
+                // if (window.sessionStorage.betUser === 'true') createBattleCardNum();
+                // betUser === 'true'
+                const decryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
+                const encryptKey2 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
+                const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+                if (encryptVal2 === decryptVal_1) createBattleCardNum(); // betUser === true
+              };
             }, timeInterval_102);
           }, timeInterval_101);
         } else {
-          if (!window.sessionStorage.drewReady || window.sessionStorage.drewReady !== 'true') request('enterDrew', false);
+          /* if (!window.sessionStorage.drewReady || window.sessionStorage.drewReady !== 'true') request('enterDrew', false);
           if (window.sessionStorage.drewReady && window.sessionStorage.drewReady === 'true') {
             if (window.sessionStorage.betUser === 'true') createBattleCardNum();
+          } */
+
+          const encryptKey2 = findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78]); // drewReady
+          const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+          if (
+            (encryptVal2 === null || encryptVal2 === '') ||
+            (encryptVal2 !== null && encryptVal2 !== '' && !X.dec(encryptVal2))
+          ) request('enterDrew', false);
+          if (encryptVal2 !== null && encryptVal2 !== '' && X.dec(encryptVal2)) {
+            // if (window.sessionStorage.betUser === 'true') createBattleCardNum();
+            const decryptVal_2 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
+            const encryptKey3 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
+            const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
+            if (encryptVal3 === decryptVal_2) createBattleCardNum();
           }
         }
       }, timeInterval_100);

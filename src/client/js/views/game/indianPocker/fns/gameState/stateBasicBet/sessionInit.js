@@ -24,6 +24,7 @@ export default () => {
   const encryptKey5 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]); // coinsPlayerBet
   const encryptVal5 = window.sessionStorage.getItem(encryptKey5);
   const encryptKey6 = findCharCode([72, 81, 73, 79, 83, 70, 78, 80, 75, 88]); // basicBetReady
+  const encryptKey7 = findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78]); // drewReady
 
   storageMethod('s', 'SET_ITEM', encryptKey4, encryptVal4); // betState, basicBetting
   storageMethod('s', 'SET_ITEM',
@@ -31,20 +32,26 @@ export default () => {
     X.enc(decodeTF(textDE([106, 111, 98, 116, 97]))) // "jobta" : false
   );
 
-  // storageMethod('s', 'REMOVE_ITEM', 'drewReady');
-  storageMethod('s', 'REMOVE_ITEM', 'drewReady'); // drewReady
+  storageMethod('s', 'REMOVE_ITEM', encryptKey7); // drewReady
   storageMethod('s', 'REMOVE_ITEM', encryptKey6); // basicBetReady
 
-  // if (!COINS_PLAYER && !COINS_ENEMY) {
+  // 무료 회원 - 첫 진입 시, 기본 배팅 20 코인
+  // 유료 회원 - 첫 진입 시, 기본 배팅 금액 DB 조회 필요
   if (encryptVal1 === null && encryptVal2 === null) {
-    storageMethod('s', 'SET_ITEM', encryptKey1, enc(encryptNumOfStr(new TextDecoder().decode(new Uint8Array([101, 119, 114, 111]))))); // 'ewro' : 20
-    storageMethod('s', 'SET_ITEM', encryptKey2, enc(encryptNumOfStr(new TextDecoder().decode(new Uint8Array([119, 119, 98, 111]))))); // 'wwbo' : 20
+    storageMethod('s', 'SET_ITEM',
+      encryptKey1,
+      enc(encryptNumOfStr(textDE([101, 119, 114, 111]))) // 'ewro' : 20
+    );
+    storageMethod('s', 'SET_ITEM',
+      encryptKey2,
+      enc(encryptNumOfStr(textDE([119, 119, 98, 111]))) // 'wwbo' : 20
+    );
   };
 
-  // if (window.sessionStorage.coinsPlayerBet && Number(window.sessionStorage.coinsPlayerBet) === 1) {
   if (
     encryptVal5 !== null &&
-    dec(encryptVal5) === encryptNumOfStr(new TextDecoder().decode(new Uint8Array([119, 101, 101, 114]))) // weer : 0001
+    encryptVal5 !== '' &&
+    dec(encryptVal5) === encryptNumOfStr(textDE([119, 101, 101, 114])) // weer : 0001
   ) {
     storageMethod('s', 'SET_ITEM', 'basicBettingState', true);
   } else {

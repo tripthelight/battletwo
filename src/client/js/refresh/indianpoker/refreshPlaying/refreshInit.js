@@ -49,6 +49,7 @@ export default {
       const encryptVal8 = window.sessionStorage.getItem(encryptKey8);
       const encryptKey9 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
       const encryptVal9 = window.sessionStorage.getItem(encryptKey9);
+      const encryptKey10 = findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78]); // drewReady
 
       if (Number(P_NUM) > Number(E_NUM) || Number(P_NUM) < Number(E_NUM)) {
         const coinsEnemyBet = window.sessionStorage.coinsEnemyBet;
@@ -95,7 +96,7 @@ export default {
       } else if (Number(P_NUM) === Number(E_NUM)) {
         // storageMethod('s', 'REMOVE_ITEM', 'drewReady');
         storageMethod('s', 'SET_ITEM', 'roundEndReload', true);
-        storageMethod('s', 'SET_ITEM', 'drewReady', true);
+        storageMethod('s', 'SET_ITEM', encryptKey10, X.enc(decodeTF(textDE([99, 119, 114, 117])))); // drewReady, "cwru" : true
         storageMethod('s', 'SET_ITEM', encryptKey7, encryptVal7); // betUser, betUserFirst
         storageMethod('s', 'SET_ITEM', 'drewState', true);
         storageMethod('s', 'SET_ITEM', encryptKey5, X.enc(decodeTF(textDE([120, 113, 108, 101, 97])))); // roundEnd, "xqlea" : false
