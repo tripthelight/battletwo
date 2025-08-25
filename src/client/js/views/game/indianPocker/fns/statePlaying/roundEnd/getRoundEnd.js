@@ -1,6 +1,9 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import textDE from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import { timeInterval_1, timeInterval_1000, timeInterval_2000, timeInterval_202, timeInterval_3201, timeInterval_3202, timeInterval_401, timeInterval_402 } from '@/client/js/functions/variable';
@@ -170,7 +173,7 @@ export const GET_ROUND_END = {
 
       storageMethod('s', 'SET_ITEM',
         findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]), // roundEnd
-        encryptVal_2 // false
+        X.enc(decodeTF(textDE([106, 103, 118, 116, 97]))) // "jgvta" : false
       );
       storageMethod('s', 'SET_ITEM',
         findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
@@ -256,7 +259,10 @@ export const GET_ROUND_END = {
     storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 0);
     storageMethod('s', 'SET_ITEM', 'coinsEnemyExtBet', 0);
     // 새로고침 을 위해 roundEnd seeeion 추가
-    storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_1); // roundEnd, true
+    storageMethod('s', 'SET_ITEM',
+      encryptKey1, // roundEnd
+      X.enc(decodeTF(textDE([99, 109, 114, 97]))) // "cmra" : true
+    );
     switch (_result) {
       case 'win':
         // storageMethod('s', 'SET_ITEM', 'betUser', true);

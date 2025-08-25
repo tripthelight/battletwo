@@ -20,7 +20,7 @@ export default () => {
   const encryptVal4 = findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
   const encryptKey5 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]); // coinsPlayerBet
   const encryptVal5 = window.sessionStorage.getItem(encryptKey5);
-  const encryptKey6 = findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]); // basicBetReady
+  const encryptKey6 = findCharCode([72, 81, 73, 79, 83, 70, 78, 80, 75, 88]); // basicBetReady
 
   storageMethod('s', 'SET_ITEM', encryptKey4, encryptVal4); // betState, basicBetting
   storageMethod('s', 'SET_ITEM', encryptKey3, encryptVal_2); // extFirstBet, false

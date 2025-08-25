@@ -1,4 +1,7 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import textDE from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import { request } from '@/client/js/network/indianPocker/request';
@@ -27,13 +30,17 @@ export default {
       } else {
         // choiceCard 결과 안내팝업 누르고 여기로 진입함
         LOADING_EVENT.show();
-        const encryptKey3 = findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]); // basicBetReady
+        const encryptKey3 = findCharCode([72, 81, 73, 79, 83, 70, 78, 80, 75, 88]); // basicBetReady
         const decryptVal3 = window.sessionStorage.getItem(encryptKey3);
         const encryptVal3 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
 
         if (decryptVal3 === encryptVal3) {
           const encryptKey4 = findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]); // roundEnd
-          storageMethod('s', 'SET_ITEM', encryptKey4, encryptVal3);
+          // storageMethod('s', 'SET_ITEM', encryptKey4, encryptVal3); // roundEnd, false
+          storageMethod('s', 'SET_ITEM',
+            encryptKey4, // roundEnd
+            X.enc(decodeTF(textDE([100, 103, 98, 105, 110]))) // "dgbin" : false
+          );
           sessionInit();
           LOADING_EVENT.hide();
         }

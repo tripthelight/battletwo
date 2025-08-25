@@ -1,4 +1,7 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import textDE from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import sessionInit from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/sessionInit';
@@ -20,7 +23,9 @@ export default (_data) => {
         storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal2);
 
         const encryptKey3 = findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]); // roundEnd
-        const encryptVal3 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
+        // const encryptVal3 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
+        const encryptVal3 = X.enc(decodeTF(textDE([120, 111, 98, 105, 117]))); // "xobiu" : false
+        // storageMethod('s', 'SET_ITEM', encryptKey3, encryptVal3);
         storageMethod('s', 'SET_ITEM', encryptKey3, encryptVal3);
         sessionInit();
       }

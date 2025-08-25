@@ -1,6 +1,9 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import textDE from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
-import findCharCode from '@/client/js/functions/findCharCode';
 import sessionInit from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/sessionInit';
 
 export default (_data) => {
@@ -16,10 +19,13 @@ export default (_data) => {
       const encryptVal3 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
       if (encryptVal1 === encryptVal2) {
         const encryptKey2 = findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]); // roundEnd
-        storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal3);
+        const encryptVal4 = X.enc(decodeTF(textDE([106, 103, 118, 105, 97]))); // "jgvia" : false
+        // storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal3);
+        storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal4);
+
         sessionInit();
       } else if (encryptVal1 !== encryptVal2) {
-        const encryptKey3 = findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]); // basicBetReady
+        const encryptKey3 = findCharCode([72, 81, 73, 79, 83, 70, 78, 80, 75, 88]); // basicBetReady
         storageMethod('s', 'SET_ITEM', encryptKey3, encryptVal3);
       }
     } else {

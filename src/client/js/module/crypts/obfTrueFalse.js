@@ -7,6 +7,7 @@ t -> c, k, s
 r -> f, m, w
 u -> h, p, r
 e -> a, n, u
+
 f -> d, j, x
 a -> g, o, q
 l -> b, l, v

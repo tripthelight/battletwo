@@ -1,5 +1,8 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import textDE from '@/client/js/module/crypts/textDE';
 import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import { GET_ROUND_END } from '@/client/js/views/game/indianPocker/fns/statePlaying/roundEnd/getRoundEnd';
@@ -95,8 +98,8 @@ export default {
         storageMethod('s', 'SET_ITEM', 'drewReady', true);
         storageMethod('s', 'SET_ITEM', encryptKey7, encryptVal7); // betUser, betUserFirst
         storageMethod('s', 'SET_ITEM', 'drewState', true);
-        storageMethod('s', 'SET_ITEM', encryptKey5, encryptVal_2);
-        storageMethod('s', 'SET_ITEM', encryptKey6, encryptVal_2);
+        storageMethod('s', 'SET_ITEM', encryptKey5, X.enc(decodeTF(textDE([120, 113, 108, 101, 97])))); // roundEnd, "xqlea" : false
+        storageMethod('s', 'SET_ITEM', encryptKey6, encryptVal_2); // extFirstBet, false
         storageMethod('s', 'SET_ITEM', 'battleCardNum', '');
         request('drewRefresh', true);
 
