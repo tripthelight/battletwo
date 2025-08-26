@@ -7,14 +7,14 @@ import removeMyBetCoin from '@/client/js/views/game/indianPocker/fns/common/remo
 
 export default (data) => {
   const ACTIVE_COIN = {
-    host: 'player',
-    index: data.activeLi,
-    translateX: data.tx,
-    translateY: data.ty,
-    offsetLeft: reactiveState.pcOffsetLeft,
-    offsetTop: reactiveState.pcOffsetTop,
-    tm: data.tm,
-    th: data.th,
+    host: 'player', // string
+    index: data.activeLi, // number
+    translateX: data.tx, // number
+    translateY: data.ty, // number
+    offsetLeft: reactiveState.pcOffsetLeft, // number
+    offsetTop: reactiveState.pcOffsetTop, // number
+    tm: data.tm, // number
+    th: data.th, // number
   };
   let arr = [];
   if (window.sessionStorage.betCoin) {

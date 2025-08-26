@@ -91,8 +91,8 @@ export const SET_BASIC_BETTING = {
     if (encryptVal1 === decryptVal1) {
       if (COIN_BET_ARR.length > 0) {
         for (let i = 0; i < COIN_BET_ARR.length; i++) {
-          COIN_BET_ARR[i].betState = 'end';
-        }
+          COIN_BET_ARR[i].betState = 'end'; // string
+        };
         storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(COIN_BET_ARR));
       }
     }

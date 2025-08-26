@@ -53,6 +53,7 @@ export default (_coins, _coinsRes, _coinsDelete) => {
         translateX: x,
         translateY: y,
       };
+
       let betCoin = window.sessionStorage.betCoin;
       let betCoinArr = JSON.parse(betCoin);
       betCoinArr.push(DATA);

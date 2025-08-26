@@ -49,13 +49,11 @@ export default () => {
     encryptVal5 !== '' &&
     dec(encryptVal5) === encryptNumOfStr(textDE([119, 101, 101, 114])) // weer : 0001
   ) {
-    // storageMethod('s', 'SET_ITEM', 'basicBettingState', true);
     storageMethod('s', 'SET_ITEM',
       encryptKey8, // basicBettingState
       X.enc(decodeTF(textDE([99, 109, 104, 117]))) // "cmhu" : true
     );
   } else {
-    // storageMethod('s', 'SET_ITEM', 'basicBettingState', false);
     storageMethod('s', 'SET_ITEM',
       encryptKey8, // basicBettingState
       X.enc(decodeTF(textDE([100, 113, 118, 105, 117]))) // "dqviu" : false

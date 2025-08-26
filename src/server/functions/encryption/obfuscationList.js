@@ -179,6 +179,31 @@ export const obfuscationList = {
       BASIC_BETTING_STATE: { // true/false
         k: 'QEMHKCIWOJ', // [81, 69, 77, 72, 75, 67, 73, 87, 79, 74]
       },
+      BET_COIN: {
+        k: 'DUHITAZFYX', // [68, 85, 72, 73, 84, 65, 90, 70, 89, 88]
+        v: {
+          betState: {
+            k: '',
+            v: {
+              end: '',
+            }
+          },
+          host: {
+            k: '',
+            v: {
+              'pleyer': ''
+              'enemy': ''
+            }
+          },
+          index: ',
+          translateX: '',
+          translateY: '',
+          offsetLeft: '',
+          offsetTop: '',
+          tm: '',
+          th: '',
+        }
+      },
       // e: sessionStorage keys
 
       // s: click event
