@@ -50,6 +50,7 @@ export default {
       const encryptKey9 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
       const encryptVal9 = window.sessionStorage.getItem(encryptKey9);
       const encryptKey10 = findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78]); // drewReady
+      const encryptKey11 =  findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]); // basicBettingState
 
       if (Number(P_NUM) > Number(E_NUM) || Number(P_NUM) < Number(E_NUM)) {
         const coinsEnemyBet = window.sessionStorage.coinsEnemyBet;
@@ -86,7 +87,7 @@ export default {
         }
 
         storageMethod('s', 'SET_ITEM', encryptKey7, X.dec(RESULT) ? encryptVal_1 : encryptVal_2); // betUser
-        storageMethod('s', 'SET_ITEM', 'basicBettingState', false);
+        storageMethod('s', 'SET_ITEM', encryptKey11, X.enc(decodeTF(textDE([120, 113, 98, 101, 110])))); // basicBettingState, "xqben" : false
         storageMethod('s', 'SET_ITEM', encryptKey6, X.enc(decodeTF(textDE([120, 103, 98, 105, 110])))); // extFirstBet, "xgbin" : false
         storageMethod('s', 'SET_ITEM', encryptKey2, encryptNumOfStr(textDE([119, 101, 101, 101]))); // coinsPlayerBet, 0
         storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', 0);

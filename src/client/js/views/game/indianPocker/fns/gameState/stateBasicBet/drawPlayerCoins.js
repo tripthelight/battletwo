@@ -1,5 +1,6 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { dec } from '@/client/js/module/crypts/obf8lower';
+import X from '@/client/js/module/crypts/bool-obf';
 import deviceStateStore from '@/client/store/deviceStateStore';
 import gameResultCheck from '@/client/js/views/game/indianPocker/fns/common/gameResultCheck';
 import gameEnd from '@/client/js/views/game/indianPocker/fns/common/gameEnd';
@@ -22,9 +23,12 @@ export default () => {
   const PLAYER_BLOCK = document.querySelector('.player-block');
   if (!PLAYER_BLOCK) return;
 
-  const BASIC_BETTING_STATE = window.sessionStorage.basicBettingState;
-  if (!BASIC_BETTING_STATE) return errorManagement({ errCase: 'errorComn', message: 'basicBettingState not found' });
-  const BASIC_BETTING_RES = BASIC_BETTING_STATE === 'true' ? true : false;
+  // const BASIC_BETTING_STATE = window.sessionStorage.basicBettingState;
+  // if (!BASIC_BETTING_STATE) return errorManagement({ errCase: 'errorComn', message: 'basicBettingState not found' });
+  // const BASIC_BETTING_RES = BASIC_BETTING_STATE === 'true' ? true : false;
+  const encryptKey1 = findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]); // basicBettingState
+  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  if (encryptVal1 === null || (encryptVal1 !== null && encryptVal1 === '')) return errorManagement({ errCase: 'errorComn', message: 'basicBettingState not found' });
 
   // 명령
   const elem = COINS_PLAYER ? COINS_PLAYER : document.createElement('ul');
@@ -55,7 +59,8 @@ export default () => {
     elem.appendChild(liEl);
     // 시, 분 animate()
     // animateClock(hourEl, minuteEl);
-    BASIC_BETTING_RES ? posClock(hourEl, minuteEl) : animateClock(hourEl, minuteEl, false);
+    // BASIC_BETTING_RES ? posClock(hourEl, minuteEl) : animateClock(hourEl, minuteEl, false);
+    X.dec(encryptVal1) ? posClock(hourEl, minuteEl) : animateClock(hourEl, minuteEl, false);
   }
   PLAYER_BLOCK.appendChild(elem);
 

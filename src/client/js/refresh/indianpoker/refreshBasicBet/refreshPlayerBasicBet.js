@@ -1,10 +1,18 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 
 export default () => {
-  const BASIC_BETTING_STATE = window.sessionStorage.basicBettingState;
-  if (!BASIC_BETTING_STATE) return;
-  const BASIC_BETTING_RES = BASIC_BETTING_STATE === 'true' ? true : false;
+  // const BASIC_BETTING_STATE = window.sessionStorage.basicBettingState;
+  // if (!BASIC_BETTING_STATE) return;
+  // const BASIC_BETTING_RES = BASIC_BETTING_STATE === 'true' ? true : false;
+  const encryptKey1 = findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]); // basicBettingState
+  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  if (
+    encryptVal1 === null ||
+    (encryptVal1 !== null && encryptVal1 === '')
+  ) return;
 
   // 기본 배팅을 한 상태에서 새로고침
   const COINS_PLAYER = document.querySelector('.coins-player');
@@ -29,7 +37,8 @@ export default () => {
     liEl.appendChild(minuteEl);
     liEl.appendChild(hourEl);
     posClock(hourEl, minuteEl);
-    BASIC_BETTING_RES ? posClock(hourEl, minuteEl) : animateClock(hourEl, minuteEl, false);
+    // BASIC_BETTING_RES ? posClock(hourEl, minuteEl) : animateClock(hourEl, minuteEl, false);
+    X.dec(encryptVal1) ? posClock(hourEl, minuteEl) : animateClock(hourEl, minuteEl, false);
     COINS_PLAYER.appendChild(liEl);
   }
 };

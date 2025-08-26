@@ -8,12 +8,6 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 import removeElement from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/removeElement';
 
 export default () => {
-  const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
-  const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
-
-  // const COINS_PLAYER = window.sessionStorage.coinsPlayer;
-  // const COINS_ENEMY = window.sessionStorage.coinsEnemy;
-
   const encryptKey1 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer
   const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
   const encryptKey2 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
@@ -25,6 +19,7 @@ export default () => {
   const encryptVal5 = window.sessionStorage.getItem(encryptKey5);
   const encryptKey6 = findCharCode([72, 81, 73, 79, 83, 70, 78, 80, 75, 88]); // basicBetReady
   const encryptKey7 = findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78]); // drewReady
+  const encryptKey8 = findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]); // basicBettingState
 
   storageMethod('s', 'SET_ITEM', encryptKey4, encryptVal4); // betState, basicBetting
   storageMethod('s', 'SET_ITEM',
@@ -48,14 +43,23 @@ export default () => {
     );
   };
 
+  // coinsPlayerBet === 1
   if (
     encryptVal5 !== null &&
     encryptVal5 !== '' &&
     dec(encryptVal5) === encryptNumOfStr(textDE([119, 101, 101, 114])) // weer : 0001
   ) {
-    storageMethod('s', 'SET_ITEM', 'basicBettingState', true);
+    // storageMethod('s', 'SET_ITEM', 'basicBettingState', true);
+    storageMethod('s', 'SET_ITEM',
+      encryptKey8, // basicBettingState
+      X.enc(decodeTF(textDE([99, 109, 104, 117]))) // "cmhu" : true
+    );
   } else {
-    storageMethod('s', 'SET_ITEM', 'basicBettingState', false);
+    // storageMethod('s', 'SET_ITEM', 'basicBettingState', false);
+    storageMethod('s', 'SET_ITEM',
+      encryptKey8, // basicBettingState
+      X.enc(decodeTF(textDE([100, 113, 118, 105, 117]))) // "dqviu" : false
+    );
   };
 
   removeElement();

@@ -176,6 +176,9 @@ export const obfuscationList = {
       DREW_READY: { // true/false
         k: 'RCFEDVXJSN', // [82, 67, 70, 69, 68, 86, 88, 74, 83, 78]
       },
+      BASIC_BETTING_STATE: { // true/false
+        k: 'QEMHKCIWOJ', // [81, 69, 77, 72, 75, 67, 73, 87, 79, 74]
+      },
       // e: sessionStorage keys
 
       // s: click event

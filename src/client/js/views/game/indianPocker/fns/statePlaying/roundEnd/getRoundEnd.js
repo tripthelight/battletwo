@@ -469,7 +469,12 @@ export const GET_ROUND_END = {
     BET_COINS.remove();
     storageMethod('s', 'SET_ITEM', 'betCoin', []);
     storageMethod('s', 'SET_ITEM', 'betCoinPos', []);
-    storageMethod('s', 'SET_ITEM', 'basicBettingState', false);
+
+    // storageMethod('s', 'SET_ITEM', 'basicBettingState', false);
+    storageMethod('s', 'SET_ITEM',
+      findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]), // basicBettingState
+      X.enc(decodeTF(textDE([100, 111, 98, 105, 110]))) // "dobin" : false
+    );
     // storageMethod('s', 'SET_ITEM', 'betState', 'basicBetting');
     const encryptKey3 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
     const encryptVal3 = findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting

@@ -1,3 +1,5 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { text } from '@/client/js/functions/language';
@@ -13,8 +15,13 @@ export default () => {
   if (!CONTAINER) return errorManagement({ errCase: 'elementLoss', message: '#container 엘리먼트가 없습니다.' });
   const DRAW_BET_INFO = CONTAINER.querySelector('.draw-bet-info');
   if (DRAW_BET_INFO) return;
-  const BASIC_BETTING_STATE = window.sessionStorage.basicBettingState;
-  if (!BASIC_BETTING_STATE || BASIC_BETTING_STATE === 'true') return;
+
+  // const BASIC_BETTING_STATE = window.sessionStorage.basicBettingState;
+  // if (!BASIC_BETTING_STATE || BASIC_BETTING_STATE === 'true') return;
+  const encryptKey2 = findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]); // basicBettingState
+  const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+  if (encryptVal2 === null || (encryptVal2 !== null && encryptVal2 === '')) return;
+  if (X.dec(encryptVal2)) return;
 
   // 명령
   const elem = document.createElement('div');

@@ -20,7 +20,7 @@ export default () => {
       'betCoinPos',
       findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]), // betUserFirst
       'battleCardNum',
-      'basicBettingState',
+      findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]), // basicBettingState
       findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]). // extFirstBet
       findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]), // roundEnd
       'cardNum',

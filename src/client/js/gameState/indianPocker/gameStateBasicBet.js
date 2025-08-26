@@ -1,4 +1,7 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import textDE from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import STATE_BASIC_BET from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/init';
 
@@ -52,7 +55,11 @@ export default (reloadState) => {
 
       storageMethod('s', 'SET_ITEM', 'betCoin', []);
       storageMethod('s', 'SET_ITEM', 'betCoinPos', []);
-      storageMethod('s', 'SET_ITEM', 'basicBettingState', false);
+      // storageMethod('s', 'SET_ITEM', 'basicBettingState', false);
+      storageMethod('s', 'SET_ITEM',
+        findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]), // basicBettingState
+        X.enc(decodeTF(textDE([106, 103, 108, 116, 110]))) // "jgltn" : false
+      );
       storageMethod('s', 'SET_ITEM', 'battleCardNum', []);
     }
   } else {

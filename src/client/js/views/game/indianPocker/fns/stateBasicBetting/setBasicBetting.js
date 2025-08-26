@@ -1,5 +1,8 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { dec } from '@/client/js/module/crypts/obf8lower';
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import textDE from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import removeCoinActive from '@/client/js/views/game/indianPocker/fns/common/removeCoinActive';
@@ -12,8 +15,17 @@ import { request } from '@/client/js/network/indianPocker/request';
 
 export const SET_BASIC_BETTING = {
   setBasicBetting: (_event) => {
-    storageMethod('s', 'SET_ITEM', 'basicBettingState', true);
-    if (window.sessionStorage.basicBettingState === 'true') {
+    // storageMethod('s', 'SET_ITEM', 'basicBettingState', true);
+    const encryptKey1 = findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]); // basicBettingState
+    storageMethod('s', 'SET_ITEM',
+      encryptKey1, // basicBettingState
+      X.enc(decodeTF(textDE([99, 109, 104, 97]))) // "cmha" : true
+    );
+
+    const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+    // if (window.sessionStorage.basicBettingState === 'true') {
+    // basicBettingState === true
+    if (X.dec(encryptVal1)) {
       if (!_event?.target) return;
       _event.target.classList.add('active');
       removeCoinActive();
@@ -47,7 +59,16 @@ export const SET_BASIC_BETTING = {
     const decryptVal1 = findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
     if (encryptVal1 === decryptVal1) {
       console.log('기본 배팅 진입');
-      if (window.sessionStorage.basicBettingState === 'true') {
+
+      const encryptKey2 = findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]); // basicBettingState
+      const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+      // if (window.sessionStorage.basicBettingState === 'true') {
+      // basicBettingState === true
+      if (
+        encryptVal2 !== null &&
+        encryptVal2 !== '' &&
+        X.dec(encryptVal2)
+      ) {
         console.log('내가 먼저 배팅하고 상대의 배팅 코인을 받음');
         if (window.sessionStorage.coinsEnemyBet) {
           // 상대의 gameState를 playing으로 변경시키기
@@ -89,7 +110,15 @@ export const SET_BASIC_BETTING = {
     };
   },
   basicBettingBetStateCheck: () => {
-    if (window.sessionStorage.basicBettingState === 'true') {
+    const encryptKey1 = findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]); // basicBettingState
+    const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+    // if (window.sessionStorage.basicBettingState === 'true') {
+    // basicBettingState === true
+    if (
+      encryptVal1 !== null &&
+      encryptVal1 !== '' &&
+      X.dec(encryptVal1)
+    ) {
       if (window.sessionStorage.coinsEnemyBet) {
         SET_BASIC_BETTING.basicBetCheck();
       }
