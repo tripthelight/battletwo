@@ -21,6 +21,8 @@ export default (data) => {
     arr = JSON.parse(window.sessionStorage.betCoin);
   }
   arr.push(ACTIVE_COIN);
+  storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(arr));
+
   // 칩 넣기
   // const PLAYER_NUMB = dec(window.sessionStorage.getItem('coinsPlayer')) - 1;
   // const PLAYER_COINS = enc(PLAYER_NUMB);
@@ -30,8 +32,6 @@ export default (data) => {
   const decryptVal2_2 = Number(decryptVal2_1) - 1;
   const decryptVal2_3 = enc(decryptVal2_2);
   const encryptKey3 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]);  // coinsPlayerBet
-
-  storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(arr));
 
   // storageMethod('s', 'SET_ITEM', 'coinsPlayer', PLAYER_COINS);
   storageMethod('s', 'SET_ITEM', encryptKey2, decryptVal2_3);
