@@ -1,4 +1,5 @@
 import { encrypt } from '@/client/js/webRTC/rtcConn.js';
+import textDE from '@/client/js/module/crypts/textDE';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 /**
@@ -93,11 +94,11 @@ export const X = {
   enc(text) {
     // if (text !== "true" && text !== "false")
     if (
-      text !== new TextDecoder().decode(new Uint8Array([116, 114, 117, 101])) && // "true"
-      text !== new TextDecoder().decode(new Uint8Array([102, 97, 108, 115, 101])) // "false"
+      text !== textDE([116, 114, 117, 101]) && // "true"
+      text !== textDE([102, 97, 108, 115, 101]) // "false"
     ) throw throwObj('errorComn', "arg must be true or false");
 
-    const bit   = text === "true" ? 1 : 0;  // 1비트
+    const bit   = text === textDE([116, 114, 117, 101]) ? 1 : 0;  // 1비트
     const nonce = rand20();                 // 20비트
 
     // MAC용 입력값: (nonce<<1)|bit  → u32

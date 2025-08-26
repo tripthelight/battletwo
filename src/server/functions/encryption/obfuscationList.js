@@ -173,6 +173,9 @@ export const obfuscationList = {
       COINS_PLAYER_BET: {
         k: 'XOVJHPGFEM', // [88, 79, 86, 74, 72, 80, 71, 70, 69, 77]
       },
+      DREW_READY: { // true/false
+        k: 'RCFEDVXJSN', // [82, 67, 70, 69, 68, 86, 88, 74, 83, 78]
+      },
       // e: sessionStorage keys
 
       // s: click event
@@ -182,9 +185,6 @@ export const obfuscationList = {
       },
       RESULT_BETTING_CLICK: {
         k: 'BHINYATMSV', // [66, 72, 73, 78, 89, 65, 84, 77, 83, 86]
-      },
-      DREW_READY: { // true/false
-        k: 'RCFEDVXJSN', // [82, 67, 70, 69, 68, 86, 88, 74, 83, 78]
       },
       // e: click event
       */

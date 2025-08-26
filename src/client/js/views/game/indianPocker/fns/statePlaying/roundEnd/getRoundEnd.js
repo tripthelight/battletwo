@@ -31,7 +31,8 @@ export const GET_ROUND_END = {
   receiveRoundEnd: () => {
     storageMethod('s', 'SET_ITEM', 'betResulting', true); // refresh check
     storageMethod('s', 'REMOVE_ITEM', 'drewFlipCardMode');
-    storageMethod('s', 'REMOVE_ITEM', 'drewReady');
+    // storageMethod('s', 'REMOVE_ITEM', 'drewReady');
+    storageMethod('s', 'REMOVE_ITEM', findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78])); // drewReady
     storageMethod('s', 'REMOVE_ITEM', 'dropState');
     if (window.sessionStorage.drewCardReady) {
       LOADING_EVENT.hide();

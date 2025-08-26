@@ -57,14 +57,18 @@ export default {
         // const coinsPlayerBet = window.sessionStorage.coinsPlayerBet;
         const encryptKey2 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]); // coinsPlayerBet
         const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
-        const decryptVal2_1 = encryptVal2 ? dec(encryptVal2) : 0; // coinsPlayerBet value number
+        const decryptVal2_1 = encryptVal2 !== null && encryptVal2 !== '' ? dec(encryptVal2) : 0; // coinsPlayerBet value number
 
         const coinsEnemyBetRes = coinsEnemyBet && Number(coinsEnemyBet) > 0;
 
         // const coinsPlayerBetRes = coinsPlayerBet && Number(coinsPlayerBet) > 0;
-        const decryptVal2_2 = encryptVal2 !== null && Number(decryptVal2_1) > 0;
+        const decryptVal2_2 = encryptVal2 !== null && encryptVal2 !== '' && Number(decryptVal2_1) > 0;
 
-        const RESULT = Number(P_NUM) > Number(E_NUM) ? true : false;
+        // const RESULT = Number(P_NUM) > Number(E_NUM) ? true : false;
+        const RESULT =
+          Number(P_NUM) > Number(E_NUM) ?
+            X.enc(decodeTF(textDE([107, 102, 112, 97]))) : // "kfpa" : true
+            X.enc(decodeTF(textDE([120, 113, 98, 101, 117]))); // "xqbeu" : false
 
         // if (coinsEnemyBetRes && coinsPlayerBetRes) {
         if (coinsEnemyBetRes && decryptVal2_2) {
@@ -76,12 +80,12 @@ export default {
           // const RES = Number(coinsEnemyBet) + Number(coinsPlayerBet);
           const RES = Number(coinsEnemyBet) + Number(decryptVal2_1);
 
-          const C_RES = RESULT ? COINS_PLAYER + RES : COINS_ENEMY + RES;
+          const C_RES = X.dec(RESULT) ? COINS_PLAYER + RES : COINS_ENEMY + RES;
           // storageMethod('s', 'SET_ITEM', RESULT ? 'coinsPlayer' : 'coinsEnemy', Number(C_RES));
-          storageMethod('s', 'SET_ITEM', RESULT ? encryptKey9 : encryptKey8, enc(Number(C_RES)));
+          storageMethod('s', 'SET_ITEM', X.dec(RESULT) ? encryptKey9 : encryptKey8, enc(Number(C_RES)));
         }
 
-        storageMethod('s', 'SET_ITEM', encryptKey7, RESULT); // betUser
+        storageMethod('s', 'SET_ITEM', encryptKey7, X.dec(RESULT) ? encryptVal_1 : encryptVal_2); // betUser
         storageMethod('s', 'SET_ITEM', 'basicBettingState', false);
         storageMethod('s', 'SET_ITEM', encryptKey6, X.enc(decodeTF(textDE([120, 103, 98, 105, 110])))); // extFirstBet, "xgbin" : false
         storageMethod('s', 'SET_ITEM', encryptKey2, encryptNumOfStr(textDE([119, 101, 101, 101]))); // coinsPlayerBet, 0
@@ -92,7 +96,7 @@ export default {
         storageMethod('s', 'SET_ITEM', 'battleCardNum', '');
         storageMethod('s', 'SET_ITEM', 'betCoin', '');
 
-        GET_ROUND_END.goNextRound(RESULT ? 'win' : 'lose');
+        GET_ROUND_END.goNextRound(X.dec(RESULT) ? 'win' : 'lose');
       } else if (Number(P_NUM) === Number(E_NUM)) {
         // storageMethod('s', 'REMOVE_ITEM', 'drewReady');
         storageMethod('s', 'SET_ITEM', 'roundEndReload', true);

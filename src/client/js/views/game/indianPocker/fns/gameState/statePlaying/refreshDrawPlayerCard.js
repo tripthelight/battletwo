@@ -1,3 +1,7 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import textDE from '@/client/js/module/crypts/textDE';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import drewCheckInfo from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/drewCheckInfo';
@@ -24,7 +28,15 @@ export default () => {
     playerBlock.appendChild(imgEl);
     PLAYER_BLOCK.appendChild(playerBlock);
     // 다음 함수 실행
-    if (window.sessionStorage.drewReady && window.sessionStorage.drewReady === 'true') return drewCheckInfo();
+    const encryptKey1 = findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78]); // drewReady
+    const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+    // if (window.sessionStorage.drewReady && window.sessionStorage.drewReady === 'true') return drewCheckInfo();
+    if (
+      encryptVal1 !== null &&
+      encryptVal1 !== '' &&
+      X.dec(encryptVal1) // true
+    ) return drewCheckInfo();
+
     setTimeout(refreshBetUserCheck, timeInterval_1);
   }, timeInterval_1);
 };
