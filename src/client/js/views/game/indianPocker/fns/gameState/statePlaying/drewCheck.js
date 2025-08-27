@@ -1,5 +1,6 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { dec } from '@/client/js/module/crypts/obf8lower';
+import X from '@/client/js/module/crypts/bool-obf';
 import booleanReturn from '@/client/js/functions/validation/booleanReturn';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1, timeInterval_2 } from '@/client/js/functions/variable.js';
@@ -9,8 +10,13 @@ import disabledMoveCoins from '@/client/js/views/game/indianPocker/fns/common/di
 import drewCheckInfo from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/drewCheckInfo.js';
 
 export default () => {
-  const DREW_CHECK = window.sessionStorage.drewState;
-  if (!DREW_CHECK || DREW_CHECK !== 'true') return;
+  // const DREW_CHECK = window.sessionStorage.drewState;
+  // if (!DREW_CHECK || DREW_CHECK !== 'true') return;
+  const encryptKey1 = findCharCode([67, 71, 79, 68, 76, 73, 84, 74, 80, 77]); // drewState
+  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  // drewState === true
+  if (encryptVal1 !== null && encryptVal1 !== '' && X.dec(encryptVal1)) return;
+
   const PLAYER_BLOCK = document.querySelector('.player-block');
   if (!PLAYER_BLOCK) return errorManagement({ errCase: 'elementLoss', message: 'drew 상태에서 .player-block 엘리먼트가 없습니다 11' });
   const PLAYER_CARD = PLAYER_BLOCK.querySelector('.player-card');

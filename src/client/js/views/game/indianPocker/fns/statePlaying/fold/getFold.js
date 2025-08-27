@@ -109,7 +109,7 @@ export const GET_FOLD = {
       'betCoinPos',
       findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet,
       findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78]), // drewReady
-      'drewState'
+      findCharCode([67, 71, 79, 68, 76, 73, 84, 74, 80, 77]) // drewState
     ];
     storageMethod('s', 'REMOVE_ARR', '', '', D_ARR);
 

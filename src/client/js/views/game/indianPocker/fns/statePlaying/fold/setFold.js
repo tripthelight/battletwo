@@ -42,7 +42,7 @@ export const SET_FOLD = {
       'betCoinPos',
       findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
       findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78]), // drewReady
-      'drewState'
+      findCharCode([67, 71, 79, 68, 76, 73, 84, 74, 80, 77]) // drewState
     ];
     storageMethod('s', 'REMOVE_ARR', '', '', D_ARR);
     pcDraggableCheck('coins-player', false);
@@ -84,7 +84,7 @@ export const SET_FOLD = {
 
         // storageMethod('s', 'SET_ITEM', 'betUser', false);
         storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_2); // betUser, false
-        storageMethod('s', 'REMOVE_ITEM', 'drewState');
+        storageMethod('s', 'REMOVE_ITEM', findCharCode([67, 71, 79, 68, 76, 73, 84, 74, 80, 77])); // drewState
         flipPlayerCardComn(flipPlayerCard, _numRes);
 
         // 내 카드 확인 완료 했으니 storage 에서 제거

@@ -95,3 +95,20 @@ document.onreadystatechange = async () => {
     errorManager(error, false);
   };
 };
+
+/*
+function ec(str) {
+  let encoder = new TextEncoder();
+  let uint8Array = encoder.encode(str);
+  return uint8Array;
+};
+
+function dc(arr) {
+  let uint8Array = new Uint8Array(arr);
+  let decoder = new TextDecoder().decode(uint8Array);
+  return decoder;
+};
+
+ec('    ');
+dc([     ]);
+*/

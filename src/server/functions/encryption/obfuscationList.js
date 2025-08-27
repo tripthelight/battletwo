@@ -179,7 +179,7 @@ export const obfuscationList = {
       BASIC_BETTING_STATE: { // true/false
         k: 'QEMHKCIWOJ', // [81, 69, 77, 72, 75, 67, 73, 87, 79, 74]
       },
-      BET_COIN: {
+      BET_COIN: { : TODO:
         k: 'DUHITAZFYX', // [68, 85, 72, 73, 84, 65, 90, 70, 89, 88]
         v: {
           betState: {
@@ -204,6 +204,19 @@ export const obfuscationList = {
           th: '',
         }
       },
+      BET_COIN_POS: { : TODO:
+        k: 'DEKHCVZPAO', // [68, 69, 75, 72, 67, 86, 90, 80, 65, 79]
+          v: {
+            host: '',
+            translateX: '',
+            translateY: '',
+          },
+        },
+      },
+      DREW_STATE: { // true/false
+        k: 'CGODLITJPM' //  [67, 71, 79, 68, 76, 73, 84, 74, 80, 77]
+      },
+
       // e: sessionStorage keys
 
       // s: click event

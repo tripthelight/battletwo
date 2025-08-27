@@ -83,7 +83,12 @@ export const GET_ROUND_END = {
   },
   removeBottomButtons: () => {
     BTN_STATE.HIDE();
-    if (window.sessionStorage.drewState && window.sessionStorage.drewState === 'true') LOADING_EVENT.hide();
+    // if (window.sessionStorage.drewState && window.sessionStorage.drewState === 'true') LOADING_EVENT.hide();
+    const encryptKey1 = findCharCode([67, 71, 79, 68, 76, 73, 84, 74, 80, 77]); // drewState
+    const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+    // drewState === true
+    if (encryptVal1 !== null && encryptVal1 !== '' && X.dec(encryptVal1)) LOADING_EVENT.hide();
+
     setTimeout(GET_ROUND_END.flipPlayCard, timeInterval_1);
   },
   flipPlayCard: () => {
@@ -152,13 +157,17 @@ export const GET_ROUND_END = {
     console.log('enemy card num =============== ', cardNum.enemy);
     console.log('player card num =============== ', cardNum.player);
 
+    const encryptKey2 = findCharCode([67, 71, 79, 68, 76, 73, 84, 74, 80, 77]); // drewState
+
     let result = '';
     if (Number(cardNum.player) > Number(cardNum.enemy)) {
       result = 'win';
-      storageMethod('s', 'REMOVE_ITEM', 'drewState');
+      // storageMethod('s', 'REMOVE_ITEM', 'drewState');
+      storageMethod('s', 'REMOVE_ITEM', encryptKey2); // drewState
     } else if (Number(cardNum.player) < Number(cardNum.enemy)) {
       result = 'lose';
-      storageMethod('s', 'REMOVE_ITEM', 'drewState');
+      // storageMethod('s', 'REMOVE_ITEM', 'drewState');
+      storageMethod('s', 'REMOVE_ITEM', encryptKey2); // drewState
     } else if (Number(cardNum.player) === Number(cardNum.enemy)) {
       result = 'drew';
 
@@ -170,7 +179,11 @@ export const GET_ROUND_END = {
       // storageMethod('s', 'SET_ITEM', 'betUser', window.sessionStorage.betUserFirst);
       storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal2);
 
-      storageMethod('s', 'SET_ITEM', 'drewState', true);
+      // storageMethod('s', 'SET_ITEM', 'drewState', true);
+      storageMethod('s', 'SET_ITEM',
+        encryptKey2, // drewState
+        X.enc(decodeTF(textDE([115, 102, 114, 97]))) // "sfra" : true
+      );
 
       storageMethod('s', 'SET_ITEM',
         findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]), // roundEnd

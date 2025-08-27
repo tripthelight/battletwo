@@ -51,6 +51,7 @@ export default {
       const encryptVal9 = window.sessionStorage.getItem(encryptKey9);
       const encryptKey10 = findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78]); // drewReady
       const encryptKey11 =  findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]); // basicBettingState
+      const encryptKey12 =  findCharCode([67, 71, 79, 68, 76, 73, 84, 74, 80, 77]); // drewState
 
       if (Number(P_NUM) > Number(E_NUM) || Number(P_NUM) < Number(E_NUM)) {
         const coinsEnemyBet = window.sessionStorage.coinsEnemyBet;
@@ -103,7 +104,7 @@ export default {
         storageMethod('s', 'SET_ITEM', 'roundEndReload', true);
         storageMethod('s', 'SET_ITEM', encryptKey10, X.enc(decodeTF(textDE([99, 119, 114, 117])))); // drewReady, "cwru" : true
         storageMethod('s', 'SET_ITEM', encryptKey7, encryptVal7); // betUser, betUserFirst
-        storageMethod('s', 'SET_ITEM', 'drewState', true);
+        storageMethod('s', 'SET_ITEM', encryptKey12, X.enc(decodeTF(textDE([107, 119, 104, 110])))); // drewState, "kwhn" : true
         storageMethod('s', 'SET_ITEM', encryptKey5, X.enc(decodeTF(textDE([120, 113, 108, 101, 97])))); // roundEnd, "xqlea" : false
         storageMethod('s', 'SET_ITEM', encryptKey6, X.enc(decodeTF(textDE([106, 111, 98, 116, 117])))); // extFirstBet, "jobtu" : false
         storageMethod('s', 'SET_ITEM', 'battleCardNum', '');

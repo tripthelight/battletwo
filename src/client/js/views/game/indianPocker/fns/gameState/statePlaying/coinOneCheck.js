@@ -1,5 +1,6 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { dec } from '@/client/js/module/crypts/obf8lower';
+import X from '@/client/js/module/crypts/bool-obf';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { RULES } from '@/client/js/views/game/indianPocker/fns/rule/rules.js';
@@ -11,8 +12,13 @@ export default () => {
   const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
   const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
 
-  const DREW_CHECK = window.sessionStorage.drewState;
-  if (DREW_CHECK || DREW_CHECK === 'true') return;
+  // const DREW_CHECK = window.sessionStorage.drewState;
+  // if (DREW_CHECK || DREW_CHECK === 'true') return;
+  const encryptKey1 = findCharCode([67, 71, 79, 68, 76, 73, 84, 74, 80, 77]); // drewState
+  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  // drewState === true
+  if (encryptVal1 !== null && encryptVal1 !== '' && X.dec(encryptVal1)) return;
+
   // const COINS_PLAYER = window.sessionStorage.coinsPlayer;
   // if (!COINS_PLAYER) return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 coinsPlayer 세션이 없습니다.' });
   const encryptKey2 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer

@@ -8,7 +8,8 @@ import drawEnemyBlockPlaying from '@/client/js/views/game/indianPocker/fns/gameS
 
 export default () => {
 
-  storageMethod('s', 'REMOVE_ITEM', 'drewState');
+  // storageMethod('s', 'REMOVE_ITEM', 'drewState');
+  storageMethod('s', 'REMOVE_ITEM', findCharCode([67, 71, 79, 68, 76, 73, 84, 74, 80, 77])); // drewState
   // storageMethod('s', 'REMOVE_ITEM', 'drewReady');
   storageMethod('s', 'REMOVE_ITEM', findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78])); // drewReady
   storageMethod('s', 'REMOVE_ITEM', 'dropState');
