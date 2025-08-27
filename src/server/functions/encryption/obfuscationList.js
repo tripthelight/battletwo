@@ -216,6 +216,9 @@ export const obfuscationList = {
       DREW_STATE: { // true/false
         k: 'CGODLITJPM' //  [67, 71, 79, 68, 76, 73, 84, 74, 80, 77]
       },
+      RESULT: { // true/false
+        k: 'OUMJGNPCQH' //  [79, 85, 77, 74, 71, 78, 80, 67, 81, 72]
+      },
 
       // e: sessionStorage keys
 

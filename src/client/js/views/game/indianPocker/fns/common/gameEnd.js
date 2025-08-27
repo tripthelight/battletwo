@@ -1,5 +1,9 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { dec } from '@/client/js/module/crypts/obf8lower';
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import textDE from '@/client/js/module/crypts/textDE';
+import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
@@ -21,11 +25,24 @@ export default () => {
   const decryptVal2 = dec(encryptVal2); // coinsEnemy value number
 
   setTimeout(() => {
+    const encryptKey3 = findCharCode([79, 85, 77, 74, 71, 78, 80, 67, 81, 72]); // result
     // if (Number(COINS_PLAYER) === 0) storageMethod('s', 'SET_ITEM', 'result', false);
-    if (Number(decryptVal1) === 0) storageMethod('s', 'SET_ITEM', 'result', false);
+    // decryptVal1 === 0
+    if (Number(decryptVal1) === encryptNumOfStr(textDE([119, 119, 101, 101]))) { // 'wwee' : 0
+      storageMethod('s', 'SET_ITEM',
+        encryptKey3, // result
+        X.enc(decodeTF(textDE([106, 111, 118, 105, 117]))) // "joviu" : false
+      );
+    };
 
     // if (Number(COINS_ENEMY) === 0) storageMethod('s', 'SET_ITEM', 'result', true);
-    if (Number(decryptVal2) === 0) storageMethod('s', 'SET_ITEM', 'result', true);
+    // decryptVal2 === 0
+    if (Number(decryptVal2) === encryptNumOfStr(textDE([119, 119, 119, 101]))) { // 'wwwe' : 0
+      storageMethod('s', 'SET_ITEM',
+        encryptKey3, // result
+        X.enc(decodeTF(textDE([99, 109, 114, 110]))) // "cmrn" : true
+      );
+    };
 
     setTimeout(() => {
       indianPockerGameState.gameOver();

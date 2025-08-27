@@ -1,5 +1,6 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { dec } from '@/client/js/module/crypts/obf8lower';
+import X from '@/client/js/module/crypts/bool-obf';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import drewElementComn from '@/client/js/views/game/indianPocker/fns/common/drewElementComn';
@@ -7,12 +8,19 @@ import resultAnimation from '@/client/js/views/game/indianPocker/fns/gameState/s
 
 export default () => {
   // element | seeeion 체크
-  const RESULT = window.sessionStorage.result;
-  if (!RESULT) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 결과 출력 중 result 세션이 없습니다' });
-  const RESULT_RES = RESULT === 'true' ? true : RESULT === 'false' ? false : errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 result 세션이 true나 false가 아닙니다' });
+  // const RESULT = window.sessionStorage.result;
+  // if (!RESULT) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 결과 출력 중 result 세션이 없습니다' });
+  // const RESULT_RES = RESULT === 'true' ? true : RESULT === 'false' ? false : errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 result 세션이 true나 false가 아닙니다' });
+  const encryptKey1 = findCharCode([79, 85, 77, 74, 71, 78, 80, 67, 81, 72]); // result
+  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  if (encryptVal1 === null || (encryptVal1 !== null && encryptVal1 === '')) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 결과 출력 중 result 세션이 없습니다' });
+  const decryptVal1 = X.dec(encryptVal1);
+
   const PLAYER_BLOCK = document.querySelector('.player-block');
-  if (PLAYER_BLOCK && !RESULT_RES) return resultAnimation();
-  if (PLAYER_BLOCK && RESULT_RES) {
+  // if (PLAYER_BLOCK && !RESULT_RES) return resultAnimation();
+  // if (PLAYER_BLOCK && RESULT_RES) {
+  if (PLAYER_BLOCK && !decryptVal1) return resultAnimation();
+  if (PLAYER_BLOCK && decryptVal1) {
     const COINS = PLAYER_BLOCK.querySelectorAll('li');
     if (COINS.length > 0) {
       for (let i = 0; i < COINS.length; i++) COINS[i].remove();
@@ -30,7 +38,8 @@ export default () => {
     if (!PLAYER_BLOCK) {
       drewElementComn('div', 'player-block');
       setTimeout(() => {
-        if (RESULT_RES) {
+        // if (RESULT_RES) {
+        if (decryptVal1) {
           const PLAYER_BLOCK_EL = document.querySelector('.player-block');
 
           const encryptKey2_2 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer

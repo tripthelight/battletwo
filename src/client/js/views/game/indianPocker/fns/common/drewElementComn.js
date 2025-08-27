@@ -1,5 +1,6 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { dec } from '@/client/js/module/crypts/obf8lower';
+import X from '@/client/js/module/crypts/bool-obf';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 
 export default (_elem, _class) => {
@@ -21,10 +22,18 @@ export default (_elem, _class) => {
   if (encryptVal2 === null) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 결과를 그리는 중 coinsEnemy 세션이 없습니다' });
   const decryptVal2 = dec(encryptVal2); // coinsEnemy value number
 
-  const RESULT = window.sessionStorage.result;
-  if (!RESULT) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 결과를 그리는 중 result 세션이 없습니다' });
+
+
+  // const RESULT = window.sessionStorage.result;
+  // if (!RESULT) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 결과를 그리는 중 result 세션이 없습니다' });
+  const encryptKey3 = findCharCode([79, 85, 77, 74, 71, 78, 80, 67, 81, 72]); // result
+  const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
+  if (encryptVal3 === null || (encryptVal3 !== null && encryptVal3 === '')) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 결과를 그리는 중 result 세션이 없습니다' });
+  const decryptVal3 = X.dec(encryptVal3);
+
   // const COINS_RESULT = RESULT === 'true' ? Number(COINS_PLAYER) : Number(COINS_ENEMY);
-  const COINS_RESULT = RESULT === 'true' ? decryptVal1 : decryptVal2;
+  const COINS_RESULT = decryptVal3 ? decryptVal1 : decryptVal2;
+
   const UL_CLASS = _class === 'enemy-block' ? 'coins-enemy' : _class === 'player-block' ? 'coins-player' : '';
   let elem = document.createElement(_elem);
   elem.classList.add(_class);

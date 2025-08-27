@@ -1,3 +1,5 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { comnText } from '@/client/js/functions/language';
@@ -9,9 +11,14 @@ export default () => {
   if (DREW_RESULT_INFO) return;
   const GAME_SCENE = document.getElementById('gameScene');
   if (!GAME_SCENE) return errorManagement({ errCase: 'elementLoss', message: 'game over 상태에서 #gameScene 엘리먼트가 없습니다' });
-  const RESULT = window.sessionStorage.result;
-  if (!RESULT) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 결과 출력 중 result 세션이 없습니다' });
-  const RESULT_RES = RESULT === 'true' ? true : RESULT === 'false' ? false : errorManagement({ errCase: 'errorComn', message: 'game over 상태에서 result 세션이 true나 false가 아닙니다' });
+
+  // const RESULT = window.sessionStorage.result;
+  // if (!RESULT) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 결과 출력 중 result 세션이 없습니다' });
+  // const RESULT_RES = RESULT === 'true' ? true : RESULT === 'false' ? false : errorManagement({ errCase: 'errorComn', message: 'game over 상태에서 result 세션이 true나 false가 아닙니다' });
+  const encryptKey1 = findCharCode([79, 85, 77, 74, 71, 78, 80, 67, 81, 72]); // result
+  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  if (encryptVal1 === null || (encryptVal1 !== null && encryptVal1 === '')) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 결과 출력 중 result 세션이 없습니다' });
+  const decryptVal1 = X.dec(encryptVal1);
 
   // 명령
   setTimeout(() => {
@@ -36,7 +43,8 @@ export default () => {
     btnBlock.appendChild(btnReplay);
 
     elem.classList.add('drew-result-info');
-    inner.innerHTML = RESULT_RES ? comnText.win : comnText.die;
+    // inner.innerHTML = RESULT_RES ? comnText.win : comnText.die;
+    inner.innerHTML = decryptVal1 ? comnText.win : comnText.die;
     elem.appendChild(inner);
     elem.appendChild(btnBlock);
 

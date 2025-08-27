@@ -1,4 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import storageMethod from '@/client/js/module/storage/storageMethod';
@@ -7,8 +8,11 @@ import setStorageGameResult from '@/client/js/views/game/indianPocker/fns/common
 
 export default () => {
   // element | seeeion 체크
-  const RESULT = window.sessionStorage.result;
-  if (!RESULT) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 result 세션이 없습니다' });
+  // const RESULT = window.sessionStorage.result;
+  // if (!RESULT) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 result 세션이 없습니다' });
+  const encryptKey1 = findCharCode([79, 85, 77, 74, 71, 78, 80, 67, 81, 72]); // result
+  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  if (encryptVal1 === null || (encryptVal1 !== null && encryptVal1 === '')) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 result 세션이 없습니다' });
 
   // 명령
   setTimeout(() => {
@@ -35,8 +39,9 @@ export default () => {
     storageMethod('s', 'REMOVE_ARR', '', '', D_ARR);
 
     // 게임 결과를 localStorage에 저장
-    const RES_BOOLEAN = window.sessionStorage.result === 'true' ? true : false;
-    setStorageGameResult('indianpoker', RES_BOOLEAN);
+    // const RES_BOOLEAN = window.sessionStorage.result === 'true' ? true : false;
+    // setStorageGameResult('indianpoker', RES_BOOLEAN);
+    setStorageGameResult('indianpoker', X.dec(encryptVal1));
     // 다음 함수 실행
     setTimeout(drawResult, timeInterval_1);
   }, timeInterval_1);
