@@ -34,7 +34,7 @@ export default () => {
       'coinsEnemyExtBet',
       'betCoin',
       findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]), // coinsPlayerExtBet
-      'coinsEnemyBet'
+      findCharCode([67, 79, 66, 70, 75, 82, 74, 88, 69, 68]) // coinsEnemyBet
     ];
     storageMethod('s', 'REMOVE_ARR', '', '', D_ARR);
 

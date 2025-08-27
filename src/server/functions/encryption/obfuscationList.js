@@ -165,14 +165,20 @@ export const obfuscationList = {
       BET_USER_FIRST: { // true/false/''
         k: 'ZYPFDTAMJN', // [90, 89, 80, 70, 68, 84, 65, 77, 74, 78]
       },
-      COINS_ENEMY: {
-        k: 'SNTDBPGACW', // [83, 78, 84, 68, 66, 80, 71, 65, 67, 87]
-      },
       COINS_PLAYER: {
         k: 'QCEDGMSZAJ', // [81, 67, 69, 68, 71, 77, 83, 90, 65, 74]
       },
       COINS_PLAYER_BET: {
         k: 'XOVJHPGFEM', // [88, 79, 86, 74, 72, 80, 71, 70, 69, 77]
+      },
+      COINS_PLAYER_EXT_BET: {
+        k: 'FZOCXMERTQ' //  [70, 90, 79, 67, 88, 77, 69, 82, 84, 81]
+      },
+      COINS_ENEMY: {
+        k: 'SNTDBPGACW', // [83, 78, 84, 68, 66, 80, 71, 65, 67, 87]
+      },
+      COINS_ENEMY_BET: {
+        k: 'COBFKRJXED', // [67, 79, 66, 70, 75, 82, 74, 88, 69, 68]
       },
       DREW_READY: { // true/false
         k: 'RCFEDVXJSN', // [82, 67, 70, 69, 68, 86, 88, 74, 83, 78]
@@ -222,9 +228,6 @@ export const obfuscationList = {
       },
       DROP_STATE: { // true/false
         k: 'QEGTUZRCMY' //  [81, 69, 71, 84, 85, 90, 82, 67, 77, 89]
-      },
-      COINS_PLAYER_EXT_BET: {
-        k: 'FZOCXMERTQ' //  [70, 90, 79, 67, 88, 77, 69, 82, 84, 81]
       },
 
       // e: sessionStorage keys

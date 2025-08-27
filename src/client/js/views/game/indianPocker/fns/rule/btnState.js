@@ -111,7 +111,11 @@ export const BTN_STATE = {
     const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
     const decryptVal1 = encryptVal1 !== null && encryptVal1 !== '' ? dec(encryptVal1) : 0; // coinsEnemy value number
 
-    const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet ?? 0;
+    // const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet ?? 0;
+    const encryptKey2 = findCharCode([67, 79, 66, 70, 75, 82, 74, 88, 69, 68]); // coinsEnemyBet
+    const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+    const decryptVal2 = encryptVal2 !== null && encryptVal2 !== '' ? dec(encryptVal2) : 0; // coinsEnemyBet value number
+
     const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet ?? 0;
 
     // const COINS_PLAYER = window.sessionStorage.coinsPlayer ?? 0;
@@ -132,7 +136,9 @@ export const BTN_STATE = {
     // const C_E = Number(COINS_ENEMY);
     const C_E = Number(decryptVal1);
 
-    const C_E_B = Number(COINS_ENEMY_BET);
+    // const C_E_B = Number(COINS_ENEMY_BET);
+    const C_E_B = Number(decryptVal2);
+
     const C_E_E_B = Number(COINS_ENEMY_EXT_BET);
 
     // const P_E = Number(COINS_PLAYER);

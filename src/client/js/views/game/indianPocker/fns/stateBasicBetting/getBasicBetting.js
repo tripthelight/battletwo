@@ -1,5 +1,7 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
+import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
+import textDE from '@/client/js/module/crypts/textDE';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import storageMethod from '@/client/js/module/storage/storageMethod';
@@ -10,6 +12,7 @@ import getTranslateMH from '@/client/js/views/game/indianPocker/fns/common/getTr
 export const GET_BASIC_BETTING = {
   receiveBasicBetting: (_data) => {
     const encryptKey1 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
+    const encryptKey2 = findCharCode([67, 79, 66, 70, 75, 82, 74, 88, 69, 68]); // coinsEnemyBet
 
     const PROMISE = new Promise((resolve, reject) => {
       resolve(_data);
@@ -23,9 +26,9 @@ export const GET_BASIC_BETTING = {
         const { coinCount, betCount, originCount } = _data;
         // 상대 peer에게 받은 기본배팅 하기 전 코인 개수와
         // 내가 가지고 있는 상대 코인 개수가 맞는지 검증 필요
-        const encryptVal = window.sessionStorage.getItem(encryptKey1);
-        if (encryptVal === null) throw throwObj('sessionStorageLoss', 'basic bet sessionStorage enemy coins failed.');
-        const decryptVal = dec(encryptVal); // coinsEnemy value number
+        const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+        if (encryptVal1 === null) throw throwObj('sessionStorageLoss', 'basic bet sessionStorage enemy coins failed.');
+        const decryptVal = dec(encryptVal1); // coinsEnemy value number
         if (
           betCount !== 1 ||
           originCount !== decryptVal ||
@@ -43,12 +46,24 @@ export const GET_BASIC_BETTING = {
         return _data;
       })
       .then((_data) => {
-        let enemyBetCoin = window.sessionStorage.coinsEnemyBet;
-        if (!enemyBetCoin) {
-          storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', 1);
+        // let enemyBetCoin = window.sessionStorage.coinsEnemyBet;
+        const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+        // if (!enemyBetCoin) {
+        if (encryptVal2 === null) {
+          // storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', 1);
+          storageMethod('s', 'SET_ITEM',
+            encryptKey2, // coinsEnemyBet
+            enc(encryptNumOfStr(textDE([101, 119, 119, 98]))) // 'ewwb' : 1
+          );
         } else {
-          enemyBetCoin = Number(window.sessionStorage.coinsEnemyBet) + 1;
-          storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', enemyBetCoin);
+          // enemyBetCoin = Number(window.sessionStorage.coinsEnemyBet) + 1;
+          // coinsEnemyBet value number  + 1
+          const decryptVal2 = dec(encryptVal2) + encryptNumOfStr(textDE([119, 101, 119, 114])); // 'wewr' : 1
+          // storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', enemyBetCoin);
+          storageMethod('s', 'SET_ITEM',
+            encryptKey2, // coinsEnemyBet
+            enc(decryptVal2)
+          );
         }
         return _data;
       })

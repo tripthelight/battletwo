@@ -47,14 +47,18 @@ export default {
       const encryptVal9 = window.sessionStorage.getItem(encryptKey9);
 
       if (Number(P_NUM) > Number(E_NUM) || Number(P_NUM) < Number(E_NUM)) {
-        const coinsEnemyBet = window.sessionStorage.coinsEnemyBet;
+        // const coinsEnemyBet = window.sessionStorage.coinsEnemyBet;
+        const encryptKey1 = findCharCode([67, 79, 66, 70, 75, 82, 74, 88, 69, 68]); // coinsEnemyBet
+        const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+        const decryptVal1_1 = encryptVal1 !== null && encryptVal1 !== '' ? dec(encryptVal1) : 0; // coinsEnemyBet value number
 
         // const coinsPlayerBet = window.sessionStorage.coinsPlayerBet;
         const encryptKey2 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]); // coinsPlayerBet
         const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
         const decryptVal2_1 = encryptVal2 !== null && encryptVal2 !== '' ? dec(encryptVal2) : 0; // coinsPlayerBet value number
 
-        const coinsEnemyBetRes = coinsEnemyBet && Number(coinsEnemyBet) > 0;
+        // const coinsEnemyBetRes = coinsEnemyBet && Number(coinsEnemyBet) > 0;
+        const decryptVal1_2 = encryptVal1 !== null && encryptVal1 !== '' && Number(decryptVal1_1) > 0;
 
         // const coinsPlayerBetRes = coinsPlayerBet && Number(coinsPlayerBet) > 0;
         const decryptVal2_2 = encryptVal2 !== null && encryptVal2 !== '' && Number(decryptVal2_1) > 0;
@@ -66,14 +70,14 @@ export default {
             X.enc(decodeTF(textDE([120, 113, 98, 101, 117]))); // "xqbeu" : false
 
         // if (coinsEnemyBetRes && coinsPlayerBetRes) {
-        if (coinsEnemyBetRes && decryptVal2_2) {
+        if (decryptVal1_2 && decryptVal2_2) {
           // const COINS_PLAYER = Number(window.sessionStorage.coinsPlayer);
           const COINS_PLAYER = dec(encryptVal9); // coinsPlayer value number
           // const COINS_ENEMY = Number(window.sessionStorage.coinsEnemy);
           const COINS_ENEMY = dec(encryptVal8); // coinsEnemy value number
 
           // const RES = Number(coinsEnemyBet) + Number(coinsPlayerBet);
-          const RES = Number(coinsEnemyBet) + Number(decryptVal2_1);
+          const RES = Number(decryptVal1_2) + Number(decryptVal2_1);
 
           const C_RES = X.dec(RESULT) ? COINS_PLAYER + RES : COINS_ENEMY + RES;
           // storageMethod('s', 'SET_ITEM', RESULT ? 'coinsPlayer' : 'coinsEnemy', Number(C_RES));
@@ -94,14 +98,17 @@ export default {
         );
         storageMethod('s', 'SET_ITEM',
           encryptKey2, // coinsPlayerBet
-          encryptNumOfStr(textDE([119, 101, 101, 101])) // "weee" : 0
+          enc(encryptNumOfStr(textDE([119, 101, 101, 101]))) // "weee" : 0
         );
-        storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', 0);
+        storageMethod('s', 'SET_ITEM',
+          encryptKey1, // 'coinsEnemyBet',
+          enc(encryptNumOfStr(textDE([119, 119, 101, 119]))) // "wwew" : 0
+        );
         storageMethod('s', 'SET_ITEM',
           findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]), // coinsPlayerExtBet
           enc(encryptNumOfStr(textDE([101, 119, 101, 101])) )// 'ewee' : 0
         );
-        storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', 0);
+        storageMethod('s', 'SET_ITEM', 'coinsEnemyExtBet', 0);
         storageMethod('s', 'SET_ITEM', 'betCoinPos', '');
         storageMethod('s', 'SET_ITEM', 'battleCardNum', '');
         storageMethod('s', 'SET_ITEM', 'betCoin', '');

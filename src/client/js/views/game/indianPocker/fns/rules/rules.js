@@ -24,7 +24,11 @@ export default {
     const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
     const decryptVal4 = encryptVal4 !== null && encryptVal4 !== '' ? dec(encryptVal4) : 0; // coinsEnemy value number
 
-    const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
+    // const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
+    const encryptKey5 = findCharCode([67, 79, 66, 70, 75, 82, 74, 88, 69, 68]); // coinsEnemyBet
+    const encryptVal5 = window.sessionStorage.getItem(encryptKey5);
+    const decryptVal5 = encryptVal5 !== null && encryptVal5 !== '' ? dec(encryptVal5) : 0; // coinsEnemyBet value number
+
     const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet;
 
     // const AI_CP = COINS_PLAYER && Number(COINS_PLAYER) > 0 ? Number(COINS_PLAYER) : 0;
@@ -39,7 +43,9 @@ export default {
     // const AI_CE = COINS_ENEMY && Number(COINS_ENEMY) > 0 ? Number(COINS_ENEMY) : 0;
     const AI_CE = encryptVal4 !== null && encryptVal4 !== '' && Number(decryptVal4) > 0 ? Number(decryptVal4) : 0;
 
-    const AI_CEB = COINS_ENEMY_BET && Number(COINS_ENEMY_BET) > 0 ? Number(COINS_ENEMY_BET) : 0;
+    // const AI_CEB = COINS_ENEMY_BET && Number(COINS_ENEMY_BET) > 0 ? Number(COINS_ENEMY_BET) : 0;
+    const AI_CEB = encryptVal5 !== null && encryptVal5 !== '' && Number(decryptVal5) > 0 ? Number(decryptVal5) : 0;
+
     const AI_CEEB = COINS_ENEMY_EXT_BET && Number(COINS_ENEMY_EXT_BET) > 0 ? Number(COINS_ENEMY_EXT_BET) : 0;
     let aiResD = 0;
     let aiResA = 0;
@@ -205,7 +211,11 @@ export default {
     const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
     const decryptVal4 = encryptVal4 !== null && encryptVal4 !== '' ? dec(encryptVal4) : 0; // coinsEnemy value number
 
-    const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
+    // const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
+    const encryptKey5 = findCharCode([67, 79, 66, 70, 75, 82, 74, 88, 69, 68]); // coinsEnemyBet
+    const encryptVal5 = window.sessionStorage.getItem(encryptKey5);
+    const decryptVal5 = encryptVal5 !== null && encryptVal5 !== '' ? dec(encryptVal5) : 0; // coinsEnemyBet value number
+
     const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet;
 
     // const AI_CP = COINS_PLAYER && Number(COINS_PLAYER) > 0 ? Number(COINS_PLAYER) : 0;
@@ -220,7 +230,9 @@ export default {
     // const AI_CE = COINS_ENEMY && Number(COINS_ENEMY) > 0 ? Number(COINS_ENEMY) : 0;
     const AI_CE = encryptVal4 !== null && encryptVal4 !== '' && Number(decryptVal4) > 0 ? Number(decryptVal4) : 0;
 
-    const AI_CEB = COINS_ENEMY_BET && Number(COINS_ENEMY_BET) > 0 ? Number(COINS_ENEMY_BET) : 0;
+    // const AI_CEB = COINS_ENEMY_BET && Number(COINS_ENEMY_BET) > 0 ? Number(COINS_ENEMY_BET) : 0;
+    const AI_CEB = encryptVal5 !== null && encryptVal5 !== '' && Number(decryptVal5) > 0 ? Number(decryptVal5) : 0;
+
     const AI_CEEB = COINS_ENEMY_EXT_BET && Number(COINS_ENEMY_EXT_BET) > 0 ? Number(COINS_ENEMY_EXT_BET) : 0;
     const CALL_COUNT = AI_CEB - Number(AI_CPB - AI_CPEB);
     let min1 = Number(AI_CE);

@@ -51,8 +51,13 @@ export default () => {
             enc(_aiCoinsRes.epeb)
           );
 
+          const encryptKey3 = findCharCode([67, 79, 66, 70, 75, 82, 74, 88, 69, 68]);  // coinsEnemyBet
+          const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
+          const decryptVal3_1 = dec(encryptVal3); // coinsEnemyBet value number
+
           // if (Number(window.sessionStorage.coinsPlayerBet) === Number(window.sessionStorage.coinsEnemyBet)) {
-          if (Number(decryptVal2_2) === Number(window.sessionStorage.coinsEnemyBet)) {
+          // coinsPlayerBet === coinsEnemyBet
+          if (Number(decryptVal2_2) === Number(decryptVal3_1)) {
             // ENEMY 올인을 받고, PLAYER도 올인
             // RULES.CALL();
             BTN_STATE.HANDLER('call');

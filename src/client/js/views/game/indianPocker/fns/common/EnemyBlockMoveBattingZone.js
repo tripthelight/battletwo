@@ -1,9 +1,10 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import { dec } from '@/client/js/module/crypts/obf8lower';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { getStyle } from '@/client/js/functions/comnExport';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import { timeInterval_201 } from '@/client/js/functions/variable.js';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
-import findCharCode from '@/client/js/functions/findCharCode';
 import randomNumberMinMax from '@/client/js/views/game/indianPocker/fns/common/randomNumberMinMax.js';
 import getTranslateMH from '@/client/js/views/game/indianPocker/fns/common/getTranslateMH.js';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
@@ -17,7 +18,13 @@ export default (_case) => {
   const ENEMY_COIN_WRAP = ENEMY_BLOCK.querySelector('.coins-enemy');
   if (!ENEMY_COIN_WRAP) return errorManagement({ errCase: 'elementLoss', message: '.enemy-block에서 .betting-zone으로 칩을 옯길 때 .coins-enemy 엘리먼트가 없습니다' });
   const COINS = ENEMY_COIN_WRAP.querySelectorAll('li');
-  const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
+
+
+  // const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
+  const encryptKey1 = findCharCode([67, 79, 66, 70, 75, 82, 74, 88, 69, 68]); // coinsEnemyBet
+  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  const decryptVal1 = dec(encryptVal1); // coinsEnemyBet value number
+
   const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet;
 
   if (_case === 'allin') {
@@ -109,7 +116,8 @@ export default (_case) => {
       const decryptVal = window.sessionStorage.getItem(encryptKey);
       // playing
       const encryptVal = findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]);
-      const NUMS = decryptVal === encryptVal ? Number(COINS_ENEMY_EXT_BET) || 0 : Number(COINS_ENEMY_BET) || 0;
+      // const NUMS = decryptVal === encryptVal ? Number(COINS_ENEMY_EXT_BET) || 0 : Number(COINS_ENEMY_BET) || 0;
+      const NUMS = decryptVal === encryptVal ? Number(COINS_ENEMY_EXT_BET) || 0 : Number(decryptVal1) || 0;
       if (NUMS === 0) resolve();
 
       const PB = getStyle(ENEMY_COIN_WRAP, 'padding-bottom');
