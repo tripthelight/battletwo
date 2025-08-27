@@ -45,8 +45,11 @@ export default () => {
           // storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', Number(CPB_RES) + _aiCoinsRes.ep - _aiCoinsRes.rc);
           storageMethod('s', 'SET_ITEM', encryptKey2, enc(decryptVal2_2)); // coinsPlayerBet
 
-          // storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', '_aiCoinsRes.epeb');
-          storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', _aiCoinsRes.epeb);
+          // storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', _aiCoinsRes.epeb);
+          storageMethod('s', 'SET_ITEM',
+            findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]), // coinsPlayerExtBet
+            enc(_aiCoinsRes.epeb)
+          );
 
           // if (Number(window.sessionStorage.coinsPlayerBet) === Number(window.sessionStorage.coinsEnemyBet)) {
           if (Number(decryptVal2_2) === Number(window.sessionStorage.coinsEnemyBet)) {

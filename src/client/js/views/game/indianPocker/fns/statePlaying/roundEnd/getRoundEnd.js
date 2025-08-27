@@ -216,6 +216,8 @@ export const GET_ROUND_END = {
     const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
     const encryptKey5 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]); // coinsPlayerBet
     const encryptVal5 = window.sessionStorage.getItem(encryptKey5);
+    const encryptKey6 = findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]); // coinsPlayerExtBet
+    const encryptVal6 = window.sessionStorage.getItem(encryptKey6);
 
     // const BET_USER = window.sessionStorage.betUser;
     // if (!BET_USER) {
@@ -249,8 +251,9 @@ export const GET_ROUND_END = {
       errorManagement({ errCase: 'errorComn' });
     }
     /*
-    const COINS_PLAYER_EXT_BET = window.sessionStorage.coinsPlayerExtBet;
-    if (!COINS_PLAYER_EXT_BET) {
+    // const COINS_PLAYER_EXT_BET = window.sessionStorage.coinsPlayerExtBet;
+    // if (!COINS_PLAYER_EXT_BET) {
+    if (encryptVal6 === null) {
       console.log('error - getRoundEnd.js - !COINS_PLAYER_EXT_BET');
       errorManagement({ errCase: 'errorComn' });
     }
@@ -271,7 +274,13 @@ export const GET_ROUND_END = {
     );
 
     if (_result !== 'drew') storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', 0);
-    storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 0);
+
+    // storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 0);
+    storageMethod('s', 'SET_ITEM',
+      encryptKey6, // coinsPlayerExtBet
+      enc(encryptNumOfStr(textDE([101, 101, 119, 119]))) // 'eeww' : 0000
+    );
+
     storageMethod('s', 'SET_ITEM', 'coinsEnemyExtBet', 0);
     // 새로고침 을 위해 roundEnd seeeion 추가
     storageMethod('s', 'SET_ITEM',

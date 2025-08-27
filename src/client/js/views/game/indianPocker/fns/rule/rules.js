@@ -1,3 +1,4 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState.js';
 import { comnText } from '@/client/js/functions/language';
@@ -17,7 +18,12 @@ export const RULES = {
     BTN_STATE.HIDE();
     btnBettingCallRaiseComn(_state);
     if (_state === comnText.betting || _state === comnText.call || _state === comnText.raise) {
-      setTimeout(setSessionMakeZero, timeInterval_1, 'coinsPlayerExtBet');
+      // setTimeout(setSessionMakeZero, timeInterval_1, 'coinsPlayerExtBet');
+      setTimeout(
+        setSessionMakeZero,
+        timeInterval_1,
+        findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]) // coinsPlayerExtBet
+      );
     }
   },
   BETTING: () => {

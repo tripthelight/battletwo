@@ -21,10 +21,13 @@ function bettingEventSetParams() {
   const encryptKey2 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayerBet
   const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
   const decryptVal2 = dec(encryptVal2); // coinsPlayerBet value number
+  const encryptKey3 = findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]); // coinsPlayerExtBet
+  const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
+  const decryptVal3 = dec(encryptVal3); // coinsPlayerExtBet value number
   return {
     coinCount: decryptVal1,
     coinBet: decryptVal2,
-    extBet: Number(window.sessionStorage.coinsPlayerExtBet),
+    extBet: decryptVal3,
   };
 };
 

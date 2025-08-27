@@ -33,7 +33,7 @@ export default () => {
       findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]), // coinsPlayerBet
       'coinsEnemyExtBet',
       'betCoin',
-      'coinsPlayerExtBet',
+      findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]), // coinsPlayerExtBet
       'coinsEnemyBet'
     ];
     storageMethod('s', 'REMOVE_ARR', '', '', D_ARR);

@@ -3,6 +3,7 @@ import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import textDE from '@/client/js/module/crypts/textDE';
+import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1, timeInterval_1001 } from '@/client/js/functions/variable.js';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
@@ -30,7 +31,10 @@ export const GET_ALLIN = {
     storageMethod('s', 'SET_ITEM', encryptKey3, enc(_data.coinCount));
     storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', _data.coinBet);
     storageMethod('s', 'SET_ITEM', 'coinsEnemyExtBet', _data.extBet);
-    storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 0);
+    storageMethod('s', 'SET_ITEM',
+      findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]), // coinsPlayerExtBet
+      enc(encryptNumOfStr(textDE([101, 101, 119, 101]))) // 'eewe' : 0000
+    );
     // all in text
     GET_ALLIN.roundResultDisplay();
     // emeny coins animation

@@ -41,17 +41,10 @@ export default {
       const E_NUM = playerNum(BATTLE_CARD_NUM);
       const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
       const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
-      const encryptKey5 = findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]); // roundEnd
-      const encryptKey6 = findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]); // extFirstBet
-      const encryptKey7 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
-      const encryptVal7 = booleanCheck([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
       const encryptKey8 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
       const encryptVal8 = window.sessionStorage.getItem(encryptKey8);
       const encryptKey9 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
       const encryptVal9 = window.sessionStorage.getItem(encryptKey9);
-      const encryptKey10 = findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78]); // drewReady
-      const encryptKey11 =  findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]); // basicBettingState
-      const encryptKey12 =  findCharCode([67, 71, 79, 68, 76, 73, 84, 74, 80, 77]); // drewState
 
       if (Number(P_NUM) > Number(E_NUM) || Number(P_NUM) < Number(E_NUM)) {
         const coinsEnemyBet = window.sessionStorage.coinsEnemyBet;
@@ -87,12 +80,27 @@ export default {
           storageMethod('s', 'SET_ITEM', X.dec(RESULT) ? encryptKey9 : encryptKey8, enc(Number(C_RES)));
         }
 
-        storageMethod('s', 'SET_ITEM', encryptKey7, X.dec(RESULT) ? encryptVal_1 : encryptVal_2); // betUser
-        storageMethod('s', 'SET_ITEM', encryptKey11, X.enc(decodeTF(textDE([120, 113, 98, 101, 110])))); // basicBettingState, "xqben" : false
-        storageMethod('s', 'SET_ITEM', encryptKey6, X.enc(decodeTF(textDE([120, 103, 98, 105, 110])))); // extFirstBet, "xgbin" : false
-        storageMethod('s', 'SET_ITEM', encryptKey2, encryptNumOfStr(textDE([119, 101, 101, 101]))); // coinsPlayerBet, 0
+        storageMethod('s', 'SET_ITEM',
+          findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]), // betUser
+          X.dec(RESULT) ? encryptVal_1 : encryptVal_2
+        ); // betUser
+        storageMethod('s', 'SET_ITEM',
+          findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]), // basicBettingState
+          X.enc(decodeTF(textDE([120, 113, 98, 101, 110]))) // "xqben" : false
+        );
+        storageMethod('s', 'SET_ITEM',
+          findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
+          X.enc(decodeTF(textDE([120, 103, 98, 105, 110]))) // "xgbin" : false
+        );
+        storageMethod('s', 'SET_ITEM',
+          encryptKey2, // coinsPlayerBet
+          encryptNumOfStr(textDE([119, 101, 101, 101])) // "weee" : 0
+        );
         storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', 0);
-        storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 0);
+        storageMethod('s', 'SET_ITEM',
+          findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]), // coinsPlayerExtBet
+          enc(encryptNumOfStr(textDE([101, 119, 101, 101])) )// 'ewee' : 0
+        );
         storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', 0);
         storageMethod('s', 'SET_ITEM', 'betCoinPos', '');
         storageMethod('s', 'SET_ITEM', 'battleCardNum', '');
@@ -102,12 +110,28 @@ export default {
       } else if (Number(P_NUM) === Number(E_NUM)) {
         // storageMethod('s', 'REMOVE_ITEM', 'drewReady');
         storageMethod('s', 'SET_ITEM', 'roundEndReload', true);
-        storageMethod('s', 'SET_ITEM', encryptKey10, X.enc(decodeTF(textDE([99, 119, 114, 117])))); // drewReady, "cwru" : true
-        storageMethod('s', 'SET_ITEM', encryptKey7, encryptVal7); // betUser, betUserFirst
-        storageMethod('s', 'SET_ITEM', encryptKey12, X.enc(decodeTF(textDE([107, 119, 104, 110])))); // drewState, "kwhn" : true
-        storageMethod('s', 'SET_ITEM', encryptKey5, X.enc(decodeTF(textDE([120, 113, 108, 101, 97])))); // roundEnd, "xqlea" : false
-        storageMethod('s', 'SET_ITEM', encryptKey6, X.enc(decodeTF(textDE([106, 111, 98, 116, 117])))); // extFirstBet, "jobtu" : false
+        storageMethod('s', 'SET_ITEM',
+          findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78]), // drewReady
+          X.enc(decodeTF(textDE([99, 119, 114, 117]))) // "cwru" : true
+        );
+        storageMethod('s', 'SET_ITEM',
+          findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]), // betUser
+          booleanCheck([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]) // betUserFirst, true or false
+        ); // betUser, betUserFirst
+        storageMethod('s', 'SET_ITEM',
+          findCharCode([67, 71, 79, 68, 76, 73, 84, 74, 80, 77]), // drewState
+          X.enc(decodeTF(textDE([107, 119, 104, 110]))) // "kwhn" : true
+        );
+        storageMethod('s', 'SET_ITEM',
+          findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]), // roundEnd
+          X.enc(decodeTF(textDE([120, 113, 108, 101, 97]))) // "xqlea" : false
+        );
+        storageMethod('s', 'SET_ITEM',
+          findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
+          X.enc(decodeTF(textDE([106, 111, 98, 116, 117]))) // "jobtu" : false
+        );
         storageMethod('s', 'SET_ITEM', 'battleCardNum', '');
+
         request('drewRefresh', true);
 
         // GET_ROUND_END.goNextRound("drew");

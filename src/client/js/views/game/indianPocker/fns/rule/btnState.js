@@ -109,7 +109,7 @@ export const BTN_STATE = {
     // const COINS_ENEMY = window.sessionStorage.coinsEnemy ?? 0;
     const encryptKey1 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
     const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
-    const decryptVal1 = encryptVal1 ? dec(encryptVal1) : 0; // coinsEnemy value number
+    const decryptVal1 = encryptVal1 !== null && encryptVal1 !== '' ? dec(encryptVal1) : 0; // coinsEnemy value number
 
     const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet ?? 0;
     const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet ?? 0;
@@ -117,14 +117,17 @@ export const BTN_STATE = {
     // const COINS_PLAYER = window.sessionStorage.coinsPlayer ?? 0;
     const encryptKey4 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer
     const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
-    const decryptVal4 = encryptVal4 !== null ? dec(encryptVal4) : 0; // coinsPlayer value number
+    const decryptVal4 = encryptVal4 !== null && encryptVal4 !== '' ? dec(encryptVal4) : 0; // coinsPlayer value number
 
     // const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet ?? 0;
     const encryptKey5 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]); // coinsPlayerBet
     const encryptVal5 = window.sessionStorage.getItem(encryptKey5);
-    const decryptVal5 = encryptVal5 !== null ? dec(encryptVal5) : 0; // coinsPlayerBet value number
+    const decryptVal5 = encryptVal5 !== null && encryptVal5 !== '' ? dec(encryptVal5) : 0; // coinsPlayerBet value number
 
-    const COINS_PLAYER_EXT_BET = window.sessionStorage.coinsPlayerExtBet ?? 0;
+    // const COINS_PLAYER_EXT_BET = window.sessionStorage.coinsPlayerExtBet ?? 0;
+    const encryptKey6 = findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]); // coinsPlayerExtBet
+    const encryptVal6 = window.sessionStorage.getItem(encryptKey6);
+    const decryptVal6 = encryptVal6 !== null && encryptVal6 !== '' ? dec(encryptVal6) : 0; // coinsPlayerExtBet value number
 
     // const C_E = Number(COINS_ENEMY);
     const C_E = Number(decryptVal1);
@@ -138,7 +141,8 @@ export const BTN_STATE = {
     // const P_E_B = Number(COINS_PLAYER_BET);
     const P_E_B = Number(decryptVal5);
 
-    const P_E_E_B = Number(COINS_PLAYER_EXT_BET);
+    // const P_E_E_B = Number(COINS_PLAYER_EXT_BET);
+    const P_E_E_B = Number(decryptVal6);
 
     if (C_E === 0 || P_E === 0) {
       if (C_E_B === P_E_B) {

@@ -118,9 +118,18 @@ export default (e) => {
   // if (window.sessionStorage.betState === 'extraBetting') {
   // betState === extraBetting
   if (encryptVal1 === encryptVal2) {
-    if (window.sessionStorage.coinsPlayerExtBet) {
-      if (Number(window.sessionStorage.coinsPlayerExtBet) > 0) {
-        storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', Number(window.sessionStorage.coinsPlayerExtBet) - 1);
+    const encryptKey3 = findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]); // coinsPlayerExtBet
+    const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
+    // if (window.sessionStorage.coinsPlayerExtBet) {
+    if (encryptVal3 !== null && encryptVal3 !== '') {
+      const decryptVal3 = dec(encryptVal3); // coinsPlayerExtBet value number
+      // if (Number(window.sessionStorage.coinsPlayerExtBet) > 0) {
+      if (decryptVal3 > 0) {
+        // storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', Number(window.sessionStorage.coinsPlayerExtBet) - 1);
+        storageMethod('s', 'SET_ITEM',
+          encryptKey3, // coinsPlayerExtBet
+          enc(decryptVal3 - 1)
+        );
       }
     }
   }

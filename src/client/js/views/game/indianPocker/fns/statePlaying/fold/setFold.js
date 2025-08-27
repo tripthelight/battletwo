@@ -37,7 +37,7 @@ export const SET_FOLD = {
       'coinsEnemyBet',
       findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]), // coinsPlayerBet
       'coinsEnemyExtBet',
-      'coinsPlayerExtBet',
+      findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]), // coinsPlayerExtBet
       'betCoin',
       'betCoinPos',
       findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
@@ -100,34 +100,39 @@ export const SET_FOLD = {
             // const COINS_ENEMY = window.sessionStorage.coinsEnemy;
             const encryptKey1 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
             const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
-            const decryptVal1 = encryptVal1 !== null ? dec(encryptVal1) : 0; // coinsEnemy value number
+            const decryptVal1 = encryptVal1 !== null && encryptVal1 !== '' ? dec(encryptVal1) : 0; // coinsEnemy value number
 
             // const COINS_PLAYER = window.sessionStorage.coinsPlayer;
             const encryptKey2 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer
             const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
-            const decryptVal2 = encryptVal2 !== null ? dec(encryptVal2) : 0; // coinsPlayer value number
+            const decryptVal2 = encryptVal2 !== null && encryptVal2 !== '' ? dec(encryptVal2) : 0; // coinsPlayer value number
 
             const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
 
             // const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet;
             const encryptKey4 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]); // coinsPlayerBet
             const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
-            const decryptVal4 = encryptVal4 !== null ? dec(encryptVal4) : 0; // coinsPlayerBet value number
+            const decryptVal4 = encryptVal4 !== null && encryptVal4 !== '' ? dec(encryptVal4) : 0; // coinsPlayerBet value number
 
-            const COINS_PLAYER_EXT_BET = window.sessionStorage.coinsPlayerExtBet;
+            // const COINS_PLAYER_EXT_BET = window.sessionStorage.coinsPlayerExtBet;
+            const encryptKey5 = findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]); // coinsPlayerExtBet
+            const encryptVal5 = window.sessionStorage.getItem(encryptKey5);
+            const decryptVal5 = encryptVal5 !== null && encryptVal5 !== '' ? dec(encryptVal5) : 0; // coinsPlayerExtBet value number
 
             // const FOLD_CE = COINS_ENEMY && Number(COINS_ENEMY) >= 0 ? Number(COINS_ENEMY) : 0;
-            const FOLD_CE = encryptVal1 !== null && Number(decryptVal1) >= 0 ? Number(decryptVal1) : 0;
+            const FOLD_CE = encryptVal1 !== null && encryptVal1 !== '' && Number(decryptVal1) >= 0 ? Number(decryptVal1) : 0;
 
             // const FOLD_CP = COINS_PLAYER && Number(COINS_PLAYER) >= 0 ? Number(COINS_PLAYER) : 0;
-            const FOLD_CP = encryptVal2 !== null && Number(decryptVal2) >= 0 ? Number(decryptVal2) : 0;
+            const FOLD_CP = encryptVal2 !== null && encryptVal2 !== '' && Number(decryptVal2) >= 0 ? Number(decryptVal2) : 0;
 
             const FOLD_CEB = COINS_ENEMY_BET && Number(COINS_ENEMY_BET) >= 0 ? Number(COINS_ENEMY_BET) : 0;
 
             // const FOLD_CPB = COINS_PLAYER_BET && Number(COINS_PLAYER_BET) >= 0 ? Number(COINS_PLAYER_BET) : 0;
-            const FOLD_CPB = encryptVal4 !== null && Number(decryptVal4) >= 0 ? Number(decryptVal4) : 0;
+            const FOLD_CPB = encryptVal4 !== null && encryptVal4 !== '' && Number(decryptVal4) >= 0 ? Number(decryptVal4) : 0;
 
-            const FOLD_CPEB = COINS_PLAYER_EXT_BET && Number(COINS_PLAYER_EXT_BET) >= 0 ? Number(COINS_PLAYER_EXT_BET) : 0;
+            // const FOLD_CPEB = COINS_PLAYER_EXT_BET && Number(COINS_PLAYER_EXT_BET) >= 0 ? Number(COINS_PLAYER_EXT_BET) : 0;
+            const FOLD_CPEB = encryptVal5 !== null && encryptVal5 !== '' && Number(decryptVal5) >= 0 ? Number(decryptVal5) : 0;
+
             const RES_E = Number(FOLD_CEB + FOLD_CPB - FOLD_CPEB);
 
             // storageMethod('s', 'SET_ITEM', 'coinsEnemy', FOLD_CE + RES_E);

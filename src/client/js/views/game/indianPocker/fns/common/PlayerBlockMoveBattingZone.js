@@ -1,3 +1,5 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import { dec } from '@/client/js/module/crypts/obf8lower';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { getStyle } from '@/client/js/functions/comnExport';
@@ -8,7 +10,19 @@ import animateClock from '@/client/js/views/game/indianPocker/fns/common/animate
 export default (_coins, _coinsRes, _coinsDelete) => {
   return new Promise((resolve, reject) => {
     if (_coinsDelete > 0) return resolve({ ep: _coins, epeb: _coinsRes, rc: _coinsDelete });
-    if (_coins < 1) return resolve({ ep: 0, epeb: Number(window.sessionStorage.coinsPlayerExtBet), rc: _coinsDelete });
+
+    // if (_coins < 1) return resolve({ ep: 0, epeb: Number(window.sessionStorage.coinsPlayerExtBet), rc: _coinsDelete });
+    if (_coins < 1) {
+      const encryptKey1 = findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]); // coinsPlayerExtBet
+      const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+      const decryptVal1 = dec(encryptVal1); // coinsPlayerExtBet value number
+      return resolve({
+        ep: 0,
+        epeb: decryptVal1,
+        rc: _coinsDelete
+      });
+    };
+
     const BETTING_ZONE = document.querySelector('.betting-zone');
     if (!BETTING_ZONE) return errorManagement({ errCase: 'elementLoss', message: 'all in 버튼 클릭 시 .betting-zone 엘리먼트가 없습니다' });
     const BET_COINS = BETTING_ZONE.querySelector('.bet-coins');

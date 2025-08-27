@@ -1,6 +1,7 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
+import textDE from '@/client/js/module/crypts/textDE';
 import X from '@/client/js/module/crypts/bool-obf';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import deviceStateStore from '@/client/store/deviceStateStore';
@@ -80,7 +81,7 @@ export default (event) => {
   if (encryptVal4 === null) return errorManagement({ errCase: 'errorComn', message: 'coinsPlayer 세션을 찾을 수 없습니다.' });
   storageMethod('s', 'SET_ITEM',
     encryptKey4,
-    enc(dec(encryptVal4) + encryptNumOfStr(new TextDecoder().decode(new Uint8Array([101, 101, 119, 114])))) // 'eewr' : 0001
+    enc(dec(encryptVal4) + encryptNumOfStr(textDE([101, 101, 119, 114]))) // 'eewr' : 0001
   );
 
   // const PLAYER_COINS_BET = window.sessionStorage.coinsPlayerBet;
@@ -92,7 +93,7 @@ export default (event) => {
   if (encryptVal5 === null) return errorManagement({ errCase: 'errorComn', message: 'coinsPlayerBet 세션을 찾을 수 없습니다.' });
   storageMethod('s', 'SET_ITEM',
     encryptKey5,
-    enc(dec(encryptVal5) - encryptNumOfStr(new TextDecoder().decode(new Uint8Array([119, 119, 119, 98])))) // 'wwwb' : 0001
+    enc(dec(encryptVal5) - encryptNumOfStr(textDE([119, 119, 119, 98]))) // 'wwwb' : 0001
   );
 
   const encryptKey6 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
@@ -102,12 +103,21 @@ export default (event) => {
   // if (window.sessionStorage.betState === 'extraBetting') {
   // betState === extraBetting
   if (encryptVal6 === encryptVal7) {
-    if (window.sessionStorage.coinsPlayerExtBet) {
-      if (Number(window.sessionStorage.coinsPlayerExtBet) > 0) {
-        storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', Number(window.sessionStorage.coinsPlayerExtBet) - 1);
-      }
-    }
-  }
+    const encryptKey8 = findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]); // coinsPlayerExtBet
+    const encryptVal8 = window.sessionStorage.getItem(encryptKey8);
+    // if (window.sessionStorage.coinsPlayerExtBet) {
+    if (encryptVal8 !== null && encryptVal8 !== '') {
+      const decryptVal8 = dec(encryptVal8); // coinsPlayerExtBet value number
+      // if (Number(window.sessionStorage.coinsPlayerExtBet) > 0) {
+      if (decryptVal8 > 0) {
+        // storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', Number(window.sessionStorage.coinsPlayerExtBet) - 1);
+        storageMethod('s', 'SET_ITEM',
+          encryptKey8, // coinsPlayerExtBet
+          enc(decryptVal8 - 1)
+        );
+      };
+    };
+  };
 
   const PLAYER_BLOCK = document.querySelector('.player-block');
   if (!PLAYER_BLOCK) return errorManagement({ errCase: 'errorComn', message: '.player-block 엘리먼트를 찾을 수 없습니다.' });

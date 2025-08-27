@@ -38,7 +38,10 @@ export default (myCardNum) => {
     const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
     const decryptVal4 = encryptVal4 ? dec(encryptVal4) : 0; // coinsPlayerBet value number
 
-    const COINS_PLAYER_EXT_BET = window.sessionStorage.coinsPlayerExtBet;
+    // const COINS_PLAYER_EXT_BET = window.sessionStorage.coinsPlayerExtBet;
+    const encryptKey5 = findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]); // coinsPlayerExtBet
+    const encryptVal5 = window.sessionStorage.getItem(encryptKey5);
+    const decryptVal5 = encryptVal5 !== null && encryptVal5 !== '' ? dec(encryptVal5) : 0;
 
     // const FOLD_CE = COINS_ENEMY && Number(COINS_ENEMY) >= 0 ? Number(COINS_ENEMY) : 0;
     const FOLD_CE = encryptVal1 !== null && Number(decryptVal1) >= 0 ? Number(decryptVal1) : 0;
@@ -51,7 +54,9 @@ export default (myCardNum) => {
     // const FOLD_CPB = COINS_PLAYER_BET && Number(COINS_PLAYER_BET) >= 0 ? Number(COINS_PLAYER_BET) : 0;
     const FOLD_CPB = encryptVal4 !== null && Number(decryptVal4) >= 0 ? Number(decryptVal4) : 0;
 
-    const FOLD_CPEB = COINS_PLAYER_EXT_BET && Number(COINS_PLAYER_EXT_BET) >= 0 ? Number(COINS_PLAYER_EXT_BET) : 0;
+    // const FOLD_CPEB = COINS_PLAYER_EXT_BET && Number(COINS_PLAYER_EXT_BET) >= 0 ? Number(COINS_PLAYER_EXT_BET) : 0;
+    const FOLD_CPEB = decryptVal5;
+
     const RES_E = Number(FOLD_CEB + FOLD_CPB - FOLD_CPEB);
 
     storageMethod('s', 'SET_ITEM', 'coinsEnemyLocalFold', FOLD_CE + RES_E);

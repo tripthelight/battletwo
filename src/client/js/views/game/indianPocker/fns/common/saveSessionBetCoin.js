@@ -1,5 +1,7 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
+import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
+import textDE from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 // import { pcOffsetLeft, pcOffsetTop } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
@@ -42,16 +44,27 @@ export default (data) => {
     enc(JSON.parse(window.sessionStorage.betCoin).filter((coins) => coins.host === 'player').length)
   );
 
-  const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
-  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
-  const encryptVal3 = findCharCode([77, 86, 83, 87, 69, 73, 72, 88, 80, 89]); // extraBetting
+  const encryptKey4 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
+  const encryptVal3 = window.sessionStorage.getItem(encryptKey4);
+  const encryptVal4 = findCharCode([77, 86, 83, 87, 69, 73, 72, 88, 80, 89]); // extraBetting
   // if (window.sessionStorage.betState === 'extraBetting') {
   // betState === extraBetting
-  if (encryptVal1 === encryptVal3) {
-    if (window.sessionStorage.coinsPlayerExtBet) {
-      storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', Number(window.sessionStorage.coinsPlayerExtBet) + 1);
+  if (encryptVal3 === encryptVal4) {
+    const encryptKey5 = findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]); // coinsPlayerExtBet
+    const encryptVal5 = window.sessionStorage.getItem(encryptKey5);
+    // if (window.sessionStorage.coinsPlayerExtBet) {
+    if (encryptVal5 !== null && encryptVal5 !== '') {
+      // storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', Number(window.sessionStorage.coinsPlayerExtBet) + 1);
+      storageMethod('s', 'SET_ITEM',
+        encryptKey5, // coinsPlayerExtBet
+        enc(Number(dec(encryptVal5)) + 1)
+      );
     } else {
-      storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 1);
+      // storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 1);
+      storageMethod('s', 'SET_ITEM',
+        encryptKey5, // coinsPlayerExtBet
+        enc(encryptNumOfStr(textDE([101, 119, 101, 114]))) // 'ewer' : 1
+      );
     }
   };
   // removeMyBetCoin({ coinsPlayer: PLAYER_NUMB, index: data.activeLi });

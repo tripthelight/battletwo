@@ -37,7 +37,7 @@ export default (reloadState) => {
         'coinsEnemyBet',
         findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]), // coinsPlayerBet
         'coinsEnemyExtBet',
-        'coinsPlayerExtBet',
+        findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]), // coinsPlayerExtBet
         'betCoin',
         'betCoinPos',
         findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet

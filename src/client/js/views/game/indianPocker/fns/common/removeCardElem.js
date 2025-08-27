@@ -1,6 +1,7 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
+import textDE from '@/client/js/module/crypts/textDE';
 import booleanReturn from '@/client/js/functions/validation/booleanReturn';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
@@ -50,7 +51,7 @@ export default () => {
             storageMethod('s', 'SET_ITEM', encryptKey3, enc(Number(decryptVal_1) + 2));
 
             // storageMethod('s', 'SET_ITEM', 'coinsEnemy', 0);
-            storageMethod('s', 'SET_ITEM', encryptKey2, enc(encryptNumOfStr(new TextDecoder().decode(new Uint8Array([119, 101, 101, 119]))))); // 'weew' : 0
+            storageMethod('s', 'SET_ITEM', encryptKey2, enc(encryptNumOfStr(textDE([119, 101, 101, 119])))); // 'weew' : 0
             resolve();
           });
         });
@@ -67,7 +68,7 @@ export default () => {
             storageMethod('s', 'SET_ITEM', encryptKey2, enc(Number(decryptVel_2) + 2));
 
             // storageMethod('s', 'SET_ITEM', 'coinsPlayer', 0);
-            storageMethod('s', 'SET_ITEM', encryptKey3, enc(encryptNumOfStr(new TextDecoder().decode(new Uint8Array([119, 119]))))); // 'ww' : 0
+            storageMethod('s', 'SET_ITEM', encryptKey3, enc(encryptNumOfStr(textDE([119, 119])))); // 'ww' : 0
             resolve();
           });
         });
