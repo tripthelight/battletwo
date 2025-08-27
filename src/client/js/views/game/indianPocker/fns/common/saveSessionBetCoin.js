@@ -44,8 +44,10 @@ export default (data) => {
 
   const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
   const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  const encryptVal3 = findCharCode([77, 86, 83, 87, 69, 73, 72, 88, 80, 89]); // extraBetting
   // if (window.sessionStorage.betState === 'extraBetting') {
-  if (encryptVal1 === 'extraBetting') {
+  // betState === extraBetting
+  if (encryptVal1 === encryptVal3) {
     if (window.sessionStorage.coinsPlayerExtBet) {
       storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', Number(window.sessionStorage.coinsPlayerExtBet) + 1);
     } else {

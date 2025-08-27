@@ -30,23 +30,28 @@ export default () => {
   // 명령
   setTimeout(() => {
     // if (BET_USER === 'true') {
-    if (decryptVal1) { // betUser === true
+    // betUser === true
+    if (decryptVal1) {
       ENEMY_CARD.classList.add('disabled');
       PLAYER_BLOCK.classList.remove('disabled');
       COINS_PLAYER.classList.remove('disabled');
 
       // 다음 함수 실행
       // if (BAT_STATE === 'basicBetting') {
-      if (encryptKey1 === findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65])) {// basicBetting
+      // betState === basicBetting
+      if (encryptVal1 === findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65])) {
         setTimeout(moveCoins, timeInterval_1);
       }
-      if (BAT_STATE === 'extraBetting') {
+      // if (encryptVal1 === 'extraBetting') {
+      // betState === extraBetting
+      if (encryptVal1 === findCharCode([77, 86, 83, 87, 69, 73, 72, 88, 80, 89])) {
         setTimeout(moveCoins, timeInterval_1);
         setTimeout(subtractMoveCoin, timeInterval_1);
         setTimeout(BTN_STATE.SHOW, timeInterval_2);
       }
     // } else if (BET_USER === 'false') {
-    } else if (!decryptVal1) { // betUser === false
+    // betUser === false
+    } else if (!decryptVal1) {
       ENEMY_CARD.classList.remove('disabled');
       PLAYER_BLOCK.classList.add('disabled');
       COINS_PLAYER.classList.add('disabled');

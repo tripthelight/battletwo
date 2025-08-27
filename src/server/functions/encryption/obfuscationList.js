@@ -147,6 +147,7 @@ export const obfuscationList = {
         k: 'FMPXWVSYKA', // [70, 77, 80, 88, 87, 86, 83, 89, 75, 65]
         v: {
           basicBetting: 'FTKWJCIMPA', // [70, 84, 75, 87, 74, 67, 73, 77, 80, 65]
+          extraBetting: 'MVSWEIHXPY', // [77, 86, 83, 87, 69, 73, 72, 88, 80, 89]
         },
       },
       ROUND_END: { // true/false

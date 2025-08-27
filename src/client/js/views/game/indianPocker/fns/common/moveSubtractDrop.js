@@ -97,9 +97,11 @@ export default (event) => {
 
   const encryptKey6 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
   const encryptVal6 = window.sessionStorage.getItem(encryptKey6);
+  const encryptVal7 = findCharCode([77, 86, 83, 87, 69, 73, 72, 88, 80, 89]); // extraBetting
 
   // if (window.sessionStorage.betState === 'extraBetting') {
-  if (encryptVal6 === 'extraBetting') {
+  // betState === extraBetting
+  if (encryptVal6 === encryptVal7) {
     if (window.sessionStorage.coinsPlayerExtBet) {
       if (Number(window.sessionStorage.coinsPlayerExtBet) > 0) {
         storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', Number(window.sessionStorage.coinsPlayerExtBet) - 1);

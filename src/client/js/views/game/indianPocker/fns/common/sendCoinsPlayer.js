@@ -9,12 +9,12 @@ export default () => {
   const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
   const encryptKey2 = findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
   const encryptKey3 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
+  const encryptVal2 = findCharCode([77, 86, 83, 87, 69, 73, 72, 88, 80, 89]); // extraBetting
 
   // if (window.sessionStorage.betState === 'extraBetting' && window.sessionStorage.betUser === 'true') return betStateCheck();
-
-  // if (encryptVal1 === 'extraBetting' && window.sessionStorage.betUser === 'true') return betStateCheck();
+  // betState === extraBetting && betUser === true
   if (
-    encryptVal1 === 'extraBetting' &&
+    encryptVal1 === encryptVal2 && // betState === extraBetting
     encryptKey3 === encryptVal_1 // betUser === true
   ) return betStateCheck();
   // 기본 배팅일 때 만 탐
