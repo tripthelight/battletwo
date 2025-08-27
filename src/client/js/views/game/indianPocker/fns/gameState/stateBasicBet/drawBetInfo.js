@@ -7,8 +7,8 @@ import closePopup from '@/client/js/functions/popup';
 
 export default () => {
   // sesstionStorage: basicBetInfoPopup 체크해서 true면 안보임
-  const BASIC_BET_INFO_POPUP = window.sessionStorage.basicBetInfoPopup;
-  if (BASIC_BET_INFO_POPUP && BASIC_BET_INFO_POPUP === 'true') return;
+  // const BASIC_BET_INFO_POPUP = window.sessionStorage.basicBetInfoPopup;
+  // if (BASIC_BET_INFO_POPUP && BASIC_BET_INFO_POPUP === 'true') return;
 
   // element | seeeion 체크
   const CONTAINER = document.getElementById('container');
@@ -45,6 +45,6 @@ export default () => {
 
   btnClose.onclick = () => {
     closePopup(btnClose);
-    storageMethod('s', 'SET_ITEM', 'basicBetInfoPopup', true);
+    // storageMethod('s', 'SET_ITEM', 'basicBetInfoPopup', true);
   };
 };

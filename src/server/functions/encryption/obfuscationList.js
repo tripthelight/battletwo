@@ -219,6 +219,9 @@ export const obfuscationList = {
       RESULT: { // true/false
         k: 'OUMJGNPCQH' //  [79, 85, 77, 74, 71, 78, 80, 67, 81, 72]
       },
+      DROP_STATE: { // true/false
+        k: 'QEGTUZRCMY' //  [81, 69, 71, 84, 85, 90, 82, 67, 77, 89]
+      },
 
       // e: sessionStorage keys
 

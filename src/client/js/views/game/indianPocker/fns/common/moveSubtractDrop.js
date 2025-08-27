@@ -1,6 +1,7 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
+import X from '@/client/js/module/crypts/bool-obf';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import deviceStateStore from '@/client/store/deviceStateStore';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
@@ -12,7 +13,17 @@ import moveCoins from '@/client/js/views/game/indianPocker/fns/common/moveCoins'
 
 export default (event) => {
   event.preventDefault();
-  if (window.sessionStorage.dropState === 'true') return;
+
+  // if (window.sessionStorage.dropState === 'true') return;
+  const encryptKey1 = findCharCode([81, 69, 71, 84, 85, 90, 82, 67, 77, 89]); // dropState
+  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  // dropState === true
+  if (
+    encryptVal1 !== null &&
+    encryptVal1 !== '' &&
+    X.dec(encryptVal1)
+  ) return;
+
   const POS = window.sessionStorage.betCoinPos;
   if (!POS) return;
   const POS_ARR = JSON.parse(POS);
@@ -84,11 +95,11 @@ export default (event) => {
     enc(dec(encryptVal5) - encryptNumOfStr(new TextDecoder().decode(new Uint8Array([119, 119, 119, 98])))) // 'wwwb' : 0001
   );
 
-  const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
-  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  const encryptKey6 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
+  const encryptVal6 = window.sessionStorage.getItem(encryptKey6);
 
   // if (window.sessionStorage.betState === 'extraBetting') {
-  if (encryptVal1 === 'extraBetting') {
+  if (encryptVal6 === 'extraBetting') {
     if (window.sessionStorage.coinsPlayerExtBet) {
       if (Number(window.sessionStorage.coinsPlayerExtBet) > 0) {
         storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', Number(window.sessionStorage.coinsPlayerExtBet) - 1);

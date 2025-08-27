@@ -1,10 +1,20 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
 // import { pcActiveEl, pcMoveX, pcMoveY } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
-import { timeInterval_1 } from '@/client/js/functions/variable';
 import betCoinEndComn from '@/client/js/views/game/indianPocker/fns/common/betCoinEndComn';
 
 export default () => {
-  if (window.sessionStorage.dropState === 'false') return;
+  // if (window.sessionStorage.dropState === 'false') return;
+  const encryptKey1 = findCharCode([81, 69, 71, 84, 85, 90, 82, 67, 77, 89]); // dropState
+  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  // dropState === false
+  if (
+    encryptVal1 !== null &&
+    encryptVal1 !== '' &&
+    !X.dec(encryptVal1)
+  ) return;
+
   const BATTING_ZONE = document.querySelector('.betting-zone');
 
   // 명령

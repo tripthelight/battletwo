@@ -12,7 +12,8 @@ export default () => {
   storageMethod('s', 'REMOVE_ITEM', findCharCode([67, 71, 79, 68, 76, 73, 84, 74, 80, 77])); // drewState
   // storageMethod('s', 'REMOVE_ITEM', 'drewReady');
   storageMethod('s', 'REMOVE_ITEM', findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78])); // drewReady
-  storageMethod('s', 'REMOVE_ITEM', 'dropState');
+  // storageMethod('s', 'REMOVE_ITEM', 'dropState');
+  storageMethod('s', 'REMOVE_ITEM', findCharCode([81, 69, 71, 84, 85, 90, 82, 67, 77, 89])); // dropState
 
   // storageMethod('s', 'SET_ITEM', 'betState', 'extraBetting');
   const encryptKey4 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState

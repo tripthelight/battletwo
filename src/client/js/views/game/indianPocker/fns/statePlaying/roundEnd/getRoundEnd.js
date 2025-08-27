@@ -33,7 +33,8 @@ export const GET_ROUND_END = {
     storageMethod('s', 'REMOVE_ITEM', 'drewFlipCardMode');
     // storageMethod('s', 'REMOVE_ITEM', 'drewReady');
     storageMethod('s', 'REMOVE_ITEM', findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78])); // drewReady
-    storageMethod('s', 'REMOVE_ITEM', 'dropState');
+    // storageMethod('s', 'REMOVE_ITEM', 'dropState');
+    storageMethod('s', 'REMOVE_ITEM', findCharCode([81, 69, 71, 84, 85, 90, 82, 67, 77, 89])); // dropState
     if (window.sessionStorage.drewCardReady) {
       LOADING_EVENT.hide();
       storageMethod('s', 'REMOVE_ITEM', 'drewCardReady');

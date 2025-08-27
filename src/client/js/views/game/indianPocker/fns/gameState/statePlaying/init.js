@@ -27,7 +27,8 @@ export const STATE_PLAYING = {
     LOADING_EVENT.show();
 
     console.log(' s: loading show loop test >>>>>>>>>>>>>>');
-    storageMethod('s', 'REMOVE_ITEM', 'dropState');
+    // storageMethod('s', 'REMOVE_ITEM', 'dropState');
+    storageMethod('s', 'REMOVE_ITEM', findCharCode([81, 69, 71, 84, 85, 90, 82, 67, 77, 89])); // dropState
     // storageMethod('s', 'SET_ITEM', 'drewReady', true);
     storageMethod('s', 'SET_ITEM',
       findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78]), // drewReady
