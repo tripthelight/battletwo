@@ -96,8 +96,11 @@ export default () => {
         }
       }
       */
-      const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
-      if (BATTLE_CARD_NUM !== null) {
+      // const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
+      // if (BATTLE_CARD_NUM !== null) {
+      const encryptKey2 = findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]); // battleCardNum
+      const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+      if (encryptVal2 !== null && encryptVal2 !== '') {
         LOADING_EVENT.hide();
         setTimeout(drewCheck, timeInterval_1);
       }

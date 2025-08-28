@@ -1,3 +1,5 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import { dec } from '@/client/js/module/crypts/obf8lower';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
@@ -12,13 +14,25 @@ export default (_host, _num) => {
       num: _num,
     };
     let comnArray = [];
-    if (window.sessionStorage.battleCardNum) {
-      comnArray = JSON.parse(window.sessionStorage.battleCardNum);
-    }
+
+    // if (window.sessionStorage.battleCardNum) {
+    //   comnArray = JSON.parse(window.sessionStorage.battleCardNum);
+    // }
+    const encryptKey1 = findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]); // battleCardNum
+    const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+    if (encryptVal1 !== null && encryptVal1 !== '') {
+      const decryptVal1 = dec(encryptVal1);
+      comnArray = JSON.parse(decryptVal1);
+    };
+
     comnArray.push(activeCard);
     console.log('battleCardNum 값 추가 >>>>>>>>>> ', comnArray);
 
-    storageMethod('s', 'SET_ITEM', 'battleCardNum', JSON.stringify(comnArray));
+    // storageMethod('s', 'SET_ITEM', 'battleCardNum', JSON.stringify(comnArray));
+    storageMethod('s', 'SET_ITEM',
+      encryptVal1, // battleCardNum
+      JSON.stringify(comnArray)
+    );
 
     activeCard = {};
     comnArray = [];

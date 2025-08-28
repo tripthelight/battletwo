@@ -55,10 +55,15 @@ export default {
       request('allInBet', bettingEventSetParams());
     },
     CALL: () => {
-      const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
-      if (BATTLE_CARD_NUM === null) {
+      // const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
+      // if (BATTLE_CARD_NUM === null) {
+      //   return errorManagement({ errCase: 'errorComn', message: 'error CALL request !BATTLE_CARD_NUM' });
+      // }
+      const encryptKey4 = findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]); // battleCardNum
+      const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
+      if (encryptVal4 === null) {
         return errorManagement({ errCase: 'errorComn', message: 'error CALL request !BATTLE_CARD_NUM' });
-      }
+      };
 
       /* request('call', {
         coinCount: Number(window.sessionStorage.coinsPlayer),
@@ -68,7 +73,8 @@ export default {
       }); */
       request('call', {
         ...bettingEventSetParams(),
-        playerCardNum: BATTLE_CARD_NUM,
+        // playerCardNum: BATTLE_CARD_NUM,
+        playerCardNum: encryptVal4,
       });
     },
     RAISE: () => {
@@ -80,14 +86,20 @@ export default {
       request('raise', bettingEventSetParams());
     },
     FOLD: (_penalty) => {
-      const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
-      if (BATTLE_CARD_NUM === null) {
+      // const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
+      // if (BATTLE_CARD_NUM === null) {
+      //   return errorManagement({ errCase: 'errorComn', message: 'error FOLD request !BATTLE_CARD_NUM' });
+      // }
+      const encryptKey5 = findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]); // battleCardNum
+      const encryptVal5 = window.sessionStorage.getItem(encryptKey5);
+      if (encryptVal5 === null) {
         return errorManagement({ errCase: 'errorComn', message: 'error FOLD request !BATTLE_CARD_NUM' });
-      }
+      };
 
       request('foldSend', {
         penalty: Number(_penalty) === 10 ? true : false,
-        playerCardNum: BATTLE_CARD_NUM,
+        // playerCardNum: BATTLE_CARD_NUM,
+        playerCardNum: encryptVal5,
       });
     },
   },

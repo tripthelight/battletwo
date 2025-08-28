@@ -250,6 +250,9 @@ export const obfuscationList = {
       FOLD_STATE: {
         k: 'AHBKUEWOXV' // [65, 72, 66, 75, 85, 69, 87, 79, 88, 86]
       },
+      BATTLE_CARD_NUM: {
+        k: 'IKHAMRUPBW' // [73, 75, 72, 65, 77, 82, 85, 80, 66, 87]
+      },
 
       // e: sessionStorage keys
 

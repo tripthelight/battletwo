@@ -146,13 +146,20 @@ export const GET_ROUND_END = {
     }
     */
 
-    const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
-    if (BATTLE_CARD_NUM === null) {
+    // const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
+    // if (BATTLE_CARD_NUM === null) {
+    //   return errorManagement({ errCase: 'errorComn', message: 'error - getRoundEnd.js - !BATTLE_CARD_NUM' });
+    // }
+    const encryptKey3 = findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]); // battleCardNum
+    const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
+    if (encryptVal3 === null) {
       return errorManagement({ errCase: 'errorComn', message: 'error - getRoundEnd.js - !BATTLE_CARD_NUM' });
-    }
+    };
+    const decryptVal3 = dec(encryptVal3);
 
     const cardNum = {
-      enemy: playerNum(BATTLE_CARD_NUM),
+      // enemy: playerNum(BATTLE_CARD_NUM),
+      enemy: playerNum(decryptVal3),
       player: _playerNumRes,
     };
 

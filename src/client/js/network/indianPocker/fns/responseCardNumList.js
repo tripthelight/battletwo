@@ -1,10 +1,10 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import validateStore, { updateRandomNum } from '@/client/store/validateStore';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { request } from '@/client/js/network/indianPocker/request';
 import encryptCardNumber from '@/client/js/views/game/indianPocker/fns/common/makeCard/encryptCardNumber';
-import findCharCode from '@/client/js/functions/findCharCode';
 import CryptoJS from 'crypto-js';
 import randomArray from '@/client/js/views/game/indianPocker/fns/common/randomArray';
 import sessionActiveCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/sessionActiveCard';
@@ -48,7 +48,11 @@ export default async (data) => {
     const remoteRandomNum = randomArray(remoteCardNum);
     // 상대 peer 카드번호 저장
     // validateStore.dispatch(updateRandomNum({ randomNum: remoteRandomNum }));
-    storageMethod('s', 'SET_ITEM', 'battleCardNum', remoteRandomNum);
+    // storageMethod('s', 'SET_ITEM', 'battleCardNum', remoteRandomNum);
+    storageMethod('s', 'SET_ITEM',
+      findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]), // battleCardNum
+      remoteRandomNum
+    );
 
     console.log('1 card del : remoteCardNum.length : ', remoteCardNum.length);
 

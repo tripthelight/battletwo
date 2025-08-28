@@ -33,36 +33,44 @@ export default {
       if (PLAYER_CARD_NUM === null || (PLAYER_CARD_NUM !== null && PLAYER_CARD_NUM === '')) {
         return errorManagement({ errCase: 'errorComn', message: 'error - refreshInit.js - playCardNum null' });
       }
-      const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
-      if (BATTLE_CARD_NUM === null || (BATTLE_CARD_NUM !== null && BATTLE_CARD_NUM === '')) {
+
+      // const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
+      // if (BATTLE_CARD_NUM === null || (BATTLE_CARD_NUM !== null && BATTLE_CARD_NUM === '')) {
+      //   return errorManagement({ errCase: 'errorComn', message: 'error - refreshInit.js - !battleCardNum' });
+      // }
+      const encryptKey3 = findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]); // battleCardNum
+      const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
+      if (encryptVal3 === null) {
         return errorManagement({ errCase: 'errorComn', message: 'error - refreshInit.js - !battleCardNum' });
-      }
+      };
+      const decryptVal3 = dec(encryptVal3);
 
       const P_NUM = playerNum(PLAYER_CARD_NUM);
-      const E_NUM = playerNum(BATTLE_CARD_NUM);
+      // const E_NUM = playerNum(BATTLE_CARD_NUM);
+      const E_NUM = playerNum(decryptVal3);
       const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
       const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
-      const encryptKey8 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
-      const encryptVal8 = window.sessionStorage.getItem(encryptKey8);
-      const encryptKey9 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
-      const encryptVal9 = window.sessionStorage.getItem(encryptKey9);
+      const encryptKey4 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
+      const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
+      const encryptKey5 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
+      const encryptVal5 = window.sessionStorage.getItem(encryptKey5);
 
       if (Number(P_NUM) > Number(E_NUM) || Number(P_NUM) < Number(E_NUM)) {
         // const coinsEnemyBet = window.sessionStorage.coinsEnemyBet;
-        const encryptKey1 = findCharCode([67, 79, 66, 70, 75, 82, 74, 88, 69, 68]); // coinsEnemyBet
-        const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
-        const decryptVal1_1 = encryptVal1 !== null && encryptVal1 !== '' ? dec(encryptVal1) : 0; // coinsEnemyBet value number
+        const encryptKey6 = findCharCode([67, 79, 66, 70, 75, 82, 74, 88, 69, 68]); // coinsEnemyBet
+        const encryptVal6 = window.sessionStorage.getItem(encryptKey6);
+        const decryptVal6_1 = encryptVal6 !== null && encryptVal6 !== '' ? dec(encryptVal6) : 0; // coinsEnemyBet value number
 
         // const coinsPlayerBet = window.sessionStorage.coinsPlayerBet;
-        const encryptKey2 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]); // coinsPlayerBet
-        const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
-        const decryptVal2_1 = encryptVal2 !== null && encryptVal2 !== '' ? dec(encryptVal2) : 0; // coinsPlayerBet value number
+        const encryptKey7 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]); // coinsPlayerBet
+        const encryptVal7 = window.sessionStorage.getItem(encryptKey7);
+        const decryptVal7_1 = encryptVal7 !== null && encryptVal7 !== '' ? dec(encryptVal7) : 0; // coinsPlayerBet value number
 
         // const coinsEnemyBetRes = coinsEnemyBet && Number(coinsEnemyBet) > 0;
-        const decryptVal1_2 = encryptVal1 !== null && encryptVal1 !== '' && Number(decryptVal1_1) > 0;
+        const decryptVal6_2 = encryptVal6 !== null && encryptVal6 !== '' && Number(decryptVal6_1) > 0;
 
         // const coinsPlayerBetRes = coinsPlayerBet && Number(coinsPlayerBet) > 0;
-        const decryptVal2_2 = encryptVal2 !== null && encryptVal2 !== '' && Number(decryptVal2_1) > 0;
+        const decryptVal7_2 = encryptVal7 !== null && encryptVal7 !== '' && Number(decryptVal7_1) > 0;
 
         // const RESULT = Number(P_NUM) > Number(E_NUM) ? true : false;
         const RESULT =
@@ -71,18 +79,18 @@ export default {
             X.enc(decodeTF(_t([120, 113, 98, 101, 117]))); // "xqbeu" : false
 
         // if (coinsEnemyBetRes && coinsPlayerBetRes) {
-        if (decryptVal1_2 && decryptVal2_2) {
+        if (decryptVal6_2 && decryptVal7_2) {
           // const COINS_PLAYER = Number(window.sessionStorage.coinsPlayer);
-          const COINS_PLAYER = dec(encryptVal9); // coinsPlayer value number
+          const COINS_PLAYER = dec(encryptVal5); // coinsPlayer value number
           // const COINS_ENEMY = Number(window.sessionStorage.coinsEnemy);
-          const COINS_ENEMY = dec(encryptVal8); // coinsEnemy value number
+          const COINS_ENEMY = dec(encryptVal4); // coinsEnemy value number
 
           // const RES = Number(coinsEnemyBet) + Number(coinsPlayerBet);
-          const RES = Number(decryptVal1_2) + Number(decryptVal2_1);
+          const RES = Number(decryptVal6_2) + Number(decryptVal7_1);
 
           const C_RES = X.dec(RESULT) ? COINS_PLAYER + RES : COINS_ENEMY + RES;
           // storageMethod('s', 'SET_ITEM', RESULT ? 'coinsPlayer' : 'coinsEnemy', Number(C_RES));
-          storageMethod('s', 'SET_ITEM', X.dec(RESULT) ? encryptKey9 : encryptKey8, enc(Number(C_RES)));
+          storageMethod('s', 'SET_ITEM', X.dec(RESULT) ? encryptKey9 : encryptKey4, enc(Number(C_RES)));
         }
 
         storageMethod('s', 'SET_ITEM',
@@ -98,12 +106,12 @@ export default {
           X.enc(decodeTF(_t([120, 103, 98, 105, 110]))) // "xgbin" : false
         );
         const insertBet = encryptNumOfStr(GRS([_t([119]), _t([101])],parseInt(_t([54])))); // ex) "ewewwe" : 0
-        storageMethod('s', 'SET_ITEM', encryptKey2, enc(insertBet)); // coinsPlayerBet
-        storageMethod('s', 'SET_ITEM', encryptKey1, enc(insertBet)); // 'coinsEnemyBet',
+        storageMethod('s', 'SET_ITEM', encryptKey7, enc(insertBet)); // coinsPlayerBet
+        storageMethod('s', 'SET_ITEM', encryptKey6, enc(insertBet)); // 'coinsEnemyBet',
         storageMethod('s', 'SET_ITEM', findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]), enc(insertBet)); // coinsPlayerExtBet
         storageMethod('s', 'SET_ITEM', findCharCode([80, 73, 68, 65, 90, 69, 88, 86, 82, 67]), enc(insertBet)); // coinsEnemyExtBet
         storageMethod('s', 'SET_ITEM', 'betCoinPos', '');
-        storageMethod('s', 'SET_ITEM', 'battleCardNum', '');
+        storageMethod('s', 'SET_ITEM', encryptKey3, ''); // battleCardNum
         storageMethod('s', 'SET_ITEM', 'betCoin', '');
 
         GET_ROUND_END.goNextRound(X.dec(RESULT) ? 'win' : 'lose');
@@ -130,7 +138,7 @@ export default {
           findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
           X.enc(decodeTF(_t([106, 111, 98, 116, 117]))) // "jobtu" : false
         );
-        storageMethod('s', 'SET_ITEM', 'battleCardNum', '');
+        storageMethod('s', 'SET_ITEM', encryptKey3, ''); // battleCardNum
 
         request('drewRefresh', true);
 

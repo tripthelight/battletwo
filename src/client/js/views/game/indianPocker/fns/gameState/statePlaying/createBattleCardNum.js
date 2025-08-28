@@ -1,9 +1,9 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import randomArray from '@/client/js/views/game/indianPocker/fns/common/randomArray';
 import sessionActiveCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/sessionActiveCard';
-import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/network/indianPocker/request';
 
 export default () => {
@@ -14,24 +14,33 @@ export default () => {
   if (!CARD_NUMS || CARD_NUMS.length <= 0) return errorManagement({ errCase: 'errorComn', message: 'cardNum 세션이 없거나 length가 없습니다.' });
   */
 
-  const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
-  if (BATTLE_CARD_NUM !== null && BATTLE_CARD_NUM !== '') return;
+  // const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
+  // if (BATTLE_CARD_NUM !== null && BATTLE_CARD_NUM !== '') return;
+  const encryptKey3 = findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]); // battleCardNum
+  const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
+  if (encryptVal3 !== null && encryptVal3 !== '') return;
 
   // sessionStorage cardNum key 찾기
-  const encryptKey = findCharCode([77, 68, 79, 88, 73, 86, 69, 70, 65, 80]);
-  const decryptVal = window.sessionStorage.getItem(encryptKey);
+  const encryptKey2 = findCharCode([77, 68, 79, 88, 73, 86, 69, 70, 65, 80]); // cardNum
+  const decryptVal2 = window.sessionStorage.getItem(encryptKey2);
 
   // const CARD_NUMS = JSON.parse(decryptVal);
   // if (!CARD_NUMS || CARD_NUMS.length <= 0) return errorManagement({ errCase: 'errorComn', message: 'cardNum 세션이 없거나 length가 없습니다.' });
-  if (decryptVal === null || (decryptVal !== null && decryptVal === '')) {
+  if (
+    decryptVal2 === null ||
+    (
+      decryptVal2 !== null && decryptVal2 === ''
+    ) ||
+    JSON.parse(decryptVal2) <= 0
+  ) {
     return errorManagement({ errCase: 'sessionStorageLoss', message: 'cardNum 세션이 없거나 length가 없습니다.' });
   }
 
   // 상대 peer에게 내 cardNum을 보내
   request('requestCardNumList', {
     step: 'randomNumCard',
-    list: decryptVal,
-    storeageKey: encryptKey,
+    list: decryptVal2,
+    storeageKey: encryptKey2,
   });
 
   /*

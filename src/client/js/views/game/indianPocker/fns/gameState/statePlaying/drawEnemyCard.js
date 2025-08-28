@@ -1,3 +1,5 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import { dec } from '@/client/js/module/crypts/obf8lower';
 import bcrypt from 'bcryptjs';
 import { selectCompairNumbers } from '@/client/store/encryptionStore';
 import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
@@ -14,11 +16,17 @@ export default () => {
   const ENEMY_BLOCK = GAME_SCENE.querySelector('.enemy-block');
   if (!ENEMY_BLOCK) return errorManagement({ errCase: 'elementLoss', message: '.enemy-block 엘리먼트가 없습니다.' });
 
-  const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
+  // const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
+  const encryptKey1 = findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]); // battleCardNum
+  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  const decryptVal1 = dec(encryptVal1);
 
   const arrNumbs = selectCompairNumbers();
   if (!arrNumbs.length) return errorManagement({ errCase: 'cardNum', message: 'cardNum length 0' });
-  const NUM_RES = arrNumbs.filter((nums) => bcrypt.compareSync(nums, BATTLE_CARD_NUM));
+
+  // const NUM_RES = arrNumbs.filter((nums) => bcrypt.compareSync(nums, BATTLE_CARD_NUM));
+  const NUM_RES = arrNumbs.filter((nums) => bcrypt.compareSync(nums, decryptVal1));
+
   if (!NUM_RES.length) return errorManagement({ errCase: 'cardNum', message: 'num result length 0' });
 
   console.log('NUM_RES >>>>>>>>>>>> ', NUM_RES);

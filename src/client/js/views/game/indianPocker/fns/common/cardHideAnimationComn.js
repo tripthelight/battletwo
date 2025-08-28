@@ -1,3 +1,4 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_201 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
@@ -16,7 +17,9 @@ export default () => {
   PLAYER_BLOCK.classList.add('round-fin');
   ENEMY_BLOCK.classList.add('round-fin');
   setTimeout(() => {
-    storageMethod('s', 'SET_ITEM', 'battleCardNum', []);
+    // storageMethod('s', 'SET_ITEM', 'battleCardNum', []);
+    storageMethod('s', 'SET_ITEM', findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]), ''); // battleCardNum
+
     PLAYER_CARD.remove();
     ENEMY_CARD.remove();
     ENEMY_COINS.classList.remove('disabled');

@@ -68,7 +68,11 @@ export default (reloadState) => {
         findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]), // basicBettingState
         X.enc(decodeTF(textDE([106, 103, 108, 116, 110]))) // "jgltn" : false
       );
-      storageMethod('s', 'SET_ITEM', 'battleCardNum', []);
+      // storageMethod('s', 'SET_ITEM', 'battleCardNum', []);
+      storageMethod('s', 'SET_ITEM',
+        findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]), // battleCardNum
+        ''
+      );
     }
   } else {
     // 이전에 FOLD한 PLAYER 가 있는데, 둘 다 새로고침 안하고 진입한 경우
