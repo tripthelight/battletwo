@@ -218,6 +218,8 @@ export const GET_ROUND_END = {
     const encryptVal5 = window.sessionStorage.getItem(encryptKey5);
     const encryptKey6 = findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]); // coinsPlayerExtBet
     const encryptVal6 = window.sessionStorage.getItem(encryptKey6);
+    const encryptKey7 = findCharCode([67, 79, 66, 70, 75, 82, 74, 88, 69, 68]); // coinsEnemyBet
+    const encryptVal7 = window.sessionStorage.getItem(encryptKey7);
 
     // const BET_USER = window.sessionStorage.betUser;
     // if (!BET_USER) {
@@ -245,8 +247,9 @@ export const GET_ROUND_END = {
       errorManagement({ errCase: 'errorComn' });
     }
 
-    const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
-    if (!COINS_ENEMY_BET) {
+    // const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
+    // if (!COINS_ENEMY_BET) {
+    if (encryptVal7 === null) {
       console.log('error - getRoundEnd.js - !COINS_ENEMY_BET');
       errorManagement({ errCase: 'errorComn' });
     }
@@ -273,7 +276,10 @@ export const GET_ROUND_END = {
       enc(dec(encryptVal3) + encryptNumOfStr(new TextDecoder().decode(new Uint8Array([119, 101, 119, 119])))) // 'weww' : 0000
     );
 
-    if (_result !== 'drew') storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', 0);
+    if (_result !== 'drew') storageMethod('s', 'SET_ITEM',
+      findCharCode([67, 79, 66, 70, 75, 82, 74, 88, 69, 68]), // coinsEnemyBet
+      enc(encryptNumOfStr(textDE([101, 119, 119, 101]))) // 'ewwe' : 0000
+    );
 
     // storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 0);
     storageMethod('s', 'SET_ITEM',

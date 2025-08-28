@@ -15,16 +15,21 @@ export const GET_BETTING = {
     });
     PROMISE
       .then((_data) => {
-        const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
-        const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
-        const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
-        const encryptKey2 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
-
         // storageMethod('s', 'SET_ITEM', 'betUser', Boolean(_data.bet));
-        storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_1); // betUser, true
-        storageMethod('s', 'SET_ITEM', encryptKey2, enc(_data.coinCount));
-        storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', _data.coinBet);
+        storageMethod('s', 'SET_ITEM',
+          findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]), // betUser
+          findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]) // true
+        );
+        storageMethod('s', 'SET_ITEM',
+          findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]), // coinsEnemy
+          enc(_data.coinCount)
+        );
+        storageMethod('s', 'SET_ITEM',
+          findCharCode([67, 79, 66, 70, 75, 82, 74, 88, 69, 68]), // coinsEnemyBet
+          enc(_data.coinBet)
+        );
         storageMethod('s', 'SET_ITEM', 'coinsEnemyExtBet', _data.extBet);
+
         GET_BETTING.drawExtEnemyBet(_data);
       })
       .catch((error) => {

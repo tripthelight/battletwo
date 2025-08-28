@@ -26,7 +26,12 @@ export function setKey(k){
 
 const tag=(K,n,s)=> (mix((K ^ n ^ s)>>>0) & 15);
 
-// [ s:5 ][ num:32 ][ t:4 ] = 41비트 → base36 8자 가능
+/**
+ * 숫자를 받아서 난독화된 문자를 리턴
+ * [ s:5 ][ num:32 ][ t:4 ] = 41비트 → base36 8자 가능
+ * @param {string|number} num
+ * @returns {string} 난독화 문자
+ */
 export function enc(num){
   if(!Number.isInteger(num)||num<0||num>0xffffffff) throw throwObj('errorComn', 'range error.');
   const K=ensureKey();

@@ -34,7 +34,7 @@ export const SET_FOLD = {
     */
     // const D_ARR = ['coinsEnemyBet', 'coinsPlayerBet', 'coinsEnemyExtBet', 'coinsPlayerExtBet', 'betCoin', 'betCoinPos', 'extFirstBet', 'drewReady', 'drewState'];
     const D_ARR = [
-      'coinsEnemyBet',
+      findCharCode([67, 79, 66, 70, 75, 82, 74, 88, 69, 68]), // coinsEnemyBet
       findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]), // coinsPlayerBet
       'coinsEnemyExtBet',
       findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]), // coinsPlayerExtBet
@@ -107,7 +107,10 @@ export const SET_FOLD = {
             const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
             const decryptVal2 = encryptVal2 !== null && encryptVal2 !== '' ? dec(encryptVal2) : 0; // coinsPlayer value number
 
-            const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
+            // const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
+            const encryptKey3 = findCharCode([67, 79, 66, 70, 75, 82, 74, 88, 69, 68]); // coinsEnemyBet
+            const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
+            const decryptVal3 = encryptVal3 !== null && encryptVal3 !== '' ? dec(encryptVal3) : 0; // coinsEnemyBet value number
 
             // const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet;
             const encryptKey4 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]); // coinsPlayerBet
@@ -125,7 +128,8 @@ export const SET_FOLD = {
             // const FOLD_CP = COINS_PLAYER && Number(COINS_PLAYER) >= 0 ? Number(COINS_PLAYER) : 0;
             const FOLD_CP = encryptVal2 !== null && encryptVal2 !== '' && Number(decryptVal2) >= 0 ? Number(decryptVal2) : 0;
 
-            const FOLD_CEB = COINS_ENEMY_BET && Number(COINS_ENEMY_BET) >= 0 ? Number(COINS_ENEMY_BET) : 0;
+            // const FOLD_CEB = COINS_ENEMY_BET && Number(COINS_ENEMY_BET) >= 0 ? Number(COINS_ENEMY_BET) : 0;
+            const FOLD_CEB = encryptVal3 !== null && encryptVal3 !== '' && Number(decryptVal3) >= 0 ? Number(decryptVal3) : 0;
 
             // const FOLD_CPB = COINS_PLAYER_BET && Number(COINS_PLAYER_BET) >= 0 ? Number(COINS_PLAYER_BET) : 0;
             const FOLD_CPB = encryptVal4 !== null && encryptVal4 !== '' && Number(decryptVal4) >= 0 ? Number(decryptVal4) : 0;

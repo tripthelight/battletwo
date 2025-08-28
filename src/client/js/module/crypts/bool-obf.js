@@ -88,7 +88,7 @@ function fnv1a32WithKey(u32) {
 // 공개 API (가독성)
 export const X = {
   /**
-   * @param {"true"|"false"} text
+   * @param {"true"|"false"} text 인자는 반드시 문자
    * @returns {string} 8글자 난독 문자열([a-z0-9])
    */
   enc(text) {

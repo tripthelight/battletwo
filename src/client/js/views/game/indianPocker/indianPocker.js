@@ -13,6 +13,9 @@ import errorManager from '@/client/js/module/errorHandler/errorManager';
 
 import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import textDE from '@/client/js/module/crypts/textDE';
+import { enc, dec } from '@/client/js/module/crypts/obf8lower';
+import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 
 // onMounted
 document.onreadystatechange = async () => {
@@ -82,14 +85,12 @@ document.onreadystatechange = async () => {
     // console.log('false :::::::::: ', findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]));
     // console.log('────────────────');
 
-
     // const t1 = X.enc(decodeTF('smra'));
     // console.log('encrypt true ::::: ', t1);
     // console.log('decrypt true ::::: ', X.dec(t1));
     // const f1 = X.enc(decodeTF('joben'));
     // console.log('encrypt false ::::: ', f1);
     // console.log('decrypt false ::::: ', X.dec(f1));
-
   } catch (error) {
     console.log('error indianPocker.js >>>>>>>>>>>> ');
     errorManager(error, false);

@@ -17,19 +17,22 @@ import subtractMoveCoin from '@/client/js/views/game/indianPocker/fns/common/sub
 
 export const GET_ALLIN = {
   receiveAllinBet: (_data) => {
-    const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
-    const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
-    const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
-    const encryptKey2 = findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]); // extFirstBet
-    const encryptKey3 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
-
-    storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_1); // betUser, true
     storageMethod('s', 'SET_ITEM',
-      encryptKey2, // extFirstBet
+      findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]), // betUser
+      findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]) // true
+    );
+    storageMethod('s', 'SET_ITEM',
+      findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
       X.enc(decodeTF(textDE([99, 119, 112, 110]))) // "cwpn" : true
     );
-    storageMethod('s', 'SET_ITEM', encryptKey3, enc(_data.coinCount));
-    storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', _data.coinBet);
+    storageMethod('s', 'SET_ITEM',
+      findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]), // coinsEnemy
+      enc(_data.coinCount) // enc의 인자는 number나 string 가능
+    );
+    storageMethod('s', 'SET_ITEM',
+      findCharCode([67, 79, 66, 70, 75, 82, 74, 88, 69, 68]), // coinsEnemyBet
+      enc(_data.coinBet) // X.enc의 인자는 string
+    );
     storageMethod('s', 'SET_ITEM', 'coinsEnemyExtBet', _data.extBet);
     storageMethod('s', 'SET_ITEM',
       findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]), // coinsPlayerExtBet
@@ -40,7 +43,10 @@ export const GET_ALLIN = {
     // emeny coins animation
     setTimeout(() => {
       EnemyBlockMoveBattingZone('allin').then(() => {
-        const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
+        // const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
+        const encryptKey7 = findCharCode([67, 79, 66, 70, 75, 82, 74, 88, 69, 68]); // coinsEnemyBet
+        const encryptVal7 = window.sessionStorage.getItem(encryptKey7);
+        const decryptVal7 = dec(encryptVal7); // coinsEnemyBet value number
 
         // const COINS_PLAYER_BET = window.sessionStorage.coinsPlayerBet;
         const encryptKey8 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]); // coinsPlayerBet
@@ -48,7 +54,8 @@ export const GET_ALLIN = {
         const decryptVal8 = dec(encryptVal8); // coinsPlayerBet value number
 
         // if (Number(COINS_ENEMY_BET) === Number(COINS_PLAYER_BET)) {
-        if (Number(COINS_ENEMY_BET) === Number(decryptVal8)) {
+        // coinsEnemyBet === coinsPlayerBet
+        if (Number(decryptVal7) === Number(decryptVal8)) {
           // PLAYER 올인을 받고 ENEMY 올인 함
           // RULES.CALL();
           BTN_STATE.HANDLER('call');
