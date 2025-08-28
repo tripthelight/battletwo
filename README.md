@@ -121,5 +121,4 @@ battletwo
 - TODO: 
   - 기본배팅 완료 후 enterPlayingResult.js에서 실행되는 betUser가 true인 peer의 createBattleCardNum.js 단계에서 에러남
 - TODO: 
-  - coinsEnemyBet 암호화 중
-  - C:\workspace\battletwo\src\client\js\views\game\indianPocker\fns\stateBasicBetting\setBasicBetting.js 까지 함
+  - gameState basicBet battleCardNum까지 암호화함 
