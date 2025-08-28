@@ -10,7 +10,7 @@ export default () => {
   // 이전 게임에서 FOLD 한 경우 playing 새로 진입 시 모두 제거
   // storageMethod('s', 'REMOVE_ITEM', 'coinsEnemyLocalFold');
   storageMethod('s', 'REMOVE_ITEM', findCharCode([86, 90, 81, 77, 74, 72, 88, 83, 65, 80])); // coinsEnemyLocalFold
-  storageMethod('s', 'REMOVE_ITEM', 'coinsPlayerLocalFold');
+  storageMethod('s', 'REMOVE_ITEM', findCharCode([80, 78, 65, 74, 82, 70, 66, 67, 81, 69])); // coinsPlayerLocalFold
   storageMethod('s', 'REMOVE_ITEM', 'coinsEnemyRemoteFold');
   storageMethod('s', 'REMOVE_ITEM', 'coinsPlayerRemoteFold');
   storageMethod('s', 'REMOVE_ITEM', 'foldUser');

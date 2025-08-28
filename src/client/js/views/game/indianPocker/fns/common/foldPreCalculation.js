@@ -20,6 +20,7 @@ export default (myCardNum) => {
   storageMethod('s', 'SET_ITEM', 'foldUser', true);
 
   const encryptKey6 = findCharCode([86, 90, 81, 77, 74, 72, 88, 83, 65, 80]); // coinsEnemyLocalFold
+  const encryptKey7 = findCharCode([80, 78, 65, 74, 82, 70, 66, 67, 81, 69]); // coinsPlayerLocalFold
 
   // fold 일 경우 coinsEnemy, coinsPlayer의 결과
   const firstCalc = () => {
@@ -71,7 +72,11 @@ export default (myCardNum) => {
       enc(FOLD_CE + RES_E)
     );
 
-    storageMethod('s', 'SET_ITEM', 'coinsPlayerLocalFold', FOLD_CP + FOLD_CPEB);
+    // storageMethod('s', 'SET_ITEM', 'coinsPlayerLocalFold', FOLD_CP + FOLD_CPEB);
+    storageMethod('s', 'SET_ITEM',
+      encryptKey7, // coinsPlayerLocalFold
+      enc(FOLD_CP + FOLD_CPEB)
+    );
   };
 
   // fold 했는데 내 카드가 10일 경우 coinsEnemy, coinsPlayer의 결과
@@ -80,20 +85,29 @@ export default (myCardNum) => {
     const encryptVal6_1 = window.sessionStorage.getItem(encryptKey6); // coinsEnemyLocalFold value
     const decryptVal6_1 = dec(encryptVal6_1); // coinsEnemyLocalFold value number
 
-    const COINS_PLAYER = window.sessionStorage.coinsPlayerLocalFold;
-    const PENALTY_COINS = Number(COINS_PLAYER) >= 10 ? 10 : Number(COINS_PLAYER);
+    // const COINS_PLAYER = window.sessionStorage.coinsPlayerLocalFold;
+    const encryptVal7_1 = window.sessionStorage.getItem(encryptKey7); // coinsPlayerLocalFold value
+    const decryptVal7_1 = dec(encryptVal7_1); // coinsPlayerLocalFold value number
+
+    // const PENALTY_COINS = Number(COINS_PLAYER) >= 10 ? 10 : Number(COINS_PLAYER);
+    const PENALTY_COINS = Number(decryptVal7_1) >= 10 ? 10 : Number(decryptVal7_1);
 
     // const E_RESULT = Number(COINS_ENEMY) + Number(PENALTY_COINS);
     const E_RESULT = Number(decryptVal6_1) + Number(PENALTY_COINS);
 
-    const P_RESULT = Number(COINS_PLAYER) - Number(PENALTY_COINS);
+    // const P_RESULT = Number(COINS_PLAYER) - Number(PENALTY_COINS);
+    const P_RESULT = Number(decryptVal7_1) - Number(PENALTY_COINS);
 
     // storageMethod('s', 'SET_ITEM', 'coinsEnemyLocalFold', E_RESULT);
     storageMethod('s', 'SET_ITEM',
       encryptKey6, // coinsEnemyLocalFold
       enc(E_RESULT)
     );
-    storageMethod('s', 'SET_ITEM', 'coinsPlayerLocalFold', P_RESULT);
+    // storageMethod('s', 'SET_ITEM', 'coinsPlayerLocalFold', P_RESULT);
+    storageMethod('s', 'SET_ITEM',
+      encryptKey7, // coinsPlayerLocalFold
+      enc(P_RESULT)
+    );
   };
 
   firstCalc();
@@ -101,9 +115,12 @@ export default (myCardNum) => {
 
   const encryptVal6_2 = window.sessionStorage.getItem(encryptKey6); // coinsEnemyLocalFold value
   const decryptVal6_2 = dec(encryptVal6_2); // coinsEnemyLocalFold value number
+  const encryptVal7_2 = window.sessionStorage.getItem(encryptKey7); // coinsPlayerLocalFold value
+  const decryptVal7_2 = dec(encryptVal7_2); // coinsPlayerLocalFold value number
 
   request('enemyFold', {
-    coinsEnemyRemoteFold: window.sessionStorage.coinsPlayerLocalFold,
+    // coinsEnemyRemoteFold: window.sessionStorage.coinsPlayerLocalFold,
+    coinsEnemyRemoteFold: decryptVal7_2,
     // coinsPlayerRemoteFold: window.sessionStorage.coinsEnemyLocalFold,
     coinsPlayerRemoteFold: decryptVal6_2,
   });
