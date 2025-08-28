@@ -10,7 +10,7 @@ export default (reloadState) => {
     findCharCode([86, 90, 81, 77, 74, 72, 88, 83, 65, 80]), // coinsEnemyLocalFold
     findCharCode([80, 78, 65, 74, 82, 70, 66, 67, 81, 69]), // coinsPlayerLocalFold
     findCharCode([79, 90, 74, 71, 78, 89, 69, 82, 88, 84]), // coinsEnemyRemoteFold
-    'coinsPlayerRemoteFold',
+    findCharCode([87, 68, 77, 88, 86, 90, 75, 79, 74, 82]), // coinsPlayerRemoteFold
     'foldUser',
     'foldState'
   ];
@@ -38,10 +38,11 @@ export default (reloadState) => {
         storageMethod('s', 'SET_ITEM', encryptKey3, encryptVal5); // coinsPlayer, coinsPlayerLocalFold
       } else if (reloadState === 'foldRemote') {
         const encryptVal6 = window.sessionStorage.getItem(deleteParams[2]); // coinsEnemyRemoteFold value
+        const encryptVal7 = window.sessionStorage.getItem(deleteParams[3]); // coinsPlayerRemoteFold value
         // FOLD를 받은 PLAY가 새고로침
         storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_1); // betUser
         storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal6); // coinsEnemy, coinsEnemyRemoteFold
-        storageMethod('s', 'SET_ITEM', encryptKey3, window.sessionStorage.coinsPlayerRemoteFold); // coinsPlayer,
+        storageMethod('s', 'SET_ITEM', encryptKey3, encryptVal7); // coinsPlayer, coinsPlayerRemoteFold
       };
 
       // const D_ARR = ['coinsEnemyBet', 'coinsPlayerBet', 'coinsEnemyExtBet', 'coinsPlayerExtBet', 'betCoin', 'betCoinPos', 'extFirstBet', 'drewReady', 'drewState', 'dropState', 'coinsEnemyLocalFold', 'coinsPlayerLocalFold', 'coinsEnemyRemoteFold', 'coinsPlayerRemoteFold', 'foldUser', 'foldState'];

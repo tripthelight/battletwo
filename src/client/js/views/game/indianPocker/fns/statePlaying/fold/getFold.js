@@ -135,6 +135,10 @@ export const GET_FOLD = {
       findCharCode([79, 90, 74, 71, 78, 89, 69, 82, 88, 84]), // coinsEnemyRemoteFold
       enc(_data.coinsEnemyRemoteFold)
     );
-    storageMethod('s', 'SET_ITEM', 'coinsPlayerRemoteFold', _data.coinsPlayerRemoteFold);
+    // storageMethod('s', 'SET_ITEM', 'coinsPlayerRemoteFold', _data.coinsPlayerRemoteFold);
+    storageMethod('s', 'SET_ITEM',
+      findCharCode([87, 68, 77, 88, 86, 90, 75, 79, 74, 82]), // coinsPlayerRemoteFold
+      enc(_data.coinsPlayerRemoteFold)
+    );
   },
 };
