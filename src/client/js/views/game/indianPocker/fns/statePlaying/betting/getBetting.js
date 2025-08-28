@@ -1,5 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
-import { enc } from '@/client/js/module/crypts/obf8lower';
+import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { comnText } from '@/client/js/functions/language';
@@ -28,7 +28,10 @@ export const GET_BETTING = {
           findCharCode([67, 79, 66, 70, 75, 82, 74, 88, 69, 68]), // coinsEnemyBet
           enc(_data.coinBet)
         );
-        storageMethod('s', 'SET_ITEM', 'coinsEnemyExtBet', _data.extBet);
+        storageMethod('s', 'SET_ITEM',
+          findCharCode([80, 73, 68, 65, 90, 69, 88, 86, 82, 67]), // coinsEnemyExtBet
+          enc(_data.extBet)
+        );
 
         GET_BETTING.drawExtEnemyBet(_data);
       })
@@ -48,8 +51,15 @@ export const GET_BETTING = {
     if (!ENEMY_POS) return;
     const BET_COIN_LIST = JSON.parse(window.sessionStorage.betCoin);
     if (!BET_COIN_LIST || BET_COIN_LIST.length <= 0) return;
-    const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet;
-    const NUMS = Number(COINS_ENEMY_EXT_BET) || 0;
+
+    // const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet;
+    const encryptKey1 = findCharCode([80, 73, 68, 65, 90, 69, 88, 86, 82, 67]); // coinsEnemyExtBet
+    const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+    const decryptVal1 = encryptVal1 !== null && encryptVal1 !== '' ? dec(encryptVal1) : 0; // coinsEnemyExtBet value number
+
+    // const NUMS = Number(COINS_ENEMY_EXT_BET) || 0;
+    const NUMS = Number(decryptVal1);
+
     const COINS_ENEMY = document.querySelector('.coins-enemy');
     if (!COINS_ENEMY) return;
     const COINS = COINS_ENEMY.querySelectorAll('li');

@@ -180,6 +180,9 @@ export const obfuscationList = {
       COINS_ENEMY_BET: {
         k: 'COBFKRJXED', // [67, 79, 66, 70, 75, 82, 74, 88, 69, 68]
       },
+      COINS_ENEMY_EXT_BET: {
+        k: 'PIDAZEXVRC' //  [80, 73, 68, 65, 90, 69, 88, 86, 82, 67]
+      },
       DREW_READY: { // true/false
         k: 'RCFEDVXJSN', // [82, 67, 70, 69, 68, 86, 88, 74, 83, 78]
       },

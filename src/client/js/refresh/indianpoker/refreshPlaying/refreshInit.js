@@ -108,7 +108,10 @@ export default {
           findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]), // coinsPlayerExtBet
           enc(encryptNumOfStr(textDE([101, 119, 101, 101])) )// 'ewee' : 0
         );
-        storageMethod('s', 'SET_ITEM', 'coinsEnemyExtBet', 0);
+        storageMethod('s', 'SET_ITEM',
+          findCharCode([80, 73, 68, 65, 90, 69, 88, 86, 82, 67]), // coinsEnemyExtBet
+          enc(encryptNumOfStr(textDE([101, 119, 101, 119])) )// 'ewew' : 0
+        );
         storageMethod('s', 'SET_ITEM', 'betCoinPos', '');
         storageMethod('s', 'SET_ITEM', 'battleCardNum', '');
         storageMethod('s', 'SET_ITEM', 'betCoin', '');

@@ -11,8 +11,14 @@ import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState
 import SOCKET_EVENT from '@/client/js/network/indianPocker/batting/battingEvent';
 
 export default () => {
-  const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet;
-  const AI_CEEB = COINS_ENEMY_EXT_BET && Number(COINS_ENEMY_EXT_BET) > 0 ? Number(COINS_ENEMY_EXT_BET) : 0;
+  // const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet;
+  // const AI_CEEB = COINS_ENEMY_EXT_BET && Number(COINS_ENEMY_EXT_BET) > 0 ? Number(COINS_ENEMY_EXT_BET) : 0;
+
+  const encryptKey4 = findCharCode([80, 73, 68, 65, 90, 69, 88, 86, 82, 67]);  // coinsEnemyExtBet
+  const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
+  const decryptVal4 = encryptVal4 !== null && encryptVal4 !== '' ? dec(encryptVal4) : 0; // coinsEnemyExtBet value number
+  const AI_CEEB = encryptVal4 !== null && encryptVal4 !== '' && Number(decryptVal4) > 0 ? Number(decryptVal4) : 0;
+
   let res = INDIANPOCKER_RULES.ALLIN().RES; // 내가 올일 할 수 있는 개수
   let resSend = INDIANPOCKER_RULES.ALLIN().RES_SEND; // 상대가 받는 올인 개수
   let resDelete = INDIANPOCKER_RULES.ALLIN().RES_DELETE; // 배팅존에서 빼야하는 내 코인 개수
@@ -33,10 +39,10 @@ export default () => {
           // const COINS_PLAYER_BET_RES = window.sessionStorage.coinsPlayerBet;
           const encryptKey2 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]);  // coinsPlayerBet
           const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
-          const decryptVal2_1 = encryptVal2 ? dec(encryptVal2) : 0; // coinsPlayerBet value number
+          const decryptVal2_1 = encryptVal2 !== null && encryptVal2 !== '' ? dec(encryptVal2) : 0; // coinsPlayerBet value number
 
           // const CPB_RES = COINS_PLAYER_BET_RES && Number(COINS_PLAYER_BET_RES) > 0 ? Number(COINS_PLAYER_BET_RES) : 0;
-          const CPB_RES = encryptVal2 !== null && Number(decryptVal2_1) > 0 ? Number(decryptVal2_1) : 0;
+          const CPB_RES = encryptVal2 !== null && encryptVal2 !== '' && Number(decryptVal2_1) > 0 ? Number(decryptVal2_1) : 0;
 
           // storageMethod('s', 'SET_ITEM', 'coinsPlayer', Number(CP_RES));
           storageMethod('s', 'SET_ITEM', encryptKey1, enc(Number(CP_RES))); // coinsPlayer

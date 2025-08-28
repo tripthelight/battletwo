@@ -33,7 +33,10 @@ export const GET_ALLIN = {
       findCharCode([67, 79, 66, 70, 75, 82, 74, 88, 69, 68]), // coinsEnemyBet
       enc(_data.coinBet) // X.enc의 인자는 string
     );
-    storageMethod('s', 'SET_ITEM', 'coinsEnemyExtBet', _data.extBet);
+    storageMethod('s', 'SET_ITEM',
+      findCharCode([80, 73, 68, 65, 90, 69, 88, 86, 82, 67]), // coinsEnemyExtBet
+      enc(_data.extBet)
+    );
     storageMethod('s', 'SET_ITEM',
       findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]), // coinsPlayerExtBet
       enc(encryptNumOfStr(textDE([101, 101, 119, 101]))) // 'eewe' : 0000

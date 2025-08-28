@@ -16,6 +16,7 @@ import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import textDE from '@/client/js/module/crypts/textDE';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
+import {GRS} from '@/client/js/module/crypts/generateRandomString';
 
 // onMounted
 document.onreadystatechange = async () => {
@@ -91,6 +92,9 @@ document.onreadystatechange = async () => {
     // const f1 = X.enc(decodeTF('joben'));
     // console.log('encrypt false ::::: ', f1);
     // console.log('decrypt false ::::: ', X.dec(f1));
+
+    console.log('[e w] shuffle : ', GRS(['w','e'], 4)); // ex) 'ewwe'
+
   } catch (error) {
     console.log('error indianPocker.js >>>>>>>>>>>> ');
     errorManager(error, false);
@@ -103,13 +107,12 @@ function ec(str) {
   let uint8Array = encoder.encode(str);
   return uint8Array;
 };
+ec('    ');
 
 function dc(arr) {
   let uint8Array = new Uint8Array(arr);
   let decoder = new TextDecoder().decode(uint8Array);
   return decoder;
 };
-
-ec('    ');
 dc([     ]);
 */

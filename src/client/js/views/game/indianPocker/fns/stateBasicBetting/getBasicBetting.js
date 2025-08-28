@@ -217,6 +217,8 @@ export const GET_BASIC_BETTING = {
           });
         }).catch((err) => {
           console.log('error ENEMY_MOVE_COIN_INCREASE');
+          console.log('err : ', err);
+
           throw {
             ...throwObj('errorComn', 'ENEMY_MOVE_COIN_INCREASE failed.'),
             errorDetails: err

@@ -1,6 +1,9 @@
 import findCharCode from '@/client/js/functions/findCharCode';
-import { dec } from '@/client/js/module/crypts/obf8lower';
+import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import X from '@/client/js/module/crypts/bool-obf';
+import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
+import _t from '@/client/js/module/crypts/textDE';
+import {GRS} from '@/client/js/module/crypts/generateRandomString';
 import booleanReturn from '@/client/js/functions/validation/booleanReturn';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1, timeInterval_2 } from '@/client/js/functions/variable.js';
@@ -39,8 +42,13 @@ export default () => {
   const decryptVal3 = dec(encryptVal3); // coinsPlayer value number
 
   setTimeout(() => {
-    const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet;
-    if (COINS_ENEMY_EXT_BET === undefined || COINS_PLAYER === null) return errorManagement({ errCase: 'sessionStorageLoss', message: 'drew 상태에서 coinsEnemyExtBet 세션이 없습니다' });
+    // const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet;
+    // if (COINS_ENEMY_EXT_BET === undefined || COINS_PLAYER === null) return errorManagement({ errCase: 'sessionStorageLoss', message: 'drew 상태에서 coinsEnemyExtBet 세션이 없습니다' });
+    const encryptKey4 = findCharCode([80, 73, 68, 65, 90, 69, 88, 86, 82, 67]); // coinsEnemyExtBet
+    const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
+    if (encryptVal4 === null) return errorManagement({ errCase: 'sessionStorageLoss', message: 'drew 상태에서 coinsEnemyExtBet 세션이 없습니다' });
+    const decryptVal4 = dec(encryptVal4); // coinsEnemyExtBet value number
+
     // const BET_USER = window.sessionStorage.betUser;
     // if (!BET_USER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'drew 상태에서 betUser 세션이 없습니다' });
     // const BET_USER_FIRST = window.sessionStorage.betUserFirst;
@@ -59,12 +67,16 @@ export default () => {
     if (decryptVal_2 && !decryptVal_1) return;
     if (!decryptVal_2 && decryptVal_1) return;
 
+    const compairCoins = encryptNumOfStr(GRS([_t([101]), _t([119])],parseInt(_t([52])))); // ex) "ewew" : 0
     // if (Number(COINS_ENEMY_EXT_BET) === 0 && (Number(COINS_ENEMY) === 0 || Number(COINS_PLAYER) === 0)) {
     if (
-      Number(COINS_ENEMY_EXT_BET) === 0 &&
+      // coinsEnemyExtBet === 0
+      decryptVal4 === compairCoins &&
       (
-        Number(decryptVal2) === 0 || // coinsEnemy === 0
-        Number(decryptVal3) === 0 // coinsPlayer === 0
+        // coinsEnemy === 0
+        decryptVal2 === compairCoins ||
+        // coinsPlayer === 0
+        decryptVal3 === compairCoins
       )
     ) {
       storageMethod('s', 'SET_ITEM', 'drewFlipCardMode', true);

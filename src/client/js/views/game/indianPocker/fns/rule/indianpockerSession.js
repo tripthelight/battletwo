@@ -60,7 +60,11 @@ export default (_name) => {
       const decryptVal9 = encryptVal9 !== null && encryptVal9 !== '' ? dec(encryptVal9) : 0; // coinsPlayerBet value number
       return encryptVal9 !== null && decryptVal9 > 0 ? decryptVal9 : 0;
     case 'CEEB':
-      return window.sessionStorage.coinsEnemyExtBet && Number(window.sessionStorage.coinsEnemyExtBet) > 0 ? Number(window.sessionStorage.coinsEnemyExtBet) : 0;
+      // return window.sessionStorage.coinsEnemyExtBet && Number(window.sessionStorage.coinsEnemyExtBet) > 0 ? Number(window.sessionStorage.coinsEnemyExtBet) : 0;
+      const encryptKey10 = findCharCode([80, 73, 68, 65, 90, 69, 88, 86, 82, 67]); // coinsEnemyExtBet
+      const encryptVal10 = window.sessionStorage.getItem(encryptKey10);
+      const decryptVal10 = encryptVal10 !== null && encryptVal10 !== '' ? dec(encryptVal10) : 0; // coinsEnemyExtBet value number
+      return encryptVal10 !== null && encryptVal10 > 0 ? decryptVal10 : 0;
     default:
       break;
   }

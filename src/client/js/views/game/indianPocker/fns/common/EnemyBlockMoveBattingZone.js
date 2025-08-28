@@ -23,15 +23,19 @@ export default (_case) => {
   // const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
   const encryptKey1 = findCharCode([67, 79, 66, 70, 75, 82, 74, 88, 69, 68]); // coinsEnemyBet
   const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
-  const decryptVal1 = dec(encryptVal1); // coinsEnemyBet value number
+  const decryptVal1 = encryptVal1 !== null && encryptVal1 !== '' ? dec(encryptVal1) : 0; // coinsEnemyBet value number
 
-  const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet;
+  // const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet;
+  const encryptKey2 = findCharCode([80, 73, 68, 65, 90, 69, 88, 86, 82, 67]); // coinsEnemyExtBet
+  const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+  const decryptVal2 = encryptVal2 !== null && encryptVal2 !== '' ? dec(encryptVal2) : 0; // coinsEnemyExtBet value number
 
   if (_case === 'allin') {
     return new Promise((resolve, reject) => {
       const BET_COINS = document.querySelector('.bet-coins');
       if (!BET_COINS) return errorManagement({ errCase: 'elementLoss', message: '.enemy-block에서 .betting-zone으로 칩을 옯길 때 .bet-coins 엘리먼트가 없습니다' });
-      const MOVE_COINS_LEN = Number(COINS_ENEMY_EXT_BET) > 0 ? Number(COINS_ENEMY_EXT_BET) : 0;
+      // const MOVE_COINS_LEN = Number(COINS_ENEMY_EXT_BET) > 0 ? Number(COINS_ENEMY_EXT_BET) : 0;
+      const MOVE_COINS_LEN = Number(decryptVal2) > 0 ? Number(decryptVal2) : 0;
       const BBT = getStyle(BETTING_ZONE, 'border-top-width');
       let aniTime = Number(MOVE_COINS_LEN) > 0 ? Number(reactiveState.allInintrtval / MOVE_COINS_LEN) : 0;
       let x = 0;
@@ -117,7 +121,7 @@ export default (_case) => {
       // playing
       const encryptVal = findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]);
       // const NUMS = decryptVal === encryptVal ? Number(COINS_ENEMY_EXT_BET) || 0 : Number(COINS_ENEMY_BET) || 0;
-      const NUMS = decryptVal === encryptVal ? Number(COINS_ENEMY_EXT_BET) || 0 : Number(decryptVal1) || 0;
+      const NUMS = decryptVal === encryptVal ? Number(decryptVal2) || 0 : Number(decryptVal1) || 0;
       if (NUMS === 0) resolve();
 
       const PB = getStyle(ENEMY_COIN_WRAP, 'padding-bottom');
