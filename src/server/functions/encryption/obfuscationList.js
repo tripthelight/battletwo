@@ -247,6 +247,9 @@ export const obfuscationList = {
       FOLD_USER: {
         k: 'BAQLTGCVRS' // [66, 65, 81, 76, 84, 71, 67, 86, 82, 83]
       },
+      FOLD_STATE: {
+        k: 'AHBKUEWOXV' // [65, 72, 66, 75, 85, 69, 87, 79, 88, 86]
+      },
 
       // e: sessionStorage keys
 

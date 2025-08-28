@@ -131,7 +131,11 @@ export const GET_FOLD = {
     }, timeInterval_1);
   },
   sendFoldData: (_data) => {
-    storageMethod('s', 'SET_ITEM', 'foldState', true);
+    // storageMethod('s', 'SET_ITEM', 'foldState', true);
+    storageMethod('s', 'SET_ITEM',
+      findCharCode([65, 72, 66, 75, 85, 69, 87, 79, 88, 86]), // foldState
+      X.enc(decodeTF(textDE([107, 119, 104, 97]))) // "kwha" : true
+    );
 
     // storageMethod('s', 'SET_ITEM', 'foldUser', false);
     storageMethod('s', 'SET_ITEM',

@@ -17,7 +17,11 @@ import { request } from '@/client/js/network/indianPocker/request';
  */
 export default (myCardNum) => {
   // FOLD 상태 저장
-  storageMethod('s', 'SET_ITEM', 'foldState', true);
+  // storageMethod('s', 'SET_ITEM', 'foldState', true);
+  storageMethod('s', 'SET_ITEM',
+    findCharCode([65, 72, 66, 75, 85, 69, 87, 79, 88, 86]), // foldState
+    X.enc(decodeTF(textDE([115, 109, 104, 117]))) // "smhu" : true
+  );
 
   // 새로고침 시 betUser를 교체하기 위해 FOLD를 실행한 사람을 구분시켜야 함
   // storageMethod('s', 'SET_ITEM', 'foldUser', true);
