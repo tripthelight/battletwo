@@ -13,7 +13,7 @@ import errorManager from '@/client/js/module/errorHandler/errorManager';
 
 import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
-import textDE from '@/client/js/module/crypts/textDE';
+import _t from '@/client/js/module/crypts/textDE';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import {GRS} from '@/client/js/module/crypts/generateRandomString';
@@ -93,7 +93,17 @@ document.onreadystatechange = async () => {
     // console.log('encrypt false ::::: ', f1);
     // console.log('decrypt false ::::: ', X.dec(f1));
 
-    console.log('[e w] shuffle : ', GRS(['w','e'], 4)); // ex) 'ewwe'
+    // console.log('[e w] shuffle : ', GRS(['w','e'], 4)); // ex) 'ewwe'
+
+    // const numZero6 = encryptNumOfStr(GRS([_t([119]), _t([101])],parseInt(_t([54])))); // ex) "ewewwe" : 0
+    // console.log('numZero6 : ', numZero6);
+    // const numZero4 = encryptNumOfStr(GRS([_t([101])],parseInt(_t([52])))); // ex) "eeee" : 0
+    // console.log('numZero4 : ', numZero4);
+    // const numZero2 = encryptNumOfStr(GRS([_t([101]), _t([119])],parseInt(_t([50])))); // ex) "ew" : 0
+    // console.log('numZero2 : ', numZero2);
+
+    const num1 = encryptNumOfStr(GRS([_t([101])],parseInt(_t([53]))) + _t([98])); // ex) "wewr" : 1
+    console.log('num1 : ', num1);
 
   } catch (error) {
     console.log('error indianPocker.js >>>>>>>>>>>> ');

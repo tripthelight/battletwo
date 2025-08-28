@@ -1,7 +1,8 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
-import textDE from '@/client/js/module/crypts/textDE';
+import _t from '@/client/js/module/crypts/textDE';
+import {GRS} from '@/client/js/module/crypts/generateRandomString';
 import booleanReturn from '@/client/js/functions/validation/booleanReturn';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
@@ -38,6 +39,9 @@ export default () => {
     if (encryptVal3 === null) return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 coinsPlayer 세션이 없습니다.' });
     const decryptVel3 = dec(encryptVal3); // coinsPlayer value number
 
+    const compPeers = encryptNumOfStr(GRS([_t([119]), _t([101])],parseInt(_t([54])))); // ex) "eeeeww" : 0
+    const adedPeers = encryptNumOfStr(  GRS([_t([119]), _t([101])],parseInt(_t([53]))) + _t([112])); // ex) "eweeep" : 2
+
     // if (Number(COINS_ENEMY) === 0) {
     if (decryptVel2 === 0) {
       BattingZoneMovePlayerBlock('win').then((_state) => {
@@ -48,10 +52,10 @@ export default () => {
             const decryptVal_1 = dec(encryptVal_1); // coinsPlayer value number
 
             // storageMethod('s', 'SET_ITEM', 'coinsPlayer', Number(window.sessionStorage.coinsPlayer) + 2);
-            storageMethod('s', 'SET_ITEM', encryptKey3, enc(Number(decryptVal_1) + 2));
+            storageMethod('s', 'SET_ITEM', encryptKey3, enc(Number(decryptVal_1) + adedPeers));
 
             // storageMethod('s', 'SET_ITEM', 'coinsEnemy', 0);
-            storageMethod('s', 'SET_ITEM', encryptKey2, enc(encryptNumOfStr(textDE([119, 101, 101, 119])))); // 'weew' : 0
+            storageMethod('s', 'SET_ITEM', encryptKey2, enc(compPeers)); // 0
             resolve();
           });
         });
@@ -61,14 +65,14 @@ export default () => {
       BattingZoneMoveEnemyBlock('lose').then((_state) => {
         BettingZoneMoveComn(_state).then(() => {
           removeCardElemComn(ENEMY_CARD, PLAYER_CARD, BOTTOM_BUTTONS, BET_USER_RES).then(() => {
-            // storageMethod('s', 'SET_ITEM', 'coinsEnemy', Number(window.sessionStorage.coinsEnemy) + 2);
             const encryptKey_2 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
             const encryptVal_2 = window.sessionStorage.getItem(encryptKey_2);
             const decryptVel_2 = dec(encryptVal_2); // coinsEnemy value number
-            storageMethod('s', 'SET_ITEM', encryptKey2, enc(Number(decryptVel_2) + 2));
+            // storageMethod('s', 'SET_ITEM', 'coinsEnemy', Number(window.sessionStorage.coinsEnemy) + 2);
+            storageMethod('s', 'SET_ITEM', encryptKey2, enc(Number(decryptVel_2) + adedPeers));
 
             // storageMethod('s', 'SET_ITEM', 'coinsPlayer', 0);
-            storageMethod('s', 'SET_ITEM', encryptKey3, enc(encryptNumOfStr(textDE([119, 119])))); // 'ww' : 0
+            storageMethod('s', 'SET_ITEM', encryptKey3, enc(compPeers)); // 0
             resolve();
           });
         });

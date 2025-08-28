@@ -2,7 +2,8 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import { dec } from '@/client/js/module/crypts/obf8lower';
 import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
-import textDE from '@/client/js/module/crypts/textDE';
+import _t from '@/client/js/module/crypts/textDE';
+import {GRS} from '@/client/js/module/crypts/generateRandomString';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
@@ -20,7 +21,7 @@ export const SET_BASIC_BETTING = {
     const encryptKey1 = findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]); // basicBettingState
     storageMethod('s', 'SET_ITEM',
       encryptKey1, // basicBettingState
-      X.enc(decodeTF(textDE([99, 109, 104, 97]))) // "cmha" : true
+      X.enc(decodeTF(_t([99, 109, 104, 97]))) // "cmha" : true
     );
 
     const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
@@ -41,6 +42,7 @@ export const SET_BASIC_BETTING = {
     const decryptVal1 = findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
     if (encryptVal1 !== decryptVal1) return false;
 
+    const conditiPeer = encryptNumOfStr(GRS([_t([119])],parseInt(_t([51]))) + _t([98])); // ex) "wwwb" : 1
 
     // const PLAY_CHECK = window.sessionStorage.coinsPlayerBet;
     // if (!PLAY_CHECK || Number(PLAY_CHECK) !== 1) return false;
@@ -48,9 +50,7 @@ export const SET_BASIC_BETTING = {
     const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
     if (encryptVal2 === null) return false;
     const decryptVal2 = dec(encryptVal2); // coinsPlayerBet value number
-    if (
-      Number(decryptVal2) !== encryptNumOfStr(textDE([101, 119, 101, 98])) // 'eweb' : 1
-    ) return false;
+    if (Number(decryptVal2) !== conditiPeer) return false;
 
     // const ENEMY_CHECK = window.sessionStorage.coinsEnemyBet;
     // if (!ENEMY_CHECK || Number(ENEMY_CHECK) !== 1) return false;
@@ -58,9 +58,7 @@ export const SET_BASIC_BETTING = {
     const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
     if (encryptVal3 === null) return false;
     const decryptVal3 = dec(encryptVal3); // coinsEnemyBet value number
-    if (
-      Number(decryptVal3) !== encryptNumOfStr(textDE([101, 119, 119, 114])) // 'ewwr' : 1
-    ) return false;
+    if (Number(decryptVal3) !== conditiPeer) return false;
 
     STATE_BASIC_BET.nextStep();
   },

@@ -1,7 +1,8 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
-import textDE from '@/client/js/module/crypts/textDE';
+import _t from '@/client/js/module/crypts/textDE';
+import {GRS} from '@/client/js/module/crypts/generateRandomString';
 import X from '@/client/js/module/crypts/bool-obf';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import deviceStateStore from '@/client/store/deviceStateStore';
@@ -71,6 +72,8 @@ export default (event) => {
   COINS_PLAYER.appendChild(LI);
   LI.style.animationDelay = COINS_PLAYER.length * 0.1 + 's';
 
+  const addedPeer = encryptNumOfStr(GRS([_t([101])],parseInt(_t([53]))) + _t([98])); // ex) "eeeeeb" : 1
+
   // 칩 빼기
   // const PLAYER_COINS = window.sessionStorage.coinsPlayer;
   // if (!PLAYER_COINS) return errorManagement({ errCase: 'errorComn', message: 'coinsPlayer 세션을 찾을 수 없습니다.' });
@@ -81,7 +84,7 @@ export default (event) => {
   if (encryptVal4 === null) return errorManagement({ errCase: 'errorComn', message: 'coinsPlayer 세션을 찾을 수 없습니다.' });
   storageMethod('s', 'SET_ITEM',
     encryptKey4,
-    enc(dec(encryptVal4) + encryptNumOfStr(textDE([101, 101, 119, 114]))) // 'eewr' : 0001
+    enc(dec(encryptVal4) + addedPeer) // + 1
   );
 
   // const PLAYER_COINS_BET = window.sessionStorage.coinsPlayerBet;
@@ -93,7 +96,7 @@ export default (event) => {
   if (encryptVal5 === null) return errorManagement({ errCase: 'errorComn', message: 'coinsPlayerBet 세션을 찾을 수 없습니다.' });
   storageMethod('s', 'SET_ITEM',
     encryptKey5,
-    enc(dec(encryptVal5) - encryptNumOfStr(textDE([119, 119, 119, 98]))) // 'wwwb' : 0001
+    enc(dec(encryptVal5) - addedPeer) // - 1
   );
 
   const encryptKey6 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState

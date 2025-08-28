@@ -2,7 +2,8 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
-import textDE from '@/client/js/module/crypts/textDE';
+import _t from '@/client/js/module/crypts/textDE';
+import {GRS} from '@/client/js/module/crypts/generateRandomString';
 import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import { GET_ROUND_END } from '@/client/js/views/game/indianPocker/fns/statePlaying/roundEnd/getRoundEnd';
@@ -66,8 +67,8 @@ export default {
         // const RESULT = Number(P_NUM) > Number(E_NUM) ? true : false;
         const RESULT =
           Number(P_NUM) > Number(E_NUM) ?
-            X.enc(decodeTF(textDE([107, 102, 112, 97]))) : // "kfpa" : true
-            X.enc(decodeTF(textDE([120, 113, 98, 101, 117]))); // "xqbeu" : false
+            X.enc(decodeTF(_t([107, 102, 112, 97]))) : // "kfpa" : true
+            X.enc(decodeTF(_t([120, 113, 98, 101, 117]))); // "xqbeu" : false
 
         // if (coinsEnemyBetRes && coinsPlayerBetRes) {
         if (decryptVal1_2 && decryptVal2_2) {
@@ -90,28 +91,17 @@ export default {
         ); // betUser
         storageMethod('s', 'SET_ITEM',
           findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]), // basicBettingState
-          X.enc(decodeTF(textDE([120, 113, 98, 101, 110]))) // "xqben" : false
+          X.enc(decodeTF(_t([120, 113, 98, 101, 110]))) // "xqben" : false
         );
         storageMethod('s', 'SET_ITEM',
           findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
-          X.enc(decodeTF(textDE([120, 103, 98, 105, 110]))) // "xgbin" : false
+          X.enc(decodeTF(_t([120, 103, 98, 105, 110]))) // "xgbin" : false
         );
-        storageMethod('s', 'SET_ITEM',
-          encryptKey2, // coinsPlayerBet
-          enc(encryptNumOfStr(textDE([119, 101, 101, 101]))) // "weee" : 0
-        );
-        storageMethod('s', 'SET_ITEM',
-          encryptKey1, // 'coinsEnemyBet',
-          enc(encryptNumOfStr(textDE([119, 119, 101, 119]))) // "wwew" : 0
-        );
-        storageMethod('s', 'SET_ITEM',
-          findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]), // coinsPlayerExtBet
-          enc(encryptNumOfStr(textDE([101, 119, 101, 101])) )// 'ewee' : 0
-        );
-        storageMethod('s', 'SET_ITEM',
-          findCharCode([80, 73, 68, 65, 90, 69, 88, 86, 82, 67]), // coinsEnemyExtBet
-          enc(encryptNumOfStr(textDE([101, 119, 101, 119])) )// 'ewew' : 0
-        );
+        const insertBet = encryptNumOfStr(GRS([_t([119]), _t([101])],parseInt(_t([54])))); // ex) "ewewwe" : 0
+        storageMethod('s', 'SET_ITEM', encryptKey2, enc(insertBet)); // coinsPlayerBet
+        storageMethod('s', 'SET_ITEM', encryptKey1, enc(insertBet)); // 'coinsEnemyBet',
+        storageMethod('s', 'SET_ITEM', findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]), enc(insertBet)); // coinsPlayerExtBet
+        storageMethod('s', 'SET_ITEM', findCharCode([80, 73, 68, 65, 90, 69, 88, 86, 82, 67]), enc(insertBet)); // coinsEnemyExtBet
         storageMethod('s', 'SET_ITEM', 'betCoinPos', '');
         storageMethod('s', 'SET_ITEM', 'battleCardNum', '');
         storageMethod('s', 'SET_ITEM', 'betCoin', '');
@@ -122,7 +112,7 @@ export default {
         storageMethod('s', 'SET_ITEM', 'roundEndReload', true);
         storageMethod('s', 'SET_ITEM',
           findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78]), // drewReady
-          X.enc(decodeTF(textDE([99, 119, 114, 117]))) // "cwru" : true
+          X.enc(decodeTF(_t([99, 119, 114, 117]))) // "cwru" : true
         );
         storageMethod('s', 'SET_ITEM',
           findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]), // betUser
@@ -130,15 +120,15 @@ export default {
         ); // betUser, betUserFirst
         storageMethod('s', 'SET_ITEM',
           findCharCode([67, 71, 79, 68, 76, 73, 84, 74, 80, 77]), // drewState
-          X.enc(decodeTF(textDE([107, 119, 104, 110]))) // "kwhn" : true
+          X.enc(decodeTF(_t([107, 119, 104, 110]))) // "kwhn" : true
         );
         storageMethod('s', 'SET_ITEM',
           findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]), // roundEnd
-          X.enc(decodeTF(textDE([120, 113, 108, 101, 97]))) // "xqlea" : false
+          X.enc(decodeTF(_t([120, 113, 108, 101, 97]))) // "xqlea" : false
         );
         storageMethod('s', 'SET_ITEM',
           findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
-          X.enc(decodeTF(textDE([106, 111, 98, 116, 117]))) // "jobtu" : false
+          X.enc(decodeTF(_t([106, 111, 98, 116, 117]))) // "jobtu" : false
         );
         storageMethod('s', 'SET_ITEM', 'battleCardNum', '');
 

@@ -1,6 +1,7 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { dec } from '@/client/js/module/crypts/obf8lower';
-import textDE from '@/client/js/module/crypts/textDE';
+import _t from '@/client/js/module/crypts/textDE';
+import {GRS} from '@/client/js/module/crypts/generateRandomString';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 
@@ -25,10 +26,11 @@ export default () => {
   if (encryptVal3 === null) return errorManagement({ errCase: 'sessionStorageLoss', message: 'gameover 체크에서 coinsEnemy 세션이 없습니다.' });
   const decryptVal3 = dec(encryptVal3); // coinsEnemy value number
 
+  const conditionCoins = encryptNumOfStr(GRS([_t([101]), _t([101])],parseInt(_t([54])))); // ex) "eeee" : 0
   // if (Number(COINS_PLAYER) === 0 || Number(COINS_ENEMY) === 0) return true;
   if (
-    Number(decryptVal2) === encryptNumOfStr(textDE([101, 119, 119, 119])) || // 'ewww' : 0
-    Number(decryptVal3) === encryptNumOfStr(textDE([119, 101, 119, 101])) // 'wewe' : 0
+    Number(decryptVal2) === conditionCoins ||
+    Number(decryptVal3) === conditionCoins
   ) return true;
 
   return false;

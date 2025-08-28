@@ -232,6 +232,9 @@ export const obfuscationList = {
       DROP_STATE: { // true/false
         k: 'QEGTUZRCMY' //  [81, 69, 71, 84, 85, 90, 82, 67, 77, 89]
       },
+      COINS_ENEMY_LOCAL_FOLD: {
+        k: '' //  []
+      },
 
       // e: sessionStorage keys
 

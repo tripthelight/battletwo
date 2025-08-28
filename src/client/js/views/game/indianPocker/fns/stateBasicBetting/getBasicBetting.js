@@ -1,7 +1,8 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
-import textDE from '@/client/js/module/crypts/textDE';
+import _t from '@/client/js/module/crypts/textDE';
+import {GRS} from '@/client/js/module/crypts/generateRandomString';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import storageMethod from '@/client/js/module/storage/storageMethod';
@@ -46,24 +47,17 @@ export const GET_BASIC_BETTING = {
         return _data;
       })
       .then((_data) => {
+        const conditBet = encryptNumOfStr(GRS([_t([101]), _t([119])],parseInt(_t([51]))) + _t([114])); // ex) "wewr" : 1
         // let enemyBetCoin = window.sessionStorage.coinsEnemyBet;
         const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
         // if (!enemyBetCoin) {
         if (encryptVal2 === null) {
           // storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', 1);
-          storageMethod('s', 'SET_ITEM',
-            encryptKey2, // coinsEnemyBet
-            enc(encryptNumOfStr(textDE([101, 119, 119, 98]))) // 'ewwb' : 1
-          );
+          storageMethod('s', 'SET_ITEM', encryptKey2, enc(conditBet)); // coinsEnemyBet, 1
         } else {
           // enemyBetCoin = Number(window.sessionStorage.coinsEnemyBet) + 1;
-          // coinsEnemyBet value number  + 1
-          const decryptVal2 = dec(encryptVal2) + encryptNumOfStr(textDE([119, 101, 119, 114])); // 'wewr' : 1
           // storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', enemyBetCoin);
-          storageMethod('s', 'SET_ITEM',
-            encryptKey2, // coinsEnemyBet
-            enc(decryptVal2)
-          );
+          storageMethod('s', 'SET_ITEM', encryptKey2, enc(dec(encryptVal2) + conditBet)); // coinsEnemyBet
         }
         return _data;
       })
