@@ -130,7 +130,11 @@ export const GET_FOLD = {
   sendFoldData: (_data) => {
     storageMethod('s', 'SET_ITEM', 'foldState', true);
     storageMethod('s', 'SET_ITEM', 'foldUser', false);
-    storageMethod('s', 'SET_ITEM', 'coinsEnemyRemoteFold', _data.coinsEnemyRemoteFold);
+    // storageMethod('s', 'SET_ITEM', 'coinsEnemyRemoteFold', _data.coinsEnemyRemoteFold);
+    storageMethod('s', 'SET_ITEM',
+      findCharCode([79, 90, 74, 71, 78, 89, 69, 82, 88, 84]), // coinsEnemyRemoteFold
+      enc(_data.coinsEnemyRemoteFold)
+    );
     storageMethod('s', 'SET_ITEM', 'coinsPlayerRemoteFold', _data.coinsPlayerRemoteFold);
   },
 };

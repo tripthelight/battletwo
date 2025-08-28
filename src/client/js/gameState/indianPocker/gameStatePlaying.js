@@ -11,7 +11,7 @@ export default () => {
   // storageMethod('s', 'REMOVE_ITEM', 'coinsEnemyLocalFold');
   storageMethod('s', 'REMOVE_ITEM', findCharCode([86, 90, 81, 77, 74, 72, 88, 83, 65, 80])); // coinsEnemyLocalFold
   storageMethod('s', 'REMOVE_ITEM', findCharCode([80, 78, 65, 74, 82, 70, 66, 67, 81, 69])); // coinsPlayerLocalFold
-  storageMethod('s', 'REMOVE_ITEM', 'coinsEnemyRemoteFold');
+  storageMethod('s', 'REMOVE_ITEM', findCharCode([79, 90, 74, 71, 78, 89, 69, 82, 88, 84])); // coinsEnemyRemoteFold
   storageMethod('s', 'REMOVE_ITEM', 'coinsPlayerRemoteFold');
   storageMethod('s', 'REMOVE_ITEM', 'foldUser');
   storageMethod('s', 'REMOVE_ITEM', 'foldState');
