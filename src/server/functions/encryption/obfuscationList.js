@@ -224,16 +224,16 @@ export const obfuscationList = {
         },
       },
       DREW_STATE: { // true/false
-        k: 'CGODLITJPM' //  [67, 71, 79, 68, 76, 73, 84, 74, 80, 77]
+        k: 'CGODLITJPM' // [67, 71, 79, 68, 76, 73, 84, 74, 80, 77]
       },
       RESULT: { // true/false
-        k: 'OUMJGNPCQH' //  [79, 85, 77, 74, 71, 78, 80, 67, 81, 72]
-      },
+        k: 'OUMJGNPCQH' // [79, 85, 77, 74, 71, 78, 80, 67, 81, 72]
+      }
       DROP_STATE: { // true/false
-        k: 'QEGTUZRCMY' //  [81, 69, 71, 84, 85, 90, 82, 67, 77, 89]
+        k: 'QEGTUZRCMY' // [81, 69, 71, 84, 85, 90, 82, 67, 77, 89]
       },
       COINS_ENEMY_LOCAL_FOLD: {
-        k: '' //  []
+        k: 'VZQMJHXSAP' // [86, 90, 81, 77, 74, 72, 88, 83, 65, 80]
       },
 
       // e: sessionStorage keys

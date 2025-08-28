@@ -6,6 +6,14 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 import STATE_BASIC_BET from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/init';
 
 export default (reloadState) => {
+  const deleteParams = [
+    findCharCode([86, 90, 81, 77, 74, 72, 88, 83, 65, 80]), // coinsEnemyLocalFold
+    'coinsPlayerLocalFold',
+    'coinsEnemyRemoteFold',
+    'coinsPlayerRemoteFold',
+    'foldUser',
+    'foldState'
+  ];
   if (reloadState) {
     /**
      * 이전 판에서 FOLD 후 새로고침 해서 기본배팅 화면으로 진입한 경우
@@ -18,19 +26,23 @@ export default (reloadState) => {
       const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
       const encryptKey2 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]);  // coinsEnemy
       const encryptKey3 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
+      const encryptVal4 = window.sessionStorage.getItem(deleteParams[0]); // coinsEnemyLocalFold value
+
       // storageMethod('s', 'SET_ITEM', 'betState', 'basicBetting');
       // storageMethod('s', 'SET_ITEM', 'basicBetReady', false);
       if (reloadState === 'foldLocal') {
         // FOLD를 실행한 PLAY가 새고로침
         storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_2); // betUser, false
-        storageMethod('s', 'SET_ITEM', encryptKey2, window.sessionStorage.coinsEnemyLocalFold); // coinsEnemy,
+        storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal4); // coinsEnemy, coinsEnemyLocalFold
         storageMethod('s', 'SET_ITEM', encryptKey3, window.sessionStorage.coinsPlayerLocalFold); // coinsPlayer
       } else if (reloadState === 'foldRemote') {
         // FOLD를 받은 PLAY가 새고로침
         storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_1); // betUser
         storageMethod('s', 'SET_ITEM', encryptKey2, window.sessionStorage.coinsEnemyRemoteFold); // coinsEnemy,
         storageMethod('s', 'SET_ITEM', encryptKey3, window.sessionStorage.coinsPlayerRemoteFold); // coinsPlayer
-      }
+      };
+
+
 
       // const D_ARR = ['coinsEnemyBet', 'coinsPlayerBet', 'coinsEnemyExtBet', 'coinsPlayerExtBet', 'betCoin', 'betCoinPos', 'extFirstBet', 'drewReady', 'drewState', 'dropState', 'coinsEnemyLocalFold', 'coinsPlayerLocalFold', 'coinsEnemyRemoteFold', 'coinsPlayerRemoteFold', 'foldUser', 'foldState'];
       const D_ARR = [
@@ -44,12 +56,7 @@ export default (reloadState) => {
         findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78]), // drewReady
         findCharCode([67, 71, 79, 68, 76, 73, 84, 74, 80, 77]), // drewState
         findCharCode([81, 69, 71, 84, 85, 90, 82, 67, 77, 89]), // dropState
-        'coinsEnemyLocalFold',
-        'coinsPlayerLocalFold',
-        'coinsEnemyRemoteFold',
-        'coinsPlayerRemoteFold',
-        'foldUser',
-        'foldState'
+        ...deleteParams
       ];
       storageMethod('s', 'REMOVE_ARR', '', '', D_ARR);
 
@@ -64,8 +71,8 @@ export default (reloadState) => {
     }
   } else {
     // 이전에 FOLD한 PLAYER 가 있는데, 둘 다 새로고침 안하고 진입한 경우
-    const D_FOLD_ARR = ['coinsEnemyLocalFold', 'coinsPlayerLocalFold', 'coinsEnemyRemoteFold', 'coinsPlayerRemoteFold', 'foldUser', 'foldState'];
-    storageMethod('s', 'REMOVE_ARR', '', '', D_FOLD_ARR);
+    // const D_FOLD_ARR = ['coinsEnemyLocalFold', 'coinsPlayerLocalFold', 'coinsEnemyRemoteFold', 'coinsPlayerRemoteFold', 'foldUser', 'foldState'];
+    storageMethod('s', 'REMOVE_ARR', '', '', deleteParams);
   };
 
   STATE_BASIC_BET.main();

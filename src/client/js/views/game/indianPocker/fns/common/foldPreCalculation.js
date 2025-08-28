@@ -1,5 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
-import { dec } from '@/client/js/module/crypts/obf8lower';
+import { dec, enc } from '@/client/js/module/crypts/obf8lower';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { request } from '@/client/js/network/indianPocker/request';
 
@@ -18,6 +18,8 @@ export default (myCardNum) => {
 
   // 새로고침 시 betUser를 교체하기 위해 FOLD를 실행한 사람을 구분시켜야 함
   storageMethod('s', 'SET_ITEM', 'foldUser', true);
+
+  const encryptKey6 = findCharCode([86, 90, 81, 77, 74, 72, 88, 83, 65, 80]); // coinsEnemyLocalFold
 
   // fold 일 경우 coinsEnemy, coinsPlayer의 결과
   const firstCalc = () => {
@@ -63,27 +65,46 @@ export default (myCardNum) => {
 
     const RES_E = Number(FOLD_CEB + FOLD_CPB - FOLD_CPEB);
 
-    storageMethod('s', 'SET_ITEM', 'coinsEnemyLocalFold', FOLD_CE + RES_E);
+    // storageMethod('s', 'SET_ITEM', 'coinsEnemyLocalFold', FOLD_CE + RES_E);
+    storageMethod('s', 'SET_ITEM',
+      encryptKey6, // coinsEnemyLocalFold
+      enc(FOLD_CE + RES_E)
+    );
+
     storageMethod('s', 'SET_ITEM', 'coinsPlayerLocalFold', FOLD_CP + FOLD_CPEB);
   };
 
   // fold 했는데 내 카드가 10일 경우 coinsEnemy, coinsPlayer의 결과
   const penaltyCalc = () => {
-    const COINS_ENEMY = window.sessionStorage.coinsEnemyLocalFold;
+    // const COINS_ENEMY = window.sessionStorage.coinsEnemyLocalFold;
+    const encryptVal6_1 = window.sessionStorage.getItem(encryptKey6); // coinsEnemyLocalFold value
+    const decryptVal6_1 = dec(encryptVal6_1); // coinsEnemyLocalFold value number
+
     const COINS_PLAYER = window.sessionStorage.coinsPlayerLocalFold;
     const PENALTY_COINS = Number(COINS_PLAYER) >= 10 ? 10 : Number(COINS_PLAYER);
-    const E_RESULT = Number(COINS_ENEMY) + Number(PENALTY_COINS);
+
+    // const E_RESULT = Number(COINS_ENEMY) + Number(PENALTY_COINS);
+    const E_RESULT = Number(decryptVal6_1) + Number(PENALTY_COINS);
+
     const P_RESULT = Number(COINS_PLAYER) - Number(PENALTY_COINS);
 
-    storageMethod('s', 'SET_ITEM', 'coinsEnemyLocalFold', E_RESULT);
+    // storageMethod('s', 'SET_ITEM', 'coinsEnemyLocalFold', E_RESULT);
+    storageMethod('s', 'SET_ITEM',
+      encryptKey6, // coinsEnemyLocalFold
+      enc(E_RESULT)
+    );
     storageMethod('s', 'SET_ITEM', 'coinsPlayerLocalFold', P_RESULT);
   };
 
   firstCalc();
   if (myCardNum === 10) penaltyCalc();
 
+  const encryptVal6_2 = window.sessionStorage.getItem(encryptKey6); // coinsEnemyLocalFold value
+  const decryptVal6_2 = dec(encryptVal6_2); // coinsEnemyLocalFold value number
+
   request('enemyFold', {
     coinsEnemyRemoteFold: window.sessionStorage.coinsPlayerLocalFold,
-    coinsPlayerRemoteFold: window.sessionStorage.coinsEnemyLocalFold,
+    // coinsPlayerRemoteFold: window.sessionStorage.coinsEnemyLocalFold,
+    coinsPlayerRemoteFold: decryptVal6_2,
   });
 };

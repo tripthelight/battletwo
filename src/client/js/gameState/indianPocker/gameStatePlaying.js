@@ -1,3 +1,4 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import { timeInterval_1, timeInterval_2 } from '@/client/js/functions/variable';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import storageMethod from '@/client/js/module/storage/storageMethod';
@@ -7,7 +8,8 @@ import reload from '@/client/js/module/reload';
 
 export default () => {
   // 이전 게임에서 FOLD 한 경우 playing 새로 진입 시 모두 제거
-  storageMethod('s', 'REMOVE_ITEM', 'coinsEnemyLocalFold');
+  // storageMethod('s', 'REMOVE_ITEM', 'coinsEnemyLocalFold');
+  storageMethod('s', 'REMOVE_ITEM', findCharCode([86, 90, 81, 77, 74, 72, 88, 83, 65, 80])); // coinsEnemyLocalFold
   storageMethod('s', 'REMOVE_ITEM', 'coinsPlayerLocalFold');
   storageMethod('s', 'REMOVE_ITEM', 'coinsEnemyRemoteFold');
   storageMethod('s', 'REMOVE_ITEM', 'coinsPlayerRemoteFold');
