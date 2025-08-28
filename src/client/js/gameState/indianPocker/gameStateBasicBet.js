@@ -11,7 +11,7 @@ export default (reloadState) => {
     findCharCode([80, 78, 65, 74, 82, 70, 66, 67, 81, 69]), // coinsPlayerLocalFold
     findCharCode([79, 90, 74, 71, 78, 89, 69, 82, 88, 84]), // coinsEnemyRemoteFold
     findCharCode([87, 68, 77, 88, 86, 90, 75, 79, 74, 82]), // coinsPlayerRemoteFold
-    'foldUser',
+    findCharCode([66, 65, 81, 76, 84, 71, 67, 86, 82, 83]), // foldUser
     'foldState'
   ];
   if (reloadState) {

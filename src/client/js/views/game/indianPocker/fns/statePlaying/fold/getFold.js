@@ -1,5 +1,8 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import textDE from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { text } from '@/client/js/functions/language';
@@ -129,7 +132,13 @@ export const GET_FOLD = {
   },
   sendFoldData: (_data) => {
     storageMethod('s', 'SET_ITEM', 'foldState', true);
-    storageMethod('s', 'SET_ITEM', 'foldUser', false);
+
+    // storageMethod('s', 'SET_ITEM', 'foldUser', false);
+    storageMethod('s', 'SET_ITEM',
+      findCharCode([66, 65, 81, 76, 84, 71, 67, 86, 82, 83]), // foldUser
+      X.enc(decodeTF(textDE([100, 111, 108, 116, 97]))) // "dolta" : false
+    );
+
     // storageMethod('s', 'SET_ITEM', 'coinsEnemyRemoteFold', _data.coinsEnemyRemoteFold);
     storageMethod('s', 'SET_ITEM',
       findCharCode([79, 90, 74, 71, 78, 89, 69, 82, 88, 84]), // coinsEnemyRemoteFold

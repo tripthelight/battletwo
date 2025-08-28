@@ -244,6 +244,9 @@ export const obfuscationList = {
       COINS_PLAYER_REMOTE_FOLD: {
         k: 'WDMXVZKOJR' // [87, 68, 77, 88, 86, 90, 75, 79, 74, 82]
       },
+      FOLD_USER: {
+        k: 'BAQLTGCVRS' // [66, 65, 81, 76, 84, 71, 67, 86, 82, 83]
+      },
 
       // e: sessionStorage keys
 

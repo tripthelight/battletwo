@@ -13,7 +13,7 @@ export default () => {
   storageMethod('s', 'REMOVE_ITEM', findCharCode([80, 78, 65, 74, 82, 70, 66, 67, 81, 69])); // coinsPlayerLocalFold
   storageMethod('s', 'REMOVE_ITEM', findCharCode([79, 90, 74, 71, 78, 89, 69, 82, 88, 84])); // coinsEnemyRemoteFold
   storageMethod('s', 'REMOVE_ITEM', findCharCode([87, 68, 77, 88, 86, 90, 75, 79, 74, 82])); // coinsPlayerRemoteFold
-  storageMethod('s', 'REMOVE_ITEM', 'foldUser');
+  storageMethod('s', 'REMOVE_ITEM', findCharCode([66, 65, 81, 76, 84, 71, 67, 86, 82, 83])); // foldUser
   storageMethod('s', 'REMOVE_ITEM', 'foldState');
 
   const BET_RESULTING = window.sessionStorage.betResulting;

@@ -1,5 +1,8 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { dec, enc } from '@/client/js/module/crypts/obf8lower';
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import textDE from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { request } from '@/client/js/network/indianPocker/request';
 
@@ -17,7 +20,11 @@ export default (myCardNum) => {
   storageMethod('s', 'SET_ITEM', 'foldState', true);
 
   // 새로고침 시 betUser를 교체하기 위해 FOLD를 실행한 사람을 구분시켜야 함
-  storageMethod('s', 'SET_ITEM', 'foldUser', true);
+  // storageMethod('s', 'SET_ITEM', 'foldUser', true);
+  storageMethod('s', 'SET_ITEM',
+    findCharCode([66, 65, 81, 76, 84, 71, 67, 86, 82, 83]), // foldUser
+    X.enc(decodeTF(textDE([115, 102, 114, 110]))) // "sfrn" : true
+  );
 
   const encryptKey6 = findCharCode([86, 90, 81, 77, 74, 72, 88, 83, 65, 80]); // coinsEnemyLocalFold
   const encryptKey7 = findCharCode([80, 78, 65, 74, 82, 70, 66, 67, 81, 69]); // coinsPlayerLocalFold
