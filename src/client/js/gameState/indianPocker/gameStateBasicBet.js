@@ -47,7 +47,7 @@ export default (reloadState) => {
 
       // const D_ARR = ['coinsEnemyBet', 'coinsPlayerBet', 'coinsEnemyExtBet', 'coinsPlayerExtBet', 'betCoin', 'betCoinPos', 'extFirstBet', 'drewReady', 'drewState', 'dropState', 'coinsEnemyLocalFold', 'coinsPlayerLocalFold', 'coinsEnemyRemoteFold', 'coinsPlayerRemoteFold', 'foldUser', 'foldState'];
       // storageMethod('s', 'REMOVE_ARR', '', '', D_ARR);
-      storageMethod('s', 'REMOVE_ARR', '', '', [
+      storageMethod('s', 'REMOVE_VALUE', '', '', [
         findCharCode([67, 79, 66, 70, 75, 82, 74, 88, 69, 68]), // coinsEnemyBet
         findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]), // coinsPlayerBet
         findCharCode([80, 73, 68, 65, 90, 69, 88, 86, 82, 67]), // coinsEnemyExtBet
@@ -61,8 +61,8 @@ export default (reloadState) => {
         ...deleteParams
       ]);
 
-      storageMethod('s', 'SET_ITEM', 'betCoin', []);
-      storageMethod('s', 'SET_ITEM', 'betCoinPos', []);
+      storageMethod('s', 'SET_ITEM', 'betCoin', '');
+      storageMethod('s', 'SET_ITEM', 'betCoinPos', '');
       // storageMethod('s', 'SET_ITEM', 'basicBettingState', false);
       storageMethod('s', 'SET_ITEM',
         findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]), // basicBettingState
@@ -77,7 +77,7 @@ export default (reloadState) => {
   } else {
     // 이전에 FOLD한 PLAYER 가 있는데, 둘 다 새로고침 안하고 진입한 경우
     // const D_FOLD_ARR = ['coinsEnemyLocalFold', 'coinsPlayerLocalFold', 'coinsEnemyRemoteFold', 'coinsPlayerRemoteFold', 'foldUser', 'foldState'];
-    storageMethod('s', 'REMOVE_ARR', '', '', deleteParams);
+    storageMethod('s', 'REMOVE_VALUE', '', '', deleteParams);
   };
 
   STATE_BASIC_BET.main();

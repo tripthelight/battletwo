@@ -27,12 +27,13 @@ export default () => {
     X.enc(decodeTF(textDE([106, 111, 98, 116, 97]))) // "jobta" : false
   );
 
-  storageMethod('s', 'REMOVE_ITEM', encryptKey7); // drewReady
-  storageMethod('s', 'REMOVE_ITEM', encryptKey6); // basicBetReady
+  // storageMethod('s', 'REMOVE_ITEM', encryptKey7); // drewReady
+  // storageMethod('s', 'REMOVE_ITEM', encryptKey6); // basicBetReady
+  storageMethod('s', 'REMOVE_VALUE', '', '', [encryptKey7, encryptKey6]); // drewReady, basicBetReady
 
   // 무료 회원 - 첫 진입 시, 기본 배팅 20 코인
   // 유료 회원 - 첫 진입 시, 기본 배팅 금액 DB 조회 필요
-  if (encryptVal1 === null && encryptVal2 === null) {
+  if (encryptVal1 === '' && encryptVal2 === '') {
     storageMethod('s', 'SET_ITEM',
       encryptKey1,
       enc(encryptNumOfStr(textDE([101, 119, 114, 111]))) // 'ewro' : 20
@@ -45,7 +46,6 @@ export default () => {
 
   // coinsPlayerBet === 1
   if (
-    encryptVal5 !== null &&
     encryptVal5 !== '' &&
     dec(encryptVal5) === encryptNumOfStr(textDE([119, 101, 101, 114])) // weer : 0001
   ) {

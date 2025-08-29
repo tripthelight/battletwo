@@ -189,6 +189,39 @@ export const obfuscationList = {
       BASIC_BETTING_STATE: { // true/false
         k: 'QEMHKCIWOJ', // [81, 69, 77, 72, 75, 67, 73, 87, 79, 74]
       },
+      DREW_STATE: { // true/false
+        k: 'CGODLITJPM' // [67, 71, 79, 68, 76, 73, 84, 74, 80, 77]
+      },
+      RESULT: { // true/false
+        k: 'OUMJGNPCQH' // [79, 85, 77, 74, 71, 78, 80, 67, 81, 72]
+      }
+      DROP_STATE: { // true/false
+        k: 'QEGTUZRCMY' // [81, 69, 71, 84, 85, 90, 82, 67, 77, 89]
+      },
+      COINS_ENEMY_LOCAL_FOLD: {
+        k: 'VZQMJHXSAP' // [86, 90, 81, 77, 74, 72, 88, 83, 65, 80]
+      },
+      COINS_PLAYER_LOCAL_FOLD: {
+        k: 'PNAJRFBCQE' // [80, 78, 65, 74, 82, 70, 66, 67, 81, 69]
+      },
+      COINS_ENEMY_REMOTE_FOLD: {
+        k: 'OZJGNYERXT' // [79, 90, 74, 71, 78, 89, 69, 82, 88, 84]
+      },
+      COINS_PLAYER_REMOTE_FOLD: {
+        k: 'WDMXVZKOJR' // [87, 68, 77, 88, 86, 90, 75, 79, 74, 82]
+      },
+      FOLD_USER: {
+        k: 'BAQLTGCVRS' // [66, 65, 81, 76, 84, 71, 67, 86, 82, 83]
+      },
+      FOLD_STATE: {
+        k: 'AHBKUEWOXV' // [65, 72, 66, 75, 85, 69, 87, 79, 88, 86]
+      },
+      BATTLE_CARD_NUM: {
+        k: 'IKHAMRUPBW' // [73, 75, 72, 65, 77, 82, 85, 80, 66, 87]
+      },
+      PLAYING_RELOAD_USER: {
+        k: 'KQSPYXVHRM' // [75, 81, 83, 80, 89, 88, 86, 72, 82, 77]
+      },
       BET_COIN: { : TODO:
         k: 'DUHITAZFYX', // [68, 85, 72, 73, 84, 65, 90, 70, 89, 88]
         v: {
@@ -222,39 +255,6 @@ export const obfuscationList = {
             translateY: '',
           },
         },
-      },
-      DREW_STATE: { // true/false
-        k: 'CGODLITJPM' // [67, 71, 79, 68, 76, 73, 84, 74, 80, 77]
-      },
-      RESULT: { // true/false
-        k: 'OUMJGNPCQH' // [79, 85, 77, 74, 71, 78, 80, 67, 81, 72]
-      }
-      DROP_STATE: { // true/false
-        k: 'QEGTUZRCMY' // [81, 69, 71, 84, 85, 90, 82, 67, 77, 89]
-      },
-      COINS_ENEMY_LOCAL_FOLD: {
-        k: 'VZQMJHXSAP' // [86, 90, 81, 77, 74, 72, 88, 83, 65, 80]
-      },
-      COINS_PLAYER_LOCAL_FOLD: {
-        k: 'PNAJRFBCQE' // [80, 78, 65, 74, 82, 70, 66, 67, 81, 69]
-      },
-      COINS_ENEMY_REMOTE_FOLD: {
-        k: 'OZJGNYERXT' // [79, 90, 74, 71, 78, 89, 69, 82, 88, 84]
-      },
-      COINS_PLAYER_REMOTE_FOLD: {
-        k: 'WDMXVZKOJR' // [87, 68, 77, 88, 86, 90, 75, 79, 74, 82]
-      },
-      FOLD_USER: {
-        k: 'BAQLTGCVRS' // [66, 65, 81, 76, 84, 71, 67, 86, 82, 83]
-      },
-      FOLD_STATE: {
-        k: 'AHBKUEWOXV' // [65, 72, 66, 75, 85, 69, 87, 79, 88, 86]
-      },
-      BATTLE_CARD_NUM: {
-        k: 'IKHAMRUPBW' // [73, 75, 72, 65, 77, 82, 85, 80, 66, 87]
-      },
-      PLAYING_RELOAD_USER: {
-        k: 'KQSPYXVHRM' // [75, 81, 83, 80, 89, 88, 86, 72, 82, 77]
       },
 
       // e: sessionStorage keys

@@ -36,11 +36,11 @@ export default (data) => {
   const encryptKey3 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]);  // coinsPlayerBet
 
   // storageMethod('s', 'SET_ITEM', 'coinsPlayer', PLAYER_COINS);
-  storageMethod('s', 'SET_ITEM', encryptKey2, decryptVal2_3);
+  storageMethod('s', 'SET_ITEM', encryptKey2, decryptVal2_3); // coinsPlayer
 
   // storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', JSON.parse(window.sessionStorage.betCoin).filter((coins) => coins.host === 'player').length);
   storageMethod('s', 'SET_ITEM',
-    encryptKey3,
+    encryptKey3, // coinsPlayerBet
     enc(JSON.parse(window.sessionStorage.betCoin).filter((coins) => coins.host === 'player').length)
   );
 
@@ -53,7 +53,7 @@ export default (data) => {
     const encryptKey5 = findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]); // coinsPlayerExtBet
     const encryptVal5 = window.sessionStorage.getItem(encryptKey5);
     // if (window.sessionStorage.coinsPlayerExtBet) {
-    if (encryptVal5 !== null && encryptVal5 !== '') {
+    if (encryptVal5 !== '') {
       // storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', Number(window.sessionStorage.coinsPlayerExtBet) + 1);
       storageMethod('s', 'SET_ITEM',
         encryptKey5, // coinsPlayerExtBet

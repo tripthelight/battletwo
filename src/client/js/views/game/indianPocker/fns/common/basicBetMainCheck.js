@@ -11,7 +11,10 @@ export default () => {
   const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
 
   // if (COINS_PLAYER && COINS_ENEMY) {
-  if (encryptVal1 !== null && encryptVal2 !== null) {
+  if (
+    encryptVal1 !== null && encryptVal1 !== '' &&
+    encryptVal2 !== null && encryptVal2 !== ''
+  ) {
     const decryptVal1 = dec(encryptVal1); // coinsPlayer value number
     const decryptVal2 = dec(encryptVal2); // coinsEnemy value number
     // if (Number(COINS_PLAYER) === 0 || Number(COINS_ENEMY) === 0) return true;

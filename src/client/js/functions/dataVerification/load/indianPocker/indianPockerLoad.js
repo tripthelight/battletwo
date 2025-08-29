@@ -1,6 +1,7 @@
 import { connObj } from '@/client/js/webRTC/rtcConn'
 import findCharCode from '@/client/js/functions/findCharCode';
 import { CHOICE_CARD_DATA_HANDLER } from '@/client/js/functions/dataVerification/load/indianPocker/choiceCard';
+import { BASIC_BET_DATA_HANDLER } from '@/client/js/functions/dataVerification/load/indianPocker/basicBet';
 
 /**
  * indianPocker
@@ -14,6 +15,14 @@ export default (gameState, storageKeys) => {
       CHOICE_CARD_DATA_HANDLER.handleReload(storageKeys);
     } else {
       CHOICE_CARD_DATA_HANDLER.handleInitialLoad(storageKeys);
+    }
+  }
+  // gameState: basicBet
+  if (gameState === findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68])) {
+    if (connObj.serverRefresh) {
+      BASIC_BET_DATA_HANDLER.handleReload(storageKeys);
+    } else {
+      BASIC_BET_DATA_HANDLER.handleInitialLoad(storageKeys);
     }
   }
 };

@@ -51,7 +51,7 @@ export const GET_BASIC_BETTING = {
         // let enemyBetCoin = window.sessionStorage.coinsEnemyBet;
         const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
         // if (!enemyBetCoin) {
-        if (encryptVal2 === null) {
+        if (encryptVal2 === '') {
           // storageMethod('s', 'SET_ITEM', 'coinsEnemyBet', 1);
           storageMethod('s', 'SET_ITEM', encryptKey2, enc(conditBet)); // coinsEnemyBet, 1
         } else {

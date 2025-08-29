@@ -121,4 +121,5 @@ battletwo
 - TODO: 
   - 기본배팅 완료 후 enterPlayingResult.js에서 실행되는 betUser가 true인 peer의 createBattleCardNum.js 단계에서 에러남
 - TODO: 
-  - gameState basicBet battleCardNum까지 암호화함 
+  - gameState basicBet 새로고침 시 sessionStorage key value 검증 수정 중
+  - requestCompairBasicBet.js 의 검증 로직을 코드 해석이 어렵도록 복잡도를 올려야 함

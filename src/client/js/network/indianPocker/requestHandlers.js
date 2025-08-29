@@ -64,4 +64,6 @@ export const REQUEST_COMPAIR_HANDLERS = {
   // choiceCard
   requestCompairChoiceCard: (v) => ({ type: 'requestCompairChoiceCard', ...v }),
   responseCompairChoiceCard: (v) => ({ type: 'responseCompairChoiceCard', ...v }),
+  requestCompairBasicBet: (v) => ({ type: 'requestCompairBasicBet', ...v }),
+  responseCompairBasicBet: (v) => ({ type: 'responseCompairBasicBet', ...v }),
 };

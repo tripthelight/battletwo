@@ -10,8 +10,48 @@ import sessionInit from '@/client/js/views/game/indianPocker/fns/gameState/state
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import basicBetMainCheck from '@/client/js/views/game/indianPocker/fns/common/basicBetMainCheck';
 
+import dataHandler from '@/client/js/functions/dataVerification/load/dataHandler';
+
+/**
+ * basicBet에서 사용하는 sessionStorage Data
+  - betState
+  - roundEnd
+  - basicBetReady
+  - extFirstBet
+  - betUser
+  - betUserFirst
+  - coinsPlayer
+  - coinsPlayerBet
+  - coinsPlayerExtBet
+  - coinsEnemy
+  - coinsEnemyBet
+  - coinsEnemyExtBet
+  - drewReady
+  - basicBettingState
+  - drewState
+  - result
+  - dropState
+  - coinsEnemyLocalFold
+  - coinsPlayerLocalFold
+  - coinsEnemyRemoteFold
+  - coinsPlayerRemoteFold
+  - foldUser
+  - foldState
+  - battleCardNum
+  - playingReloadUser
+  - // betCoin
+  - // betCoinPos
+ */
+
 export default {
   main: () => {
+    dataHandler({
+      p1: findCharCode([68, 74, 69, 77, 70, 75, 76, 86, 68, 69]), // indianPocker
+      p2: findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]), // basicBet
+    });
+
+    // ──────────────────────────────────────────────────────────────────────────────
+    /*
     const encodeKey = [98, 97, 115, 105, 99, 66, 101, 116]; // basicBet
     storageMethod('s', 'REMOVE_ITEM', 'betResulting');
     if (basicBetMainCheck()) {
@@ -47,6 +87,7 @@ export default {
         request('enterBasicBet', encodeKey);
       };
     };
+    */
   },
   nextStep: () => {
     LOADING_EVENT.show();

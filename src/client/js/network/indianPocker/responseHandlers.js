@@ -29,6 +29,9 @@ import responseCompairChoiceCard from '@/client/js/network/indianPocker/fns/resp
 import requestCompairResultBetting from '@/client/js/network/indianPocker/fns/requestCompairResultBetting';
 import responseCompairResultBetting from '@/client/js/network/indianPocker/fns/responseCompairResultBetting';
 
+import requestCompairBasicBet from '@/client/js/network/indianPocker/fns/requestCompairBasicBet';
+import responseCompairBasicBet from '@/client/js/network/indianPocker/fns/responseCompairBasicBet';
+
 import SOCKET_EVENT from '@/client/js/network/indianPocker/batting/battingEvent';
 
 // 핸들러 객체 매핑
@@ -81,6 +84,8 @@ export const RESPONSE_HANDLERS = {
   // sstorage 비교
   requestCompairChoiceCard: (msg) => requestCompairChoiceCard(msg),
   responseCompairChoiceCard: (msg) => responseCompairChoiceCard(msg),
+  requestCompairBasicBet: (msg) => requestCompairBasicBet(msg),
+  responseCompairBasicBet: (msg) => responseCompairBasicBet(msg),
   requestCompairResultBetting: (msg) => requestCompairResultBetting(msg),
   responseCompairResultBetting: (msg) => responseCompairResultBetting(msg),
 };
