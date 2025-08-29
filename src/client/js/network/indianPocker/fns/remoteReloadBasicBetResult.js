@@ -14,19 +14,35 @@ export default (_data) => {
     // basicBet
     if (JSON.stringify(_data) === JSON.stringify([98, 97, 115, 105, 99, 66, 101, 116])) {
       // basicBet
-      const reloadUser = window.sessionStorage.playingReloadUser;
-      if (reloadUser && reloadUser === 'true') {
-        storageMethod('s', 'REMOVE_ITEM', 'playingReloadUser');
+      // const reloadUser = window.sessionStorage.playingReloadUser;
+      const encryptKey1 = findCharCode([75, 81, 83, 80, 89, 88, 86, 72, 82, 77]); // playingReloadUser
+      const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
 
-        const encryptKey2 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
-        const encryptVal2 = findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]); // basicBet
-        storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal2);
+      // if (reloadUser && reloadUser === 'true') {
+      // reloadUser === true
+      if (
+        encryptVal1 !== null &&
+        encryptVal1 !== '' &&
+        X.dec(encryptVal1)
+      ) {
+        // storageMethod('s', 'REMOVE_ITEM', 'playingReloadUser');
+        storageMethod('s', 'REMOVE_ITEM', encryptKey1); // playingReloadUser
 
-        const encryptKey3 = findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]); // roundEnd
-        // const encryptVal3 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
-        const encryptVal3 = X.enc(decodeTF(textDE([120, 111, 98, 105, 117]))); // "xobiu" : false
-        // storageMethod('s', 'SET_ITEM', encryptKey3, encryptVal3);
-        storageMethod('s', 'SET_ITEM', encryptKey3, encryptVal3);
+        storageMethod('s', 'SET_ITEM',
+          findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]), // gameState
+          findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]) // basicBet
+        );
+
+        storageMethod('s', 'SET_ITEM',
+          findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]), // betState
+          findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]) // basicBetting
+        );
+
+        storageMethod('s', 'SET_ITEM',
+          findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]), // roundEnd
+          X.enc(decodeTF(textDE([120, 111, 98, 105, 117]))) // "xobiu" : false
+        );
+
         sessionInit();
       }
     }

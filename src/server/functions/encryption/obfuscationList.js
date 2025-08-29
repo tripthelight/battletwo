@@ -253,6 +253,9 @@ export const obfuscationList = {
       BATTLE_CARD_NUM: {
         k: 'IKHAMRUPBW' // [73, 75, 72, 65, 77, 82, 85, 80, 66, 87]
       },
+      PLAYING_RELOAD_USER: {
+        k: 'KQSPYXVHRM' // [75, 81, 83, 80, 89, 88, 86, 72, 82, 77]
+      },
 
       // e: sessionStorage keys
 
