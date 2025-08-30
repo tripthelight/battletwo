@@ -9,7 +9,7 @@ import drawBetInfo from '@/client/js/views/game/indianPocker/fns/gameState/state
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
 import REFRESH_STATE_BASIC_BET from '@/client/js/refresh/indianpoker/refreshBasicBet/refreshInit';
-import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import removeUserCoins from '@/client/js/views/game/indianPocker/fns/common/removeUserCoins';
 
 export default () => {
@@ -28,7 +28,7 @@ export default () => {
   // const BASIC_BETTING_RES = BASIC_BETTING_STATE === 'true' ? true : false;
   const encryptKey1 = findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]); // basicBettingState
   const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
-  if (encryptVal1 === null || (encryptVal1 !== null && encryptVal1 === '')) return errorManagement({ errCase: 'errorComn', message: 'basicBettingState not found' });
+  if (encryptVal1 === null || (encryptVal1 !== null && encryptVal1 === '')) throw throwObj('sessionStorageLoss', 'basicBettingState key value not found.');
 
   // 명령
   const elem = COINS_PLAYER ? COINS_PLAYER : document.createElement('ul');

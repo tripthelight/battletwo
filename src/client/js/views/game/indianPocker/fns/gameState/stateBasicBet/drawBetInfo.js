@@ -1,7 +1,6 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import X from '@/client/js/module/crypts/bool-obf';
-import storageMethod from '@/client/js/module/storage/storageMethod';
-import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import { text } from '@/client/js/functions/language';
 import closePopup from '@/client/js/functions/popup';
 
@@ -12,7 +11,7 @@ export default () => {
 
   // element | seeeion 체크
   const CONTAINER = document.getElementById('container');
-  if (!CONTAINER) return errorManagement({ errCase: 'elementLoss', message: '#container 엘리먼트가 없습니다.' });
+  if (!CONTAINER) throw throwObj('elementLoss', 'drawBetInfo - #container element not found.');
   const DRAW_BET_INFO = CONTAINER.querySelector('.draw-bet-info');
   if (DRAW_BET_INFO) return;
 

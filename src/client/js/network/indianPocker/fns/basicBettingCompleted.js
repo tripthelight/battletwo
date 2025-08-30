@@ -1,5 +1,6 @@
 import findCharCode from '@/client/js/functions/findCharCode';
-import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
+import errorManager from '@/client/js/module/errorHandler/errorManager';
+
 import betStateCheck from '@/client/js/views/game/indianPocker/fns/common/betStateCheck';
 
 export default () => {
@@ -16,8 +17,7 @@ export default () => {
       };
     })
     .catch((error) => {
-      // return errorComn(error);
-      console.log('error - basicBettingCompleted.js : ', error);
-      return errorManagement({ errCase: 'errorComn' });
+      console.log('error basicBettingCompleted.js');
+      errorManager(error, true);
     });
 };

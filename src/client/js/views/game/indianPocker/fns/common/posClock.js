@@ -1,5 +1,5 @@
-import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import findCharCode from '@/client/js/functions/findCharCode';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export default (_hour, _minute) => {
   // const GAME_STATE = window.sessionStorage.gameState;
@@ -7,7 +7,7 @@ export default (_hour, _minute) => {
   // gameState: sessionStorage.getItem('gameState'),
   const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]);
   const decryptVal = window.sessionStorage.getItem(encryptKey);
-  if (!decryptVal) errorManagement({ errCase: 'errorComn', message: 'gameState not found' });
+  if (!decryptVal) throw throwObj('sessionStorageLoss', 'posClock - gameState not found.');
 
   // const GAME_RES = GAME_STATE === 'basicBet' || GAME_STATE === 'playing';
   // basicBet

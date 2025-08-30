@@ -1,5 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
-import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import playerCoinsData from '@/client/js/views/game/indianPocker/fns/common/playerCoinsData';
 import { SET_BASIC_BETTING } from '@/client/js/views/game/indianPocker/fns/stateBasicBetting/setBasicBetting';
 
@@ -20,6 +20,6 @@ export default (_event) => {
     playerCoinsData(_event);
   } else {
     // error
-    return errorManagement({ errCase: 'errorComn', message: 'betState 세션의 값이 잘못되었습니다.' });
+    throw throwObj('sessionStorageLoss', 'betCoinEndComn - betState sessionStorage value failed.');
   }
 };

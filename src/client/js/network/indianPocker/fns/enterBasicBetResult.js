@@ -3,7 +3,7 @@ import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import textDE from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
+import errorManager from '@/client/js/module/errorHandler/errorManager';
 import sessionInit from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/sessionInit';
 
 export default (_data) => {
@@ -34,7 +34,7 @@ export default (_data) => {
       // TODO: error 처리
     };
   }).catch((error) => {
-    console.log('error : ', error);
-    errorManagement({ errCase: 'errorComn', message: 'enterBasicBetResult() function error.' });
+    console.log('enterBasicBetResult() function error.');
+    errorManager(error, true);
   });
 };

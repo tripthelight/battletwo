@@ -1,5 +1,5 @@
-import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import findCharCode from '@/client/js/functions/findCharCode';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 /**
  * coin의 시, 분 animation
@@ -17,7 +17,7 @@ export default (_hour, _minute, _stop) => {
   const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]);
   const decryptVal = window.sessionStorage.getItem(encryptKey);
   // if (!GAME_STATE) errorManagement({ errCase: 'errorComn', message: 'gameState not found' });
-  if (!decryptVal) errorManagement({ errCase: 'errorComn', message: 'gameState not found' });
+  if (!decryptVal) throw throwObj('sessionStorageLoss', 'posClock - gameState not found.');
   // const GAME_RES = GAME_STATE === 'basicBet' || GAME_STATE === 'playing';
   const GAME_RES = decryptVal === encryptVal1 || decryptVal === encryptVal2;
   if (!GAME_RES) return;

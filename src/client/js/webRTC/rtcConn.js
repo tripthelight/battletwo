@@ -2,7 +2,6 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import setCookies from '@/client/js/module/cookies/setCookies';
 import getCookies from '@/client/js/module/cookies/getCookies';
 import roomNameReturnCookie from '@/client/js/module/cookies/roomNameReturnCookie';
-import { debug } from '@/client/js/module/debug';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { responseComn } from '@/client/js/network/responseComn';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
@@ -49,10 +48,8 @@ class RefreshTask {
 const R = new RefreshTask();
 export function consRefresh() {
   // 값이 true라면 반환하기 전에 false로 바꿔줌
-  console.log('평가 전 serverRefresh --------------- ', R.get());
   if (R.get()) {
     R.set(F);
-    console.log('평가 후 serverRefresh ------------- ', R.get());
     return T;  // 조건문에서는 true로 평가됨
   }
   return F;

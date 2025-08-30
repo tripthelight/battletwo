@@ -1,5 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
-import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import { SET_BASIC_BETTING } from '@/client/js/views/game/indianPocker/fns/stateBasicBetting/setBasicBetting';
 import extraBettingCheck from '@/client/js/views/game/indianPocker/fns/common/extraBettingCheck';
 
@@ -17,7 +17,6 @@ export default () => {
   } else if (encryptVal1 === encryptVal3) {
     extraBettingCheck();
   } else {
-    console.log('error - betStateCheck.js - window.sessionStorage.betState');
-    return errorManagement({ errCase: 'errorComn' });
+    throw throwObj('sessionStorageLoss', 'betStateCheck - betState key/value failed.');
   };
 };

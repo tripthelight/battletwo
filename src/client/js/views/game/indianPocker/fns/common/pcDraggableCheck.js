@@ -1,4 +1,5 @@
 import deviceStateStore from '@/client/store/deviceStateStore';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export default (_elem, _state) => {
   const deviceState = deviceStateStore.getState().deviceStateState.deviceState;
@@ -16,7 +17,7 @@ export default (_elem, _state) => {
 
   if (_elem === 'bet-coins') {
     const BET_COIN = window.sessionStorage.betCoin;
-    if (!BET_COIN) return errorManagement({ errCase: 'sessionStorageLoss', message: 'betCoin 세션이 없습니다.' });
+    if (!BET_COIN) throw throwObj('sessionStorageLoss', 'pcDraggableCheck - betCoin sessionStorage not found.');
     const BET_COIN_ARR = JSON.parse(BET_COIN);
     if (!BET_COIN_ARR || BET_COIN_ARR.length < 1) return;
     for (let i = 0; i < COINS.length; i++) {

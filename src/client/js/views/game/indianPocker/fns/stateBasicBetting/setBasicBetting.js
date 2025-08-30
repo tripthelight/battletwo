@@ -6,7 +6,7 @@ import _t from '@/client/js/module/crypts/textDE';
 import {GRS} from '@/client/js/module/crypts/generateRandomString';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import removeCoinActive from '@/client/js/views/game/indianPocker/fns/common/removeCoinActive';
 import playerCoinsData from '@/client/js/views/game/indianPocker/fns/common/playerCoinsData';
 import STATE_BASIC_BET from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/init';
@@ -93,7 +93,8 @@ export const SET_BASIC_BETTING = {
   },
   betCoinStateAddEnd: (_host) => {
     const COIN_BET = window.sessionStorage.betCoin;
-    if (!COIN_BET) return errorManagement({ errCase: 'sessionStorageLoss', message: '기본배팅 할 때 betCoin 세션이 없습니다.' });
+    // if (!COIN_BET) return errorManagement({ errCase: 'sessionStorageLoss', message: '기본배팅 할 때 betCoin 세션이 없습니다.' });
+    if (!COIN_BET) throw throwObj('sessionStorageLoss', 'betCoinStateAddEnd - basic bet as betCoin sessionStorage key failed.');
     const COIN_BET_ARR = JSON.parse(COIN_BET);
 
     const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState

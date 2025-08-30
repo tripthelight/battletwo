@@ -2,6 +2,7 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import X from '@/client/js/module/crypts/bool-obf';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import removeCoinActive from '@/client/js/views/game/indianPocker/fns/common/removeCoinActive';
 import moveCoins from '@/client/js/views/game/indianPocker/fns/common/moveCoins';
 
@@ -36,7 +37,7 @@ export default () => {
     moveCoins();
   } else {
     // return errorManagement({ errCase: 'sessionStorageLoss', message: 'BASIC_BETTING_STATE 세션의 값이 잘못되었습니다.' });
-    return errorManagement({ errCase: 'sessionStorageLoss', message: 'basicBettingState sessionStorage Value failed.' });
+    throw throwObj('sessionStorageLoss', 'bettingCoin - basicBettingState sessionStorage Value failed.');
   };
   LOADING_EVENT.hide();
 };

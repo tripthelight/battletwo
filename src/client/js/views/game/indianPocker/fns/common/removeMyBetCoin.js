@@ -1,6 +1,5 @@
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import booleanCheck from '@/client/js/functions/validation/booleanCheck';
-import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import findCharCode from '@/client/js/functions/findCharCode';
 import pcDraggableCheck from '@/client/js/views/game/indianPocker/fns/common/pcDraggableCheck';
 import getTranslateMH from '@/client/js/views/game/indianPocker/fns/common/getTranslateMH';
@@ -19,21 +18,19 @@ export default (_data) => {
 
   // const GAME_STATE = window.sessionStorage.gameState;
   // if (!GAME_STATE) return errorManagement({ errCase: 'errorComn', message: 'gameState not found' });
-  // basicBet
-  const encryptVal1 = findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]);
-  // playing
-  const encryptVal2 = findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]);
-  // betUser
-  const encryptKey3 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);
+  const encryptVal1 = findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]); // basicBet
+  const encryptVal2 = findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]); // playing
+  const encryptKey3 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
 
   // gameState: sessionStorage.getItem('gameState'),
-  const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]);
+  const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
   const decryptVal = window.sessionStorage.getItem(encryptKey);
-  if (!decryptVal) return errorManagement({ errCase: 'errorComn', message: 'decryptVal not found' });
+  if (decryptVal === null || (decryptVal !== null && decryptVal === '')) throw throwObj('sessionStorageLoss', 'removeMyBetCoin - gameState sessionStorage failed.');
   // const BET_USER = window.sessionStorage.betUser;
   // if (!BET_USER) return errorManagement({ errCase: 'errorComn', message: 'betUser not found 1' });
   const encryptVal3 = window.sessionStorage.getItem(encryptKey3); // betUser
-  if (!encryptVal3) return errorManagement({ errCase: 'errorComn', message: 'betUser not found 1' });
+  // if (!encryptVal3) return errorManagement({ errCase: 'errorComn', message: 'betUser not found 1' });
+  if (encryptVal3 === null || (encryptVal3 !== null && encryptVal3 === '')) throw throwObj('sessionStorageLoss', 'removeMyBetCoin - betUser sessionStorage failed.');
   // const BET_STATE = BET_USER === 'true' ? true : false;
   // const BET_STATE = BET_USER === 'true' ? true : false;
 
@@ -56,7 +53,7 @@ export default (_data) => {
   if (timeDegArr.length !== playerCoins) {
     // coinsPlayer sessionStorage value를 조작했거나,
     // ul.coins-player > li 개수 조작
-    throw throwObj('sessionStorageLoss', 'coins length element or storage value failed.');
+    throw throwObj('sessionStorageLoss', 'removeMyBetCoin - coins length element or storage value failed.');
   };
 
   // 배팅존에 코인 넣고 player block 코인 다시 그리기
@@ -77,7 +74,7 @@ export default (_data) => {
       // 기본배팅일 경우 -> gameState : basicBet
       // 기본 배팅이 끝나면 시간이 멈춰야 됨
       if (!timeDegArr[i]) {
-        throw throwObj('elementLoss', 'coins length element failed.');
+        throw throwObj('elementLoss', 'removeMyBetCoin - coins length element failed.');
       };
       minuteEl.style.transform = `translate(-50%, -96%) rotate(${timeDegArr[i][0]}deg)`;
       hourEl.style.transform = `translate(-50%, -86%) rotate(${timeDegArr[i][1]}deg)`;

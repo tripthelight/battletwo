@@ -1,5 +1,5 @@
-import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import findCharCode from '@/client/js/functions/findCharCode';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import saveBetCoinSession from '@/client/js/views/game/indianPocker/fns/common/saveBetCoinSession';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 
@@ -18,7 +18,7 @@ export default () => {
   // gameState: sessionStorage.getItem('gameState'),
   const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]);
   const decryptVal = window.sessionStorage.getItem(encryptKey);
-  if (!decryptVal) errorManagement({ errCase: 'errorComn', message: 'gameState not found' });
+  if (decryptVal === null || (decryptVal !== null && decryptVal === '')) throw throwObj('sessionStorageLoss', 'drawMyBetCoin - gameState sessionStorage failed.');
 
   // 명령
   // basicBet

@@ -1,6 +1,6 @@
-import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import drawPlayerBlock from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/drawPlayerBlock';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export default () => {
   // element | seeeion 체크
@@ -8,7 +8,7 @@ export default () => {
 
   if (!BET_COIN_POS) return drawPlayerBlock();
   const BETTING_ZONE = document.querySelector('.betting-zone');
-  if (!BETTING_ZONE) return errorManagement({ errCase: 'elementLoss', message: '.betting-zone 엘리먼트가 없습니다' });
+  if (!BETTING_ZONE) throw throwObj('elementLoss', '.betting-zone element not found.');
 
   // 명령
   const BET_COIN_ARR = JSON.parse(BET_COIN_POS);

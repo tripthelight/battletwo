@@ -1,8 +1,8 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import X from '@/client/js/module/crypts/bool-obf';
 
-export default (event) => {
-  event.preventDefault();
+export default () => {
+  // event.preventDefault();
 
   // if (window.sessionStorage.dropState === "false") return;
   const encryptKey1 = findCharCode([81, 69, 71, 84, 85, 90, 82, 67, 77, 89]); // dropState
