@@ -13,13 +13,15 @@ import errorManager from '@/client/js/module/errorHandler/errorManager';
 
 export default async (_data) => {
   try {
+    // development mode *******************************
+
     const {
       p1, // remote betState
       p2: {
         decryptVal2, // remote betUser
         decryptVal3 // remote betUserFirst
       },
-      p3, // remote basicBettingState
+      p3, // remote basicBettingState TODO: betCoin, betCoinPos 수정되면 이 단계에서 비교 필요
       p4: {
         remote: {
           c1, // coinsEnemy value number
@@ -148,6 +150,90 @@ export default async (_data) => {
       _t([114, 101, 115, 112, 111, 110, 115, 101, 67, 111, 109, 112, 97, 105, 114, 66, 97, 115, 105, 99, 66, 101, 116]), // responseCompairBasicBet
       { result: true }
     );
+
+
+    // product mode ***********************************
+    /*
+    const {
+      p1,
+      p2: { decryptVal2: u, decryptVal3: v },
+      p4: {
+        remote: { c1, c2, c3 },
+        local: { c4, c5, c6 },
+      },
+    } = _data;
+
+    const S = findCharCode, T = _t, B = booleanReturn, E = X.enc, D = X.dec;
+    const F = (t, m) => { throw throwObj(t, m); };
+    const { sessionStorage: ss } = window;
+    const gi = ss.getItem.bind(ss);
+    const mt = T([98, 97, 115, 105, 99, 66, 101, 116]); // basicBet
+
+    // 키 테이블(해당 순서 유지: betState, coinsPlayer, coinsPlayerBet, coinsPlayerExtBet, coinsEnemy, coinsEnemyBet, coinsEnemyExtBet)
+    const KA = [
+      [70, 77, 80, 88, 87, 86, 83, 89, 75, 65],
+      [81, 67, 69, 68, 71, 77, 83, 90, 65, 74],
+      [88, 79, 86, 74, 72, 80, 71, 70, 69, 77],
+      [70, 90, 79, 67, 88, 77, 69, 82, 84, 81],
+      [83, 78, 84, 68, 66, 80, 71, 65, 67, 87],
+      [67, 79, 66, 70, 75, 82, 74, 88, 69, 68],
+      [80, 73, 68, 65, 90, 69, 88, 86, 82, 67],
+    ].map(S);
+
+    // 값 일괄 취득(+ null 체크/예외 메시지 최소 노출)
+    const NM = [
+      [98, 101, 116, 83, 116, 97, 116, 101], // betState
+      [99, 111, 105, 110, 115, 80, 108, 97, 121, 101, 114], // coinsPlayer
+      [99, 111, 105, 110, 115, 80, 108, 97, 121, 101, 114, 66, 101, 116], // coinsPlayerBet
+      [99, 111, 105, 110, 115, 80, 108, 97, 121, 101, 114, 69, 120, 116, 66, 101, 116], // coinsPlayerExtBet
+      [99, 111, 105, 110, 115, 69, 110, 101, 109, 121], // coinsEnemy
+      [99, 111, 105, 110, 115, 69, 110, 101, 109, 121, 66, 101, 116], // coinsEnemyBet
+      [99, 111, 105, 110, 115, 69, 110, 101, 109, 121, 69, 120, 116, 66, 101, 116] // coinsEnemyExtBet
+    ];
+    const [v1, v5, v6, v7, v8, v9, v10] = KA.map((k, i) => {
+      const r = gi(k);
+      return r === null ? F('sessionStorageLoss', `${mt} - ${T(NM[i])} sessionStorage key failed.`) : r;
+    });
+
+    // betState 매핑( true/false 난독화 값과의 비교 )
+    const M = {
+      [S([70, 84, 75, 87, 74, 67, 73, 77, 80, 65])]: E(decodeTF(T([99, 102, 114, 110]))),   // "basicBetting" → true
+      [S([77, 86, 83, 87, 69, 73, 72, 88, 80, 89])]: E(decodeTF(T([106, 113, 98, 105, 97]))), // "extraBetting" → false
+    };
+    const wb = M[v1];
+    if (wb === undefined) F('sessionStorageLoss', `${mt} - ${T(NM[0])} sessionStorage value failed.`); // betState
+    if (D(wb) !== p1)     F('foul', `${mt} - ${T(NM[0])} compair failed.`); // betState
+
+    // betUser / betUserFirst (세션과 원격 불리언 정합성)
+    const bu = B([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
+    const bf = B([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
+    const mf = T([98, 101, 116, 85, 115, 101, 114, 47, 98, 101, 116, 85, 115, 101, 114, 70, 105, 114, 115, 116]); // betUser/betUserFirst
+    if (bu !== bf) F('foul', `${mt} - ${mf} sessionStorage value compair failed.`);
+    // (u, v) 원격 / (bu, bf) 로컬 세션: (둘 다 true ↔ 둘 다 false) 패턴만 허용
+    if (!(((u & v) === 1 && !(bu | bf)) || ((!(u | v)) && (bu & bf)))) {
+      F('foul', `${mt} - ${mf} compair failed.`); // betUser/betUserFirst
+    }
+
+    // 숫자 디코드(빈문자 예외) + 일괄 비교
+    const de = s => (s === '' ? '' : dec(s));
+    const C = [
+      [c4, de(v5),  NM[1]], // coinsPlayer
+      [c5, de(v6),  NM[2]], // coinsPlayerBet
+      [c6, de(v7),  NM[3]], // coinsPlayerExtBet
+      [c1, de(v8),  NM[4]], // coinsEnemy
+      [c2, de(v9),  NM[5]], // coinsEnemyBet
+      [c3, de(v10), NM[6]], // coinsEnemyExtBet
+    ];
+    for (let i = 0; i < C.length; i++) {
+      const [a, b, n] = C[i];
+      if (a !== b) F('foul', `${mt} - ${T(n)} compair failed.`);
+    }
+
+    request(
+      T([114,101,115,112,111,110,115,101,67,111,109,112,97,105,114,66,97,115,105,99,66,101,116]),
+      { result: true }
+    );
+    */
   } catch (error) {
     console.log('requestCompairBasicBet.js error : ');
     errorManager(error, true);

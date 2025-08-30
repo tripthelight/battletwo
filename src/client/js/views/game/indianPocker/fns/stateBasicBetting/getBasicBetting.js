@@ -43,7 +43,7 @@ export const GET_BASIC_BETTING = {
       })
       .then((_data) => {
         // storageMethod('s', 'SET_ITEM', 'coinsEnemy', enc(_data.coinCount));
-        storageMethod('s', 'SET_ITEM', encryptKey1, enc(_data.coinCount));
+        storageMethod('s', 'SET_ITEM', encryptKey1, enc(_data.coinCount)); // coinsEnemy
         return _data;
       })
       .then((_data) => {

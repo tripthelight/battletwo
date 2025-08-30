@@ -1,4 +1,3 @@
-import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
 import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import _t from '@/client/js/module/crypts/textDE';
@@ -6,26 +5,15 @@ import booleanReturn from '@/client/js/functions/validation/booleanReturn';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/network/indianPocker/request';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import drawPickCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/drawPickCard';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import basicBetInit from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/basicBetInit';
 import { dec } from '@/client/js/module/crypts/obf8lower';
+import storageKeyDeleteCheck from '@/client/js/functions/dataVerification/load/storageKeyDeleteCheck';
 
 export const BASIC_BET_DATA_HANDLER = {
-  // reload 했을 경우 모든 key가 있는지 먼저 체크
-  storageKeyDeleteCheck(storageKeys) {
-    let result = false;
-    for (const key of storageKeys) {
-      if (window.sessionStorage.getItem(key) === null) {
-        result = true;
-        break;
-      };
-    };
-    return result;
-  },
   // gameState : basicBet에서 reload 한 경우
   handleReload(storageKeys) {
-    if (this.storageKeyDeleteCheck(storageKeys)) {
+    if (storageKeyDeleteCheck(storageKeys)) {
       throw throwObj('sessionStorageLoss', 'basicBet delete sessionStorage.');
     };
 

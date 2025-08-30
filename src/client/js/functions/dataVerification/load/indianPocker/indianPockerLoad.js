@@ -9,20 +9,23 @@ import { BASIC_BET_DATA_HANDLER } from '@/client/js/functions/dataVerification/l
  * @param {Array<string>} storageKeys gameState에 필요한 sessionStorage key list
  */
 export default (gameState, storageKeys) => {
+  // ────────────────────────────────────────────────────────────────────────────────────────────────────────────
   // gameState: choiceCard
   if (gameState === findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82])) {
     if (connObj.serverRefresh) {
       CHOICE_CARD_DATA_HANDLER.handleReload(storageKeys);
     } else {
       CHOICE_CARD_DATA_HANDLER.handleInitialLoad(storageKeys);
-    }
-  }
+    };
+  };
+
+  // ────────────────────────────────────────────────────────────────────────────────────────────────────────────
   // gameState: basicBet
   if (gameState === findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68])) {
     if (connObj.serverRefresh) {
       BASIC_BET_DATA_HANDLER.handleReload(storageKeys);
     } else {
       BASIC_BET_DATA_HANDLER.handleInitialLoad(storageKeys);
-    }
-  }
+    };
+  };
 };
