@@ -1,4 +1,4 @@
-import { getDisConnect } from '@/client/js/webRTC/rtcConn';
+import { setDisConnect } from '@/client/js/webRTC/rtcConn';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import delCookies from '@/client/js/module/cookies/delCookies';
 import renameSessionStorageKeys from '@/client/js/module/errorHandler/renameSessionStorageKeys';
@@ -17,6 +17,6 @@ export default (error) => {
   // storageMethod('s', 'REMOVE_ALL');
   renameSessionStorageKeys();
   // delCookies('gc_at');
-  getDisConnect();
+  setDisConnect();
   errorManagement(error);
 };

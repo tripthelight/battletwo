@@ -1,3 +1,4 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import setCookies from '@/client/js/module/cookies/setCookies';
 import getCookies from '@/client/js/module/cookies/getCookies';
 import roomNameReturnCookie from '@/client/js/module/cookies/roomNameReturnCookie';
@@ -5,15 +6,16 @@ import { debug } from '@/client/js/module/debug';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { responseComn } from '@/client/js/network/responseComn';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
-import findCharCode from '@/client/js/functions/findCharCode';
 import storageKeys from '@/client/js/functions/dataVerification/storageKeys';
 
 import insertStorageDate from '@/client/js/functions/insertStorageDate';
 import cardVerification from '@/client/js/views/game/indianPocker/fns/common/cardVerification';
 
+const T = (() => ![] + [] ? !![] : ![])(); // true
+const F = (() => ![] + [] ? ![] : !![])(); // false
 export const encrypt = { keypair: '', code: '' };
-export const connObj = { signalingServer: null, dataChannel: null, peerConnection: null, serverRefresh: false };
-export function getDisConnect () {
+export const connObj = { signalingServer: null, dataChannel: null, peerConnection: null };
+export function setDisConnect () {
   // disconnect peerConnection
   if (
     connObj.peerConnection &&
@@ -35,6 +37,25 @@ export function getDisConnect () {
     connObj.signalingServer.close();
     connObj.signalingServer = null;
   };
+};
+class RefreshTask {
+  #serverRefresh; // private 필드
+  constructor() {
+    this.#serverRefresh = F;
+  };
+  get() { return this.#serverRefresh};
+  set(_b) { this.#serverRefresh = _b; };
+};
+const R = new RefreshTask();
+export function consRefresh() {
+  // 값이 true라면 반환하기 전에 false로 바꿔줌
+  console.log('평가 전 serverRefresh --------------- ', R.get());
+  if (R.get()) {
+    R.set(F);
+    console.log('평가 후 serverRefresh ------------- ', R.get());
+    return T;  // 조건문에서는 true로 평가됨
+  }
+  return F;
 };
 
 export default function webRTC(gameName) {
@@ -62,8 +83,8 @@ export default function webRTC(gameName) {
     const remotePeer = 'RemotePeer';
 
     const readyCheckObj = {
-      iceConnected: false,
-      dataChannelOpen: false
+      iceConnected: F,
+      dataChannelOpen: F
     };
 
     /** ==============================================================================================================
@@ -81,13 +102,14 @@ export default function webRTC(gameName) {
       };
     };
 
-    async function checkReady(roomName, pid) {
+    async function checkReady(roomName, pid, refresh) {
       if (readyCheckObj.iceConnected && readyCheckObj.dataChannelOpen) {
         connObj.peerConnection = peers[remotePeer].pc;
         connObj.dataChannel = peers[remotePeer].dataChannel;
         await responseComn(gameName);
 
-        if (!connObj.serverRefresh) {
+        // if (!connObj.serverRefresh) {
+        if (!R.get()) {
           const cookie = getCookies(gameName);
           if (cookie) {
             // 처음진입이라 cookie 없음
@@ -108,7 +130,8 @@ export default function webRTC(gameName) {
             .slice(-10); // 맨 뒤 10자리
         };
 
-        if (connObj.serverRefresh) {
+        // if (connObj.serverRefresh) {
+        if (R.get()) {
           const decryptkey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
           const decryptVal = window.sessionStorage.getItem(decryptkey);
 
@@ -136,6 +159,12 @@ export default function webRTC(gameName) {
           };
         };
 
+        // refresh : true      && R.get() : true  -> 새로고침 한 peer
+        // refresh : true      && R.get() : false -> 새로고침 당한 peer
+        // refresh : undefined && R.get() : false -> 처음 진입
+        if (typeof refresh === 'boolean' && refresh && !R.get()) return; // 새로고침 당한 peer는 이미 data 보유 중
+
+        // 각 게임에 필요한 data 요청
         if (gameName === 'indianPocker') {
           if (
             connObj.signalingServer &&
@@ -168,7 +197,7 @@ export default function webRTC(gameName) {
       }
     };
 
-    async function createPeerConnection(roomName, pid) {
+    async function createPeerConnection(roomName, pid, refresh) {
       // 새로고침 당하는 Peer 는 여기를 탐
       if (peers[remotePeer] && peers[remotePeer].pc) {
         // 기존 peer RTCPeerConnection close 시켜야
@@ -176,8 +205,8 @@ export default function webRTC(gameName) {
         // iceConnectionState disconnected를 안탐
         const oldPc = peers[remotePeer].pc;
         oldPc.close();
-        readyCheckObj.iceConnected = false;
-        readyCheckObj.dataChannelOpen = false;
+        readyCheckObj.iceConnected = F;
+        readyCheckObj.dataChannelOpen = F;
       };
 
       const pc = new RTCPeerConnection(servers);
@@ -186,8 +215,8 @@ export default function webRTC(gameName) {
 
       // Data Channel opened -----------------------
       dataChannel.onopen = async () => {
-        readyCheckObj.dataChannelOpen = true;
-        await checkReady(roomName, pid);
+        readyCheckObj.dataChannelOpen = T;
+        await checkReady(roomName, pid, refresh);
       };
 
       dataChannel.onmessage = (event) => {};
@@ -242,13 +271,13 @@ export default function webRTC(gameName) {
         };
 
         if (event.target.iceConnectionState === 'connected' || event.target.iceConnectionState === 'completed') {
-          readyCheckObj.iceConnected = true;
-          await checkReady(roomName, pid);
+          readyCheckObj.iceConnected = T;
+          await checkReady(roomName, pid, refresh);
         };
       };
     };
 
-    async function handleOffer(sdp, roomName, pid) {
+    async function handleOffer(sdp, roomName, pid, refresh) {
       if (!peers[remotePeer]) {
         const pc = new RTCPeerConnection(servers);
         peers[remotePeer] = { pc, dataChannel: null };
@@ -257,8 +286,8 @@ export default function webRTC(gameName) {
         pc.ondatachannel = (event) => {
           peers[remotePeer].dataChannel = event.channel;
           event.channel.onopen = async () => {
-            readyCheckObj.dataChannelOpen = true;
-            await checkReady(roomName, pid);
+            readyCheckObj.dataChannelOpen = T;
+            await checkReady(roomName, pid, refresh);
           };
           event.channel.onmessage = (event) => {};
         };
@@ -314,8 +343,8 @@ export default function webRTC(gameName) {
           };
 
           if (event.target.iceConnectionState === 'connected' || event.target.iceConnectionState === 'completed') {
-            readyCheckObj.iceConnected = true;
-            await checkReady(roomName, pid);
+            readyCheckObj.iceConnected = T;
+            await checkReady(roomName, pid, refresh);
           };
         };
       };
@@ -338,23 +367,31 @@ export default function webRTC(gameName) {
         console.log('entryOrder 받음');
 
         // 새로고침 후 재접속이면, webRTC 서버에서 refresh true로 받음
-        connObj.serverRefresh = false;
+        // connObj.serverRefresh = false;
+        R.set(F);
         if (refresh) {
-          connObj.serverRefresh = true;
+          if (setOffer === T.toString()) {
+            // 새로고침 당한 상대 peer - setOffer : 'true'
+          } else {
+            // 새로고침 한 peer - setOffer : undefined
+            // connObj.serverRefresh = true;
+            R.set(T);
+          };
         };
 
-        if (setOffer === 'true') {
+        // if (setOffer === 'true') {
+        if (setOffer === T.toString()) {
           console.log('encrypt ______________ ', encrypt);
 
           // 두번째 접속자 - offer 만들어서 보내야 됨
-          await createPeerConnection(roomName, pid);
+          await createPeerConnection(roomName, pid, refresh);
         } else {
           // 첫번째 접속자 - offer 받을 준비 해야됨
         };
 
       } else if (type === 'offer') {
         console.log('offer 받음');
-        await handleOffer(sdp, roomName, pid);
+        await handleOffer(sdp, roomName, pid, refresh);
 
       } else if (type === 'answer') {
         console.log('answer 받음');
@@ -378,7 +415,8 @@ export default function webRTC(gameName) {
       if (type === 'responseStorage') {
         console.log('data 받음 >>>>>>>>> ', storageData);
         await insertStorageDate(storageData);
-        if (connObj.serverRefresh) {
+        // if (connObj.serverRefresh) {
+        if (R.get()) {
           await cardVerification();
         }
         resolve();

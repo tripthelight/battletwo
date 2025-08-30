@@ -1,6 +1,6 @@
 import errorModal from '@/client/components/popup/modal/errorModal';
 import { text } from '@/client/js/functions/language';
-import { getDisConnect } from '@/client/js/webRTC/rtcConn';
+import { setDisConnect } from '@/client/js/webRTC/rtcConn';
 import delCookies from '@/client/js/module/cookies/delCookies';
 import renameSessionStorageKeys from '@/client/js/module/errorHandler/renameSessionStorageKeys';
 
@@ -110,7 +110,7 @@ function showErrorNotification(errCase, component, message, target) {
   // disconnected common
   renameSessionStorageKeys();
   // delCookies('gc_at');
-  getDisConnect();
+  setDisConnect();
 };
 
 // 오류 복구 로직
