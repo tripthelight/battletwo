@@ -41,7 +41,7 @@ export default function (_idx) {
     // --- 나머지 원래 흐름
     const arrNumbs = selectCompairNumbers();
     if (!arrNumbs || (arrNumbs && arrNumbs.length === 0)) {
-      throw { message: 'cardNum length 0' };
+      throw { message: 'cardNum length 0 - 2' };
     };
 
     const encryptCode = resultCode(_idx);

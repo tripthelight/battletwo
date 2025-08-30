@@ -7,8 +7,9 @@ export default function (_num) {
   try {
     const arrNumbs = selectCompairNumbers();
     if (!arrNumbs || (arrNumbs && arrNumbs.length === 0)) {
-      throw throwObj('cardNum', 'cardNum length 0');
+      throw throwObj('cardNum', 'cardNum length 0 - 1');
     };
+
     const decrypted = arrNumbs.find(n => bcrypt.compareSync(n.toString(), _num));
     if (decrypted === null || decrypted === undefined) {
       throw throwObj('cardNum', 'card num encrypt error.');

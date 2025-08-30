@@ -22,7 +22,7 @@ export default () => {
   const decryptVal1 = dec(encryptVal1);
 
   const arrNumbs = selectCompairNumbers();
-  if (!arrNumbs.length) return errorManagement({ errCase: 'cardNum', message: 'cardNum length 0' });
+  if (!arrNumbs.length) return errorManagement({ errCase: 'cardNum', message: 'cardNum length 0 - 3' });
 
   // const NUM_RES = arrNumbs.filter((nums) => bcrypt.compareSync(nums, BATTLE_CARD_NUM));
   const NUM_RES = arrNumbs.filter((nums) => bcrypt.compareSync(nums, decryptVal1));

@@ -5,5 +5,5 @@
       "@/*": ["src/*"] // @를 src로 매핑
     }
   },
-  "include": ["src/**/*"] // src 디렉토리의 모든 파일 포함
+  "include": ["src/**/*", "src/client/js/functions/bcrypt/.js"] // src 디렉토리의 모든 파일 포함
 }

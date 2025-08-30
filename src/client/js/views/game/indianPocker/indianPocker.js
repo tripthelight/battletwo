@@ -10,6 +10,8 @@ import getCookies from '@/client/js/module/cookies/getCookies';
 import delCookies from '@/client/js/module/cookies/delCookies';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
+import storageMethod from '@/client/js/module/storage/storageMethod';
+import waitRefresh from '@/client/js/module/reload/waitRefresh';
 
 import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
@@ -23,6 +25,8 @@ document.onreadystatechange = async () => {
   if (document.readyState !== 'complete') return;
   try {
     LOADING_EVENT.show();
+
+    // await waitRefresh();
 
     const GAME_NAME = 'indianPocker';
 
@@ -40,7 +44,7 @@ document.onreadystatechange = async () => {
           throw { errCase: 'cookies', message: 'reload cookies failed.' };
         };
       };
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // await new Promise(resolve => setTimeout(resolve, 1000));
     } else {
       delCookies(GAME_NAME);
     };
@@ -126,3 +130,64 @@ function dc(arr) {
 };
 dc([     ]);
 */
+
+
+/* window.onbeforeunload = function() {
+  const cnt = window.localStorage.getItem('refresh');
+  if (cnt === null) {
+    storageMethod('l', 'SET_ITEM', 'refresh', 1);
+  } else if (cnt !== null && parseInt(cnt) > 0) {
+    storageMethod('l', 'SET_ITEM', 'refresh', parseInt(cnt) + 1);
+  };
+}; */
+
+
+/* import { connectWithStartupDebounce } from '@/client/js/module/reload/startup-ws';
+
+const WS_URL = `${process.env.SOCKET_HOST}:${process.env.RTC_PORT}`;
+
+// SharedWorker 지원 여부 확인
+const supportsSharedWorker = 'SharedWorker' in window;
+
+async function connectViaSharedWorker() {
+  const worker = new SharedWorker(new URL('@/client/js/module/reload/shared-ws.worker.js', import.meta.url), { type: 'module' });
+  const port = worker.port;
+  port.start();
+
+  port.postMessage(JSON.stringify({ type: 'init', url: WS_URL, quietMs: 800 }));
+
+  port.onmessage = (ev) => {
+    const msg = JSON.parse(ev.data);
+    // 예: 상태 UI 반영
+    if (msg.type === 'ws:open') { console.log('ws:open'); }
+    if (msg.type === 'ws:message') { console.log('ws:message'); }
+  };
+
+  // 페이지 → 서버로 보내기
+  function send(data) {
+    port.postMessage(JSON.stringify({ type: 'send', data }));
+  }
+
+  return { send };
+};
+
+async function connectClient() {
+  if (supportsSharedWorker) {
+    try { return await connectViaSharedWorker(); }
+    catch {}
+  }
+
+  // 폴백 1: 시작 디바운스 단독 사용
+  const ws = await connectWithStartupDebounce(WS_URL);
+  return {
+    send: (data) => { if (ws.readyState === WebSocket.OPEN) ws.send(data); },
+  };
+}
+
+connectClient().then(client => {
+  console.log('connectClient then');
+
+  // 예시: 시그널링 전송
+  // client.send(JSON.stringify({ type: 'register', nickname: 'foo' }));
+});
+ */

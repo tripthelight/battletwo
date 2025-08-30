@@ -177,7 +177,19 @@ async function refreshDuringGame(data) {
       if (ROOMS_MAP[socket.gameName].get(roomName) && ROOMS_MAP[socket.gameName].get(roomName).length !== 2) {
         // 상대가 나간 상태에서 내가 새로고침
         await watiRefreshUser();
-      }
+      }; // 1
+      if (ROOMS_MAP[socket.gameName].get(roomName) && ROOMS_MAP[socket.gameName].get(roomName).length !== 2) {
+        await watiRefreshUser();
+      }; // 2
+      if (ROOMS_MAP[socket.gameName].get(roomName) && ROOMS_MAP[socket.gameName].get(roomName).length !== 2) {
+        await watiRefreshUser();
+      }; // 3
+      if (ROOMS_MAP[socket.gameName].get(roomName) && ROOMS_MAP[socket.gameName].get(roomName).length !== 2) {
+        await watiRefreshUser();
+      }; // 4
+      if (ROOMS_MAP[socket.gameName].get(roomName) && ROOMS_MAP[socket.gameName].get(roomName).length !== 2) {
+        await watiRefreshUser();
+      }; // 5
       if (ROOMS_MAP[socket.gameName].get(roomName) && ROOMS_MAP[socket.gameName].get(roomName).length === 2) {
         const DIFF_SOCKET = ROOMS_MAP[socket.gameName].get(roomName).find((ws) => ws !== socket);
         if (DIFF_SOCKET) {
@@ -246,24 +258,80 @@ async function offerAnserCandidateDataProcess(resData) {
     };
 
     if (parsedData && socket) {
-      if (socket.gameName && socket.roomName && ROOMS_MAP[socket.gameName] && ROOMS_MAP[socket.gameName].get(socket.roomName) && ROOMS_MAP[socket.gameName].get(socket.roomName).length === 2) {
-        const DIFF_SOCKET = ROOMS_MAP[socket.gameName].get(socket.roomName).find((ws) => ws !== socket);
-        if (DIFF_SOCKET && DIFF_SOCKET.readyState === WebSocket.OPEN) {
-          DIFF_SOCKET.send(
-            /* JSON.stringify({
-              type: parsedData.type,
-              data: parsedData.data,
-            }), */
-            JSON.stringify(parsedData),
-          );
-          resolve();
-        } else {
+      if (
+        socket.gameName
+        && socket.roomName
+        && ROOMS_MAP[socket.gameName]
+        && ROOMS_MAP[socket.gameName].get(socket.roomName)
+        // && ROOMS_MAP[socket.gameName].get(socket.roomName).length === 2
+      ) {
+        const roomVid = ROOMS_MAP[socket.gameName].get(socket.roomName);
+        if (!roomVid) {
+          console.log('webRTC 연결 중 연속 새고로침 1-1 ---- ');
           reject();
         }
+        if (roomVid && roomVid.length !== 2) {
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }; // 1
+        if (roomVid && roomVid.length !== 2) {
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }; // 2
+        if (roomVid && roomVid.length !== 2) {
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }; // 3
+        if (roomVid && roomVid.length !== 2) {
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }; // 4
+        if (roomVid && roomVid.length !== 2) {
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }; // 5
+        if (roomVid && roomVid.length === 2) {
+          const DIFF_SOCKET = ROOMS_MAP[socket.gameName].get(socket.roomName).find((ws) => ws !== socket);
+          if (DIFF_SOCKET && DIFF_SOCKET.readyState === WebSocket.OPEN) {
+            DIFF_SOCKET.send(
+              /* JSON.stringify({
+                type: parsedData.type,
+                data: parsedData.data,
+              }), */
+              JSON.stringify(parsedData),
+            );
+            resolve();
+          } else {
+            console.log('webRTC 연결 중 연속 새고로침 1-2 ---- ');
+            reject();
+          }
+        } else {
+          const roomVid = ROOMS_MAP[socket.gameName].get(socket.roomName);
+          if (!roomVid) {
+            console.log('webRTC 연결 중 연속 새고로침 2-1 ---- ');
+            reject();
+          }
+          if (roomVid && roomVid.length !== 2) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          }; // 1
+          if (roomVid && roomVid.length !== 2) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          }; // 2
+          if (roomVid && roomVid.length !== 2) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          }; // 3
+          if (roomVid && roomVid.length !== 2) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          }; // 4
+          if (roomVid && roomVid.length !== 2) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          }; // 5
+          if (roomVid && roomVid.length !== 2) {
+            console.log('webRTC 연결 중 연속 새고로침 2-2 ---- ');
+            reject();
+          };
+        }
       } else {
+        console.log('webRTC 연결 중 연속 새고로침 3 ---- ');
         reject();
       }
     } else {
+      console.log('webRTC 연결 중 연속 새고로침 4 ---- ');
       reject();
     }
   });

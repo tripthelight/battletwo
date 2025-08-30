@@ -1,3 +1,5 @@
+import { v4 as uuidV4 } from 'uuid';
+import encryptionStore, { updateCompair, updateKeypair } from '@/client/store/encryptionStore';
 import findCharCode from '@/client/js/functions/findCharCode';
 import setCookies from '@/client/js/module/cookies/setCookies';
 import getCookies from '@/client/js/module/cookies/getCookies';
@@ -12,6 +14,7 @@ import cardVerification from '@/client/js/views/game/indianPocker/fns/common/car
 
 const T = (() => ![] + [] ? !![] : ![])(); // true
 const F = (() => ![] + [] ? ![] : !![])(); // false
+
 export const encrypt = { keypair: '', code: '' };
 export const connObj = { signalingServer: null, dataChannel: null, peerConnection: null };
 export function setDisConnect () {
@@ -99,14 +102,69 @@ export default function webRTC(gameName) {
       };
     };
 
-    async function checkReady(roomName, pid, refresh) {
+    function resetPeer() {
+      // disconnect peerConnection
+      if (
+        connObj.peerConnection &&
+        connObj.peerConnection.connectionState === 'connected'
+      ) {
+        connObj.peerConnection.close();
+        connObj.peerConnection = null;
+      };
+      // disconnect dataChannel
+      if (
+        connObj.dataChannel &&
+        connObj.dataChannel.readyState === 'open'
+      ) {
+        connObj.dataChannel.close();
+        connObj.dataChannel = null;
+      };
+      if (peers[remotePeer]) {
+        if (peers[remotePeer]?.pc && peers[remotePeer].pc?.connectionState === 'connected') {
+          peers[remotePeer].pc.close();
+          peers[remotePeer].pc = null;
+        };
+        if (peers[remotePeer]?.dataChannel && peers[remotePeer].dataChannel?.readyState === 'open') {
+          peers[remotePeer].dataChannel.close();
+          peers[remotePeer].dataChannel = null;
+        };
+        delete peers[remotePeer];
+      };
+    };
+
+    async function checkReady(roomName, pid, refresh, setOffer) {
       if (readyCheckObj.iceConnected && readyCheckObj.dataChannelOpen) {
         connObj.peerConnection = peers[remotePeer].pc;
         connObj.dataChannel = peers[remotePeer].dataChannel;
         await responseComn(gameName);
 
+        // 새로고침 당한 peer
+        /* if (
+          setOffer === T.toString()
+          && typeof refresh === 'boolean'
+          && refresh
+          && !R.get()
+        ) {
+          console.log('새고로침 당한 peer ===================');
+          return resolve();
+
+          const compair = encryptionStore.getState().encryptionState.compair;
+          console.log('compair ~~~~~~~~~~ ', compair);
+          if (Object.keys(compair).length > 0) return resolve();
+          if (
+            connObj.signalingServer &&
+            connObj.signalingServer.readyState === WebSocket.OPEN
+          ) {
+            connObj.signalingServer.send(JSON.stringify({
+              type: 'requestStorage',
+              gameName: gameName,
+              gameCode: encrypt.code
+            }));
+          };
+        }; */
+
         // if (!connObj.serverRefresh) {
-        if (!R.get()) {
+        if (!R.get() && !refresh) {
           const cookie = getCookies(gameName);
           if (cookie) {
             // 처음진입이라 cookie 없음
@@ -156,10 +214,11 @@ export default function webRTC(gameName) {
           };
         };
 
-        // refresh : true      && R.get() : true  -> 새로고침 한 peer
-        // refresh : true      && R.get() : false -> 새로고침 당한 peer
-        // refresh : undefined && R.get() : false -> 처음 진입
-        if (typeof refresh === 'boolean' && refresh && !R.get()) return; // 새로고침 당한 peer는 이미 data 보유 중
+        const compair = encryptionStore.getState().encryptionState.compair;
+        if (Object.keys(compair).length > 0) {
+          R.set(F);
+          return resolve();
+        };
 
         // 각 게임에 필요한 data 요청
         if (gameName === 'indianPocker') {
@@ -194,7 +253,7 @@ export default function webRTC(gameName) {
       }
     };
 
-    async function createPeerConnection(roomName, pid, refresh) {
+    async function createPeerConnection(roomName, pid, refresh, setOffer) {
       // 새로고침 당하는 Peer 는 여기를 탐
       if (peers[remotePeer] && peers[remotePeer].pc) {
         // 기존 peer RTCPeerConnection close 시켜야
@@ -212,8 +271,9 @@ export default function webRTC(gameName) {
 
       // Data Channel opened -----------------------
       dataChannel.onopen = async () => {
+        console.log('새로고침 당함 1 ---------- ');
         readyCheckObj.dataChannelOpen = T;
-        await checkReady(roomName, pid, refresh);
+        await checkReady(roomName, pid, refresh, setOffer);
       };
 
       dataChannel.onmessage = (event) => {};
@@ -246,6 +306,7 @@ export default function webRTC(gameName) {
       };
       pc.oniceconnectionstatechange = async (event) => {
         if (event.target.iceConnectionState === 'disconnected') {
+          console.warn('disconnected -------- 1');
           if (connObj.signalingServer && connObj.signalingServer.readyState === WebSocket.OPEN) {
             connObj.signalingServer.send(JSON.stringify({
               type: 'connectEnd',
@@ -253,8 +314,6 @@ export default function webRTC(gameName) {
           };
           if (peers[remotePeer]) {
             // 상대 peer와 연결 끊김 후 새로고침 하면 새로운 peer와 재연결 시도
-            // await logout();
-            // delCookies('gc_at');
             console.log(`
               ${remotePeer} : ICE 연결 끊김으로 peers에서 제거
               readyState : ${connObj.signalingServer.readyState}
@@ -267,14 +326,27 @@ export default function webRTC(gameName) {
           storageMethod('s', 'REMOVE_ALL');
         };
 
-        if (event.target.iceConnectionState === 'connected' || event.target.iceConnectionState === 'completed') {
+        if (event.target.iceConnectionState === 'connected') {
+          console.warn('connected -------- 1');
+          console.log('새로고침 당함 2 ---------- ');
           readyCheckObj.iceConnected = T;
-          await checkReady(roomName, pid, refresh);
+          await checkReady(roomName, pid, refresh, setOffer);
+        };
+
+        if (event.target.iceConnectionState === 'completed') {
+          console.warn('completed -------- 1');
+        };
+
+        if (event.target.iceConnectionState === 'failed') {
+          console.warn('failed -------- 1');
+        };
+        if (event.target.iceConnectionState === 'closed') {
+          console.warn('closed -------- 1');
         };
       };
     };
 
-    async function handleOffer(sdp, roomName, pid, refresh) {
+    async function handleOffer(sdp, roomName, pid, refresh, setOffer) {
       if (!peers[remotePeer]) {
         const pc = new RTCPeerConnection(servers);
         peers[remotePeer] = { pc, dataChannel: null };
@@ -284,7 +356,8 @@ export default function webRTC(gameName) {
           peers[remotePeer].dataChannel = event.channel;
           event.channel.onopen = async () => {
             readyCheckObj.dataChannelOpen = T;
-            await checkReady(roomName, pid, refresh);
+            console.log('새로고침 당함 3 ---------- ');
+            await checkReady(roomName, pid, refresh, setOffer);
           };
           event.channel.onmessage = (event) => {};
         };
@@ -318,6 +391,7 @@ export default function webRTC(gameName) {
         };
         pc.oniceconnectionstatechange = async (event) => {
           if (event.target.iceConnectionState === 'disconnected') {
+            console.warn('disconnected -------- 2');
             if (connObj.signalingServer && connObj.signalingServer.readyState === WebSocket.OPEN) {
               connObj.signalingServer.send(JSON.stringify({
                 type: 'connectEnd',
@@ -339,10 +413,23 @@ export default function webRTC(gameName) {
             storageMethod('s', 'REMOVE_ALL');
           };
 
-          if (event.target.iceConnectionState === 'connected' || event.target.iceConnectionState === 'completed') {
+          if (event.target.iceConnectionState === 'connected') {
+            console.warn('connected -------- 2');
             readyCheckObj.iceConnected = T;
-            await checkReady(roomName, pid, refresh);
+            console.log('새로고침 당함 4 ---------- ');
+            await checkReady(roomName, pid, refresh, setOffer);
           };
+
+          if (event.target.iceConnectionState === 'completed') {
+            console.warn('completed -------- 2');
+          };
+
+          if (event.target.iceConnectionState === 'failed') {
+          console.warn('failed -------- 2');
+        };
+        if (event.target.iceConnectionState === 'closed') {
+          console.warn('closed -------- 2');
+        };
         };
       };
     };
@@ -357,8 +444,7 @@ export default function webRTC(gameName) {
 
     async function handleMessage(event) {
       const data = JSON.parse(event.data);
-
-      const { type, sdp, candidate, roomName, setOffer, refresh, pid, storageData } = data;
+      const { type, sdp, candidate, roomName, setOffer, refresh, pid, storageData, msg } = data;
 
       if (type === 'entryOrder') {
         console.log('entryOrder 받음');
@@ -367,6 +453,7 @@ export default function webRTC(gameName) {
         // connObj.serverRefresh = false;
         R.set(F);
         if (refresh) {
+          resetPeer();
           if (setOffer === T.toString()) {
             // 새로고침 당한 상대 peer - setOffer : 'true'
           } else {
@@ -381,14 +468,14 @@ export default function webRTC(gameName) {
           console.log('encrypt ______________ ', encrypt);
 
           // 두번째 접속자 - offer 만들어서 보내야 됨
-          await createPeerConnection(roomName, pid, refresh);
+          await createPeerConnection(roomName, pid, refresh, setOffer);
         } else {
           // 첫번째 접속자 - offer 받을 준비 해야됨
         };
 
       } else if (type === 'offer') {
         console.log('offer 받음');
-        await handleOffer(sdp, roomName, pid, refresh);
+        await handleOffer(sdp, roomName, pid, refresh, setOffer);
 
       } else if (type === 'answer') {
         console.log('answer 받음');
@@ -399,7 +486,7 @@ export default function webRTC(gameName) {
         await handleCandidate(candidate);
 
       } else if (type === 'otherLeaves') {
-        console.log('otherLeaves 받음');
+        console.log('otherLeaves 받음 : ', msg);
         if (peers[remotePeer]) {
           delete peers[remotePeer];
         };
