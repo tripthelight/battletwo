@@ -9,7 +9,7 @@ export default async (msgData) => {
     const { storageData } = msgData;
 
     // 내가 sessionStorage key를 암호화 할 때 사용할 keypair가 포함되어 있음
-    console.log('storageData >>>>>>>>>>>>> ', storageData);
+    // console.log('storageData >>>>>>>>>>>>> ', storageData);
     // 상대 peer의 AES secret key
     // console.log('keypair >>>>>>>>>>>>>>>>> ', keypair);
 
@@ -27,7 +27,7 @@ export default async (msgData) => {
     const encryptVal = window.sessionStorage.getItem(encryptKey);
     if (encryptVal === null) {
       const compair = encryptionStore.getState().encryptionState.compair;
-      console.log('compair ==========> ', compair);
+      // console.log('compair ==========> ', compair);
       storageMethod('s', 'SET_ITEM', encryptKey, compair[encryptKey]);
     };
   } catch (error) {

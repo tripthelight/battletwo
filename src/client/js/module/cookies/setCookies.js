@@ -4,7 +4,7 @@ import CryptoJS from "crypto-js";
  * Cookies 생성
  * @param {string} roomName roomName
  * @param {string} gameName gameName
- * @returns {string} cookie
+ * @returns null
  */
 export default (roomName, gameName) => {
   try {

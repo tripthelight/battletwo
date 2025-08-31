@@ -4,8 +4,6 @@ import Redis from 'ioredis';
 import { v4 as uuidv4 } from 'uuid';
 import { WebSocketServer } from 'ws';
 import { MAKE_STORAGE } from './functions/encryption/makeStorage.js';
-import CRC32 from 'crc-32';
-import jwt from 'jsonwebtoken';
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
@@ -252,7 +250,7 @@ async function offerAnserCandidateDataProcess(resData) {
   return new Promise(async (resolve, reject) => {
     const { parsedData, socket } = resData;
 
-    if (parsedData.type === 'offer') {
+    if (parsedData?.sdp?.type === 'offer') {
       parsedData.roomName = socket.roomName;
       parsedData.pid = cryptPID;
     };
@@ -380,7 +378,7 @@ WSS.on('connection', async (socket) => {
           /**
            * offer, answer, candidate
            */
-          if (['offer', 'answer', 'candidate'].includes(parsedData.type)) {
+          if (['offer', 'answer', 'candidate', 'sdp'].includes(parsedData.type)) {
             await offerAnserCandidateDataProcess({ parsedData, socket }).catch(() => {
               socket.send(JSON.stringify({ type: 'otherLeaves', msg: '2' }));
             });
