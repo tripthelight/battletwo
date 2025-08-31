@@ -1,0 +1,49 @@
+1. 최초 진입 Peer(local / remote)
+* 상대 peer 대기 중 reload - true   인 경우가 있고,
+* 상대 peer 대기 중 reload - false  인 경우가 있음,
+
+- cookie(roomName) 없음
+- sessionStorage 없음
+
+1) webRTC 연결 요청
+  - 연결 과정 중 생기는 roomName으로, cookie 생성
+  - cookie value의 뒤에서 부터 10자리를 *****encrypt.keypair 메모리에 적재
+  - encrypt.keypair가 적재되면, choiceCard 단계에서 필요한 sessionStorage key 생성
+  - webRTC 연결 후, 서버로 부터 *****기본 data insert 후 메모리에 적재
+2) webRTC 연결 O && 기본 data insert O -> 기본 element 그리기 - encrypt.keypair 있어야 함
+
+────────────────────────────────────
+
+2. webRTC 연결 완료 후, 새로고침 한 peer - local peer
+- cookie(roomName) 있음
+- sessionStorage 있음
+- 메모리에 적재되어 있던 기본 data 날라감
+- 메모리에 적재되어 있던 기본 encrypt.keypair 날라감
+
+1) webRTC 연결 요청
+  - cookie에 있는 roomName으로, 상대 peer와 재연결 시도
+  - 재연결 완료
+  - cookie value의 뒤에서 부터 10자리를 encrypt.keypair 메모리에 적재
+  - webRTC 연결 후, 서버로 부터 기본 data insert 후 메모리에 적재
+2) webRTC 연결 O && 기본 data insert O -> 기본 element 그리기
+  - handleReload 단계에서 현재 gameState에 필요한 sessionStorage 검사하기 때문에 sessionStorage 있어야 함
+  - handleReload 단계로 가기 때문에, 기본 data 있어야 함
+  - encrypt.keypair 있어야 함
+
+────────────────────────────────────
+
+3. webRTC 연결 완료 후, 새로고침 당한 peer - remote peer
+- cookie(roomName) 있음
+- sessionStorage 있음
+
+1) webRTC 연결 수락
+  - 상대 peer의 offer, answer, candidate 수락
+  - 재연결 완료
+  - encrypt.keypair 메모리에 적재되어 있음
+  -기본 data insert 메모리에 적재되어 있음
+
+────────────────────────────────────
+
+roomName을 sessionStorage에 저장하지 못하는 이유:
+  - 새로고침 하면 webRTC 재연결 시도 시, server에서는 roomName 유무로 새로고침을 판단
+  - 새로고침 할 때, 메모리에 있던 encrypt.keypair가 날라가기 때문에, 암호화된 roomName key를 못찾음
