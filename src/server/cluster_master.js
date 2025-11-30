@@ -12,19 +12,25 @@ if (cluster.isPrimary) {
   // numCPUs 만큼 워커를 생성합니다.
   for (let i = 0; i < numCPUs; i++) {
     // const workerType = i % 2 === 0 ? 'webrtc' : 'websocket'; // 짝수는 WebRTC, 홀수는 WebSocket
-    const workerType = i % 2 === 0 ? 'webrtc' : 'jwt'; // 짝수는 WebRTC, 홀수는 WebSocket
+    const workerType = i % 2 === 0 ? 'signalingServer' : 'jwt'; // 짝수는 WebRTC, 홀수는 Signaling Server
     cluster.fork({ WORKER_TYPE: workerType });
   }
 
   // 워커 간 통신을 위한 메시지 핸들링
   cluster.on('message', (worker, message) => {
-    console.log(`Message from worker ${worker.process.pid}:`, message);
+    // console.log(`Message from worker ${worker.process.pid}:`, message);
+    // console.log(`Message type : `, message.type);
     // 메시지에 따라 다른 워커에게 전달
-    // 예: WebSocket 서버끼리 연결, WebRTC 서버끼리 연결
+    // 예: WebSocket 서버끼리 연결, Signaling 서버끼리 연결
     if (message.type === 'websocket') {
       // WebSocket 서버들 간 통신 처리
-    } else if (message.type === 'webrtc') {
-      // WebRTC 서버들 간 통신 처리
+    } else if (message.type === 'signalingServer') {
+      // Signaling Server 서버들 간 통신 처리
+      for (const id in cluster.workers) {
+        if (cluster.workers.hasOwnProperty(id) && cluster.workers[id] !== worker) {
+          cluster.workers[id].send(message); // 다른 워커에 메시지 전달
+        }
+      }
     }
   });
 
@@ -35,11 +41,9 @@ if (cluster.isPrimary) {
   });
 } else {
   // 각 워커 프로세스가 수행할 작업 결정
-  if (process.env.WORKER_TYPE === 'webrtc') {
-    console.log('open server webrtc');
-    import('./server_webrtc.js');
-    // import('./server_webrtc_tuning.js');
-  // } else if (process.env.WORKER_TYPE === 'websocket') {
+  if (process.env.WORKER_TYPE === 'signalingServer') {
+    console.log('open Signaling Server');
+    import('./signaling_server.js');
   } else if (process.env.WORKER_TYPE === 'jwt') {
     console.log('open server jwt');
     import('./server_jwt.js');

@@ -19,16 +19,18 @@ const REDIS_SUB = new Redis();
 
 app.use(cookieParser()); // 쿠키 파싱
 app.use(express.json());
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || origin === allowedOrigin) {
-      callback(null, true);  // 허용
-    } else {
-      callback(new Error('CORS policy: Not allowed by server'));
-    }
-  },
-  credentials: true  // 쿠키 허용 시 필요
-}));
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || origin === allowedOrigin) {
+        callback(null, true); // 허용
+      } else {
+        callback(new Error('CORS policy: Not allowed by server'));
+      }
+    },
+    credentials: true, // 쿠키 허용 시 필요
+  }),
+);
 app.use((req, res, next) => {
   const referer = req.get('referer') || '';
   if (referer.startsWith(`${allowedOrigin}`)) {
@@ -37,13 +39,15 @@ app.use((req, res, next) => {
   res.status(403).json({ message: '접근이 제한되었습니다.' });
 });
 
-const decryptPID = (pid) => parseInt( // 브라우저에서 받은 pid 복호화
+const decryptPID = (pid) =>
   parseInt(
-    parseInt(pid, 16).toString(2), // 16진수 → 2진수 문자열
-    2                              // 2진수 → 10진수
-  ).toString(8),                   // 10진수 → 8진수 문자열
-  8                                // 8진수 → 최종 10진수
-);
+    // 브라우저에서 받은 pid 복호화
+    parseInt(
+      parseInt(pid, 16).toString(2), // 16진수 → 2진수 문자열
+      2, // 2진수 → 10진수
+    ).toString(8), // 10진수 → 8진수 문자열
+    8, // 8진수 → 최종 10진수
+  );
 
 // --------------------------------
 // 1) 로그인 요청 프록시 & JWT 발급
@@ -60,7 +64,7 @@ app.post('/login', async (req, res) => {
     // gameName, roomName, pid가 포함된 auth token
     const authToken = jwt.sign(
       { keypair, gameName, roomName, pid, role: 'user' }, // payload
-      SECRET_KEY,             // 비밀키
+      SECRET_KEY, // 비밀키
       // { expiresIn: '1h' }  // 1시간 유효 - 보안을 요구하는 JWT가 아니라 만료시간 무시하고 영구 TOKEN으로 지정
       // { expiresIn: '10s' }  // 10초 유효
     );
@@ -77,10 +81,12 @@ app.post('/login', async (req, res) => {
       'Path=/',
       // `Path=/game/${gameName}`,
       'Max-Age=3600',
-      process.env.NODE_ENV === 'production' ? 'Secure' : '',  // dev에서는 Secure 제외
-      'SameSite=Strict'
+      process.env.NODE_ENV === 'production' ? 'Secure' : '', // dev에서는 Secure 제외
+      'SameSite=Strict',
       // 'SameSite=Lax'
-    ].filter(Boolean).join('; ');
+    ]
+      .filter(Boolean)
+      .join('; ');
 
     // // httpOnly 쿠키에 JWT auth token 저장
 
@@ -114,8 +120,10 @@ app.post('/logout', (req, res) => {
     'Max-Age=0',
     process.env.NODE_ENV === 'production' ? 'Secure' : '',
     // 'SameSite=Strict',
-    'SameSite=Lax'
-  ].filter(Boolean).join('; ');
+    'SameSite=Lax',
+  ]
+    .filter(Boolean)
+    .join('; ');
 
   // authToken 쿠키를 제거
   res.setHeader('Set-Cookie', `gc_at=; ${logoutCookieOptions}`);
@@ -136,18 +144,19 @@ function verifyJWT(req, res, next) {
       status: 'unauthorized',
       message: '토큰이 없습니다. 로그인해주세요.',
     });
-  };
+  }
 
   jwt.verify(
     authToken,
     SECRET_KEY,
     // { ignoreExpiration: true }, // ✅ 만료 시간 무시 옵션 추가
     (err, decoded) => {
-    if (err) return res.status(403).json({ message: '토큰 검증 실패' });
-    req.user = decoded;
-    next();
-  });
-};
+      if (err) return res.status(403).json({ message: '토큰 검증 실패' });
+      req.user = decoded;
+      next();
+    },
+  );
+}
 
 // --------------------------------
 // 4) JWT 인증이 필요한 API
@@ -173,13 +182,13 @@ app.get('/auth-room', verifyJWT, (req, res) => {
       JSON.stringify({
         action: 'jwtGameRoom',
         gameName,
-        roomName
-      })
+        roomName,
+      }),
     );
     res.json({ message: '조회 성공' });
   } else {
     res.status(401).json({ message: '조회 실패' });
-  };
+  }
 });
 
 // --------------------------------
@@ -187,16 +196,14 @@ app.get('/auth-room', verifyJWT, (req, res) => {
 // --------------------------------
 app.get('/search-room', verifyJWT, (req, res) => {
   // console.log('/search-room ---------------------- ');
-  res.json(
-    {
-      message: '인증 성공',
-      roomName: req.user.roomName
-    }
-  );
+  res.json({
+    message: '인증 성공',
+    roomName: req.user.roomName,
+  });
 });
 
 app.listen(PORT, () => {
-  console.log(`JWT server ${process.pid} running on port ${PORT}`);
+  console.log(`JWT server running on port ${PORT}`, process.pid);
 });
 
 // --------------------------------

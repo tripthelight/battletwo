@@ -18,8 +18,18 @@ import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import _t from '@/client/js/module/crypts/textDE';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
-import {GRS} from '@/client/js/module/crypts/generateRandomString';
+import { GRS } from '@/client/js/module/crypts/generateRandomString';
+import { connectSignaling } from '@/client/js/module/webRTC/connectSignaling';
+import deliverToGame from '@/client/js/module/webRTC/reliable/indianPoker/deliverToGame';
+import handleEnvelope from '@/client/js/module/webRTC/reliable/indianPoker/handleEnvelope';
 
+function init() {
+  connectSignaling(false, { deliverToGame, handleEnvelope });
+}
+
+window.addEventListener('pageshow', init);
+
+/*
 // onMounted
 document.onreadystatechange = async () => {
   if (document.readyState !== 'complete') return;
@@ -114,6 +124,7 @@ document.onreadystatechange = async () => {
     errorManager(error, false);
   };
 };
+*/
 
 /*
 function ec(str) {
@@ -131,7 +142,6 @@ function dc(arr) {
 dc([     ]);
 */
 
-
 /* window.onbeforeunload = function() {
   const cnt = window.localStorage.getItem('refresh');
   if (cnt === null) {
@@ -140,7 +150,6 @@ dc([     ]);
     storageMethod('l', 'SET_ITEM', 'refresh', parseInt(cnt) + 1);
   };
 }; */
-
 
 /* import { connectWithStartupDebounce } from '@/client/js/module/reload/startup-ws';
 
