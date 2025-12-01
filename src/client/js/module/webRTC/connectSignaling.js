@@ -514,7 +514,7 @@ export function connectSignaling(connected = false, fns) {
           window.sessionStorage.setItem('roomId', msg.roomId);
           log(`Paired! me(${STATE.role}) <-> partner(${msg.partner.peerId}/${msg.partner.role})`);
 
-          await startPeerConnection();
+          // await startPeerConnection();
         }
         break;
       }

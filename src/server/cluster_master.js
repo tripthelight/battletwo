@@ -4,7 +4,10 @@ import Redis from 'ioredis';
 
 const numCPUs = os.cpus().length; // 시스템에서 사용할 수 있는 CPU 코어 수 - 6개
 
-const redis = new Redis();
+const clientLocation = new Map(); // clientId -> workerId
+const waitingQueue = []; // clientId만 저장 (또는 { clientId, gameType })
+
+const makeRoomId = () => `room-${Math.random().toString(36).slice(2, 10)}`;
 
 if (cluster.isPrimary) {
   console.log(`Primary process is running. Forking ${numCPUs} workers...`);
@@ -26,9 +29,48 @@ if (cluster.isPrimary) {
       // WebSocket 서버들 간 통신 처리
     } else if (message.type === 'signalingServer') {
       // Signaling Server 서버들 간 통신 처리
-      for (const id in cluster.workers) {
+      /* for (const id in cluster.workers) {
         if (cluster.workers.hasOwnProperty(id) && cluster.workers[id] !== worker) {
           cluster.workers[id].send(message); // 다른 워커에 메시지 전달
+        }
+      } */
+
+      const { type, peerId } = message.data;
+
+      switch (type) {
+        case 'REGISTER_CLIENT': {
+          clientLocation.set(peerId, worker.id);
+          break;
+        }
+        case 'JOIN_WAITING': {
+          waitingQueue.push(peerId);
+
+          if (waitingQueue.length >= 2) {
+            const a = waitingQueue.shift(); // waitingQueue 배열에서 첫번째 peerId 가져오기
+            const b = waitingQueue.shift();
+
+            const workerA = clientLocation.get(a); // worker.id 가져오기
+            const workerB = clientLocation.get(b);
+
+            const roomId = makeRoomId();
+
+            // 각 worker에게 "너희 둘이 방이야" 라고 통보
+            cluster.workers[workerA].send({
+              type: 'MATCH_FOUND',
+              roomId,
+              peerId: a,
+              partnerId: b,
+              role: 'impolite',
+            });
+            cluster.workers[workerB].send({
+              type: 'MATCH_FOUND',
+              roomId,
+              peerId: b,
+              partnerId: a,
+              role: 'polite',
+            });
+          }
+          break;
         }
       }
     }

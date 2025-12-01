@@ -45,8 +45,10 @@ function procSend(type, obj) {
 const ROOM_TTL_MS = 15_000; // 15초 안에 돌아오면 같은 room 재활용
 const TOMBSTONES = new Map(); // roomId -> { roomId, expiredAt, lastSeenAt }
 
-const ROOMS = Object.create(null);
+// const ROOMS = Object.create(null);
 const PEERS = new WeakMap();
+const ROOMS = new Map(); // roomId -> { selfId, peerId }
+const CLIENTS = new Map(); // clientId -> ws
 
 const now = () => Date.now();
 const makeRoomId = () => `room-${Math.random().toString(36).slice(2, 10)}`;
@@ -134,46 +136,31 @@ function handleJoin(ws, meta, msg) {
 
   // 1) roomHint가 있고, 그 방이 현재 살아있다면 그 방으로
   // 두 peer가 나가지 않은 상태에서 한 peer가 새로고침하면 새로고침 한 peer는 여기를 탐
-  if (requested && ROOMS[requested] && ROOMS[requested].clients.size < 2) {
+  /* if (requested && ROOMS[requested] && ROOMS[requested].clients.size < 2) {
     attachToRoom(ws, meta, ROOMS[requested]);
     return;
-  }
+  } */
 
   // 2) roomHint가 무덤에 있고(아직 TTL 안 지남) → 방 부활
-  if (requested && TOMBSTONES.has(requested)) {
+  /* if (requested && TOMBSTONES.has(requested)) {
     // 부활
     TOMBSTONES.delete(requested);
     const revivedRoom = createRoomWithId(requested);
     attachToRoom(ws, meta, revivedRoom, true);
     return;
-
-    /* const tomb = TOMBSTONES.get(requested);
-    if (tomb.expiredAt > now()) {
-      // 1) 한 peer가 처음 진입한 후 상대방을 기다리던 중 새로고침하면 여기 탐
-      // - 이 후 단계 진행
-
-      // 2) 두 peer가 연결되었다가 한 peer가 나간 후 나머지 peer가 새로고침하면 새로고침 한 peer가 여기 탐
-      // - 나간것이 확인되면 남아있는 peer에게 partner-left 전송
-
-      // 3) 두 peer가 모두 있는 상태에서 두 peer가 모두 새로고침 난타하면 여기를 탐
-      // - 이 후 단계 진행
-
-      // ———————————————————————————————————————————————————————————————————————————
-      // 부활
-      TOMBSTONES.delete(requested);
-      const revivedRoom = createRoomWithId(requested);
-      attachToRoom(ws, meta, revivedRoom, true);
-      return;
-    } else {
-      TOMBSTONES.delete(requested); // 만료됐으면 버림
-    } */
-  }
+  } */
 
   // 3) roomHint가 없거나, 사용할 수 없다면 "일반 매칭"
-  let room = findWaitingRoom();
-  if (!room) room = createRoom();
-  attachToRoom(ws, meta, room);
-  // procSend('reqFindWaitingRoom');
+  // let room = findWaitingRoom();
+  // if (!room) room = createRoom();
+  // attachToRoom(ws, meta, room);
+  process.send({
+    type: 'signalingServer',
+    data: {
+      type: 'JOIN_WAITING',
+      peerId: meta.peerId,
+    },
+  });
 }
 
 function cbConnection(ws, req) {
@@ -183,6 +170,17 @@ function cbConnection(ws, req) {
 
   // "바로 배정"하지 않고, 클라의 'join' 메시지를 기다립니다.
   PEERS.set(ws, { peerId, roomId: null });
+
+  CLIENTS.set(peerId, ws);
+
+  process.send({
+    type: 'signalingServer',
+    data: {
+      type: 'REGISTER_CLIENT',
+      peerId,
+      workerId: process.pid, // 또는 cluster.worker.id
+    },
+  });
 
   ws.on('message', (buf) => {
     let msg;
@@ -236,21 +234,6 @@ function cbConnection(ws, req) {
       }
     }
     PEERS.delete(ws);
-
-    /* if (room) {
-      room.clients.delete(peerId);
-      broadcast(room, { type: 'partner-left', roomId, peerId });
-
-      room.lockAfterLeave = true;
-
-      // 두 peer 중 한 peer가 남아있으면 여기 안탐
-      if (room.clients.size === 0) {
-        // 즉시 삭제 대신, 무덤에 15초간 보관
-        TOMBSTONES.set(roomId, { roomId, expiredAt: now() + ROOM_TTL_MS, lastSeenAt: now() });
-        delete ROOMS[roomId];
-      }
-    }
-    PEERS.delete(ws); */
   });
 }
 
@@ -258,23 +241,29 @@ function cbConnection(ws, req) {
 process.on('message', (message) => {
   // console.log('message: ', message);
 
-  const type = message.data.type;
+  const type = message.type;
 
-  switch (type) {
-    case 'reqFindWaitingRoom': {
-      let waitRoom = findWaitingRoom();
-      procSend('resFindWaitingRoom', { waitRoom });
-      break;
-    }
-    case 'resFindWaitingRoom': {
-      const remotePid = message.data.pid;
-      let waitRoom = message.data?.waitRoom;
-      // if (!waitRoom) waitRoom = createRoom();
-      // attachToRoom(ws, meta, waitRoom);
-      break;
-    }
-    default: {
-      break;
+  if (type === 'MATCH_FOUND') {
+    const { roomId, peerId, partnerId, role } = message;
+
+    ROOMS.set(roomId, {
+      peerId,
+      partnerId,
+    });
+
+    // 클라이언트에게 "매칭됐다, roomId, 상대 peerId는 이거다" 전달
+    const ws = CLIENTS.get(peerId);
+    if (ws) {
+      PEERS.set(ws, { peerId, roomId });
+      ws.send(
+        JSON.stringify({
+          type: 'paired',
+          roomId,
+          peerId,
+          partnerId,
+          role,
+        }),
+      );
     }
   }
 });
