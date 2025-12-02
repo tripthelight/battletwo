@@ -241,29 +241,32 @@ function cbConnection(ws, req) {
 process.on('message', (message) => {
   // console.log('message: ', message);
 
-  const type = message.type;
+  switch (message.type) {
+    case 'MATCH_FOUND': {
+      const { roomId, peerId, partnerId, role } = message;
 
-  if (type === 'MATCH_FOUND') {
-    const { roomId, peerId, partnerId, role } = message;
+      ROOMS.set(roomId, {
+        peerId,
+        partnerId,
+      });
 
-    ROOMS.set(roomId, {
-      peerId,
-      partnerId,
-    });
-
-    // 클라이언트에게 "매칭됐다, roomId, 상대 peerId는 이거다" 전달
-    const ws = CLIENTS.get(peerId);
-    if (ws) {
-      PEERS.set(ws, { peerId, roomId });
-      ws.send(
-        JSON.stringify({
-          type: 'paired',
-          roomId,
-          peerId,
-          partnerId,
-          role,
-        }),
-      );
+      // 클라이언트에게 "매칭됐다, roomId, 상대 peerId는 이거다" 전달
+      const ws = CLIENTS.get(peerId);
+      if (ws) {
+        PEERS.set(ws, { peerId, roomId });
+        ws.send(
+          JSON.stringify({
+            type: 'paired',
+            roomId,
+            you: { peerId: peerId, role: role },
+            partner: { peerId: partnerId, role: role },
+          }),
+        );
+      }
+      break;
+    }
+    default: {
+      break;
     }
   }
 });

@@ -505,7 +505,17 @@ export function connectSignaling(connected = false, fns) {
         break;
       }
       case 'paired': {
-        if (msg.roomId !== STATE.roomId) return;
+        STATE.roomId = msg.roomId;
+        STATE.peerId = msg.you.peerId;
+        STATE.partnerId = msg.partner.peerId;
+        STATE.role = msg.you.role;
+
+        window.sessionStorage.setItem('roomId', msg.roomId);
+        log(`Paired! me(${STATE.role}) <-> partner(${msg.partner.peerId}/${msg.partner.role})`);
+
+        await startPeerConnection();
+
+        /* if (msg.roomId !== STATE.roomId) return;
         if (msg.you?.peerId === STATE.peerId) {
           STATE.role = msg.you.role;
           STATE.partnerId = msg.partner.peerId;
@@ -515,7 +525,8 @@ export function connectSignaling(connected = false, fns) {
           log(`Paired! me(${STATE.role}) <-> partner(${msg.partner.peerId}/${msg.partner.role})`);
 
           // await startPeerConnection();
-        }
+        } */
+
         break;
       }
       case 'partner-left': {
