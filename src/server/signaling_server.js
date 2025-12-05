@@ -157,7 +157,7 @@ function handleJoin(ws, meta, msg) {
   process.send({
     type: 'signalingServer',
     data: {
-      type: 'JOIN_WAITING',
+      type: 'REGISTER_CLIENT',
       peerId: meta.peerId,
     },
   });
@@ -173,14 +173,14 @@ function cbConnection(ws, req) {
 
   CLIENTS.set(peerId, ws);
 
-  process.send({
+  /* process.send({
     type: 'signalingServer',
     data: {
       type: 'REGISTER_CLIENT',
       peerId,
       workerId: process.pid, // 또는 cluster.worker.id
     },
-  });
+  }); */
 
   ws.on('message', (buf) => {
     let msg;
@@ -199,12 +199,19 @@ function cbConnection(ws, req) {
     }
 
     if (msg?.type === 'signal' && msg?.to) {
-      const room = ROOMS[meta.roomId];
-      if (!room) return;
-      const target = room.clients.get(msg.to);
-      if (target) {
-        safeSend(target, { type: 'signal', from: meta.peerId, data: msg.data });
-      }
+      const meta = PEERS.get(ws);
+      if (!meta) return;
+      const { peerId } = meta;
+
+      process.send({
+        type: 'signalingServer',
+        data: {
+          type: 'DELIVER_SIGNAL',
+          peerId,
+          partnerId: msg.to,
+          sdp: msg.data,
+        },
+      });
       return;
     }
   });
@@ -239,29 +246,49 @@ function cbConnection(ws, req) {
 
 // 다른 프로세스에서 보내온 메시지를 처리
 process.on('message', (message) => {
-  // console.log('message: ', message);
-
   switch (message.type) {
-    case 'MATCH_FOUND': {
-      const { roomId, peerId, partnerId, role } = message;
-
-      ROOMS.set(roomId, {
-        peerId,
-        partnerId,
-      });
-
-      // 클라이언트에게 "매칭됐다, roomId, 상대 peerId는 이거다" 전달
+    case 'ROOM_ASSIGNED': {
+      const { peerId, roomId, role } = message.data;
       const ws = CLIENTS.get(peerId);
       if (ws) {
-        PEERS.set(ws, { peerId, roomId });
+        ws.send(
+          JSON.stringify({
+            type: 'room-assigned',
+            roomId,
+            peerId,
+            role,
+          }),
+        );
+      }
+      break;
+    }
+    case 'PAIRED': {
+      const { peerId, roomId, you, partner } = message.data;
+      const ws = CLIENTS.get(peerId);
+      if (ws) {
+        const meta = PEERS.get(ws);
+        if (!meta) return;
+        meta.roomId = roomId;
         ws.send(
           JSON.stringify({
             type: 'paired',
             roomId,
-            you: { peerId: peerId, role: role },
-            partner: { peerId: partnerId, role: role },
+            you,
+            partner,
           }),
         );
+      }
+      break;
+    }
+    case 'SEND_SIGNAL': {
+      const { peerId, partnerId, sdp } = message.data;
+      const targetWs = CLIENTS.get(partnerId);
+      if (targetWs) {
+        safeSend(targetWs, {
+          type: 'signal',
+          from: peerId,
+          data: sdp,
+        });
       }
       break;
     }

@@ -7,7 +7,30 @@ const numCPUs = os.cpus().length; // 시스템에서 사용할 수 있는 CPU �
 const clientLocation = new Map(); // clientId -> workerId
 const waitingQueue = []; // clientId만 저장 (또는 { clientId, gameType })
 
+const ROOMS = Object.create(null);
+const PEERS = new WeakMap();
+
+const now = () => Date.now();
 const makeRoomId = () => `room-${Math.random().toString(36).slice(2, 10)}`;
+
+function findWaitingRoom() {
+  for (const id in ROOMS) {
+    const room = ROOMS[id];
+    if (room && !room.lockAfterLeave && room.clients.size === 1) {
+      return room;
+    }
+  }
+  return null;
+}
+function createRoom() {
+  const id = makeRoomId();
+  ROOMS[id] = {
+    id,
+    clients: new Map(),
+    createdAt: now(),
+  };
+  return ROOMS[id];
+}
 
 if (cluster.isPrimary) {
   console.log(`Primary process is running. Forking ${numCPUs} workers...`);
@@ -35,14 +58,69 @@ if (cluster.isPrimary) {
         }
       } */
 
-      const { type, peerId } = message.data;
+      const { type } = message.data;
 
       switch (type) {
         case 'REGISTER_CLIENT': {
+          const { peerId } = message.data;
           clientLocation.set(peerId, worker.id);
+          let room = findWaitingRoom();
+          if (!room) room = createRoom();
+
+          room.clients.set(peerId, worker.id);
+
+          const role = room.clients.size === 1 ? 'impolite' : 'polite';
+
+          cluster.workers[worker.id].send({
+            type: 'ROOM_ASSIGNED',
+            data: {
+              peerId,
+              roomId: room.id,
+              role,
+            },
+          });
+
+          if (room.clients.size === 2) {
+            const peers = Array.from(room.clients.keys());
+            const [impolitePeerId, politePeerId] = peers; // 먼저 들어온 순
+            const rolesByPeer = {
+              [impolitePeerId]: 'impolite',
+              [politePeerId]: 'polite',
+            };
+
+            for (const [peerId, workerId] of room.clients) {
+              const partnerId = peerId === impolitePeerId ? politePeerId : impolitePeerId;
+
+              cluster.workers[workerId].send({
+                type: 'PAIRED',
+                data: {
+                  peerId,
+                  roomId: room.id,
+                  you: { peerId: peerId, role: rolesByPeer[peerId] },
+                  partner: { peerId: partnerId, role: rolesByPeer[partnerId] },
+                },
+              });
+            }
+          }
           break;
         }
-        case 'JOIN_WAITING': {
+        case 'DELIVER_SIGNAL': {
+          const { peerId, partnerId, sdp } = message.data;
+          const target = clientLocation.get(partnerId);
+          if (target) {
+            cluster.workers[target].send({
+              type: 'SEND_SIGNAL',
+              data: {
+                peerId,
+                partnerId,
+                sdp,
+              },
+            });
+          }
+          break;
+        }
+        /* case 'JOIN_WAITING': {
+          const { peerId } = message.data;
           waitingQueue.push(peerId);
 
           if (waitingQueue.length >= 2) {
@@ -71,7 +149,7 @@ if (cluster.isPrimary) {
             });
           }
           break;
-        }
+        } */
       }
     }
   });
