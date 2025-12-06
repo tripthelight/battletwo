@@ -25,23 +25,6 @@ server.listen(PORT, HOST, () => {
 
 // ———————————————————————————————————————————————————
 
-function procSend(type, obj) {
-  switch (type) {
-    case 'reqFindWaitingRoom': {
-      process.send({ type: 'signalingServer', data: { type: 'reqFindWaitingRoom', pid: process.pid } });
-      break;
-    }
-    case 'resFindWaitingRoom': {
-      const { waitRoom } = obj;
-      process.send({ type: 'signalingServer', data: { type: 'resFindWaitingRoom', pid: process.pid, waitRoom } });
-      break;
-    }
-    default: {
-      break;
-    }
-  }
-}
-
 const ROOM_TTL_MS = 15_000; // 15초 안에 돌아오면 같은 room 재활용
 const TOMBSTONES = new Map(); // roomId -> { roomId, expiredAt, lastSeenAt }
 
