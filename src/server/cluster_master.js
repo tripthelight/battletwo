@@ -61,7 +61,23 @@ if (cluster.isPrimary) {
       const { type } = message.data;
 
       switch (type) {
-        case 'REGISTER_CLIENT': {
+        case 'FIND_WAITING_ROOM': {
+          for (const id in cluster.workers) {
+            if (cluster.workers.hasOwnProperty(id)) {
+              cluster.workers[id].send({
+                type: 'FIND_WAITING_WORKER_ROOM',
+              }); // 다른 워커에 메시지 전달
+            }
+          }
+          break;
+        }
+        case 'SEND_WAITING_WORKER_ROOM': {
+          const waitRoom = message.data.waitRoom;
+          console.log('waitRoom : ', waitRoom);
+          break;
+        }
+
+        /* case 'REGISTER_CLIENT': {
           const { peerId } = message.data;
           clientLocation.set(peerId, worker.id);
           let room = findWaitingRoom();
@@ -103,8 +119,8 @@ if (cluster.isPrimary) {
             }
           }
           break;
-        }
-        case 'DELIVER_SIGNAL': {
+        } */
+        /* case 'DELIVER_SIGNAL': {
           const { peerId, partnerId, sdp } = message.data;
           const target = clientLocation.get(partnerId);
           if (target) {
@@ -118,7 +134,7 @@ if (cluster.isPrimary) {
             });
           }
           break;
-        }
+        } */
         /* case 'JOIN_WAITING': {
           const { peerId } = message.data;
           waitingQueue.push(peerId);

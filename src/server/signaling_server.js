@@ -45,10 +45,10 @@ function procSend(type, obj) {
 const ROOM_TTL_MS = 15_000; // 15초 안에 돌아오면 같은 room 재활용
 const TOMBSTONES = new Map(); // roomId -> { roomId, expiredAt, lastSeenAt }
 
-// const ROOMS = Object.create(null);
+const ROOMS = Object.create(null);
 const PEERS = new WeakMap();
-const ROOMS = new Map(); // roomId -> { selfId, peerId }
-const CLIENTS = new Map(); // clientId -> ws
+// const ROOMS = new Map(); // roomId -> { selfId, peerId }
+// const CLIENTS = new Map(); // clientId -> ws
 
 const now = () => Date.now();
 const makeRoomId = () => `room-${Math.random().toString(36).slice(2, 10)}`;
@@ -59,6 +59,22 @@ function safeSend(ws, obj) {
   }
 }
 function findWaitingRoom() {
+  process.send({
+    type: 'signalingServer',
+    data: {
+      type: 'FIND_WAITING_ROOM',
+      workerId: process.pid, // 또는 cluster.worker.id
+    },
+  });
+  /* for (const id in ROOMS) {
+    const room = ROOMS[id];
+    if (room && !room.lockAfterLeave && room.clients.size === 1) {
+      return room;
+    }
+  }
+  return null; */
+}
+function findWaitingWorkerRoom() {
   for (const id in ROOMS) {
     const room = ROOMS[id];
     if (room && !room.lockAfterLeave && room.clients.size === 1) {
@@ -75,6 +91,14 @@ function createRoom() {
     createdAt: now(),
   };
   return ROOMS[id];
+}
+function createWorkerRoom() {
+  const id = makeRoomId();
+  ROOMS[id] = {
+    id,
+    clients: new Map(),
+    createdAt: now(),
+  };
 }
 function broadcast(room, obj) {
   for (const [, sock] of room.clients) {
@@ -154,13 +178,15 @@ function handleJoin(ws, meta, msg) {
   // let room = findWaitingRoom();
   // if (!room) room = createRoom();
   // attachToRoom(ws, meta, room);
-  process.send({
-    type: 'signalingServer',
-    data: {
-      type: 'REGISTER_CLIENT',
-      peerId: meta.peerId,
-    },
-  });
+  // process.send({
+  //   type: 'signalingServer',
+  //   data: {
+  //     type: 'REGISTER_CLIENT',
+  //     peerId: meta.peerId,
+  //   },
+  // });
+  createWorkerRoom();
+  findWaitingRoom();
 }
 
 function cbConnection(ws, req) {
@@ -171,7 +197,7 @@ function cbConnection(ws, req) {
   // "바로 배정"하지 않고, 클라의 'join' 메시지를 기다립니다.
   PEERS.set(ws, { peerId, roomId: null });
 
-  CLIENTS.set(peerId, ws);
+  // CLIENTS.set(peerId, ws);
 
   /* process.send({
     type: 'signalingServer',
@@ -199,19 +225,12 @@ function cbConnection(ws, req) {
     }
 
     if (msg?.type === 'signal' && msg?.to) {
-      const meta = PEERS.get(ws);
-      if (!meta) return;
-      const { peerId } = meta;
-
-      process.send({
-        type: 'signalingServer',
-        data: {
-          type: 'DELIVER_SIGNAL',
-          peerId,
-          partnerId: msg.to,
-          sdp: msg.data,
-        },
-      });
+      const room = ROOMS[meta.roomId];
+      if (!room) return;
+      const target = room.clients.get(msg.to);
+      if (target) {
+        safeSend(target, { type: 'signal', from: meta.peerId, data: msg.data });
+      }
       return;
     }
   });
@@ -247,7 +266,17 @@ function cbConnection(ws, req) {
 // 다른 프로세스에서 보내온 메시지를 처리
 process.on('message', (message) => {
   switch (message.type) {
-    case 'ROOM_ASSIGNED': {
+    case 'FIND_WAITING_WORKER_ROOM': {
+      const waitRoom = findWaitingWorkerRoom();
+      process.send({
+        type: 'signalingServer',
+        data: {
+          type: 'SEND_WAITING_WORKER_ROOM',
+          waitRoom,
+        },
+      });
+    }
+    /* case 'ROOM_ASSIGNED': {
       const { peerId, roomId, role } = message.data;
       const ws = CLIENTS.get(peerId);
       if (ws) {
@@ -261,8 +290,8 @@ process.on('message', (message) => {
         );
       }
       break;
-    }
-    case 'PAIRED': {
+    } */
+    /* case 'PAIRED': {
       const { peerId, roomId, you, partner } = message.data;
       const ws = CLIENTS.get(peerId);
       if (ws) {
@@ -279,8 +308,8 @@ process.on('message', (message) => {
         );
       }
       break;
-    }
-    case 'SEND_SIGNAL': {
+    } */
+    /* case 'SEND_SIGNAL': {
       const { peerId, partnerId, sdp } = message.data;
       const targetWs = CLIENTS.get(partnerId);
       if (targetWs) {
@@ -291,7 +320,7 @@ process.on('message', (message) => {
         });
       }
       break;
-    }
+    } */
     default: {
       break;
     }
