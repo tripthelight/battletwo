@@ -74,15 +74,6 @@ function findWaitingRoom() {
   }
   return null; */
 }
-function findWaitingWorkerRoom() {
-  for (const id in ROOMS) {
-    const room = ROOMS[id];
-    if (room && !room.lockAfterLeave && room.clients.size === 1) {
-      return room;
-    }
-  }
-  return null;
-}
 function createRoom() {
   const id = makeRoomId();
   ROOMS[id] = {
@@ -91,6 +82,16 @@ function createRoom() {
     createdAt: now(),
   };
   return ROOMS[id];
+}
+
+function findWaitingWorkerRoom() {
+  for (const id in ROOMS) {
+    const room = ROOMS[id];
+    if (room && !room.lockAfterLeave && room.clients.size === 1) {
+      return room;
+    }
+  }
+  return null;
 }
 function createWorkerRoom() {
   const id = makeRoomId();
@@ -185,8 +186,17 @@ function handleJoin(ws, meta, msg) {
   //     peerId: meta.peerId,
   //   },
   // });
-  createWorkerRoom();
-  findWaitingRoom();
+
+  // const room = createRoom();
+  // room.clients.set(meta.peerId, ws);
+
+  process.send({
+    type: 'signalingServer',
+    data: {
+      type: 'GET_FIND_WAITING_WORKER_ROOM',
+      workerId: process.pid, // 또는 cluster.worker.id
+    },
+  });
 }
 
 function cbConnection(ws, req) {
@@ -266,16 +276,31 @@ function cbConnection(ws, req) {
 // 다른 프로세스에서 보내온 메시지를 처리
 process.on('message', (message) => {
   switch (message.type) {
-    case 'FIND_WAITING_WORKER_ROOM': {
-      const waitRoom = findWaitingWorkerRoom();
+    case 'SET_FIND_WAITING_WORKER_ROOM': {
+      // 내 worker를 순회하며 clients가 1명인 room 있으면 true | false
+      const waitRoomState = () => {
+        for (const id in ROOMS) {
+          const room = ROOMS[id];
+          if (room && !room.lockAfterLeave && room.clients.size === 1) {
+            return true;
+          }
+        }
+        return false;
+      };
+      // cluster에 보내야 할 data : { 대기중 방 여부, process.pid }
       process.send({
         type: 'signalingServer',
         data: {
           type: 'SEND_WAITING_WORKER_ROOM',
-          waitRoom,
+          waitRoom: waitRoomState(),
+          workerId: message.workerId,
         },
       });
     }
+    case 'FIND_WAITING_WORKER_ROOM': {
+      //
+    }
+
     /* case 'ROOM_ASSIGNED': {
       const { peerId, roomId, role } = message.data;
       const ws = CLIENTS.get(peerId);
