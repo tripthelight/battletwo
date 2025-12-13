@@ -75,7 +75,16 @@ if (cluster.isPrimary) {
         }
         case 'SEND_WAITING_WORKER_ROOM': {
           const { waitRoom, workerId } = message.data;
-          if (waitRoom) {
+
+          cluster.workers[workerId].send({
+            type: 'FIND_WAITING_WORKER_ROOM',
+            data: {
+              waitRoom,
+              workerId: worker.id, // workerId: 방이 있다고 응답한 peer가 속해있는 worker.id
+            },
+          });
+
+          /* if (waitRoom) {
             // cluster.workers[workerId]: 처음 room을 찾으려고 요청했던 peer가 속해있는 worker.id
             cluster.workers[workerId].send({
               type: 'FIND_WAITING_WORKER_ROOM',
@@ -83,7 +92,7 @@ if (cluster.isPrimary) {
                 workerId: worker.id, // workerId: 방이 있다고 응답한 peer가 속해있는 worker.id
               },
             });
-          }
+          } */
           break;
         }
 

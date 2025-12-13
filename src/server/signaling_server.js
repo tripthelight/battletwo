@@ -273,6 +273,38 @@ function cbConnection(ws, req) {
   });
 }
 
+function createCollector() {
+  let resolver;
+  const promise = new Promise((res) => (resolver = res));
+  const results = [];
+
+  return {
+    roomCollection(room) {
+      results.push(room);
+      if (results.length === 6) {
+        resolver(results);
+      }
+    },
+    done() {
+      return promise.then((list) => list.some((v) => v));
+    },
+  };
+}
+const collector = createCollector();
+
+// 이후 결과 확인
+collector.done().then((hasTrue) => {
+  console.log('최종 결과:', hasTrue);
+});
+
+function makeCounter() {
+  let num = 0;
+  return function () {
+    return num++;
+  };
+}
+const counter = makeCounter();
+
 // 다른 프로세스에서 보내온 메시지를 처리
 process.on('message', (message) => {
   switch (message.type) {
@@ -296,9 +328,17 @@ process.on('message', (message) => {
           workerId: message.workerId,
         },
       });
+
+      break;
     }
     case 'FIND_WAITING_WORKER_ROOM': {
-      //
+      const { waitRoom, workerId } = message.data;
+
+      console.log(counter());
+
+      // collector.roomCollection(waitRoom);
+
+      break;
     }
 
     /* case 'ROOM_ASSIGNED': {
