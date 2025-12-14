@@ -23,7 +23,7 @@
     "editor.selectionHighlightBorder": "#ff0000"        // 빨간색 테두리
   },
   "[javascript]": {
-    "editor.hover.enabled": false // javascript 파일에서 코드위에 마우스 오버 시 안내팝업 안뜸
+    "editor.hover.enabled": "off" // javascript 파일에서 코드위에 마우스 오버 시 안내팝업 안뜸
   },
   "files.associations": {
     "*.scss": "scss"

@@ -1,5 +1,6 @@
 import cluster from 'cluster';
 import os from 'os';
+import { randomUUID } from 'crypto';
 import Redis from 'ioredis';
 
 const numCPUs = os.cpus().length; // 시스템에서 사용할 수 있는 CPU 코어 수 - 6개
@@ -30,6 +31,56 @@ function createRoom() {
     createdAt: now(),
   };
   return ROOMS[id];
+}
+
+function createWaitRoomQuery({ expectedWorkers, timeoutMs = 800 }) {
+  const requestId = randomUUID();
+
+  let done = false;
+  let resolve;
+  const p = new Promise((res) => (resolve = res));
+
+  const responded = new Set(); // workerId 집계
+  let hasTrue = false;
+
+  const timer = setTimeout(() => {
+    if (done) return;
+    done = true;
+    resolve({ requestId, hasTrue, reason: 'timeout', responded: responded.size });
+  }, timeoutMs);
+
+  return {
+    requestId,
+
+    // 워커 응답 들어올 때마다 호출
+    onResponse({ workerId, waitRoom }) {
+      if (done) return;
+
+      // 워커별 1회만 카운트(중복 응답 방지)
+      if (responded.has(workerId)) return;
+      responded.add(workerId);
+
+      if (waitRoom === true) {
+        hasTrue = true;
+        // true면 조기 종료(원하시면 주석 처리하고 끝까지 모아오 됨)
+        done = true;
+        clearTimeout(timer);
+        resolve({ requestId, hasTrue: true, reason: 'early-true', responded: responded.size });
+        return;
+      }
+
+      // 전부 응답했는데 true가 없으면 종료
+      if (responded.size >= expectedWorkers) {
+        done = true;
+        clearTimeout(timer);
+        resolve({ requestId, hasTrue, reason: 'all-responded', responded: responded.size });
+      }
+    },
+
+    done() {
+      return p;
+    },
+  };
 }
 
 if (cluster.isPrimary) {
