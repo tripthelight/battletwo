@@ -25,30 +25,11 @@ server.listen(PORT, HOST, () => {
 
 // ———————————————————————————————————————————————————
 
-function procSend(type, obj) {
-  switch (type) {
-    case 'reqFindWaitingRoom': {
-      process.send({ type: 'signalingServer', data: { type: 'reqFindWaitingRoom', pid: process.pid } });
-      break;
-    }
-    case 'resFindWaitingRoom': {
-      const { waitRoom } = obj;
-      process.send({ type: 'signalingServer', data: { type: 'resFindWaitingRoom', pid: process.pid, waitRoom } });
-      break;
-    }
-    default: {
-      break;
-    }
-  }
-}
-
 const ROOM_TTL_MS = 15_000; // 15초 안에 돌아오면 같은 room 재활용
 const TOMBSTONES = new Map(); // roomId -> { roomId, expiredAt, lastSeenAt }
 
-// const ROOMS = Object.create(null);
+const ROOMS = Object.create(null);
 const PEERS = new WeakMap();
-const ROOMS = new Map(); // roomId -> { selfId, peerId }
-const CLIENTS = new Map(); // clientId -> ws
 
 const now = () => Date.now();
 const makeRoomId = () => `room-${Math.random().toString(36).slice(2, 10)}`;
@@ -81,13 +62,7 @@ function broadcast(room, obj) {
     safeSend(sock, obj);
   }
 }
-function deleteRoomIfEmpty(roomId) {
-  const room = ROOMS[roomId];
-  if (!room) return;
-  if (room.clients.size === 0) {
-    delete ROOMS[roomId];
-  }
-}
+
 function attachToRoom(ws, meta, room, pairedDataChannel) {
   room.clients.set(meta.peerId, ws);
   meta.roomId = room.id;
@@ -136,31 +111,24 @@ function handleJoin(ws, meta, msg) {
 
   // 1) roomHint가 있고, 그 방이 현재 살아있다면 그 방으로
   // 두 peer가 나가지 않은 상태에서 한 peer가 새로고침하면 새로고침 한 peer는 여기를 탐
-  /* if (requested && ROOMS[requested] && ROOMS[requested].clients.size < 2) {
+  if (requested && ROOMS[requested] && ROOMS[requested].clients.size < 2) {
     attachToRoom(ws, meta, ROOMS[requested]);
     return;
-  } */
+  }
 
   // 2) roomHint가 무덤에 있고(아직 TTL 안 지남) → 방 부활
-  /* if (requested && TOMBSTONES.has(requested)) {
+  if (requested && TOMBSTONES.has(requested)) {
     // 부활
     TOMBSTONES.delete(requested);
     const revivedRoom = createRoomWithId(requested);
     attachToRoom(ws, meta, revivedRoom, true);
     return;
-  } */
+  }
 
   // 3) roomHint가 없거나, 사용할 수 없다면 "일반 매칭"
-  // let room = findWaitingRoom();
-  // if (!room) room = createRoom();
-  // attachToRoom(ws, meta, room);
-  process.send({
-    type: 'signalingServer',
-    data: {
-      type: 'REGISTER_CLIENT',
-      peerId: meta.peerId,
-    },
-  });
+  let room = findWaitingRoom();
+  if (!room) room = createRoom();
+  attachToRoom(ws, meta, room);
 }
 
 function cbConnection(ws, req) {
@@ -170,17 +138,6 @@ function cbConnection(ws, req) {
 
   // "바로 배정"하지 않고, 클라의 'join' 메시지를 기다립니다.
   PEERS.set(ws, { peerId, roomId: null });
-
-  CLIENTS.set(peerId, ws);
-
-  /* process.send({
-    type: 'signalingServer',
-    data: {
-      type: 'REGISTER_CLIENT',
-      peerId,
-      workerId: process.pid, // 또는 cluster.worker.id
-    },
-  }); */
 
   ws.on('message', (buf) => {
     let msg;
@@ -199,19 +156,12 @@ function cbConnection(ws, req) {
     }
 
     if (msg?.type === 'signal' && msg?.to) {
-      const meta = PEERS.get(ws);
-      if (!meta) return;
-      const { peerId } = meta;
-
-      process.send({
-        type: 'signalingServer',
-        data: {
-          type: 'DELIVER_SIGNAL',
-          peerId,
-          partnerId: msg.to,
-          sdp: msg.data,
-        },
-      });
+      const room = ROOMS[meta.roomId];
+      if (!room) return;
+      const target = room.clients.get(msg.to);
+      if (target) {
+        safeSend(target, { type: 'signal', from: meta.peerId, data: msg.data });
+      }
       return;
     }
   });
@@ -243,59 +193,5 @@ function cbConnection(ws, req) {
     PEERS.delete(ws);
   });
 }
-
-// 다른 프로세스에서 보내온 메시지를 처리
-process.on('message', (message) => {
-  switch (message.type) {
-    case 'ROOM_ASSIGNED': {
-      const { peerId, roomId, role } = message.data;
-      const ws = CLIENTS.get(peerId);
-      if (ws) {
-        ws.send(
-          JSON.stringify({
-            type: 'room-assigned',
-            roomId,
-            peerId,
-            role,
-          }),
-        );
-      }
-      break;
-    }
-    case 'PAIRED': {
-      const { peerId, roomId, you, partner } = message.data;
-      const ws = CLIENTS.get(peerId);
-      if (ws) {
-        const meta = PEERS.get(ws);
-        if (!meta) return;
-        meta.roomId = roomId;
-        ws.send(
-          JSON.stringify({
-            type: 'paired',
-            roomId,
-            you,
-            partner,
-          }),
-        );
-      }
-      break;
-    }
-    case 'SEND_SIGNAL': {
-      const { peerId, partnerId, sdp } = message.data;
-      const targetWs = CLIENTS.get(partnerId);
-      if (targetWs) {
-        safeSend(targetWs, {
-          type: 'signal',
-          from: peerId,
-          data: sdp,
-        });
-      }
-      break;
-    }
-    default: {
-      break;
-    }
-  }
-});
 
 wss.on('connection', cbConnection);
