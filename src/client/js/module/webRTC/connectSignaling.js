@@ -1,4 +1,6 @@
 import { getDeviceType } from '@/client/js/module/isPC';
+import insertStorageDate from '@/client/js/functions/insertStorageDate';
+import cardVerification from '@/client/js/views/game/indianPocker/fns/common/cardVerification';
 
 const ICE_SERVERS = [
   // 공개 STUN 예시(실서비스는 TURN 필요)
@@ -20,9 +22,16 @@ function gameId() {
   return (crypto.randomUUID && crypto.randomUUID()) || Math.random().toString(36).slice(2) + Date.now().toString(36);
 }
 
+export const KEY = { keypair: null };
+export function getKey() {
+  return KEY.keypair;
+}
+
 const FNS = {
   deliverToGame: null,
   handleEnvelope: null,
+  startGame: null,
+  gameName: null,
 };
 
 const STATE = {
@@ -39,7 +48,6 @@ const STATE = {
   ignoreOffer: false,
   isSettingRemoteAnswerPending: false,
 };
-
 function safeWsSend(obj) {
   if (STATE.ws && STATE.ws.readyState === WebSocket.OPEN) {
     STATE.ws.send(JSON.stringify(obj));
@@ -51,6 +59,49 @@ function sendSignal(toPeerId, data) {
 }
 function isPolite() {
   return STATE.role === 'polite';
+}
+
+const READY = {
+  myHelloSent: false,
+  peerHelloSeen: false,
+  connectedAt: 0,
+  waiter: null, // Promise resolver
+};
+export function setReady() {
+  READY.peerHelloSeen = true;
+}
+function isBrowserConnected() {
+  return STATE.pc && STATE.pc.connectionState === 'connected';
+}
+function isDcOpen() {
+  return STATE.dc && STATE.dc.readyState === 'open';
+}
+// 연결 완료를 기다리는 Promise (타임아웃 포함)
+function waitConnected(timeoutMs = 5000) {
+  // 이미 만족했으면 즉시 resolve
+  if (isBrowserConnected() && isDcOpen() && READY.myHelloSent && READY.peerHelloSeen) {
+    return Promise.resolve(true);
+  }
+  return new Promise((resolve) => {
+    READY.waiter = resolve;
+    // 타임아웃 안전장치
+    setTimeout(() => {
+      if (READY.waiter) {
+        READY.waiter = null;
+        resolve(false);
+      }
+    }, timeoutMs);
+  });
+}
+export function maybeResolveReady() {
+  if (!READY.waiter) return;
+  if (isBrowserConnected() && isDcOpen() && READY.myHelloSent && READY.peerHelloSeen) {
+    READY.connectedAt = Date.now();
+    const r = READY.waiter;
+    READY.waiter = null;
+    r(true);
+    log('✅ Peer READY: both HELLO exchanged & DC open.');
+  }
 }
 
 /**
@@ -312,6 +363,11 @@ function attachDataChannelHandlers(dc, tag) {
 
     resetReliableLayer();
     // startPingLoop();
+
+    // 앱 레벨 핸드셰이크 시작
+    READY.myHelloSent = true;
+    // sendEnvelope({ t: 'HELLO', payload: { from: STATE.peerId } });
+    sendGame({ type: 'ROUND/START', from: STATE.peerId }, { reliable: false });
   };
   dc.onmessage = (ev) => {
     let msg;
@@ -354,9 +410,16 @@ function cleanupPeerConnection(logIt = true) {
     STATE.pc = null;
   }
 
+  KEY.keypair = null;
+
   STATE.makingOffer = false;
   STATE.ignoreOffer = false;
   STATE.isSettingRemoteAnswerPending = false;
+
+  READY.myHelloSent = false;
+  READY.peerHelloSeen = false;
+  READY.connectedAt = 0;
+  READY.waiter = null;
 
   if (logIt) log('pc clean up');
 }
@@ -366,9 +429,16 @@ async function startPeerConnection() {
   const pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
   STATE.pc = pc;
 
+  KEY.keypair = null;
+
   STATE.makingOffer = false;
   STATE.ignoreOffer = false;
   STATE.isSettingRemoteAnswerPending = false;
+
+  READY.myHelloSent = false;
+  READY.peerHelloSeen = false;
+  READY.connectedAt = 0;
+  READY.waiter = null;
 
   if (STATE.role === 'impolite') {
     STATE.dc = pc.createDataChannel(gameId());
@@ -457,6 +527,8 @@ export function connectSignaling(connected = false, fns) {
   if (fns && fns.deliverToGame && fns.handleEnvelope) {
     FNS.deliverToGame = fns.deliverToGame;
     FNS.handleEnvelope = fns.handleEnvelope;
+    FNS.startGame = fns.startGame;
+    FNS.gameName = fns.gameName;
   }
 
   if (STATE.ws && STATE.ws.readyState === WebSocket.OPEN) return;
@@ -481,7 +553,6 @@ export function connectSignaling(connected = false, fns) {
       roomHint,
     });
   });
-
   ws.addEventListener('message', async (ev) => {
     let msg;
     try {
@@ -509,12 +580,26 @@ export function connectSignaling(connected = false, fns) {
         if (msg.you?.peerId === STATE.peerId) {
           STATE.role = msg.you.role;
           STATE.partnerId = msg.partner.peerId;
+          KEY.keypair = msg.keypair;
 
           // ★ 안전 위해 여기서도 다시 저장(경합 대비)
           window.sessionStorage.setItem('roomId', msg.roomId);
           log(`Paired! me(${STATE.role}) <-> partner(${msg.partner.peerId}/${msg.partner.role})`);
 
           await startPeerConnection();
+
+          waitConnected(7000).then((ok) => {
+            if (!ok) {
+              console.warn('Peer not fully ready in time (will keep recovering).');
+              return;
+            }
+            // 여기서부터 "진짜 연결 완료" 로 가정하고 게임 시작/동기화
+            safeWsSend({
+              type: 'requestStorage',
+              gameName: FNS.gameName,
+            });
+            FNS.startGame();
+          });
         }
 
         break;
@@ -531,6 +616,11 @@ export function connectSignaling(connected = false, fns) {
         }
         await handleRemoveSignal(msg);
         break;
+      }
+      case 'responseStorage': {
+        if (msg?.storageData) {
+          await insertStorageDate(msg.storageData);
+        }
       }
     }
   });

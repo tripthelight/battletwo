@@ -1,3 +1,5 @@
+import { setReady, maybeResolveReady } from '@/client/js/module/webRTC/connectSignaling';
+
 // -------------------- [핵심] 게임 이벤트 라우터 --------------------
 // 컨벤션: payload = { type: '네임스페이스/이벤트', ... } 형태 권장
 // 예) 'ROUND/START', 'ACTION/RAISE', 'STATE/SNAPSHOT', 'UI/EMOTE' 등
@@ -9,6 +11,8 @@ const Handlers = {
     // payload: { type:'ROUND/START', seed:number, ante:number }
     // TODO: 라운드 시작 UI/상태 초기화
     console.log('[ROUND/START]', payload, meta);
+    setReady();
+    maybeResolveReady();
   },
   'ROUND/END': (payload, meta) => {
     console.log('[ROUND/END]', payload, meta);
@@ -29,7 +33,7 @@ const Handlers = {
     // payload: { amount:number }
     console.log('[ACTION/RAISE]', payload, meta);
   },
-  'ACTION/FOLD' : (payload, meta) => {
+  'ACTION/FOLD': (payload, meta) => {
     console.log('[ACTION/FOLD]', payload, meta);
   },
 

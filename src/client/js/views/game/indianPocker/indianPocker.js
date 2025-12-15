@@ -4,7 +4,6 @@ import reload from '@/client/js/module/reload';
 import rtcPeer from '@/client/js/webRTC/rtcPeer';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import makeCard from '@/client/js/views/game/indianPocker/fns/common/makeCard/makeCard';
-import findCharCode from '@/client/js/functions/findCharCode';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import getCookies from '@/client/js/module/cookies/getCookies';
 import delCookies from '@/client/js/module/cookies/delCookies';
@@ -23,8 +22,20 @@ import { connectSignaling } from '@/client/js/module/webRTC/connectSignaling';
 import deliverToGame from '@/client/js/module/webRTC/reliable/indianPoker/deliverToGame';
 import handleEnvelope from '@/client/js/module/webRTC/reliable/indianPoker/handleEnvelope';
 
-function init() {
-  connectSignaling(false, { deliverToGame, handleEnvelope });
+const GAME_NAME = 'indianPocker';
+
+async function startGame() {
+  console.log('=========== START GAME =========== ');
+
+  await makeCard();
+
+  LOADING_EVENT.hide();
+}
+
+async function init() {
+  LOADING_EVENT.show();
+
+  connectSignaling(false, { deliverToGame, handleEnvelope, startGame, gameName: GAME_NAME });
 }
 
 window.addEventListener('pageshow', init);

@@ -33,6 +33,13 @@ const PEERS = new WeakMap();
 
 const now = () => Date.now();
 const makeRoomId = () => `room-${Math.random().toString(36).slice(2, 10)}`;
+const keypairCode = (key) =>
+  key
+    .replace(/\s+/g, '') // 띄어쓰기 제거
+    .replace(/[^a-zA-Z0-9가-힣]/g, '') // 특수문자 제거
+    .split('') // 문자열 → 배열
+    .reverse() // 배열 역순
+    .join(''); // 배열 → 문자열
 
 function safeSend(ws, obj) {
   if (ws.readyState === ws.OPEN) {
@@ -53,7 +60,7 @@ function createRoom() {
   ROOMS[id] = {
     id,
     clients: new Map(),
-    createdAt: now(),
+    keypair: keypairCode(id),
   };
   return ROOMS[id];
 }
@@ -80,6 +87,7 @@ function attachToRoom(ws, meta, room, pairedDataChannel) {
       safeSend(sock, {
         type: 'paired',
         roomId: room.id,
+        keypair: room.keypair,
         you: { peerId: id, role },
         partner: { peerId: partnerId, role: role === 'impolite' ? 'polite' : 'impolite' },
       });
@@ -94,7 +102,7 @@ function createRoomWithId(roomId) {
   ROOMS[roomId] = {
     id: roomId,
     clients: new Map(),
-    createdAt: now(),
+    keypair: keypairCode(roomId),
     paired: true,
     lockAfterLeave: true,
   };
@@ -139,7 +147,7 @@ function cbConnection(ws, req) {
   // "바로 배정"하지 않고, 클라의 'join' 메시지를 기다립니다.
   PEERS.set(ws, { peerId, roomId: null });
 
-  ws.on('message', (buf) => {
+  ws.on('message', async (buf) => {
     let msg;
     try {
       msg = JSON.parse(buf.toString());
@@ -163,6 +171,21 @@ function cbConnection(ws, req) {
         safeSend(target, { type: 'signal', from: meta.peerId, data: msg.data });
       }
       return;
+    }
+
+    if (msg?.type === 'requestStorage' && msg?.gameName) {
+      const room = ROOMS[meta.roomId];
+      if (!room) return;
+      const target = room.clients.get(meta.peerId);
+
+      if (target) {
+        // 각 게임에 필요한 암호화된 sessionStorage 생성
+        const STORAGE_DATA = await MAKE_STORAGE.findGame(msg.gameName, room.keypair);
+        safeSend(target, {
+          type: 'responseStorage',
+          storageData: STORAGE_DATA,
+        });
+      }
     }
   });
 
