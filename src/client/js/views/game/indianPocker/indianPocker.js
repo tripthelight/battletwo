@@ -22,19 +22,20 @@ import { connectSignaling } from '@/client/js/module/webRTC/connectSignaling';
 import deliverToGame from '@/client/js/module/webRTC/reliable/indianPoker/deliverToGame';
 import handleEnvelope from '@/client/js/module/webRTC/reliable/indianPoker/handleEnvelope';
 
+LOADING_EVENT.show();
 const GAME_NAME = 'indianPocker';
 
 async function startGame() {
-  console.log('=========== START GAME =========== ');
+  // =========== START GAME ===========
 
   await makeCard();
+
+  indianPockerGameState.choiceCard();
 
   LOADING_EVENT.hide();
 }
 
 async function init() {
-  LOADING_EVENT.show();
-
   connectSignaling(false, { deliverToGame, handleEnvelope, startGame, gameName: GAME_NAME });
 }
 

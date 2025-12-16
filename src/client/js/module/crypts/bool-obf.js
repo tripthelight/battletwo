@@ -1,4 +1,5 @@
-import { encrypt } from '@/client/js/webRTC/rtcConn.js';
+// import { encrypt } from '@/client/js/webRTC/rtcConn.js';
+import { KEY } from '@/client/js/module/webRTC/connectSignaling';
 import textDE from '@/client/js/module/crypts/textDE';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 
@@ -9,14 +10,14 @@ import throwObj from '@/client/js/module/errorHandler/throwObj';
  * 동일 입력("true"/"false")이어도 nonce가 매번 달라져 결과 문자열이 바뀜
  */
 
-const ALPH = "abcdefghijklmnopqrstuvwxyz0123456789";
-const RADIX = BigInt(ALPH.length);           // 36n
-const MAC_MASK_20 = (1 << 20) - 1;           // 0xFFFFF
-const MAC_MASK_20N = 0xFFFFFn;               // 20비트 BigInt 마스크
+const ALPH = 'abcdefghijklmnopqrstuvwxyz0123456789';
+const RADIX = BigInt(ALPH.length); // 36n
+const MAC_MASK_20 = (1 << 20) - 1; // 0xFFFFF
+const MAC_MASK_20N = 0xfffffn; // 20비트 BigInt 마스크
 
 // base36 고정 8자 인코딩 (왼쪽 패딩)
 function b36encFixed8(n) {
-  let s = "";
+  let s = '';
   let b = BigInt(n);
   do {
     s = ALPH[Number(b % RADIX)] + s;
@@ -31,7 +32,7 @@ function b36dec(s) {
   let b = 0n;
   for (const c of s) {
     const i = ALPH.indexOf(c);
-    if (i < 0) throw throwObj('errorComn', "invalid alphabet");
+    if (i < 0) throw throwObj('errorComn', 'invalid alphabet');
     b = b * RADIX + BigInt(i);
   }
   return b;
@@ -44,18 +45,19 @@ function rand20() {
 
 // encrypt.keypair → 32비트 키 유도
 function deriveKey32FromEncryptKeypair() {
-  const k = encrypt?.keypair;
-  if (k == null) throw throwObj('errorComn', "keypair not found");
+  // const k = encrypt?.keypair;
+  const k = KEY?.keypair;
+  if (k == null) throw throwObj('errorComn', 'keypair not found');
 
   /** bytes: Uint8Array */
   let bytes;
-  if (typeof k === "string") {
+  if (typeof k === 'string') {
     bytes = new TextEncoder().encode(k);
   } else if (k instanceof Uint8Array) {
     bytes = k;
   } else if (k?.buffer instanceof ArrayBuffer) {
     bytes = new Uint8Array(k.buffer);
-  } else if (typeof k === "object") {
+  } else if (typeof k === 'object') {
     // publicKey / privateKey 존재 시 문자열화
     const guess = k.publicKey ?? k.privateKey ?? JSON.stringify(k);
     bytes = new TextEncoder().encode(String(guess));
@@ -64,7 +66,7 @@ function deriveKey32FromEncryptKeypair() {
   }
 
   // 바이트 전체에 FNV-1a 32비트 적용
-  let h = 0x811c9dc5 >>> 0;          // 2166136261
+  let h = 0x811c9dc5 >>> 0; // 2166136261
   for (let i = 0; i < bytes.length; i++) {
     h ^= bytes[i];
     h = Math.imul(h, 0x01000193) >>> 0; // 16777619
@@ -78,10 +80,14 @@ function fnv1a32WithKey(u32) {
   // offset_basis ^ K32 로 키 결합
   let h = (0x811c9dc5 ^ K32) >>> 0;
   // 리틀엔디언으로 4바이트 순차 처리
-  h ^= (u32       ) & 0xff; h = Math.imul(h, 0x01000193) >>> 0;
-  h ^= (u32 >>>  8) & 0xff; h = Math.imul(h, 0x01000193) >>> 0;
-  h ^= (u32 >>> 16) & 0xff; h = Math.imul(h, 0x01000193) >>> 0;
-  h ^= (u32 >>> 24) & 0xff; h = Math.imul(h, 0x01000193) >>> 0;
+  h ^= u32 & 0xff;
+  h = Math.imul(h, 0x01000193) >>> 0;
+  h ^= (u32 >>> 8) & 0xff;
+  h = Math.imul(h, 0x01000193) >>> 0;
+  h ^= (u32 >>> 16) & 0xff;
+  h = Math.imul(h, 0x01000193) >>> 0;
+  h ^= (u32 >>> 24) & 0xff;
+  h = Math.imul(h, 0x01000193) >>> 0;
   return h >>> 0;
 }
 
@@ -96,10 +102,11 @@ export const X = {
     if (
       text !== textDE([116, 114, 117, 101]) && // "true"
       text !== textDE([102, 97, 108, 115, 101]) // "false"
-    ) throw throwObj('errorComn', "arg must be true or false");
+    )
+      throw throwObj('errorComn', 'arg must be true or false');
 
-    const bit   = text === textDE([116, 114, 117, 101]) ? 1 : 0;  // 1비트
-    const nonce = rand20();                 // 20비트
+    const bit = text === textDE([116, 114, 117, 101]) ? 1 : 0; // 1비트
+    const nonce = rand20(); // 20비트
 
     // MAC용 입력값: (nonce<<1)|bit  → u32
     const u = ((nonce << 1) | bit) >>> 0;
@@ -108,10 +115,7 @@ export const X = {
     const mac = (fnv1a32WithKey(u) & MAC_MASK_20) >>> 0;
 
     // 41비트 페이로드: nonce(20) | bit(1) | mac(20)
-    const payload =
-      (BigInt(nonce) << 21n) |
-      (BigInt(bit)   << 20n) |
-      BigInt(mac);
+    const payload = (BigInt(nonce) << 21n) | (BigInt(bit) << 20n) | BigInt(mac);
 
     return b36encFixed8(payload);
   },
@@ -121,21 +125,21 @@ export const X = {
    * @returns {boolean}
    */
   dec(s) {
-    if (typeof s !== "string" || s.length !== 8) throw throwObj('errorComn', "invalid token length");
+    if (typeof s !== 'string' || s.length !== 8) throw throwObj('errorComn', 'invalid token length');
 
     const v = b36dec(s);
 
-    const mac   = Number( v        & MAC_MASK_20N );
-    const bit   = Number((v >> 20n) & 1n);
+    const mac = Number(v & MAC_MASK_20N);
+    const bit = Number((v >> 20n) & 1n);
     const nonce = Number((v >> 21n) & ((1n << 20n) - 1n));
 
-    const u  = ((nonce << 1) | bit) >>> 0;
+    const u = ((nonce << 1) | bit) >>> 0;
     const m2 = (fnv1a32WithKey(u) & MAC_MASK_20) >>> 0;
 
-    if (m2 !== mac) throw throwObj('errorComn', "invalid token/mac");
+    if (m2 !== mac) throw throwObj('errorComn', 'invalid token/mac');
 
     return !!bit;
-  }
+  },
 };
 
 // 기본 내보내기는 난독화/경량 버전을 사용하세요(별도 파일 권장).

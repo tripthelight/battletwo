@@ -23,9 +23,20 @@ function gameId() {
 }
 
 export const KEY = { keypair: null };
-export function getKey() {
-  return KEY.keypair;
+
+class KeyTask {
+  #keypair; // private 필드
+  constructor() {
+    this.#keypair = null;
+  }
+  get() {
+    return this.#keypair;
+  }
+  set(_k) {
+    this.#keypair = _k;
+  }
 }
+export const K = new KeyTask();
 
 const FNS = {
   deliverToGame: null,
@@ -410,7 +421,7 @@ function cleanupPeerConnection(logIt = true) {
     STATE.pc = null;
   }
 
-  KEY.keypair = null;
+  // KEY.keypair = null;
 
   STATE.makingOffer = false;
   STATE.ignoreOffer = false;
@@ -429,7 +440,7 @@ async function startPeerConnection() {
   const pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
   STATE.pc = pc;
 
-  KEY.keypair = null;
+  // KEY.keypair = null;
 
   STATE.makingOffer = false;
   STATE.ignoreOffer = false;
@@ -588,7 +599,7 @@ export function connectSignaling(connected = false, fns) {
 
           await startPeerConnection();
 
-          waitConnected(7000).then((ok) => {
+          waitConnected(7000).then(async (ok) => {
             if (!ok) {
               console.warn('Peer not fully ready in time (will keep recovering).');
               return;
@@ -598,7 +609,7 @@ export function connectSignaling(connected = false, fns) {
               type: 'requestStorage',
               gameName: FNS.gameName,
             });
-            FNS.startGame();
+            // await FNS.startGame();
           });
         }
 
@@ -620,6 +631,7 @@ export function connectSignaling(connected = false, fns) {
       case 'responseStorage': {
         if (msg?.storageData) {
           await insertStorageDate(msg.storageData);
+          await FNS.startGame();
         }
       }
     }

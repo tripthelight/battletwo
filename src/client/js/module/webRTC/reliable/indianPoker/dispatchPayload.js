@@ -1,4 +1,5 @@
 import { setReady, maybeResolveReady } from '@/client/js/module/webRTC/connectSignaling';
+import { RESPONSE_HANDLERS } from '@/client/js/network/indianPocker/responseHandlers';
 
 // -------------------- [핵심] 게임 이벤트 라우터 --------------------
 // 컨벤션: payload = { type: '네임스페이스/이벤트', ... } 형태 권장
@@ -93,7 +94,8 @@ export function dispatchPayload(payload, meta) {
     console.warn('Unknown payload (no type):', payload, meta);
     return;
   }
-  const handler = Handlers[payload.type];
+  // const handler = Handlers[payload.type];
+  const handler = payload.type === 'ROUND/START' ? Handlers[payload.type] : RESPONSE_HANDLERS[payload.type];
   if (!handler) {
     console.warn('No handler for type:', payload.type, payload, meta);
     return;

@@ -1,6 +1,6 @@
 import CRC32 from 'crc-32';
 // import { encrypt } from '@/client/js/webRTC/rtcConn'
-import { getKey } from '@/client/js/module/webRTC/connectSignaling';
+import { KEY } from '@/client/js/module/webRTC/connectSignaling';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export default (_key) => {
@@ -9,7 +9,7 @@ export default (_key) => {
     // if (!encrypt || (encrypt && encrypt.keypair === '')) {
     //   throw 'encrypt error';
     // };
-    const keypair = getKey();
+    const keypair = KEY.keypair;
     if (!keypair) {
       throw 'encrypt error';
     }

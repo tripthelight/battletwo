@@ -87,7 +87,10 @@ function attachToRoom(ws, meta, room, pairedDataChannel) {
       safeSend(sock, {
         type: 'paired',
         roomId: room.id,
-        keypair: room.keypair,
+        keypair: room.keypair
+          .replace(/\s+/g, '')
+          .replace(/[^a-zA-Z0-9가-힣]/g, '')
+          .slice(-10),
         you: { peerId: id, role },
         partner: { peerId: partnerId, role: role === 'impolite' ? 'polite' : 'impolite' },
       });
