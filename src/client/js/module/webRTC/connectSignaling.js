@@ -22,21 +22,9 @@ function gameId() {
   return (crypto.randomUUID && crypto.randomUUID()) || Math.random().toString(36).slice(2) + Date.now().toString(36);
 }
 
-export const KEY = { keypair: null };
-
-class KeyTask {
-  #keypair; // private 필드
-  constructor() {
-    this.#keypair = null;
-  }
-  get() {
-    return this.#keypair;
-  }
-  set(_k) {
-    this.#keypair = _k;
-  }
-}
-export const K = new KeyTask();
+export const KEY = {
+  keypair: null,
+};
 
 const FNS = {
   deliverToGame: null,

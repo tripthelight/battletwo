@@ -30,6 +30,7 @@ export default async (msgData) => {
       // console.log('compair ==========> ', compair);
       storageMethod('s', 'SET_ITEM', encryptKey, compair[encryptKey]);
     }
+    // console.log('SECRET_KEY : ', window.sessionStorage.getItem(encryptKey));
   } catch (error) {
     throw error;
   }

@@ -22,9 +22,11 @@ export default () => {
   const encryptKey8 = findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]); // basicBettingState
 
   storageMethod('s', 'SET_ITEM', encryptKey4, encryptVal4); // betState, basicBetting
-  storageMethod('s', 'SET_ITEM',
+  storageMethod(
+    's',
+    'SET_ITEM',
     encryptKey3, // extFirstBet
-    X.enc(decodeTF(textDE([106, 111, 98, 116, 97]))) // "jobta" : false
+    X.enc(decodeTF(textDE([106, 111, 98, 116, 97]))), // "jobta" : false
   );
 
   // storageMethod('s', 'REMOVE_ITEM', encryptKey7); // drewReady
@@ -34,31 +36,39 @@ export default () => {
   // 무료 회원 - 첫 진입 시, 기본 배팅 20 코인
   // 유료 회원 - 첫 진입 시, 기본 배팅 금액 DB 조회 필요
   if (encryptVal1 === '' && encryptVal2 === '') {
-    storageMethod('s', 'SET_ITEM',
+    storageMethod(
+      's',
+      'SET_ITEM',
       encryptKey1,
-      enc(encryptNumOfStr(textDE([101, 119, 114, 111]))) // 'ewro' : 20
+      enc(encryptNumOfStr(textDE([101, 119, 114, 111]))), // 'ewro' : 20
     );
-    storageMethod('s', 'SET_ITEM',
+    storageMethod(
+      's',
+      'SET_ITEM',
       encryptKey2,
-      enc(encryptNumOfStr(textDE([119, 119, 98, 111]))) // 'wwbo' : 20
+      enc(encryptNumOfStr(textDE([119, 119, 98, 111]))), // 'wwbo' : 20
     );
-  };
+  }
 
   // coinsPlayerBet === 1
   if (
     encryptVal5 !== '' &&
     dec(encryptVal5) === encryptNumOfStr(textDE([119, 101, 101, 114])) // weer : 0001
   ) {
-    storageMethod('s', 'SET_ITEM',
+    storageMethod(
+      's',
+      'SET_ITEM',
       encryptKey8, // basicBettingState
-      X.enc(decodeTF(textDE([99, 109, 104, 117]))) // "cmhu" : true
+      X.enc(decodeTF(textDE([99, 109, 104, 117]))), // "cmhu" : true
     );
   } else {
-    storageMethod('s', 'SET_ITEM',
+    storageMethod(
+      's',
+      'SET_ITEM',
       encryptKey8, // basicBettingState
-      X.enc(decodeTF(textDE([100, 113, 118, 105, 117]))) // "dqviu" : false
+      X.enc(decodeTF(textDE([100, 113, 118, 105, 117]))), // "dqviu" : false
     );
-  };
+  }
 
   removeElement();
 };

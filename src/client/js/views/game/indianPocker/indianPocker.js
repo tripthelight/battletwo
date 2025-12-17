@@ -18,6 +18,11 @@ import _t from '@/client/js/module/crypts/textDE';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import { GRS } from '@/client/js/module/crypts/generateRandomString';
+
+import initNickName from '@/client/js/functions/initNickName';
+import findNickname from '@/client/js/functions/findNickname';
+import waitPeer from '@/client/js/functions/waitPeer';
+
 import { connectSignaling } from '@/client/js/module/webRTC/connectSignaling';
 import deliverToGame from '@/client/js/module/webRTC/reliable/indianPoker/deliverToGame';
 import handleEnvelope from '@/client/js/module/webRTC/reliable/indianPoker/handleEnvelope';
@@ -28,6 +33,8 @@ const GAME_NAME = 'indianPocker';
 async function startGame() {
   // =========== START GAME ===========
 
+  waitPeer(2);
+
   await makeCard();
 
   indianPockerGameState.choiceCard();
@@ -36,6 +43,9 @@ async function startGame() {
 }
 
 async function init() {
+  await initNickName();
+  waitPeer(1, findNickname('localPlayer'));
+
   connectSignaling(false, { deliverToGame, handleEnvelope, startGame, gameName: GAME_NAME });
 }
 

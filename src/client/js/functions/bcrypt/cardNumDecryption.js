@@ -8,18 +8,16 @@ export default function (_num) {
     const arrNumbs = selectCompairNumbers();
     if (!arrNumbs || (arrNumbs && arrNumbs.length === 0)) {
       throw throwObj('cardNum', 'cardNum length 0 - 1');
-    };
+    }
 
-    const decrypted = arrNumbs.find(n => bcrypt.compareSync(n.toString(), _num));
+    const decrypted = arrNumbs.find((n) => bcrypt.compareSync(n.toString(), _num));
     if (decrypted === null || decrypted === undefined) {
       throw throwObj('cardNum', 'card num encrypt error.');
-    };
+    }
+
     const cardNum = findCardNum(decrypted);
     return cardNum;
   } catch (error) {
-    throw throwObj(
-      error?.errCase ?? 'cardNum',
-      error?.message ?? 'card number not found'
-    );
-  };
-};
+    throw throwObj(error?.errCase ?? 'cardNum', error?.message ?? 'card number not found');
+  }
+}

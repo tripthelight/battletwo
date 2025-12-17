@@ -25,14 +25,16 @@ export default (_data) => {
 
         sessionInit();
       } else if (encryptVal1 !== encryptVal2) {
-        storageMethod('s', 'SET_ITEM',
+        storageMethod(
+          's',
+          'SET_ITEM',
           findCharCode([72, 81, 73, 79, 83, 70, 78, 80, 75, 88]), // basicBetReady
-          X.enc(decodeTF(textDE([100, 111, 98, 101, 97]))) // "dobea" : false
+          X.enc(decodeTF(textDE([100, 111, 98, 101, 97]))), // "dobea" : false
         );
       }
     } else {
       // TODO: error 처리
-    };
+    }
   }).catch((error) => {
     console.log('enterBasicBetResult() function error.');
     errorManager(error, true);
