@@ -8,6 +8,8 @@ export default async (msgData) => {
     // const { storageData, keypair } = msgData;
     const { storageData } = msgData;
 
+    console.log('storageData : ', storageData);
+
     // 내가 sessionStorage key를 암호화 할 때 사용할 keypair가 포함되어 있음
     // console.log('storageData >>>>>>>>>>>>> ', storageData);
     // 상대 peer의 AES secret key

@@ -123,3 +123,5 @@ battletwo
 - TODO: 
   - gameState basicBet 새로고침 시 sessionStorage key value 검증 수정 중
   - requestCompairBasicBet.js 의 검증 로직을 코드 해석이 어렵도록 복잡도를 올려야 함
+- CARD_NUMS를 서로 암호화 시켜서 주고 받으려 하다가, 브라우저에 SECRET_KEY 공개 문제로 CARD_NUMS를 서버에서 내려주는 방식으로 바꾸다가 새로고침 수정에 진입한 듯...
+  - 내려주는 CARD_NUMS와 sessionStorage의 key, value는 두 PEER가 서로 달라야 함
