@@ -7,6 +7,8 @@ import encryptCardNumber from '@/client/js/views/game/indianPocker/fns/common/ma
 import CryptoJS from 'crypto-js';
 import randomArray from '@/client/js/views/game/indianPocker/fns/common/randomArray';
 import drawPlayerCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/drawPlayerCard';
+import isArrayLikeString from '@/client/js/module/isArrayLikeString';
+import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
 
 export default async (data) => {
   const { step, list, storeageKey } = data;
@@ -18,17 +20,48 @@ export default async (data) => {
     return errorManagement({ errCase: 'sessionStorageLoss', message: 'cardNum 복호화시 필요한 secret key 세션 없음 1' });
   }
 
+  const encryptKey1 = findCharCode([77, 68, 79, 88, 73, 86, 69, 70, 65, 80]); // cardNum
+  const decryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  if (decryptVal1 === null) {
+    // 상대 카드 받았는데, 내 카드리스트(cardNum) 없음 - 내 반칙
+    return errorManagement({ errCase: 'sessionStorageLoss', message: '상대 카드 받았는데, 내 카드리스트(cardNum) 없음' });
+  }
+  if (!isArrayLikeString(decryptVal1)) {
+    // 상대 카드 받았는데, 내 카드리스트(cardNum)가 문자열 배열이 아님 - 내 반칙
+    return errorManagement({ errCase: 'sessionStorageLoss', message: '상대 카드 받았는데, 내 카드리스트(cardNum)가 문자열 배열이 아님' });
+  }
+  if (!isArrayLikeString(list)) {
+    // 상대 카드 받았는데, 상대 카드리스트가 문자열 배열이 아님 - 상대 반칙
+    request('opponentFouls', { subject: 'remote', message: '내 카드리스트가 문자열 배열이 아님' });
+    return errorManagement({ errCase: 'foul', message: '상대 카드 받았는데, 상대 카드리스트가 문자열 배열이 아님' });
+  }
+
   // randomNumCard ----------------------------------------
   if (step === 'randomNumCard') {
-    const bytes = CryptoJS.AES.decrypt(list, secretKeyVal);
-    const decrypted = bytes.toString(CryptoJS.enc.Utf8);
+    // console.log('상대의 기본배팅을 받고 ------------------ ');
+    // console.log('step :::::::::: ', step);
+    // console.log('list :::::::::: ', list);
+    // console.log('storeageKey ::: ', storeageKey);
+
+    // STEP 1 : 상대의 카드 리스트(list) 개수와 내 카드 개수가 같은지 비교
+    if (JSON.parse(decryptVal1).length !== JSON.parse(list).length) {
+      // 상대 카드 받았는데, 내 카드리스트와 상대 카드리스트 개수 다름
+      return errorManagement({ errCase: 'sessionStorageLoss', message: '상대 카드 받았는데, 내 카드리스트와 상대 카드리스트 개수 다름' });
+    }
+
+    // STEP 2 : battleCardNum 생성
+
+    // STEP 3 : 상대에게 보냄
+
+    /* const bytes = CryptoJS.AES.decrypt(list, secretKeyVal);
+    const decrypted = bytes.toString(CryptoJS.enc.Utf8); */
 
     /**
      * 복호화 실패할 경우 결과는 빈 string
       - 상대가 storage value를 바꿨다거나..
      */
 
-    if (decrypted === '') {
+    /* if (decrypted === '') {
       request('opponentFouls', { subject: 'remote', message: '상대 cardNum이 없음' });
       return errorManagement({ errCase: 'foul', message: 'req : cardNum 복호화시 필요한 secret key 세션 없음' });
     }
@@ -84,7 +117,7 @@ export default async (data) => {
         local: storeageKey,
         remote: encryptLocalKey,
       },
-    });
+    }); */
   }
 
   // nextStep ----------------------------------------

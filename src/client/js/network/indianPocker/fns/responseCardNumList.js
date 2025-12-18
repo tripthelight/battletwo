@@ -28,17 +28,15 @@ export default async (data) => {
 
   // randomNumCard ----------------------------------------
   if (step === 'randomNumCard') {
-    storageMethod('s', 'SET_ITEM', storeageKey.local, encryptCardNum.local);
+    /* storageMethod('s', 'SET_ITEM', storeageKey.local, encryptCardNum.local);
 
     const bytes = CryptoJS.AES.decrypt(encryptCardNum.remote, secretKeyVal);
-    const decrypted = bytes.toString(CryptoJS.enc.Utf8);
-
+    const decrypted = bytes.toString(CryptoJS.enc.Utf8); */
     /**
      * 복호화 실패할 경우 결과는 빈 string
       - 상대가 storage value를 바꿨다거나..
      */
-
-    if (decrypted === '') {
+    /* if (decrypted === '') {
       request('opponentFouls', { subject: 'remote', message: '상대 cardNum이 없음' });
       return errorManagement({ errCase: 'foul', message: 'res : cardNum 복호화시 필요한 secret key 세션 없음' });
     }
@@ -83,7 +81,7 @@ export default async (data) => {
       step: 'nextStep',
       list: encryptRemoveCardNum,
       storeageKey: storeageKey.remote,
-    });
+    }); */
   }
 
   // nextStep ----------------------------------------

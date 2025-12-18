@@ -1,5 +1,6 @@
 import { getDeviceType } from '@/client/js/module/isPC';
 import insertStorageDate from '@/client/js/functions/insertStorageDate';
+import encryptionStore from '@/client/store/encryptionStore';
 import cardVerification from '@/client/js/views/game/indianPocker/fns/common/cardVerification';
 
 const ICE_SERVERS = [
@@ -569,6 +570,9 @@ export function connectSignaling(connected = false, fns) {
         STATE.roomId = msg.roomId;
         STATE.peerId = msg.peerId;
         STATE.role = msg.role;
+        KEY.keypair = msg.keypair;
+        console.log('KEY.keypair : ', KEY.keypair);
+
         // ★ 세션에 저장(재접속시 hint로 사용)
         window.sessionStorage.setItem('roomId', STATE.roomId);
         log(`Assigned room=${STATE.roomId}, me=${STATE.peerId}, role=${STATE.role}`);
@@ -579,7 +583,6 @@ export function connectSignaling(connected = false, fns) {
         if (msg.you?.peerId === STATE.peerId) {
           STATE.role = msg.you.role;
           STATE.partnerId = msg.partner.peerId;
-          KEY.keypair = msg.keypair;
 
           // ★ 안전 위해 여기서도 다시 저장(경합 대비)
           window.sessionStorage.setItem('roomId', msg.roomId);
@@ -593,6 +596,11 @@ export function connectSignaling(connected = false, fns) {
               return;
             }
             // 여기서부터 "진짜 연결 완료" 로 가정하고 게임 시작/동기화
+            const compair = encryptionStore.getState().encryptionState.compair;
+            // 새로고침 당한 경우, compair 데이터 있으므로 requestStorage 호출 불필요
+            if (compair && compair.constructor === Object && Object.keys(compair).length > 0) return;
+
+            // 처음 진입이거나 새로고침 일 경우 signalinServer에 compair 데이터 호출
             safeWsSend({
               type: 'requestStorage',
               gameName: FNS.gameName,

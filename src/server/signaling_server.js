@@ -27,6 +27,7 @@ server.listen(PORT, HOST, () => {
 
 const ROOM_TTL_MS = 15_000; // 15초 안에 돌아오면 같은 room 재활용
 const TOMBSTONES = new Map(); // roomId -> { roomId, expiredAt, lastSeenAt }
+const KEYPAIR = new Map(); // roomId -> { keypair }
 
 const ROOMS = Object.create(null);
 const PEERS = new WeakMap();
@@ -64,6 +65,16 @@ function createRoom() {
   };
   return ROOMS[id];
 }
+function createRoomWithId(roomId) {
+  ROOMS[roomId] = {
+    id: roomId,
+    clients: new Map(),
+    keypair: keypairCode(roomId),
+    paired: true,
+    lockAfterLeave: true,
+  };
+  return ROOMS[roomId];
+}
 function broadcast(room, obj) {
   for (const [, sock] of room.clients) {
     safeSend(sock, obj);
@@ -74,9 +85,23 @@ function attachToRoom(ws, meta, room, pairedDataChannel) {
   room.clients.set(meta.peerId, ws);
   meta.roomId = room.id;
 
+  if (!meta.keypair) {
+    meta.keypair = randomUUID();
+  }
+
   // 역할 부여
   const role = room.clients.size === 1 ? 'impolite' : 'polite';
-  safeSend(ws, { type: 'room-assigned', roomId: room.id, peerId: meta.peerId, role, pairedDataChannel });
+  safeSend(ws, {
+    type: 'room-assigned',
+    roomId: room.id,
+    peerId: meta.peerId,
+    role,
+    pairedDataChannel,
+    keypair: meta.keypair
+      .replace(/\s+/g, '') // 1. 띄어쓰기 제거
+      .replace(/[^a-zA-Z0-9가-힣]/g, '') // 2. 특수문자 제거
+      .slice(-10), // 3. 맨 뒤 10자리));,
+  });
 
   if (room.clients.size === 2) {
     const peers = Array.from(room.clients.keys());
@@ -87,10 +112,6 @@ function attachToRoom(ws, meta, room, pairedDataChannel) {
       safeSend(sock, {
         type: 'paired',
         roomId: room.id,
-        keypair: room.keypair
-          .replace(/\s+/g, '')
-          .replace(/[^a-zA-Z0-9가-힣]/g, '')
-          .slice(-10),
         you: { peerId: id, role },
         partner: { peerId: partnerId, role: role === 'impolite' ? 'polite' : 'impolite' },
       });
@@ -100,16 +121,6 @@ function attachToRoom(ws, meta, room, pairedDataChannel) {
       delete room['lockAfterLeave'];
     }
   }
-}
-function createRoomWithId(roomId) {
-  ROOMS[roomId] = {
-    id: roomId,
-    clients: new Map(),
-    keypair: keypairCode(roomId),
-    paired: true,
-    lockAfterLeave: true,
-  };
-  return ROOMS[roomId];
 }
 function handleJoin(ws, meta, msg) {
   // msg: { type:'join', roomHint?: string }
@@ -123,18 +134,45 @@ function handleJoin(ws, meta, msg) {
   // 1) roomHint가 있고, 그 방이 현재 살아있다면 그 방으로
   // 두 peer가 나가지 않은 상태에서 한 peer가 새로고침하면 새로고침 한 peer는 여기를 탐
   if (requested && ROOMS[requested] && ROOMS[requested].clients.size < 2) {
+    if (KEYPAIR.has(requested)) {
+      meta.keypair = KEYPAIR.get(requested);
+      KEYPAIR.delete(requested);
+    }
+
     attachToRoom(ws, meta, ROOMS[requested]);
     return;
   }
 
-  // 2) roomHint가 무덤에 있고(아직 TTL 안 지남) → 방 부활
+  // 2) roomHint가 무덤에 있고(아직 TTL 안 지남) → 둘 다 나가서 ROOMS에서 방 삭제되었지만 → 방 부활
   if (requested && TOMBSTONES.has(requested)) {
     // 부활
     TOMBSTONES.delete(requested);
     const revivedRoom = createRoomWithId(requested);
+
+    if (KEYPAIR.has(requested)) {
+      meta.keypair = KEYPAIR.get(requested);
+      KEYPAIR.delete(requested);
+    }
+
     attachToRoom(ws, meta, revivedRoom, true);
     return;
   }
+
+  /* // 쓰레기 KEYPAIR 제거
+  for (const roomId of KEYPAIR.keys()) {
+    if (!(roomId in ROOMS)) {
+      KEYPAIR.delete(roomId);
+    }
+  }
+  console.log('KEYPAIR handleJoin : ', KEYPAIR);
+
+  // 쓰레기 TOMBSTONES 제거
+  for (const roomId of TOMBSTONES.keys()) {
+    if (!(roomId in ROOMS)) {
+      TOMBSTONES.delete(roomId);
+    }
+  }
+  console.log('TOMBSTONES handleJoin : ', TOMBSTONES); */
 
   // 3) roomHint가 없거나, 사용할 수 없다면 "일반 매칭"
   let room = findWaitingRoom();
@@ -148,7 +186,7 @@ function cbConnection(ws, req) {
   const peerId = randomUUID();
 
   // "바로 배정"하지 않고, 클라의 'join' 메시지를 기다립니다.
-  PEERS.set(ws, { peerId, roomId: null });
+  PEERS.set(ws, { peerId, roomId: null, keypair: null });
 
   ws.on('message', async (buf) => {
     let msg;
@@ -179,12 +217,12 @@ function cbConnection(ws, req) {
     if (msg?.type === 'requestStorage' && msg?.gameName) {
       const room = ROOMS[meta.roomId];
       if (!room) return;
-      const target = room.clients.get(meta.peerId);
+      const localPeer = room.clients.get(meta.peerId);
 
-      if (target) {
+      if (localPeer) {
         // 각 게임에 필요한 암호화된 sessionStorage 생성
-        const STORAGE_DATA = await MAKE_STORAGE.findGame(msg.gameName, room.keypair);
-        safeSend(target, {
+        const STORAGE_DATA = await MAKE_STORAGE.findGame(msg.gameName, meta.keypair);
+        safeSend(localPeer, {
           type: 'responseStorage',
           storageData: STORAGE_DATA,
         });
@@ -195,7 +233,7 @@ function cbConnection(ws, req) {
   ws.on('close', () => {
     const meta = PEERS.get(ws);
     if (!meta) return;
-    const { peerId, roomId } = meta;
+    const { peerId, roomId, keypair } = meta;
     const room = ROOMS[roomId];
 
     if (room) {
@@ -204,11 +242,15 @@ function cbConnection(ws, req) {
         room.clients.delete(peerId);
         broadcast(room, { type: 'partner-left', roomId, peerId });
         room.lockAfterLeave = true;
+
+        KEYPAIR.set(roomId, keypair); // 최초 진입시 할당받은 keypair 저장
       } else if (room.clients.size === 1) {
         if (room.paired) {
           // 이전에 연결된 적 있음
           room.lockAfterLeave = true;
           TOMBSTONES.set(roomId, { roomId, expiredAt: now() + ROOM_TTL_MS, lastSeenAt: now() });
+
+          KEYPAIR.set(roomId, keypair); // 최초 진입시 할당받은 keypair 저장
         } else {
           // 내가 처음 진입하고 아직 상대 peer 없음
         }
@@ -217,6 +259,22 @@ function cbConnection(ws, req) {
       }
     }
     PEERS.delete(ws);
+
+    /* // 쓰레기 KEYPAIR 제거
+    for (const roomId of KEYPAIR.keys()) {
+      if (!(roomId in ROOMS)) {
+        KEYPAIR.delete(roomId);
+      }
+    }
+    console.log('KEYPAIR close : ', KEYPAIR);
+
+    // 쓰레기 TOMBSTONES 제거
+    for (const roomId of TOMBSTONES.keys()) {
+      if (!(roomId in ROOMS)) {
+        TOMBSTONES.delete(roomId);
+      }
+    }
+    console.log('TOMBSTONES close : ', TOMBSTONES); */
   });
 }
 

@@ -1,6 +1,7 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
+import isArrayLikeString from '@/client/js/module/isArrayLikeString';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import randomArray from '@/client/js/views/game/indianPocker/fns/common/randomArray';
 import sessionActiveCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/sessionActiveCard';
@@ -26,14 +27,18 @@ export default () => {
 
   // const CARD_NUMS = JSON.parse(decryptVal);
   // if (!CARD_NUMS || CARD_NUMS.length <= 0) return errorManagement({ errCase: 'errorComn', message: 'cardNum 세션이 없거나 length가 없습니다.' });
-  if (
-    decryptVal2 === null ||
-    (
-      decryptVal2 !== null && decryptVal2 === ''
-    ) ||
-    JSON.parse(decryptVal2) <= 0
-  ) {
-    return errorManagement({ errCase: 'sessionStorageLoss', message: 'cardNum 세션이 없거나 length가 없습니다.' });
+
+  if (decryptVal2 === null || (decryptVal2 !== null && decryptVal2 === '')) {
+    // 내 카드 리스트(cardNum) 없음
+    return errorManagement({ errCase: 'sessionStorageLoss', message: '내 카드 리스트(cardNum) 없음' });
+  }
+  if (!isArrayLikeString(decryptVal2)) {
+    // 내 카드 리스트(cardNum)가 배열 형식의 문자열이 아님
+    return errorManagement({ errCase: 'sessionStorageLoss', message: '내 카드 리스트(cardNum)가 배열 형식의 문자열이 아님' });
+  }
+  if (JSON.parse(decryptVal2) <= 0) {
+    // 내 카드 리스트(cardNum)가 0개임
+    return errorManagement({ errCase: 'sessionStorageLoss', message: '내 카드 리스트(cardNum)가 0개임' });
   }
 
   // 상대 peer에게 내 cardNum을 보내

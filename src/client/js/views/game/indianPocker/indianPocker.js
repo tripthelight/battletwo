@@ -11,6 +11,7 @@ import throwObj from '@/client/js/module/errorHandler/throwObj';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import waitRefresh from '@/client/js/module/reload/waitRefresh';
+import findCharCode from '@/client/js/functions/findCharCode';
 
 import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
@@ -40,6 +41,9 @@ async function startGame() {
   indianPockerGameState.choiceCard();
 
   LOADING_EVENT.hide();
+
+  const encryptKey5 = findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]); // battleCardNum
+  console.log('battleCardNum : ', encryptKey5);
 }
 
 async function init() {
