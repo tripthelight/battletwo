@@ -39,6 +39,7 @@ const STATE = {
   roomId: null,
   peerId: null,
   role: null,
+  initRole: null,
   partnerId: null,
   pc: null,
   dc: null,
@@ -339,8 +340,8 @@ function reloadConnectCheck() {
  * BROWSER RELOAD EVENT
  */
 function leavePage() {
-  if (STATE.roomId) {
-    window.sessionStorage.setItem('roomId', STATE.roomId);
+  if (STATE.roomId && STATE.initRole) {
+    window.sessionStorage.setItem('roomId', `${STATE.roomId}-${STATE.initRole === 'impolite' ? 'a' : 'b'}`);
   }
 }
 if (getDeviceType() === 'PC') {
@@ -410,8 +411,6 @@ function cleanupPeerConnection(logIt = true) {
     STATE.pc = null;
   }
 
-  // KEY.keypair = null;
-
   STATE.makingOffer = false;
   STATE.ignoreOffer = false;
   STATE.isSettingRemoteAnswerPending = false;
@@ -428,8 +427,6 @@ async function startPeerConnection() {
 
   const pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
   STATE.pc = pc;
-
-  // KEY.keypair = null;
 
   STATE.makingOffer = false;
   STATE.ignoreOffer = false;
@@ -547,10 +544,29 @@ export function connectSignaling(connected = false, fns) {
     }
 
     // ★ 이전 roomId가 있으면 힌트로 보낸다.
-    const roomHint = window.sessionStorage.getItem('roomId') || null;
+    // const roomHint = window.sessionStorage.getItem('roomId') || null;
+    const roomHint = () => {
+      const roomId = window.sessionStorage.getItem('roomId');
+      if (roomId) {
+        if (roomId.length === 15) {
+          if (roomId.endsWith('a')) {
+            // 최초 할당받은 role = impolite
+            STATE.initRole = 'impolite';
+          } else if (roomId.endsWith('b')) {
+            // 최초 할당받은 role = polite
+            STATE.initRole = 'polite';
+          }
+          return roomId.slice(0, -2);
+        } else if (roomId.length === 13) {
+          return roomId;
+        }
+      }
+      return null;
+    };
+
     safeWsSend({
       type: 'join',
-      roomHint,
+      roomHint: roomHint(),
     });
   });
   ws.addEventListener('message', async (ev) => {
@@ -570,11 +586,13 @@ export function connectSignaling(connected = false, fns) {
         STATE.roomId = msg.roomId;
         STATE.peerId = msg.peerId;
         STATE.role = msg.role;
-        KEY.keypair = msg.keypair;
-        console.log('KEY.keypair : ', KEY.keypair);
+        // KEY.keypair = msg.keypair;
+        // console.log('KEY.keypair : ', KEY.keypair);
 
         // ★ 세션에 저장(재접속시 hint로 사용)
-        window.sessionStorage.setItem('roomId', STATE.roomId);
+        // if (window.sessionStorage.getItem('roomId') === null) {
+        //   window.sessionStorage.setItem('roomId', STATE.roomId);
+        // }
         log(`Assigned room=${STATE.roomId}, me=${STATE.peerId}, role=${STATE.role}`);
         break;
       }
@@ -585,7 +603,11 @@ export function connectSignaling(connected = false, fns) {
           STATE.partnerId = msg.partner.peerId;
 
           // ★ 안전 위해 여기서도 다시 저장(경합 대비)
-          window.sessionStorage.setItem('roomId', msg.roomId);
+          if (window.sessionStorage.getItem('roomId') === null && STATE.initRole === null) {
+            // 최초 연결 시
+            STATE.initRole = STATE.role;
+            window.sessionStorage.setItem('roomId', `${msg.roomId}-${STATE.role === 'impolite' ? 'a' : 'b'}`);
+          }
           log(`Paired! me(${STATE.role}) <-> partner(${msg.partner.peerId}/${msg.partner.role})`);
 
           await startPeerConnection();
@@ -595,6 +617,9 @@ export function connectSignaling(connected = false, fns) {
               console.warn('Peer not fully ready in time (will keep recovering).');
               return;
             }
+
+            console.log('최초 할당 role : ', STATE.initRole);
+
             // 여기서부터 "진짜 연결 완료" 로 가정하고 게임 시작/동기화
             const compair = encryptionStore.getState().encryptionState.compair;
             // 새로고침 당한 경우, compair 데이터 있으므로 requestStorage 호출 불필요
@@ -604,6 +629,7 @@ export function connectSignaling(connected = false, fns) {
             safeWsSend({
               type: 'requestStorage',
               gameName: FNS.gameName,
+              initRole: STATE.initRole,
             });
             // await FNS.startGame();
           });
@@ -625,10 +651,17 @@ export function connectSignaling(connected = false, fns) {
         break;
       }
       case 'responseStorage': {
-        if (msg?.storageData) {
+        if (msg?.storageData && msg?.keypair) {
+          KEY.keypair = msg.keypair;
+          console.log('KEY.keypair : ', KEY.keypair);
+
           await insertStorageDate(msg.storageData);
           await FNS.startGame();
         }
+        break;
+      }
+      default: {
+        break;
       }
     }
   });

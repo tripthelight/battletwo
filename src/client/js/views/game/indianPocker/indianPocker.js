@@ -41,9 +41,6 @@ async function startGame() {
   indianPockerGameState.choiceCard();
 
   LOADING_EVENT.hide();
-
-  const encryptKey5 = findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]); // battleCardNum
-  console.log('battleCardNum : ', encryptKey5);
 }
 
 async function init() {
