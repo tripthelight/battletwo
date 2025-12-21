@@ -28,12 +28,27 @@ import { connectSignaling } from '@/client/js/module/webRTC/connectSignaling';
 import deliverToGame from '@/client/js/module/webRTC/reliable/indianPoker/deliverToGame';
 import handleEnvelope from '@/client/js/module/webRTC/reliable/indianPoker/handleEnvelope';
 
+// TEST: bcrypt test /////////////////////////////////////////
+import bcrypt from 'bcryptjs';
+
+// 내 keypair로 암호화한, 상대가 가지고 있는 cardNum 리스트
+const arr = [8, 6, 2, 10, 7, 9, 3, 1, 4, 5];
+// cardNum 리스트 중 하나
+const str = arr[0];
+// 이걸 상대가 암호화
+const encrypt = bcrypt.hashSync(str.toString(), 3);
+console.log('encrypt : ', encrypt);
+// 이걸 상대가 복호화 -> 복호화한 cardNum 중 하나를 내가 받아서 내 keypair로 복호화 후 숫자 확인 -> 내 sessionStorage에는 받은 cardNum 중 하나를 내 keypair로 bcrypt 암호화 해서 저장
+const decrypt = arr.find((n) => bcrypt.compareSync(n.toString(), encrypt));
+console.log('decrypt : ', decrypt);
+// 상대와 나 모두 카드가 0장 일 때 -> 내 keypair를 signalingServer에 보내고 -> cardNum 리스트를 만들어서, 같은 room에 있는 상대 peer에게 전송
+// ///////////////////////////////////////////////////////////
+
 LOADING_EVENT.show();
 const GAME_NAME = 'indianPocker';
 
 async function startGame() {
   // =========== START GAME ===========
-
   waitPeer(2);
 
   await makeCard();
@@ -50,7 +65,14 @@ async function init() {
   connectSignaling(false, { deliverToGame, handleEnvelope, startGame, gameName: GAME_NAME });
 }
 
-window.addEventListener('pageshow', init);
+window.addEventListener('pageshow', () => {
+  try {
+    init();
+  } catch (error) {
+    console.log('error indianPocker.js >>>>>>>>>>>> ');
+    errorManager(error, false);
+  }
+});
 
 /*
 // onMounted

@@ -4,10 +4,10 @@ import shuffleArray from '@/client/js/views/game/indianPocker/fns/common/makeCar
 
 export default async () => {
   try {
-    const arrNumbs = selectCompairNumbers(); // 1 ~ 40
+    const arrNumbs = selectCompairNumbers(); // 1 ~ 40 - signalingServer에서 암호화한 carcNum key 리스트
     if (!arrNumbs || (arrNumbs && arrNumbs.length === 0)) {
       throw { message: 'cardNum length failed.' };
-    };
+    }
 
     // 카드 배열을 1 ~ 10까지의 숫자로 섞어서 2세트로 지정
     const shuffleNums = shuffleArray([...arrNumbs, ...arrNumbs]);
@@ -18,5 +18,5 @@ export default async () => {
     });
   } catch (error) {
     throw { message: error.message ?? 'encrypt card number failed.' };
-  };
+  }
 };

@@ -25,14 +25,17 @@ export default async (msgData) => {
     encryptionStore.dispatch(updateCompair({ compair: Object.assign({}, storageData) }));
     // encryptionStore.dispatch(updateKeypair({ keypair: keypair }));
 
-    const encryptKey = findCharCode([83, 88, 73, 69, 85, 68, 66, 76, 80, 78]); // SECRET_KEY
+    /* const encryptKey = findCharCode([83, 88, 73, 69, 85, 68, 66, 76, 80, 78]); // SECRET_KEY
     const encryptVal = window.sessionStorage.getItem(encryptKey);
     if (encryptVal === null) {
       const compair = encryptionStore.getState().encryptionState.compair;
-      // console.log('compair ==========> ', compair);
       storageMethod('s', 'SET_ITEM', encryptKey, compair[encryptKey]);
     }
-    console.log('SECRET_KEY : ', window.sessionStorage.getItem(encryptKey));
+    console.log('SECRET_KEY : ', window.sessionStorage.getItem(encryptKey));*/
+
+    const encryptKey = findCharCode([83, 88, 73, 69, 85, 68, 66, 76, 80, 78]);
+    const compair = encryptionStore.getState().encryptionState.compair;
+    console.log('SECRET_KEY : ', compair[encryptKey]);
   } catch (error) {
     throw error;
   }
