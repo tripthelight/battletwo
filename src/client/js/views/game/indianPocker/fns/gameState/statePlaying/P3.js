@@ -10,7 +10,7 @@ export default (data) => {
       // if (!CARD_NUM) return;
       // const CARD_NUM_ARR = JSON.parse(window.sessionStorage.cardNum);
       // sessionStorage cardNum key 찾기
-      // const encryptKey = findCharCode([77, 68, 79, 88, 73, 86, 69, 70, 65, 80]); // cardNum
+      // const encryptKey = findCharCode([80, 76, 72, 71, 86, 73, 69, 66, 78, 81]); // cardNum
       // const decryptVal = window.sessionStorage.getItem(encryptKey);
       // const CARD_NUM_ARR = JSON.parse(decryptVal);
       if (!CARD_NUM_ARR || CARD_NUM_ARR.length < 1) return reject(new Error('cardNum세션을 못받음'));

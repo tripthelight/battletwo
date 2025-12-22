@@ -214,6 +214,35 @@ nextStep을 실행해
 
 
 
+한 peer가 public key와 private key를 가짐
+public key는 두 peer가 공유
+private key는 각자 소유
+
+public key로 두 peer 모두 복호화 가능한 공유 카드숫자리스트(1~10)가 있고,
+private key는 혼자만 복호화 가능한 공유 카드숫자리스트(1~10)
+
+
+
+
+
+
+
+
+
+SVG는 코드로 그려야되
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

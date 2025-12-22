@@ -2,7 +2,7 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import _t from '@/client/js/module/crypts/textDE';
-import {GRS} from '@/client/js/module/crypts/generateRandomString';
+import { GRS } from '@/client/js/module/crypts/generateRandomString';
 import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import storageMethod from '@/client/js/module/storage/storageMethod';
@@ -154,7 +154,7 @@ export const GET_ROUND_END = {
     const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
     if (encryptVal3 === null) {
       return errorManagement({ errCase: 'errorComn', message: 'error - getRoundEnd.js - !BATTLE_CARD_NUM' });
-    };
+    }
     const decryptVal3 = dec(encryptVal3);
 
     const cardNum = {
@@ -182,25 +182,31 @@ export const GET_ROUND_END = {
 
       const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
       const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
-      const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
-      const encryptVal2 = booleanCheck([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]);  // betUserFirst
+      const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
+      const encryptVal2 = booleanCheck([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
 
       // storageMethod('s', 'SET_ITEM', 'betUser', window.sessionStorage.betUserFirst);
       storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal2);
 
       // storageMethod('s', 'SET_ITEM', 'drewState', true);
-      storageMethod('s', 'SET_ITEM',
+      storageMethod(
+        's',
+        'SET_ITEM',
         encryptKey2, // drewState
-        X.enc(decodeTF(_t([115, 102, 114, 97]))) // "sfra" : true
+        X.enc(decodeTF(_t([115, 102, 114, 97]))), // "sfra" : true
       );
 
-      storageMethod('s', 'SET_ITEM',
+      storageMethod(
+        's',
+        'SET_ITEM',
         findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]), // roundEnd
-        X.enc(decodeTF(_t([106, 103, 118, 116, 97]))) // "jgvta" : false
+        X.enc(decodeTF(_t([106, 103, 118, 116, 97]))), // "jgvta" : false
       );
-      storageMethod('s', 'SET_ITEM',
+      storageMethod(
+        's',
+        'SET_ITEM',
         findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
-        X.enc(decodeTF(_t([120, 111, 118, 116, 97]))) // "xovta" : false
+        X.enc(decodeTF(_t([120, 111, 118, 116, 97]))), // "xovta" : false
       );
     } else {
       console.log('error - getRoundEnd.js - cardNumCompare !result');
@@ -216,9 +222,9 @@ export const GET_ROUND_END = {
     const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
     const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
     const encryptKey1 = findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]); // roundEnd
-    const encryptKey2 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
+    const encryptKey2 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
     const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
-    const encryptKey3 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]);  // coinsEnemy
+    const encryptKey3 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
     const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
     const encryptKey4 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer
     const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
@@ -233,7 +239,8 @@ export const GET_ROUND_END = {
 
     // const BET_USER = window.sessionStorage.betUser;
     // if (!BET_USER) {
-    if (encryptVal2 === null) { // betUser key null
+    if (encryptVal2 === null) {
+      // betUser key null
       console.log('error - getRoundEnd.js - !BET_USER');
       errorManagement({ errCase: 'errorComn' });
     }
@@ -277,7 +284,7 @@ export const GET_ROUND_END = {
       errorManagement({ errCase: 'errorComn' });
     }
     */
-    const insertBet = enc(encryptNumOfStr(GRS([_t([119]), _t([119])],parseInt(_t([50]))))); // ex) "ee" : 0
+    const insertBet = enc(encryptNumOfStr(GRS([_t([119]), _t([119])], parseInt(_t([50]))))); // ex) "ee" : 0
     const PNUM = Number(COINS_PLAYER_BET);
     const ENUM = Number(COINS_ENEMY_BET);
     const RESULT = Number(PNUM) + Number(ENUM);
@@ -293,9 +300,11 @@ export const GET_ROUND_END = {
     storageMethod('s', 'SET_ITEM', encryptKey8, insertBet); // coinsEnemyExtBet
 
     // 새로고침 을 위해 roundEnd seeeion 추가
-    storageMethod('s', 'SET_ITEM',
+    storageMethod(
+      's',
+      'SET_ITEM',
       encryptKey1, // roundEnd
-      X.enc(decodeTF(_t([99, 109, 114, 97]))) // "cmra" : true
+      X.enc(decodeTF(_t([99, 109, 114, 97]))), // "cmra" : true
     );
     switch (_result) {
       case 'win':
@@ -397,7 +406,7 @@ export const GET_ROUND_END = {
 
       // if (window.sessionStorage.cardNum && JSON.parse(window.sessionStorage.cardNum).length > 0) {
       // sessionStorage cardNum key 찾기
-      const encryptKey = findCharCode([77, 68, 79, 88, 73, 86, 69, 70, 65, 80]); // cardNum
+      const encryptKey = findCharCode([80, 76, 72, 71, 86, 73, 69, 66, 78, 81]); // cardNum
       const decryptVal = window.sessionStorage.getItem(encryptKey);
       // if (decryptVal !== null && JSON.parse(decryptVal).length > 0) {
       if (decryptVal === null) {
@@ -504,9 +513,11 @@ export const GET_ROUND_END = {
     storageMethod('s', 'SET_ITEM', 'betCoinPos', []);
 
     // storageMethod('s', 'SET_ITEM', 'basicBettingState', false);
-    storageMethod('s', 'SET_ITEM',
+    storageMethod(
+      's',
+      'SET_ITEM',
       findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]), // basicBettingState
-      X.enc(decodeTF(_t([100, 111, 98, 105, 110]))) // "dobin" : false
+      X.enc(decodeTF(_t([100, 111, 98, 105, 110]))), // "dobin" : false
     );
     // storageMethod('s', 'SET_ITEM', 'betState', 'basicBetting');
     const encryptKey3 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState

@@ -2,10 +2,12 @@ import CRC32 from 'crc-32';
 import CryptoJS from 'crypto-js';
 
 // indianPocker 안의 모든 value에 uniqueCodeByTime() 값 붙이기
-export default (obj, keypair) => {
+export default (obj, keypair, role) => {
   const cryptoException = (str) => ['SXIEUDBLPN'].includes(str); // AES secret key일 경우 hash 생성 안함
-  // TNUFGJXDCM: CARD_NUMS | OQTDZWUGXS: COIN_NUMS
-  const numsException = (str) => ['TNUFGJXDCM', 'OQTDZWUGXS'].includes(str); // NUMS의 v는 shuffle
+  // TNUFGJXDCM: PUBLIC_CARD_NUMS | PLHGVIEBNQ: PRIVATE_CARD_NUMS
+  const numsException = (str) => ['TNUFGJXDCM', 'PLHGVIEBNQ'].includes(str); // NUMS의 v는 shuffle
+  const numsExceptionPublic = (str) => ['TNUFGJXDCM'].includes(str); // public key 암호화
+  const numsExceptionPrivate = (str) => ['PLHGVIEBNQ'].includes(str); // private key 암호화
 
   const result = {};
 
@@ -15,7 +17,7 @@ export default (obj, keypair) => {
 
     // k 처리
     if (entry.k) {
-      const concatK = entry.k + keypair;
+      const concatK = entry.k + (role === 'impolite' ? keypair.private.impolite : keypair.private.polite);
       newEntry.k = (CRC32.str(concatK) >>> 0).toString(16); // 양수로 변환
     }
 
@@ -24,7 +26,7 @@ export default (obj, keypair) => {
       if (cryptoException(entry.k)) {
         newEntry.v = entry.v;
       } else {
-        const concatV = entry.v + keypair;
+        const concatV = entry.v + (role === 'impolite' ? keypair.private.impolite : keypair.private.polite);
         newEntry.v = (CRC32.str(concatV) >>> 0).toString(16); // 양수로 변환
       }
     } else if (typeof entry.v === 'object') {
@@ -40,13 +42,20 @@ export default (obj, keypair) => {
         // 3. 섞인 배열을 객체로 다시 변환
         const newNumsObj = Object.fromEntries(numsShuffled);
 
-        for (const innerKey in newNumsObj) {
-          const concatInner = entry.v[innerKey] + keypair;
-          nested[innerKey] = (CRC32.str(concatInner) >>> 0).toString(16); // 양수로 변환
+        if (numsExceptionPublic(entry.k)) {
+          for (const innerKey in newNumsObj) {
+            const concatInner = entry.v[innerKey] + keypair.public;
+            nested[innerKey] = (CRC32.str(concatInner) >>> 0).toString(16); // 양수로 변환
+          }
+        } else if (numsExceptionPrivate(entry.k)) {
+          for (const innerKey in newNumsObj) {
+            const concatInner = entry.v[innerKey] + (role === 'impolite' ? keypair.private.polite : keypair.private.impolite);
+            nested[innerKey] = (CRC32.str(concatInner) >>> 0).toString(16); // 양수로 변환
+          }
         }
       } else {
         for (const innerKey in entry.v) {
-          const concatInner = entry.v[innerKey] + keypair;
+          const concatInner = entry.v[innerKey] + (role === 'impolite' ? keypair.private.impolite : keypair.private.polite);
           nested[innerKey] = (CRC32.str(concatInner) >>> 0).toString(16); // 양수로 변환
         }
       }

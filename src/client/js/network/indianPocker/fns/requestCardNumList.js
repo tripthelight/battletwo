@@ -20,7 +20,7 @@ export default async (data) => {
     return errorManagement({ errCase: 'sessionStorageLoss', message: 'cardNum 복호화시 필요한 secret key 세션 없음 1' });
   }
 
-  const encryptKey1 = findCharCode([77, 68, 79, 88, 73, 86, 69, 70, 65, 80]); // cardNum
+  const encryptKey1 = findCharCode([80, 76, 72, 71, 86, 73, 69, 66, 78, 81]); // cardNum
   const decryptVal1 = window.sessionStorage.getItem(encryptKey1);
   if (decryptVal1 === null) {
     // 상대 카드 받았는데, 내 카드리스트(cardNum) 없음 - 내 반칙
@@ -101,7 +101,7 @@ export default async (data) => {
 
     console.log('4 card del : encryptRemoveCardNum : ', encryptRemoveCardNum);
 
-    const encryptLocalKey = findCharCode([77, 68, 79, 88, 73, 86, 69, 70, 65, 80]);
+    const encryptLocalKey = findCharCode([80, 76, 72, 71, 86, 73, 69, 66, 78, 81]);
     const decryptLocalVal = window.sessionStorage.getItem(encryptLocalKey);
     if (decryptLocalVal === null || (decryptLocalVal !== null && decryptLocalVal === '')) {
       return errorManagement({ errCase: 'sessionStorageLoss', message: 'cardNum 세션이 없거나 length가 없습니다.' });

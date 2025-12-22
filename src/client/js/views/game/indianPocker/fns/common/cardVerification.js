@@ -2,11 +2,11 @@ import findCharCode from '@/client/js/functions/findCharCode';
 
 export default async () => {
   try {
-    const encryptKey = findCharCode([77, 68, 79, 88, 73, 86, 69, 70, 65, 80]); // cardNum
+    const encryptKey = findCharCode([80, 76, 72, 71, 86, 73, 69, 66, 78, 81]); // cardNum
     const decryptVal = window.sessionStorage.getItem(encryptKey);
     if (!decryptVal) {
       throw { errCase: 'errorComn', message: 'card num not found' };
-    };
+    }
 
     // storage value에 []포함여부 확인
     const hasBrackets = /\[.*\]/.test(decryptVal);
@@ -21,15 +21,13 @@ export default async () => {
         const hasDuplicate = new Set(cardNums).size !== cardNums.length;
         if (hasDuplicate) {
           throw { errCase: 'errorComn', message: 'card num Duplicate error' };
-        };
+        }
 
         // sessionsStorage cardNum 조작이 있었는지 체크
-
-      };
+      }
     } else {
       throw { errCase: 'errorComn', message: 'card num Bracket error' };
     }
-
   } catch (error) {
     throw { errCase: 'errorComn', message: 'card num error', errorDetails: error };
   }

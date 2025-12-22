@@ -15,10 +15,13 @@ import findCharCode from '@/client/js/functions/findCharCode';
 
 import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import textDE from '@/client/js/module/crypts/textDE';
 import _t from '@/client/js/module/crypts/textDE';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import { GRS } from '@/client/js/module/crypts/generateRandomString';
+import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
+import { selectCompairNumbers } from '@/client/store/encryptionStore';
 
 import initNickName from '@/client/js/functions/initNickName';
 import findNickname from '@/client/js/functions/findNickname';
@@ -30,6 +33,8 @@ import handleEnvelope from '@/client/js/module/webRTC/reliable/indianPoker/handl
 
 // TEST: bcrypt test /////////////////////////////////////////
 import bcrypt from 'bcryptjs';
+import cardNumEncryption from '@/client/js/functions/bcrypt/cardNumEncryption';
+import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
 
 // 내 keypair로 암호화한, 상대가 가지고 있는 cardNum 리스트
 const arr = [8, 6, 2, 10, 7, 9, 3, 1, 4, 5];
@@ -37,10 +42,10 @@ const arr = [8, 6, 2, 10, 7, 9, 3, 1, 4, 5];
 const str = arr[0];
 // 이걸 상대가 암호화
 const encrypt = bcrypt.hashSync(str.toString(), 3);
-console.log('encrypt : ', encrypt);
+// console.log('encrypt : ', encrypt);
 // 이걸 상대가 복호화 -> 복호화한 cardNum 중 하나를 내가 받아서 내 keypair로 복호화 후 숫자 확인 -> 내 sessionStorage에는 받은 cardNum 중 하나를 내 keypair로 bcrypt 암호화 해서 저장
 const decrypt = arr.find((n) => bcrypt.compareSync(n.toString(), encrypt));
-console.log('decrypt : ', decrypt);
+// console.log('decrypt : ', decrypt);
 // 상대와 나 모두 카드가 0장 일 때 -> 내 keypair를 signalingServer에 보내고 -> cardNum 리스트를 만들어서, 같은 room에 있는 상대 peer에게 전송
 // ///////////////////////////////////////////////////////////
 
@@ -56,6 +61,30 @@ async function startGame() {
   indianPockerGameState.choiceCard();
 
   LOADING_EVENT.hide();
+
+  // const encryptRemoteNum = cardNumEncryption(5);
+  // console.log('encryptRemoteNum :::: ', encryptRemoteNum);
+  // const cardNum = cardNumDecryption(encryptRemoteNum);
+  // console.log('cardNum ::::::::::::: ', cardNum);
+
+  // const arrNumbs = selectCompairNumbers();
+  // const num = findCardNum(arrNumbs[Math.floor(Math.random() * arrNumbs.length)]);
+  // // console.log('num :=:=:=:=:=:=:=:=:= ', num);
+
+  // let uint8Array = new Uint8Array([27 + 30, 100 / 2 - 1, 10 * 5 - 2, 42 + 8]);
+  // let binaryString = uint8Array.subarray(1, -1);
+  // const numb = new TextDecoder().decode(binaryString);
+  // console.log('numb :=:=:=:=:=:=:=:=:= ', numb);
+
+  // true | false 암복호화
+  // const conditBet1_1 = encryptNumOfStr(GRS([_t([101]), _t([119])], parseInt(_t([51]))) + _t([114])); // ex) "wewr" : 1
+  // console.log('conditBet1_1 ::::::::::::: ', conditBet1_1); // 1
+  // const conditBet1_2 = enc(conditBet1_1);
+  // console.log('conditBet1_2 ::::::::::::: ', conditBet1_2);
+  // const conditBet2_1 = encryptNumOfStr(textDE([101, 101, 119, 101]));
+  // console.log('conditBet2_1 ::::::::::::: ', conditBet2_1); // 0
+  // const conditBet2_2 = enc(conditBet2_1);
+  // console.log('conditBet2_2 ::::::::::::: ', conditBet2_2);
 }
 
 async function init() {

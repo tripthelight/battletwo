@@ -127,3 +127,4 @@ battletwo
   - 내려주는 CARD_NUMS와 sessionStorage의 key, value는 두 PEER가 서로 달라야 함
 - "impolite"와 "polite" 일 때, 각각 다른 고정 keypair를 적용시켰어..
   - 이제, cardNum을 keypair로 암호화 할 때, 상대 keypair로 하면 돼!!
+- 숫자를 문자로 암호화한 PUBLIC_CARD_NUMS가 생겼으니.. 코드에 숫자를 직접 노출시키지 않고, 카드 SVG를 javascript로 그리는 방식으로 가야하는데...

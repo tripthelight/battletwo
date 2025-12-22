@@ -16,7 +16,7 @@ export const obfuscationList = {
         k: 'SXIEUDBLPN', // [83, 88, 73, 69, 85, 68, 66, 76, 80, 78]
         v: makeAesSecretKey(),
       },
-      CARD_NUMS: {
+      PUBLIC_CARD_NUMS: {
         k: 'TNUFGJXDCM', // [84, 78, 85, 70, 71, 74, 88, 68, 67, 77]
         v: {
           NUM_1: 'OEJNIHMKXT', // [79, 69, 74, 78, 73, 72, 77, 75, 88, 84]
@@ -31,7 +31,22 @@ export const obfuscationList = {
           NUM_10: 'JRPFIGSBDN', // [74, 82, 80, 70, 73, 71, 83, 66, 68, 78]
         },
       },
-      COIN_NUMS: {
+      PRIVATE_CARD_NUMS: {
+        k: 'PLHGVIEBNQ', // [80, 76, 72, 71, 86, 73, 69, 66, 78, 81]
+        v: {
+          NUM_1: 'FKYXINCVUP', // [70, 75, 89, 88, 73, 78, 67, 86, 85, 80]
+          NUM_2: 'CWYTHMUGLD', // [67, 87, 89, 84, 72, 77, 85, 71, 76, 68]
+          NUM_3: 'LXSGMZAYUF', // [76, 88, 83, 71, 77, 90, 65, 89, 85, 70]
+          NUM_4: 'TRHLUEKYPI', // [84, 82, 72, 76, 85, 69, 75, 89, 80, 73]
+          NUM_5: 'HFSPOEWBDI', // [72, 70, 83, 80, 79, 69, 87, 66, 68, 73]
+          NUM_6: 'RTASQOCGIZ', // [82, 84, 65, 83, 81, 79, 67, 71, 73, 90]
+          NUM_7: 'YKIQHRWOMJ', // [89, 75, 73, 81, 72, 82, 87, 79, 77, 74]
+          NUM_8: 'RPSGLDTYFC', // [82, 80, 83, 71, 76, 68, 84, 89, 70, 67]
+          NUM_9: 'EJLUIMTXPC', // [69, 74, 76, 85, 73, 77, 84, 88, 80, 67]
+          NUM_10: 'KECDNBFAXM', // [75, 69, 67, 68, 78, 66, 70, 65, 88, 77]
+        },
+      },
+      /* COIN_NUMS: {
         k: 'OQTDZWUGXS', // [79, 81, 84, 68, 90, 87, 85, 71, 88, 83]
         v: {
           NUM_11: 'RNQUKJXEFZ', // [82, 78, 81, 85, 75, 74, 88, 69, 70, 90]
@@ -65,7 +80,7 @@ export const obfuscationList = {
           NUM_39: 'OMKHFTNCLG', // [79, 77, 75, 72, 70, 84, 78, 67, 76, 71]
           NUM_40: 'ZSIKJDPFTO', // [90, 83, 73, 75, 74, 68, 80, 70, 84, 79]
         },
-      },
+      }, */
       /*
       GAME_STATE_ALL_KEYS: {
         k: 'XBAHZDVKUI', // [88, 66, 65, 72, 90, 68, 86, 75, 85, 73]
@@ -81,7 +96,7 @@ export const obfuscationList = {
         k: 'JSNYCGWFRV', // [74, 83, 78, 89, 67, 71, 87, 70, 82, 86]
       },
       CARD_NUM: {
-        k: 'MDOXIVEFAP', // [77, 68, 79, 88, 73, 86, 69, 70, 65, 80]
+        k: 'MDOXIVEFAP', // [80, 76, 72, 71, 86, 73, 69, 66, 78, 81]
       },
       GAME_STATE: {
         k: 'IKVUDKLWOD', // [77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]

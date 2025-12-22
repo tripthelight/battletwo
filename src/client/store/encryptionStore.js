@@ -37,7 +37,7 @@ const encryptionStore = configureStore({
 export const selectCompairNumbers = () => {
   const state = encryptionStore.getState();
   const compair = state.encryptionState.compair;
-  const encryptedKey = findCharCode([84, 78, 85, 70, 71, 74, 88, 68, 67, 77]); // nums
+  const encryptedKey = findCharCode([80, 76, 72, 71, 86, 73, 69, 66, 78, 81]); // nums
   const keyList = compair[encryptedKey] || [];
 
   return keyList; // 1 ~ 40

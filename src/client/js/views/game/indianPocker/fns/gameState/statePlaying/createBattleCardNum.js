@@ -22,7 +22,7 @@ export default () => {
   if (encryptVal3 !== null && encryptVal3 !== '') return;
 
   // sessionStorage cardNum key 찾기
-  const encryptKey2 = findCharCode([77, 68, 79, 88, 73, 86, 69, 70, 65, 80]); // cardNum
+  const encryptKey2 = findCharCode([80, 76, 72, 71, 86, 73, 69, 66, 78, 81]); // cardNum
   const decryptVal2 = window.sessionStorage.getItem(encryptKey2);
 
   // const CARD_NUMS = JSON.parse(decryptVal);

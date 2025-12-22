@@ -33,7 +33,7 @@ const ROOMS = Object.create(null);
 const PEERS = new WeakMap();
 
 const now = () => Date.now();
-const makeRoomId = () => `room-${Math.random().toString(36).slice(2, 10)}`;
+const makeRoomId = () => `${Math.random().toString(36).slice(2, 12)}`;
 const keypairCode = (roomId) =>
   roomId
     .replace(/\s+/g, '') // 띄어쓰기 제거
@@ -58,6 +58,44 @@ function transformRoomId(str) {
     const aa = (a + 2) % 26; // +2 with wrap
     return String.fromCharCode(97 + aa);
   });
+}
+
+// RANDOM PUBLIC KEY
+// 문자열을 뒤집고 각 문자 인덱스와 문자코드를 섞어 새로운 문자열 생성
+function randomPublicKey(str) {
+  return str
+    .split('')
+    .reverse()
+    .map((ch, i) => {
+      const n = (ch.charCodeAt(0) + i) % 10;
+      return ch + n;
+    })
+    .join('');
+}
+// RANDOM PRIVATE KEY - IMPOLITE
+// 각 문자의 charCode를 숫자로 바꾼 뒤 위치 인덱스를 섞어서 문자/숫자로 재매핑
+function randomPrivateKeyImpolite(str) {
+  return [...str]
+    .map((ch, i) => {
+      const code = ch.charCodeAt(0) + i;
+      return i % 2 === 0
+        ? String.fromCharCode((code % 26) + 97) // a-z
+        : code % 10; // 0-9
+    })
+    .join('');
+}
+// RANDOM PRIVATE KEY - POLITE
+// 문자열 전체를 하나의 숫자로 누적 -> 누적값을 기준으로 각 자리 결정
+function randomPrivateKeyPolite(str) {
+  let seed = 0;
+  for (const ch of str) {
+    seed = (seed * 31 + ch.charCodeAt(0)) >>> 0;
+  }
+
+  return Array.from({ length: 10 }, (_, i) => {
+    const v = (seed >> (i * 3)) & 0xff;
+    return i % 2 === 0 ? String.fromCharCode(97 + (v % 26)) : v % 10;
+  }).join('');
 }
 
 function safeSend(ws, obj) {
@@ -192,7 +230,7 @@ function cbConnection(ws, req) {
   const peerId = randomUUID();
 
   // "바로 배정"하지 않고, 클라의 'join' 메시지를 기다립니다.
-  PEERS.set(ws, { peerId, roomId: null, keypair: null });
+  PEERS.set(ws, { peerId, roomId: null });
 
   ws.on('message', async (buf) => {
     let msg;
@@ -227,16 +265,26 @@ function cbConnection(ws, req) {
 
       if (localPeer) {
         const keypairCode = transformRoomId(room.keypair);
-        const keypair = msg.initRole === 'impolite' ? keypairCode : keypairCode.split('').reverse().join('');
+        const keypair = {
+          public: randomPublicKey(keypairCode),
+          private: {
+            impolite: randomPrivateKeyImpolite(keypairCode).slice(-10),
+            polite: randomPrivateKeyPolite(keypairCode).slice(-10),
+          },
+        };
         // 각 게임에 필요한 암호화된 sessionStorage key 생성
-        const STORAGE_DATA = await MAKE_STORAGE.findGame(msg.gameName, keypair);
+        const STORAGE_DATA = await MAKE_STORAGE.findGame(msg.gameName, keypair, msg.initRole);
         safeSend(localPeer, {
           type: 'responseStorage',
           storageData: STORAGE_DATA,
-          keypair: keypair
-            .replace(/\s+/g, '') // 1. 띄어쓰기 제거
-            .replace(/[^a-zA-Z0-9가-힣]/g, '') // 2. 특수문자 제거
-            .slice(-10), // 3. 맨 뒤 10자리));,,
+          keypair: {
+            puk: keypair.public,
+            prk: msg.initRole === 'impolite' ? keypair.private.impolite : keypair.private.polite,
+          },
+          // keypair: keypair
+          //   .replace(/\s+/g, '') // 1. 띄어쓰기 제거
+          //   .replace(/[^a-zA-Z0-9가-힣]/g, '') // 2. 특수문자 제거
+          //   .slice(-10), // 3. 맨 뒤 10자리));,,
         });
       }
     }

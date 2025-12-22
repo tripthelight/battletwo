@@ -9,7 +9,7 @@ export default (_key) => {
     // if (!encrypt || (encrypt && encrypt.keypair === '')) {
     //   throw 'encrypt error';
     // };
-    const keypair = KEY.keypair;
+    const keypair = KEY.prk; // private key
     if (!keypair) {
       throw 'encrypt error';
     }

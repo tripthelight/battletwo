@@ -22,9 +22,14 @@ function log(...args) {
 function gameId() {
   return (crypto.randomUUID && crypto.randomUUID()) || Math.random().toString(36).slice(2) + Date.now().toString(36);
 }
+const createChars = (startChar) => {
+  const startCode = startChar.charCodeAt(0);
+  return Array.from({ length: 13 }, (_, i) => String.fromCharCode(startCode + i * 2));
+};
 
 export const KEY = {
-  keypair: null,
+  puk: null,
+  prk: null,
 };
 
 const FNS = {
@@ -341,7 +346,9 @@ function reloadConnectCheck() {
  */
 function leavePage() {
   if (STATE.roomId && STATE.initRole) {
-    window.sessionStorage.setItem('roomId', `${STATE.roomId}-${STATE.initRole === 'impolite' ? 'a' : 'b'}`);
+    const pool = STATE.initRole === 'impolite' ? createChars('a') : createChars('b');
+    const randomChar = pool[Math.floor(Math.random() * pool.length)];
+    window.sessionStorage.setItem('roomId', `${STATE.roomId}${randomChar}`);
   }
 }
 if (getDeviceType() === 'PC') {
@@ -548,16 +555,18 @@ export function connectSignaling(connected = false, fns) {
     const roomHint = () => {
       const roomId = window.sessionStorage.getItem('roomId');
       if (roomId) {
-        if (roomId.length === 15) {
-          if (roomId.endsWith('a')) {
+        if (roomId.length === 11) {
+          const lastChar = roomId.at(-1);
+          const offset = lastChar.charCodeAt(0) - 'a'.charCodeAt(0);
+          if (offset % 2 === 0) {
             // 최초 할당받은 role = impolite
             STATE.initRole = 'impolite';
-          } else if (roomId.endsWith('b')) {
+          } else {
             // 최초 할당받은 role = polite
             STATE.initRole = 'polite';
           }
-          return roomId.slice(0, -2);
-        } else if (roomId.length === 13) {
+          return roomId.slice(0, -1);
+        } else if (roomId.length === 10) {
           return roomId;
         }
       }
@@ -606,7 +615,11 @@ export function connectSignaling(connected = false, fns) {
           if (window.sessionStorage.getItem('roomId') === null && STATE.initRole === null) {
             // 최초 연결 시
             STATE.initRole = STATE.role;
-            window.sessionStorage.setItem('roomId', `${msg.roomId}-${STATE.role === 'impolite' ? 'a' : 'b'}`);
+
+            const pool = STATE.initRole === 'impolite' ? createChars('a') : createChars('b');
+            const randomChar = pool[Math.floor(Math.random() * pool.length)];
+
+            window.sessionStorage.setItem('roomId', `${msg.roomId}${randomChar}`);
           }
           log(`Paired! me(${STATE.role}) <-> partner(${msg.partner.peerId}/${msg.partner.role})`);
 
@@ -652,8 +665,10 @@ export function connectSignaling(connected = false, fns) {
       }
       case 'responseStorage': {
         if (msg?.storageData && msg?.keypair) {
-          KEY.keypair = msg.keypair;
-          console.log('KEY.keypair : ', KEY.keypair);
+          KEY.puk = msg.keypair.puk;
+          KEY.prk = msg.keypair.prk;
+          console.log('PUBLIC KEY :::: ', KEY.puk);
+          console.log('PRIVATE KEY ::: ', KEY.prk);
 
           await insertStorageDate(msg.storageData);
           await FNS.startGame();
