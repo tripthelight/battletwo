@@ -43,10 +43,7 @@ export default function (_idx) {
     }
 
     const encryptCode = resultCode(_idx);
-    console.log('encryptCode ########## ', encryptCode);
-
     const encryptKey = arrNumbs.find((item) => item === encryptCode);
-    console.log('encryptKey ########## ', encryptKey);
 
     return bcrypt.hashSync(encryptKey.toString(), 3);
   } catch (error) {

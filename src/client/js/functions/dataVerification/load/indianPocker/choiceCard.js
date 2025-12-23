@@ -13,7 +13,7 @@ export const CHOICE_CARD_DATA_HANDLER = {
   handleReload(storageKeys) {
     if (storageKeyDeleteCheck(storageKeys)) {
       throw throwObj('sessionStorageLoss', 'delete sessionStorage.');
-    };
+    }
 
     const selectCard = {
       remote: null,
@@ -25,16 +25,16 @@ export const CHOICE_CARD_DATA_HANDLER = {
       const encryptVal = window.sessionStorage.getItem(encryptKey1);
       if (encryptVal !== '') {
         selectCard.local = cardNumDecryption(encryptVal);
-      };
-    };
+      }
+    }
 
     const encryptKey2 = storageKeys.find((item) => item === findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85])); // enemyFirstNumber
     if (encryptKey2) {
       const encryptVal = window.sessionStorage.getItem(encryptKey2);
       if (encryptVal !== '') {
         selectCard.remote = cardNumDecryption(encryptVal);
-      };
-    };
+      }
+    }
 
     // local, remote player 모두 선택 했을 때, betUser/betUserFirst 체크를 위해 보냄
     const params = {
@@ -52,7 +52,8 @@ export const CHOICE_CARD_DATA_HANDLER = {
     // }
     const encryptKey3 = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
     const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
-    if (encryptVal3 !== '' && X.dec(encryptVal3)) { // tieWait === true
+    if (encryptVal3 !== '' && X.dec(encryptVal3)) {
+      // tieWait === true
       request('requestCompairChoiceCard', { remoteStorage: params, tieWait: true });
       return;
     }

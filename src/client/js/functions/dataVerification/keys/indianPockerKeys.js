@@ -3,7 +3,7 @@ import findCharCode from '@/client/js/functions/findCharCode';
 export default (gameState) => {
   // find gameState all keys
   if (gameState === findCharCode([88, 66, 65, 72, 90, 68, 86, 75, 85, 73])) {
-  // if (gameState ==='gameStateAllKeys') {
+    // if (gameState ==='gameStateAllKeys') {
     return [
       findCharCode([74, 75, 71, 90, 87, 79, 85, 69, 65, 88]), // waitEnemy
       findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82]), // choiceCard
@@ -18,7 +18,7 @@ export default (gameState) => {
       'playing', // playing
       'gameOver', // gameOver
     ]; */
-  };
+  }
 
   // gameState: choiceCard
   if (gameState === findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82])) {
@@ -50,7 +50,7 @@ export default (gameState) => {
       'myNextStepState', // myNextStepState
       'nextStepChoiceCard', // nextStepChoiceCard
     ]; */
-  };
+  }
 
   // gameState: basicBet
   if (gameState === findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68])) {
@@ -81,7 +81,7 @@ export default (gameState) => {
       findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]), // battleCardNum
       findCharCode([75, 81, 83, 80, 89, 88, 86, 72, 82, 77]), // playingReloadUser
       'betCoin', // findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]), // betCoin
-      'betCoinPos' // findCharCode([68, 69, 75, 72, 67, 86, 90, 80, 65, 79]), // betCoinPos
+      'betCoinPos', // findCharCode([68, 69, 75, 72, 67, 86, 90, 80, 65, 79]), // betCoinPos
     ];
-  };
+  }
 };

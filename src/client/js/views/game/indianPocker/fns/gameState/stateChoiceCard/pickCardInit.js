@@ -14,17 +14,39 @@ export default async (_event) => {
   });
 
   const encryptKey2 = findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]); // playerFirstNumber
+  console.log('encryptKey2 ---------- 2 : ', encryptKey2);
+
   const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+  // console.log('encryptVal2 ---------- ', encryptVal2);
+  // console.log("encryptVal2 === '' --- ", encryptVal2 === '');
 
   if (encryptVal2 === '') {
-    // 랜덤한 카드 생성 후 -> 0 ~ 39 을 1 ~ 10 사이로 변환
+    /* // 랜덤한 카드 생성 후 -> 0 ~ 39 을 1 ~ 10 사이로 변환
     const encryptPlayerNum = cardNumEncryption(((Math.floor(Math.random() * selectCompairNumbers().length) - 1) % 10) + 1);
 
     // local peer / remote peer 같은 숫자 생성
     // const encryptPlayerNum = cardNumEncryption(0);
 
     // local player가 선택한 카드가 없을 때
-    showChoiceCard(_event, encryptPlayerNum);
+    showChoiceCard(_event, encryptPlayerNum); */
+    //
+    //
+    //
+    //
+    //
+    //
+    // 💥 publicCardNums 와 privateCardNums 는 1 ~ 10의 카드숫자배열이지만 순서가 섞여있음
+    // 💥 상대에게 받은 privateCardNums 중 하나는 내가 가진 publicCardNums 배열 중 하나의 코드와 매칭이 가능해야 함
+    // - 나는 내가 가진 privateCardNums 배열리스트와 내가 가진 publicCardNums 간 매칭 불가능
+    // - 상대는 자신이 가진 privateCardNums 배열리스트와 자신이 가진 publicCardNums 간 매칭 불가능
+    // 💥 publicCardNums 배열(암호화된 숫자 1 ~ 10)에 있는 값으로 카드 번호(SVG) 매칭이 가능해야 함
+    //
+    // ✅ 먼저 선택한 peer -> 내 publicCardNums 중 랜덤한 카드숫자코드 하나를 상대 peer에게 보내
+    // ✅ 상대 peer 는 자신이 가지고 있는 publicCardNums 리스트 중 받은 카드번호코드에 해당하는 코드가 몇 번째 index 인지 체크해
+    // ✅ 그러면 상대는 그 (index + 1) 에 해당하는 숫자 카드를 자신의 화면에 오픈해
+    // - 그렇게 되면 내가 보낸 카드숫자코드와 상대의 publicCardNums index가 달라서 나는 내가 보낸 코드의 숫자와 매칭 안됨
+    // ✅ 상대 화면에 보이는 숫자에 해당하는 publicCardNums 배열 값을 나에게 보내
+    // ✅ 나는 내 화면에 받은 카드숫자코드에 해당하는 카드로 오픈시켜
   } else {
     throw throwObj('sessionStorageLoss', 'cardNum sessionStorage value manipulat.');
   }
