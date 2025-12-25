@@ -50,7 +50,8 @@ let _K = null;
 function ensureKey() {
   if (_K != null) return _K;
   // const kstr = encrypt?.keypair;
-  const kstr = KEY?.keypair;
+  // const kstr = KEY?.keypair;
+  const kstr = KEY?.prk;
   if (!kstr) throw throwObj('errorComn', 'decrypt number key error.');
   _K = typeof kstr === 'string' ? fnv1a(kstr) : kstr >>> 0;
   return _K;

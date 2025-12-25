@@ -46,7 +46,8 @@ function rand20() {
 // encrypt.keypair → 32비트 키 유도
 function deriveKey32FromEncryptKeypair() {
   // const k = encrypt?.keypair;
-  const k = KEY?.keypair;
+  // const k = KEY?.keypair;
+  const k = KEY?.prk;
   if (k == null) throw throwObj('errorComn', 'keypair not found');
 
   /** bytes: Uint8Array */

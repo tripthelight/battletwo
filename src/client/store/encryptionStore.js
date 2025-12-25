@@ -46,5 +46,12 @@ export const selectCompairNumbers = () => {
   // const result = keyList.slice(0, 10);
   // return result;
 };
+export const publicCardNumbs = () => {
+  const state = encryptionStore.getState();
+  const compair = state.encryptionState.compair;
+  const encryptedKey = findCharCode([84, 78, 85, 70, 71, 74, 88, 68, 67, 77]); // publicCardNums
+  const keyList = compair[encryptedKey] || [];
+  return keyList; // 1 ~ 40
+};
 
 export default encryptionStore;

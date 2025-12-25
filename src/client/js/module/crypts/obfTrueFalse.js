@@ -27,7 +27,8 @@ for (let i = 0; i < 8; i++) for (const c of G[i]) M[c] = P[i];
 
 export default function decodeTF(s) {
   // const K = encrypt?.keypair;
-  const K = KEY?.keypair;
+  // const K = KEY?.keypair;
+  const K = KEY?.prk;
   if (!K) throw throwObj('errorComn', 'decrypt key error'); // 키 없으면 예외
   let r = '';
   for (const ch of s) r += M[ch];
@@ -46,7 +47,8 @@ export default function decodeTF(s) {
 // - 키를 해시해 LCG 시드로 사용 → 문자마다 서로 다른 치환 선택
 export function encodeTF(plain) {
   // const K = encrypt?.keypair;
-  const K = KEY?.keypair;
+  // const K = KEY?.keypair;
+  const K = KEY?.prk;
   if (!K) throw throwObj('errorComn', 'encrypt key error');
 
   const H = (s) => {
