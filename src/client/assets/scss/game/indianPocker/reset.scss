@@ -46,3 +46,13 @@ input[type='text'] {
   user-select: none;
   -moz-user-select: none;
 }
+
+// TEST:
+#container {
+  & ~ svg {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 9999999;
+  }
+}

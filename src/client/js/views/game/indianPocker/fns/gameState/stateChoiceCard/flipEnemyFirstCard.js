@@ -1,4 +1,5 @@
 import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
+import cardNumCodeDecryption from '@/client/js/functions/bcrypt/cardNumCodeDecryption';
 import findCharCode from '@/client/js/functions/findCharCode';
 import makeSeq from '@/client/js/views/game/indianPocker/fns/common/mappingCardNum';
 import storageMethod from '@/client/js/module/storage/storageMethod';
@@ -8,7 +9,7 @@ import imgGetCardNum from '@/client/js/views/game/indianPocker/fns/common/images
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export default (params) => {
-  const { eNum, pNum }  = params;
+  const { eNum, pNum } = params;
 
   // seeeion 체크
   const encryptKey1 = findCharCode([78, 72, 89, 73, 67, 85, 71, 79, 77, 76]); // ulIndexEnemy
@@ -20,8 +21,10 @@ export default (params) => {
   const encryptKey6 = findCharCode([83, 70, 79, 67, 65, 71, 66, 87, 77, 86]); // liIndex
 
   const RANDOM_UL = randomNumberMinMax(0, 1);
-  const RANDOM_LI = randomNumberMinMax(0, 9,
-    (encryptKey4 !== '' && encryptKey5 !== '' && encryptKey6 !== '')
+  const RANDOM_LI = randomNumberMinMax(
+    0,
+    9,
+    encryptKey4 !== '' && encryptKey5 !== '' && encryptKey6 !== ''
       ? (() => {
           // element 체크 + 정리
           const CHOICE_CARD = document.querySelector('.choice-card');
@@ -30,9 +33,9 @@ export default (params) => {
           if (!CHOICE_CARDS || CHOICE_CARDS.length <= 0) throw throwObj('elementLoss', '.choice-card li not found / length 0 error.');
 
           // 상대가 선택한 카드의 li index를 제외한 랜덤 숫자 선택
-          return Array.from(CHOICE_CARDS).findIndex(li => li.classList.contains('show'));
+          return Array.from(CHOICE_CARDS).findIndex((li) => li.classList.contains('show'));
         })()
-      : undefined
+      : undefined,
   );
 
   const uRes = findCharCode(makeSeq(RANDOM_UL)); // makeSeq 는 0 ~ 1 중 하나를 받아서 1 ~ 1 중 +1된 결과를 리턴
@@ -53,7 +56,8 @@ export default (params) => {
   storageMethod('s', 'SET_ITEM', encryptKey1, uRes);
   storageMethod('s', 'SET_ITEM', encryptKey2, lRes);
   ENEMY_CARD_LI.classList.add('show');
-  const findCardNumb = cardNumDecryption(ENEMY_NUMBER);
+  const findCardNumb = cardNumCodeDecryption(ENEMY_NUMBER);
   ENEMY_CARD_IMG.setAttribute('src', imgGetCardNum(findCardNumb));
-  flipUserCardCheck({ eNum, pNum });
+  // 나와 상대가 선택한 카드 비교
+  // flipUserCardCheck({ eNum, pNum });
 };

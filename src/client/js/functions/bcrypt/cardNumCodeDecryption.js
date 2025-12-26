@@ -40,7 +40,7 @@ export default function (_num) {
         // CARD NUM : 10
         return 10;
       default:
-        break;
+        return '';
     }
   } catch (error) {
     throw throwObj(error?.errCase ?? 'cardNum', error?.message ?? 'card number not found');

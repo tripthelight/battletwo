@@ -1,4 +1,5 @@
 import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
+import cardNumCodeDecryption from '@/client/js/functions/bcrypt/cardNumCodeDecryption';
 import cardNumEncryption from '@/client/js/functions/bcrypt/cardNumEncryption';
 import findCharCode from '@/client/js/functions/findCharCode';
 import storageKeys from '@/client/js/functions/dataVerification/storageKeys';
@@ -20,9 +21,9 @@ export default async (_data) => {
     if (!allExist) {
       // local player 모든 key가 없음
       throw throwObj('sessionStorageLoss', 'choiceCard gameState sessionStorage value manipulat.');
-    };
+    }
 
-    const { eNum, pNum } = _data;
+    /* const { eNum, pNum } = _data;
     console.log('내가 받은 상대가 선택한 카드 숫자 ::::::::: ', eNum);
     console.log('내가 받은 상대가 내가 선택한 카드 숫자 ::::: ', pNum);
     const encryptKey1 = findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85]); // enemyFirstNumber
@@ -43,9 +44,39 @@ export default async (_data) => {
       storageMethod('s', 'SET_ITEM', encryptKey1, encryptRemoteNum);
 
       flipEnemyFirstCard({ pNum, eNum });
-    };
+    }; */
+
+    const { eNum, pNum } = _data;
+    console.log('내가 받은 상대가 선택한 카드 숫자 ::::::::: ', eNum);
+    console.log('내가 받은 상대가 보낸 내가 선택한 카드 숫자 ::::: ', pNum);
+    const encryptKey1 = findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85]); // enemyFirstNumber
+    const encryptKey2 = findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]); // playerFirstNumber
+    const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+    const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+
+    // REMOTE CHECK
+    // console.log('REMOTE 1 ::::::::::::::::: ', eNum !== '');
+    // console.log('REMOTE 2 ::::::::::::::::: ', encryptVal1 !== '');
+    // console.log('REMOTE 3 ::::::::::::::::: ', eNum !== encryptVal1);
+    // LOCAL CHECK
+    // console.log('LOCAL 1 ::::::::::::::::: ', pNum !== '');
+    // console.log('LOCAL 2 ::::::::::::::::: ', encryptVal2 !== '');
+    // console.log('LOCAL 3 ::::::::::::::::: ', pNum !== encryptVal2);
+
+    // 암호화된 상대가 선택한 카드 검증 encryptVal1 -> 암호 hash, eNum -> 숫자
+    const compairRemote = eNum !== '' && encryptVal1 !== '' && eNum !== encryptVal1;
+    // 암호화된 내가 선택한 카드 검증 encryptVal2 -> 암호 hash, pNum -> 숫자
+    const compairLocal = pNum !== '' && encryptVal2 !== '' && pNum !== encryptVal2;
+
+    if (compairRemote || compairLocal) {
+      throw throwObj('sessionStorageLoss', 'choiceCard gameState card compaire failed.');
+    } else {
+      storageMethod('s', 'SET_ITEM', encryptKey1, eNum);
+
+      flipEnemyFirstCard({ pNum, eNum });
+    }
   } catch (error) {
     console.log('enemyFirstChoice() error : ');
     errorManager(error, true);
-  };
+  }
 };
