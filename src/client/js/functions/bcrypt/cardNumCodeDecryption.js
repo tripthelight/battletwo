@@ -5,6 +5,20 @@ import throwObj from '@/client/js/module/errorHandler/throwObj';
 import findCharDecCode from '@/client/js/functions/findCharDecCode';
 
 export default function (_num) {
+  const arr = [
+    findCharDecCode([79, 69, 74, 78, 73, 72, 77, 75, 88, 84]),
+    findCharDecCode([71, 73, 90, 70, 78, 80, 84, 83, 86, 75]),
+    findCharDecCode([79, 67, 78, 76, 84, 71, 77, 70, 75, 83]),
+    findCharDecCode([68, 75, 72, 79, 88, 77, 73, 86, 69, 65]),
+    findCharDecCode([80, 68, 66, 73, 90, 85, 79, 70, 77, 74]),
+    findCharDecCode([75, 70, 79, 85, 68, 66, 82, 90, 86, 73]),
+    findCharDecCode([77, 73, 80, 71, 83, 72, 68, 65, 85, 70]),
+    findCharDecCode([83, 74, 82, 87, 84, 68, 71, 85, 88, 72]),
+    findCharDecCode([72, 74, 90, 85, 84, 79, 88, 70, 81, 65]),
+    findCharDecCode([74, 82, 80, 70, 73, 71, 83, 66, 68, 78])
+  ];
+  console.log('arr --------------> ', arr);
+
   // TODO: 바로 숫자를 리턴시키면 안되고 javascript로 SVG 만들 코드 리턴 필요
   // 아래 case 순서 1 ~ 10 은 섞어야 함
   try {
