@@ -8,6 +8,10 @@ const encryptionSlice = createSlice({
     compair: {},
     keypair: '',
     oldpair: '',
+    path: {
+      n: Object.create(null),
+      t: Object.create(null),
+    },
   },
 
   reducers: {
@@ -20,11 +24,23 @@ const encryptionSlice = createSlice({
     updateOldpair: (state, action) => {
       state.oldpair = action.payload.oldpair;
     },
+    updatePathN: (state, action) => {
+      state.path.n[action.payload.k] = action.payload.v;
+    },
+    updatePathT: (state, action) => {
+      state.path.t[action.payload.k] = action.payload.v;
+    },
   },
 });
 
 // 액션과 리듀서 추출
-export const { updateCompair, updateKeypair, updateOldpair } = encryptionSlice.actions;
+export const {
+  updateCompair,
+  updateKeypair,
+  updateOldpair,
+  updatePathN,
+  updatePathT,
+} = encryptionSlice.actions;
 
 // 스토어 생성
 const encryptionStore = configureStore({
@@ -53,5 +69,15 @@ export const publicCardNumbs = () => {
   const keyList = compair[encryptedKey] || [];
   return keyList; // 1 ~ 40
 };
+export const pathPayload = (_c) => {
+  const state = encryptionStore.getState();
+  const path = state.encryptionState.path
+  if (_c === "n") {
+    return path.n;
+  } else if (_c === "t") {
+    return path.t;
+  }
+  return null;
+}
 
 export default encryptionStore;

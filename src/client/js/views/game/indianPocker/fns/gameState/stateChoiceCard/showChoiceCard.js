@@ -15,6 +15,8 @@ export default (_event, _playerNum) => {
   if (!TARGET_UL) throw throwObj('elementLoss', 'closest ul in target failed.');
   const TARGET_LI = TARGET.closest('li');
   if (!TARGET_LI) throw throwObj('elementLoss', 'closest li in target failed.');
+  const TARGET_BTN = TARGET.closest('button');
+  if (!TARGET_BTN) throw throwObj('elementLoss', 'closest button in target failed.');
   const TARGET_TAG_NAME = TARGET.tagName === 'IMG' ? TARGET : TARGET.querySelector('img');
   if (!TARGET_TAG_NAME) throw throwObj('elementLoss', 'tagName in target failed.');
   if (TARGET_LI.classList.contains('show')) return;
@@ -37,5 +39,5 @@ export default (_event, _playerNum) => {
   storageMethod('s', 'SET_ITEM', encryptKey3, lRes);
 
   TARGET_LI.classList.add('show');
-  showChoiceCardSrc(TARGET_TAG_NAME, _playerNum);
+  showChoiceCardSrc(_playerNum, { imgEl: TARGET_TAG_NAME, btnEl: TARGET_BTN, liEl: TARGET_LI });
 };

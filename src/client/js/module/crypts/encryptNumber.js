@@ -180,3 +180,19 @@ export function encryptNumOfStr(str) {
 // const coinsEnemyCode = encrypt32ToHex8(coinsEnemyToken); // number 20 -> decrypt code
 // console.log('coinsPlayerCode :::::: ', coinsPlayerCode); // decrypt code
 // console.log('coinsEnemyCode ::::::: ', coinsEnemyCode); // decrypt code
+
+export function obfuscateNumber(n, secret = 0x5a3c_1f29) {
+  if (!Number.isSafeInteger(n) || n < 0) throw new Error("0 이상의 안전한 정수만 지원");
+  const x = (n ^ secret) >>> 0;          // 32bit로
+  return x.toString(36);                 // 0-9a-z
+}
+
+// 난독 문자열 -> 숫자
+export function deobfuscateNumber(s, secret = 0x5a3c_1f29) {
+  const x = parseInt(s, 36) >>> 0;
+  return (x ^ secret) >>> 0;
+}
+
+// 예)
+// const token = obfuscateNumber(123456);   // 예: "2n9k" 같은 형태
+// const original = deobfuscateNumber(token); // 123456

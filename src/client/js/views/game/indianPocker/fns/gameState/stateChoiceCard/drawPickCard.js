@@ -7,6 +7,8 @@ import SVG_BACK from '@/client/assets/images/svg/indian_poker/indian_poker_card/
 import imgSetCardNum from '@/client/js/views/game/indianPocker/fns/common/images/setCards';
 import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipUserCardCheck';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
+import selectedCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/selectedCard';
+import flipSelectCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipSelectCard';
 
 export default () => {
   // element | seeeion 체크
@@ -110,15 +112,25 @@ export default () => {
     const GAME_SCENE = CONTAINER?.querySelector('#gameScene');
     const UL = GAME_SCENE?.querySelectorAll('ul')?.[ulIdx];
     const LI = UL?.querySelectorAll('li')?.[liIdx];
-    const IMG = LI?.querySelector('img');
-    if (!IMG || !LI) throw throwObj('elementLoss', 'select card element failed.');
+    const BTN = LI?.querySelector('button');
+    const IMG = BTN?.querySelector('img');
+    if (!IMG || !BTN || !LI) throw throwObj('elementLoss', 'select card element failed.');
 
     // 숫자 복호화 및 이미지 반영
-    const cardNum = cardNumDecryption(encNumber);
-    flipCard[side] = cardNum;
+    // const cardNum = cardNumDecryption(encNumber);
+    // flipCard[side] = cardNum;
 
-    IMG.setAttribute('src', imgSetCardNum(cardNum));
+    // IMG.setAttribute('src', imgSetCardNum(cardNum));
+    // LI.classList.add('show');
+
+    // ———————————————————————————————————————————————————————————————————
+    // ———————————————————————————————————————————————————————————————————
+    // ———————————————————————————————————————————————————————————————————
+    // 새로고침 하면 여기서 선택한 카드 뒤집음
+    flipCard[side] = encNumber;
     LI.classList.add('show');
+    selectedCard(encNumber)
+      .then((svg) => flipSelectCard({ svg, imgEl: IMG, btnEl: BTN, liEl: LI }));
   }
 
   // 상대 peer가 선택한 카드 있음

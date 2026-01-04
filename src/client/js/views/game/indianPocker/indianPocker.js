@@ -4,6 +4,7 @@ import reload from '@/client/js/module/reload';
 import rtcPeer from '@/client/js/webRTC/rtcPeer';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import makeCard from '@/client/js/views/game/indianPocker/fns/common/makeCard/makeCard';
+import makePayload from '@/client/js/views/game/indianPocker/fns/common/makePayload/makePayload';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import getCookies from '@/client/js/module/cookies/getCookies';
 import delCookies from '@/client/js/module/cookies/delCookies';
@@ -57,6 +58,7 @@ async function startGame() {
   waitPeer(2);
 
   await makeCard();
+  makePayload(); // 카드 선택 시 보여지는 카드의 svg > path의 number/T payload
 
   indianPockerGameState.choiceCard();
 
