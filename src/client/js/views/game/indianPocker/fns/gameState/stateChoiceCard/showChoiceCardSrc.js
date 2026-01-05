@@ -7,6 +7,8 @@ import throwObj from '@/client/js/module/errorHandler/throwObj';
 import selectedCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/selectedCard';
 import flipSelectCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipSelectCard';
 
+import { __fnv1a32 } from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/fns/n/f';
+
 export default (_num, elems) => {
   /**
    * ✅ 이전(showChoiceCard.js)에서 선택한 카드를 Y축으로 180도 뒤집는 애니메이션 시작됨
@@ -29,6 +31,9 @@ export default (_num, elems) => {
   // if (encryptVal !== '') {
   //   flipUserCardCheck({ pNum: findCardNumb, eNum: safeRemoteNum });
   // }
+
+  console.log("_num >>>>>>>>>>>>>>> ", _num);
+
 
   // 200ms동안 svg 생성
   selectedCard(_num)

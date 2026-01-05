@@ -5,9 +5,9 @@ import createNumber from "@/client/js/views/game/indianPocker/fns/gameState/stat
 export default (nCode) => new Promise(async (resolve) => {
   try {
     const data = await createSVG(nCode);
-    await Promise.all([createT(data), createNumber(data)]);
+    await Promise.all([createNumber(data)]);
     resolve(data.svg);
   } catch (error) {
-    throw { message: 'selectedCard : make choice card error' };
+    throw { message: 'selectedCard : make choice card error' + error };
   }
 })

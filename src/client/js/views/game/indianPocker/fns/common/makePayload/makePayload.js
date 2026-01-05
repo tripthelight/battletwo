@@ -20,7 +20,8 @@ export default () => {
 
     // path : card number
     encryptionStore.dispatch(updatePathN({
-      k: Number("0x" + (Number("0x" + __fnv1a32(k).toString(16))).toString(16)),
+      // k: Number("0x" + (Number("0x" + __fnv1a32(k).toString(16))).toString(16)),
+      k: __fnv1a32(k),
       v: nv(k)
     }));
     // path : card T
@@ -30,8 +31,8 @@ export default () => {
     }));
   };
 
-  // const payloadN = pathPayload("n");
-  // const payloadT = pathPayload("t");
-  // console.log("path payload number ::::: ", payloadN);
-  // console.log("path payload T :::::::::: ", payloadT);
+  const payloadN = pathPayload("n");
+  console.log("path payload number ::::: ", payloadN);
+  const payloadT = pathPayload("t");
+  console.log("path payload T :::::::::: ", payloadT);
 };

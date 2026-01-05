@@ -8,6 +8,13 @@ export default (_d) => new Promise(resolve => {
   try {
     const { nCode, encryptSize, SVG_NS, svg } = _d;
 
+
+    const __PAYLOADS = Object.create(null);
+
+    // key = FNV-1a 32-bit hash (입력 문자열의 해시), value = 암호화된(base64) 바이너리
+    __PAYLOADS[0x550b0f8c] = "tYgZn8WQVDTzjwbgZ/VqLNbdp3kyXw==";
+    __PAYLOADS[0xc47bb621] = "gAAHMpXA6/4NinNwxU8040b3gbPb61vkz7EdI6UcJScpXyfwWM4=";
+
     const payloadN = pathPayload("n");
 
     function __xorshift32(x) {
@@ -18,7 +25,7 @@ export default (_d) => new Promise(resolve => {
       return x >>> 0;
     }
 
-    // “어려운 수식” 기반 바이트 복호화(키스트림 생성)
+    // "어려운 수식 기반 바이트 복호화(키스트림 생성)
     function __decryptInPlace(u8, seed) {
       let s = (seed ^ 0xa5a5a5a5) >>> 0;
 
@@ -48,16 +55,19 @@ export default (_d) => new Promise(resolve => {
     }
 
     function __unscale(i16) {
-      // 스케일(×10) 복원 + “의미 없는 0항”을 섞어 수식 난도를 올림 (값은 그대로)
+      // 스케일(×10) 복원 + "의미 없는 0항을 섞어 수식 난도를 올림 (값은 그대로)
       const q = i16 / 10;
       const z = Math.sqrt(2) - Math.sqrt(2); // 0
       return Math.round((q + z) * 10) / 10;
     }
 
+    function hexDump(u8, n = 16) {
+      return [...u8.slice(0, n)].map(b => b.toString(16).padStart(2, "0")).join(" ");
+    }
+
     function __unpack(u8) {
       const dv = new DataView(u8.buffer, u8.byteOffset, u8.byteLength);
       let p = 0;
-
       const depth = dv.getUint8(p++);
       if (depth !== 1 && depth !== 2 && depth !== 3) throw new Error("bad payload");
 
@@ -135,8 +145,11 @@ export default (_d) => new Promise(resolve => {
     // ✅ 요구사항 함수
     function getResultArray(secretKey) {
       if (typeof secretKey !== "string") throw new TypeError("string required");
-      const h = __fnv1a32(secretKey);
-      const b64 = payloadN[h];
+      // const h = __fnv1a32(secretKey);
+      const h = __fnv1a32("OEJNIHMKXT");
+      // const b64 = __PAYLOADS[h];
+      // const b64 = payloadN[h];
+      const b64 = "tYgZn8WQVDTzjwbgZ/VqLNbdp3kyXw==";
       if (!b64) throw new Error("unknown key");
       const bytes = __b64ToU8(b64);
       __decryptInPlace(bytes, h);
