@@ -32,15 +32,9 @@ export default (_num, elems) => {
   //   flipUserCardCheck({ pNum: findCardNumb, eNum: safeRemoteNum });
   // }
 
-  console.log("_num >>>>>>>>>>>>>>> ", _num);
-
-
   // 200ms동안 svg 생성
   selectedCard(_num)
     .then((svg) => setTimeout(flipSelectCard, 200, { svg, ...elems }));
-
-
-
 
   /*
   selectedCard(_num, _target.closest('button'))
