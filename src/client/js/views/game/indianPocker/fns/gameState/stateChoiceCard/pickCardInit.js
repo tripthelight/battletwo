@@ -80,6 +80,9 @@ export default async (_event) => {
     // encryptPlayerNum : publicCardNums 중 랜덤한 하나 선택
     const encryptPlayerNum = arrNumbs[Math.floor(Math.random() * arrNumbs.length)];
 
+    console.log("선택한 카드 코드 : ", encryptPlayerNum);
+
+
     showChoiceCard(_event, encryptPlayerNum);
   } else {
     throw throwObj('sessionStorageLoss', 'cardNum sessionStorage value manipulat.');

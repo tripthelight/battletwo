@@ -4,6 +4,7 @@ import { __fnv1a32 } from '@/client/js/views/game/indianPocker/fns/gameState/sta
 import { H } from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/fns/t/f';
 import nv from "@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/payload/nv";
 import nt from "@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/payload/nt";
+import findCardPukNum from '@/client/js/views/game/indianPocker/fns/test/findCardPukNum';
 
 export default () => {
   const cardCodes = publicCardNumbs();
@@ -17,6 +18,8 @@ export default () => {
    */
   for (let i = 0; i < cardCodes.length; i++) {
     const k = cardCodes[i];
+
+    console.log(findCardPukNum(k));
 
     // path : card number
     encryptionStore.dispatch(updatePathN({
