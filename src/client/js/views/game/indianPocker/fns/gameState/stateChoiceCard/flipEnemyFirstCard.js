@@ -4,6 +4,8 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import makeSeq from '@/client/js/views/game/indianPocker/fns/common/mappingCardNum';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import randomNumberMinMax from '@/client/js/views/game/indianPocker/fns/common/randomNumberMinMax';
+import selectedCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/selectedCard';
+import flipSelectCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipSelectCard';
 import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipUserCardCheck';
 import imgGetCardNum from '@/client/js/views/game/indianPocker/fns/common/images/getCards';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
@@ -49,15 +51,23 @@ export default (params) => {
   if (!ENEMY_CARD_UL) throw throwObj('elementLoss', 'ul in .choice-card failed.');
   const ENEMY_CARD_LI = ENEMY_CARD_UL.querySelectorAll('li')[RANDOM_LI];
   if (!ENEMY_CARD_LI) throw throwObj('elementLoss', 'li in .choice-card failed.');
-  const ENEMY_CARD_IMG = ENEMY_CARD_LI.querySelector('img');
+  const ENEMY_CARD_BTN = ENEMY_CARD_LI?.querySelector('button');
+  if (!ENEMY_CARD_BTN) throw throwObj('elementLoss', 'li in .choice-card button failed.');
+  const ENEMY_CARD_IMG = ENEMY_CARD_BTN.querySelector('img');
   if (!ENEMY_CARD_IMG) throw throwObj('elementLoss', 'li img in .choice-card failed.');
 
   // 명령
   storageMethod('s', 'SET_ITEM', encryptKey1, uRes);
   storageMethod('s', 'SET_ITEM', encryptKey2, lRes);
   ENEMY_CARD_LI.classList.add('show');
-  const findCardNumb = cardNumCodeDecryption(ENEMY_NUMBER);
-  ENEMY_CARD_IMG.setAttribute('src', imgGetCardNum(findCardNumb));
+
+  // 상대에게 받는 카드 번호 flip
+  selectedCard(eNum)
+    .then((svg) => flipSelectCard({ svg, imgEl: ENEMY_CARD_IMG, btnEl: ENEMY_CARD_BTN, liEl: ENEMY_CARD_LI }));
+
+  // const findCardNumb = cardNumCodeDecryption(ENEMY_NUMBER);
+  // ENEMY_CARD_IMG.setAttribute('src', imgGetCardNum(findCardNumb));
+
   // 나와 상대가 선택한 카드 비교
-  // flipUserCardCheck({ eNum, pNum });
+  flipUserCardCheck({ eNum, pNum });
 };

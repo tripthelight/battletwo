@@ -10,6 +10,8 @@ export default (_key) => {
     }
     return (CRC32.str(_key + keypair) >>> 0).toString(16); // 양수 변환 후 16진수로
   } catch (error) {
+    console.warn(error);
+
     throw throwObj('cookies', 'keypair failed.');
   }
 };

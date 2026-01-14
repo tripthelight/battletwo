@@ -23,14 +23,14 @@ export default (_num, elems) => {
     */
 
   // 상대 PEER에게 내가 선택한 카드코드 전송
-  // const encryptKey = findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85]); // enemyFirstNumber
-  // const encryptVal = window.sessionStorage.getItem(encryptKey);
-  // request('choiceFirst', { eNum: _num, pNum: encryptVal });
+  const encryptKey = findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85]); // enemyFirstNumber
+  const encryptVal = window.sessionStorage.getItem(encryptKey);
+  request('choiceFirst', { eNum: _num, pNum: encryptVal });
 
   // 상대가 이미 선택한 카드가 있으면 선/후 비교로직 실행
-  // if (encryptVal !== '') {
-  //   flipUserCardCheck({ pNum: findCardNumb, eNum: safeRemoteNum });
-  // }
+  if (encryptVal !== '') {
+    flipUserCardCheck({ pNum: _num, eNum: encryptVal });
+  }
 
   // 200ms동안 svg 생성
   selectedCard(_num)

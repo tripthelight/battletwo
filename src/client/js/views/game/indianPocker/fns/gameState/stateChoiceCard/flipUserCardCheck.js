@@ -13,6 +13,6 @@ export default (params) => {
     (pNum && encryptVal1 !== null && encryptVal1 !== '') &&
     (eNum && encryptVal2 !== null && encryptVal2 !== '')
   ) {
-    flipEnemyCardCheck(Number(eNum), Number(pNum));
+    flipEnemyCardCheck(eNum, pNum);
   }
 };
