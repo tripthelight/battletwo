@@ -78,6 +78,14 @@ export const pathPayload = (_c) => {
     return path.t;
   }
   return null;
-}
+};
+export const publicCardStrs = () => {
+  const state = encryptionStore.getState();
+  const compair = state.encryptionState.compair;
+  const encryptedKey = findCharCode([81, 71, 65, 77, 76, 89, 87, 79, 75, 66]); // privateCardStrs
+  const strList = compair[encryptedKey] || [];
+
+  return strList; //
+};
 
 export default encryptionStore;

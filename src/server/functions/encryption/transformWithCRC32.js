@@ -4,6 +4,7 @@ import CryptoJS from 'crypto-js';
 // indianPocker 안의 모든 value에 uniqueCodeByTime() 값 붙이기
 export default (obj, keypair, role) => {
   const cryptoException = (str) => ['SXIEUDBLPN'].includes(str); // AES secret key일 경우 hash 생성 안함
+  const strsException = (str) => ['QGAMLYWOKB'].includes(str); // PUBLIC_CARD_STRS 일 경우 hash 생성 안함
   // TNUFGJXDCM: PUBLIC_CARD_NUMS | PLHGVIEBNQ: PRIVATE_CARD_NUMS
   const numsException = (str) => ['TNUFGJXDCM', 'PLHGVIEBNQ'].includes(str); // NUMS의 v는 shuffle
   const numsExceptionPublic = (str) => ['TNUFGJXDCM'].includes(str); // public key 암호화
@@ -54,9 +55,15 @@ export default (obj, keypair, role) => {
           }
         }
       } else {
-        for (const innerKey in entry.v) {
-          const concatInner = entry.v[innerKey] + (role === 'impolite' ? keypair.private.impolite : keypair.private.polite);
-          nested[innerKey] = (CRC32.str(concatInner) >>> 0).toString(16); // 양수로 변환
+        if (strsException(entry.k)) {
+          for (const innerKey in entry.v) {
+            nested[innerKey] = entry.v[innerKey];
+          }
+        } else {
+          for (const innerKey in entry.v) {
+            const concatInner = entry.v[innerKey] + (role === 'impolite' ? keypair.private.impolite : keypair.private.polite);
+            nested[innerKey] = (CRC32.str(concatInner) >>> 0).toString(16); // 양수로 변환
+          }
         }
       }
       newEntry.v = nested;

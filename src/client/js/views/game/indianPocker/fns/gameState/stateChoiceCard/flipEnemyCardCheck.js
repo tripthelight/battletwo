@@ -17,25 +17,28 @@ export default (_eNum, _pNum) => {
     cardCompare(_pNum, _eNum)
       .then(result => {
         switch (Number(result)) {
-          case 0:
+          case 0: // 내 카드가 낮음
             drawResultCardInfo('end');
             storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_2);
             storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal_2);
             break;
-          case 1:
+          case 1: // 내 카드가 높음
             drawResultCardInfo('start');
             storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_1);
             storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal_1);
             break;
-          case 2:
+          case 2: // 같은 카드
             drawResultCardInfo('tie');
             break;
           default:
-            throw { message: 'flipEnemyCardCheck _eNum, _pNum failed.' };
-        }
+            throw { message: 'Select card compare failed.' };
+        };
+
+        // TEST: 같은카드 테스트
+        // drawResultCardInfo('tie');
       })
       .catch(err => {
-        throw { message: err.message ?? 'select card bit' };
+        throw { message: err?.message ?? 'Select card compare failed.' };
       });
 
 
@@ -59,7 +62,7 @@ export default (_eNum, _pNum) => {
     console.log('error : ', error);
     throw throwObj(
       error?.errCase ?? 'errorComn',
-      'flipEnemyCardCheck error.'
+      error?.message ?? 'flipEnemyCardCheck error.'
     );
   };
 };

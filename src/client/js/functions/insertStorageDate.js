@@ -33,9 +33,9 @@ export default async (msgData) => {
     }
     console.log('SECRET_KEY : ', window.sessionStorage.getItem(encryptKey));*/
 
-    const encryptKey = findCharCode([83, 88, 73, 69, 85, 68, 66, 76, 80, 78]);
-    const compair = encryptionStore.getState().encryptionState.compair;
-    console.log('SECRET_KEY : ', compair[encryptKey]);
+    // const encryptKey = findCharCode([83, 88, 73, 69, 85, 68, 66, 76, 80, 78]);
+    // const compair = encryptionStore.getState().encryptionState.compair;
+    // console.log('SECRET_KEY : ', compair[encryptKey]);
   } catch (error) {
     throw error;
   }

@@ -19,8 +19,25 @@ export default () => {
   if (!CHOICE_CARDS || CHOICE_CARDS.length <= 0) throw throwObj('elementLoss', '.choice-card li undefined / li length failed.');
 
   for (let i = 0; i < CHOICE_CARDS.length; i++) {
-    CHOICE_CARDS[i].querySelector('img').setAttribute('src', SVG_BACK);
-    CHOICE_CARDS[i].classList.remove('show');
+    const liEl = CHOICE_CARDS[i];
+    const svgEl = liEl.querySelector('svg');
+    const imgEl = liEl.querySelector('img');
+    if (svgEl) {
+      svgEl.remove();
+      const cardBack = document.createElement('img');
+      cardBack.setAttribute('src', SVG_BACK);
+      cardBack.setAttribute('alt', 'card back');
+
+      const choiceCardsBtn = document.createElement('button');
+      choiceCardsBtn.appendChild(cardBack);
+
+      liEl.appendChild(choiceCardsBtn);
+    } else if (imgEl) {
+      imgEl.setAttribute('src', SVG_BACK);
+    }
+
+    liEl.classList.remove('show');
+    liEl.classList.remove('end');
   };
 
   // 같은 카드였던 상태에서 내가 팝업 x 버튼 누르고 대기 상태 일 경우

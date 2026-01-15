@@ -17,7 +17,6 @@ export default function (_num) {
     findCharDecCode([72, 74, 90, 85, 84, 79, 88, 70, 81, 65]),
     findCharDecCode([74, 82, 80, 70, 73, 71, 83, 66, 68, 78])
   ];
-  console.log('arr --------------> ', arr);
 
   // TODO: 바로 숫자를 리턴시키면 안되고 javascript로 SVG 만들 코드 리턴 필요
   // 아래 case 순서 1 ~ 10 은 섞어야 함

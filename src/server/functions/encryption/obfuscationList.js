@@ -1,4 +1,5 @@
 import makeAesSecretKey from './makeAesSecretKey.js';
+import obfuscatedStr from './obfuscatedStr.js';
 
 export const obfuscationList = {
   indianPocker: () => {
@@ -45,6 +46,10 @@ export const obfuscationList = {
           NUM_9: 'EJLUIMTXPC', // [69, 74, 76, 85, 73, 77, 84, 88, 80, 67]
           NUM_10: 'KECDNBFAXM', // [75, 69, 67, 68, 78, 66, 70, 65, 88, 77]
         },
+      },
+      PUBLIC_CARD_STRS: {
+        k: 'QGAMLYWOKB', // [81, 71, 65, 77, 76, 89, 87, 79, 75, 66]
+        v: obfuscatedStr(),
       },
       /* COIN_NUMS: {
         k: 'OQTDZWUGXS', // [79, 81, 84, 68, 90, 87, 85, 71, 88, 83]
