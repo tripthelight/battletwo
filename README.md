@@ -4,6 +4,7 @@
   - npm install dotenv --save-dev  
   - npm install lit --save-dev  
   - npm install postcss-import --save-dev
+  - npm i -D imagemin-pngquant
 - server :  
   - npm install cluster redux @reduxjs/toolkit ioredis uuid --save-dev
 

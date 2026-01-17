@@ -8,6 +8,7 @@ import encryptCardNumber from '@/client/js/views/game/indianPocker/fns/common/ma
 import CryptoJS from 'crypto-js';
 import randomArray from '@/client/js/views/game/indianPocker/fns/common/randomArray';
 import sessionActiveCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/sessionActiveCard';
+import { selectCompairNumbers } from '@/client/store/encryptionStore';
 import drawPlayerCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/drawPlayerCard';
 
 /**
@@ -17,17 +18,37 @@ import drawPlayerCard from '@/client/js/views/game/indianPocker/fns/gameState/st
  * @return null
  */
 export default async (data) => {
-  const { step, encryptCardNum, storeageKey } = data;
+  // const { step, encryptCardNum, storeageKey } = data;
+  const { step, battleCard } = data;
 
-  const secretKeyKey = findCharCode([83, 88, 73, 69, 85, 68, 66, 76, 80, 78]); // SECRET_KEY
-  const secretKeyVal = window.sessionStorage.getItem(secretKeyKey);
+  storageMethod(
+    's',
+    'SET_ITEM',
+    findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]), // battleCardNum
+    battleCard,
+  );
 
-  if (secretKeyVal === null || (secretKeyVal !== null && secretKeyVal === '')) {
-    return errorManagement({ errCase: 'sessionStorageLoss', message: 'cardNum 복호화시 필요한 secret key 세션 없음 4' });
-  }
+  // const secretKeyKey = findCharCode([83, 88, 73, 69, 85, 68, 66, 76, 80, 78]); // SECRET_KEY
+  // const secretKeyVal = window.sessionStorage.getItem(secretKeyKey);
+  // if (secretKeyVal === null || (secretKeyVal !== null && secretKeyVal === '')) {
+  //   return errorManagement({ errCase: 'sessionStorageLoss', message: 'cardNum 복호화시 필요한 secret key 세션 없음 4' });
+  // }
 
   // randomNumCard ----------------------------------------
   if (step === 'randomNumCard') {
+    const arrNumbs = selectCompairNumbers();
+    if (!arrNumbs || (arrNumbs && arrNumbs.length === 0)) {
+      throw { message: 'battle cardNum length failed.' };
+    }
+    const battleCardNum = arrNumbs[Math.floor(Math.random() * arrNumbs.length)];
+
+    request('requestCardNumList', {
+      step: 'nextStep',
+      battleCardNum,
+    });
+
+    drawPlayerCard();
+
     /* storageMethod('s', 'SET_ITEM', storeageKey.local, encryptCardNum.local);
 
     const bytes = CryptoJS.AES.decrypt(encryptCardNum.remote, secretKeyVal);
@@ -85,8 +106,8 @@ export default async (data) => {
   }
 
   // nextStep ----------------------------------------
-  if (step === 'nextStep') {
-    // 다음 함수 실행
-    drawPlayerCard();
-  }
+  // if (step === 'nextStep') {
+  //   // 다음 함수 실행
+  //   drawPlayerCard();
+  // }
 };

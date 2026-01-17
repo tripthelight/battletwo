@@ -8,7 +8,7 @@
   z-index: 5;
   &.disabled {
     &::after {
-      content: "";
+      content: '';
       display: block;
       position: absolute;
       left: 0;
@@ -19,7 +19,8 @@
       z-index: 1;
     }
   }
-  img {
+  img,
+  svg {
     position: absolute;
     left: 50%;
     top: 50%;

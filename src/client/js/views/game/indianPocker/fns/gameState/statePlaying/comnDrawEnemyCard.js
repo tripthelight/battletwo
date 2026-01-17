@@ -1,6 +1,8 @@
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import betUserCheck from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/betUserCheck';
+import selectedCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/selectedCard';
+import flipSelectCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipSelectCard';
 import imgGetCardNum from '@/client/js/views/game/indianPocker/fns/common/images/getCards';
 
 export default (_idx) => {
@@ -10,19 +12,20 @@ export default (_idx) => {
   const ENEMY_CARD = document.querySelector('.enemy-card');
 
   // 명령
-  setTimeout(() => {
-    if (!ENEMY_CARD) {
-      let elem = document.createElement('div');
-      let imgEl = document.createElement('img');
-      // imgEl.setAttribute("src", "/images/svg/indian_poker_card/card_" + _idx + ".svg");
-      imgEl.setAttribute('src', imgGetCardNum(_idx));
-      imgEl.setAttribute('alt', 'card back');
-      elem.appendChild(imgEl);
-      elem.classList.add('enemy-card');
-      ENEMY_BLOCK.appendChild(elem);
-      setTimeout(betUserCheck, timeInterval_1);
-    } else {
-      setTimeout(betUserCheck, timeInterval_1);
-    }
-  }, timeInterval_1);
+  if (!ENEMY_CARD) {
+    /* let elem = document.createElement('div');
+    let imgEl = document.createElement('img');
+    // imgEl.setAttribute("src", "/images/svg/indian_poker_card/card_" + _idx + ".svg");
+    imgEl.setAttribute('src', imgGetCardNum(_idx));
+    imgEl.setAttribute('alt', 'card back');
+    elem.appendChild(imgEl);
+    elem.classList.add('enemy-card');
+    ENEMY_BLOCK.appendChild(elem); */
+
+    selectedCard(_idx).then((svg) => flipSelectCard({ svg, imgEl: IMG, btnEl: BTN, liEl: LI }));
+
+    betUserCheck();
+  } else {
+    betUserCheck();
+  }
 };

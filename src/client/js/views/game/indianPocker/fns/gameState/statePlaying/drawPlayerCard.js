@@ -15,16 +15,14 @@ export default () => {
   if (IMG_EL) return;
 
   // 명령
-  setTimeout(() => {
-    let playerBlock = document.createElement('div');
-    let imgEl = document.createElement('img');
-    imgEl.setAttribute('src', SVG_BACK);
-    imgEl.setAttribute('alt', 'card back');
-    imgEl.classList.add('card');
-    playerBlock.classList.add('player-card');
-    playerBlock.appendChild(imgEl);
-    PLAYER_BLOCK.appendChild(playerBlock);
-    // 다음 함수 실행
-    setTimeout(drawEnemyCard, timeInterval_1);
-  }, timeInterval_1);
+  const playerBlock = document.createElement('div');
+  const imgEl = document.createElement('img');
+  imgEl.setAttribute('src', SVG_BACK);
+  imgEl.setAttribute('alt', 'card back');
+  imgEl.classList.add('card');
+  playerBlock.classList.add('player-card');
+  playerBlock.appendChild(imgEl);
+  PLAYER_BLOCK.appendChild(playerBlock);
+  // 다음 함수 실행
+  drawEnemyCard();
 };

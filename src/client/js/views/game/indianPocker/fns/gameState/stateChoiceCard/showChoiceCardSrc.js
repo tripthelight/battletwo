@@ -33,8 +33,7 @@ export default (_num, elems) => {
   }
 
   // 200ms동안 svg 생성
-  selectedCard(_num)
-    .then((svg) => setTimeout(flipSelectCard, 200, { svg, ...elems }));
+  selectedCard(_num).then((svg) => setTimeout(flipSelectCard, 200, { svg, ...elems }));
 
   /*
   selectedCard(_num, _target.closest('button'))
@@ -53,7 +52,7 @@ export default (_num, elems) => {
 
       // 상대가 선택하기 전이 아니라면 값 복호화
       */
-      /* const safeRemoteNum = (() => {
+  /* const safeRemoteNum = (() => {
         if (encryptVal === '') return encryptVal;
         try {
           return cardNumCodeDecryption(encryptVal);
@@ -62,7 +61,7 @@ export default (_num, elems) => {
           throw throwObj('sessionStorageLoss', 'cardNum sessionStorage value manipulat.');
         }
       })(); */
-      /*
+  /*
 
       // request('choiceFirst', { eNum: findCardNumb, pNum: safeRemoteNum });
       request('choiceFirst', { eNum: _num, pNum: encryptVal });
@@ -72,5 +71,4 @@ export default (_num, elems) => {
       // }
     });
     */
-
 };
