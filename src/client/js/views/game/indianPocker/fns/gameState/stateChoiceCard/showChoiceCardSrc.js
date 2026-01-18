@@ -1,6 +1,7 @@
 import cardNumCodeDecryption from '@/client/js/functions/bcrypt/cardNumCodeDecryption';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/network/indianPocker/request';
+import mergePayload from '@/client/js/views/game/indianPocker/fns/common/compareCard/mergePayload';
 import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipUserCardCheck';
 import imgSetCardNum from '@/client/js/views/game/indianPocker/fns/common/images/setCards';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
@@ -33,7 +34,7 @@ export default (_num, elems) => {
   }
 
   // 200ms동안 svg 생성
-  selectedCard(_num).then((svg) => setTimeout(flipSelectCard, 200, { svg, ...elems }));
+  selectedCard(_num, mergePayload('pu')).then((svg) => setTimeout(flipSelectCard, 200, { svg, ...elems }));
 
   /*
   selectedCard(_num, _target.closest('button'))

@@ -9,7 +9,7 @@ export default (_code) => {
   switch (_code) {
     case findCharDecCode([79, 69, 74, 78, 73, 72, 77, 75, 88, 84]):
       // console.log('NUM 1');
-      return decoder(28 + 45, 100/2 - 1, 14 + 7); // 1 49
+      return decoder(28 + 45, 100 / 2 - 1, 14 + 7); // 1 49
     case findCharDecCode([71, 73, 90, 70, 78, 80, 84, 83, 86, 75]):
       // console.log('NUM 2');
       return decoder(31 + 8, 5 * 11 - 5, 22 + 29); // 2 50
@@ -33,15 +33,15 @@ export default (_code) => {
       return decoder(30 + 29, 9 * 7 - 7, 11 + 5); // 8 56
     case findCharDecCode([72, 74, 90, 85, 84, 79, 88, 70, 81, 65]):
       // console.log('NUM 9');
-      return decoder(30 + 29, (7 * 5) + 22, 11 + 5); // 8 57
+      return decoder(30 + 29, 7 * 5 + 22, 11 + 5); // 8 57
     case findCharDecCode([74, 82, 80, 70, 73, 71, 83, 66, 68, 78]):
       // console.log('NUM 10');
       return decoder(27 + 30, 100 / 2 - 1, 10 * 5 - 2, 42 + 8); // 10 49, 48
     default:
       throw {
         errCase: 'cardNum',
-        message: 'local drawEnemyCard.js - not find card',
-        sendMsg: 'remote drawEnemyCard.js - not find card'
-      }
+        message: 'local puk drawEnemyCard.js - not find card',
+        sendMsg: 'remote puk drawEnemyCard.js - not find card',
+      };
   }
 };

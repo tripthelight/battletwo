@@ -33,7 +33,7 @@ export default () => {
       ELEM.appendChild(innerUL);
     }
     GAME_SCENE.appendChild(ELEM);
-  };
+  }
 
   // 다음 함수 실행
   // 선플레이어 카드 선택 안내 팝업
@@ -95,17 +95,19 @@ export default () => {
     if (!map) throw throwObj('errorComn', 'keymap failed.');
 
     // 세션 값
-    const ulIdxStr  = getSessionValByKeyCodes(map.ul);
-    const liIdxStr  = getSessionValByKeyCodes(map.li);
+    const ulIdxStr = getSessionValByKeyCodes(map.ul);
+    const liIdxStr = getSessionValByKeyCodes(map.li);
     const encNumber = getSessionValByKeyCodes(map.num);
     if (ulIdxStr == null || liIdxStr == null || encNumber == null) {
       throw throwObj('elementLoss', 'select card element or cardNum sesstionStorage error.');
-    };
+    }
+    console.log('새로고침 여기 타나');
+
     const ulIdx = Number(findCardNum(ulIdxStr)) - 1;
     const liIdx = Number(findCardNum(liIdxStr)) - 1;
     if (!Number.isInteger(ulIdx) || !Number.isInteger(liIdx) || ulIdx < 0 || liIdx < 0) {
       throw throwObj('elementLoss', 'select card ul li sesstionStorage number error.');
-    };
+    }
 
     // DOM 탐색
     const CONTAINER = document.getElementById('container');
@@ -129,8 +131,7 @@ export default () => {
     // 새로고침 하면 여기서 선택한 카드 뒤집음
     flipCard[side] = encNumber;
     LI.classList.add('show');
-    selectedCard(encNumber)
-      .then((svg) => flipSelectCard({ svg, imgEl: IMG, btnEl: BTN, liEl: LI }));
+    selectedCard(encNumber).then((svg) => flipSelectCard({ svg, imgEl: IMG, btnEl: BTN, liEl: LI }));
   }
 
   // 상대 peer가 선택한 카드 있음
@@ -142,5 +143,5 @@ export default () => {
     choiceCardsClick();
   } else if (remotePlayerSelect && localPlayerSelect) {
     flipUserCardCheck({ eNum: flipCard.remote, pNum: flipCard.local });
-  };
+  }
 };

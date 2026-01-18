@@ -4,6 +4,7 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import makeSeq from '@/client/js/views/game/indianPocker/fns/common/mappingCardNum';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import randomNumberMinMax from '@/client/js/views/game/indianPocker/fns/common/randomNumberMinMax';
+import mergePayload from '@/client/js/views/game/indianPocker/fns/common/compareCard/mergePayload';
 import selectedCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/selectedCard';
 import flipSelectCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipSelectCard';
 import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipUserCardCheck';
@@ -62,8 +63,7 @@ export default (params) => {
   ENEMY_CARD_LI.classList.add('show');
 
   // 상대에게 받는 카드 번호 flip
-  selectedCard(eNum)
-    .then((svg) => flipSelectCard({ svg, imgEl: ENEMY_CARD_IMG, btnEl: ENEMY_CARD_BTN, liEl: ENEMY_CARD_LI }));
+  selectedCard(eNum, mergePayload('pu')).then((svg) => flipSelectCard({ svg, imgEl: ENEMY_CARD_IMG, btnEl: ENEMY_CARD_BTN, liEl: ENEMY_CARD_LI }));
 
   // const findCardNumb = cardNumCodeDecryption(ENEMY_NUMBER);
   // ENEMY_CARD_IMG.setAttribute('src', imgGetCardNum(findCardNumb));

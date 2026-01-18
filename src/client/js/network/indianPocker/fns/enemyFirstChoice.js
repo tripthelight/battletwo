@@ -8,6 +8,8 @@ import flipEnemyFirstCard from '@/client/js/views/game/indianPocker/fns/gameStat
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
 
+import findCardPukNum from '@/client/js/views/game/indianPocker/fns/test/findCardPukNum';
+
 export default async (_data) => {
   try {
     // sessionStorage 모든 key check
@@ -47,7 +49,7 @@ export default async (_data) => {
     }; */
 
     const { eNum, pNum } = _data;
-    console.log('내가 받은 상대가 선택한 카드 숫자 ::::::::: ', eNum);
+    console.log('내가 받은 상대가 선택한 카드 숫자 ::::::::: ', findCardPukNum(eNum));
     console.log('내가 받은 상대가 보낸 내가 선택한 카드 숫자 ::::: ', pNum);
     const encryptKey1 = findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85]); // enemyFirstNumber
     const encryptKey2 = findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]); // playerFirstNumber

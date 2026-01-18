@@ -5,6 +5,7 @@ import showChoiceCard from '@/client/js/views/game/indianPocker/fns/gameState/st
 import dataHandler from '@/client/js/functions/dataVerification/click/dataHandler';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import encryptCardNumber from '@/client/js/views/game/indianPocker/fns/common/makeCard/encryptCardNumber';
+import findCardPukNum from '@/client/js/views/game/indianPocker/fns/test/findCardPukNum';
 
 export default async (_event) => {
   // sessionStorage 모든 key check
@@ -80,8 +81,7 @@ export default async (_event) => {
     // encryptPlayerNum : publicCardNums 중 랜덤한 하나 선택
     const encryptPlayerNum = arrNumbs[Math.floor(Math.random() * arrNumbs.length)];
 
-    console.log("선택한 카드 코드 : ", encryptPlayerNum);
-
+    console.log('선택한 카드 코드 : ', findCardPukNum(encryptPlayerNum));
 
     showChoiceCard(_event, encryptPlayerNum);
   } else {
