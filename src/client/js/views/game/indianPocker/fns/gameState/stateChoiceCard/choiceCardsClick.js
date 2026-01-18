@@ -26,14 +26,23 @@ export default () => {
     // 그래서 최종 부모(indianPocker.js)의 try catch에서 못잡음
     CARDS[i].onclick = async (event) => {
       try {
-        await pickCardInit(event);
+        if (event.target) {
+          if (
+            event.target.tagName === "svg" ||
+            event.target.closest("li").classList.contains("show")
+          ) return; // 상대가 선택한 오픈된 카드일 경우 return
 
-        invalidateCardClick();
+          await pickCardInit(event);
 
-        storageMethod('s', 'SET_ITEM',
-          findCharCode([68, 71, 87, 77, 85, 66, 65, 84, 88, 69]), // enemyCardChoiceReady
-          X.enc(decodeTF(textDE([120, 111, 98, 116, 117]))) // "xobtu" : false
-        );
+          invalidateCardClick();
+
+          storageMethod('s', 'SET_ITEM',
+            findCharCode([68, 71, 87, 77, 85, 66, 65, 84, 88, 69]), // enemyCardChoiceReady
+            X.enc(decodeTF(textDE([120, 111, 98, 116, 117]))) // "xobtu" : false
+          );
+        } else {
+          throw { errCase: 'elementLoss', message: '.choice-card element failed'}
+        }
       } catch (error) {
         console.log('choiceCardsClick.js onclick error : ');
         errorManager(error, true);
