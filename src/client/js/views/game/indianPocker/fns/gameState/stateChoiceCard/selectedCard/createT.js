@@ -10,7 +10,7 @@ import { reverseString as D } from '@/client/js/views/game/indianPocker/fns/game
 export default (_d) =>
   new Promise((resolve) => {
     try {
-      const { nCode, SVG_NS, svg, HASHES, T_SHAPE_SEED, T_SHAPE_PAYLOADS, T_CASE_PAYLOADS } = _d;
+      const { nCode, SVG_NS, svg, HASHES, IDX, T_SHAPE_SEED, T_SHAPE_PAYLOADS, T_CASE_PAYLOADS } = _d;
 
       /**
        * - 단일 폴리곤: [ [Mx,My], [dx,dy], [dx,dy], ... ]  => ["M... m... l... Z"]
@@ -48,7 +48,7 @@ export default (_d) =>
         throw new TypeError('입력 형식이 올바르지 않습니다.');
       }
 
-      const d = toSvgPathsT(buildT({ HASHES, T_SHAPE_SEED, T_SHAPE_PAYLOADS, T_CASE_PAYLOADS, nCode }));
+      const d = toSvgPathsT(buildT({ HASHES, IDX, T_SHAPE_SEED, T_SHAPE_PAYLOADS, T_CASE_PAYLOADS, nCode }));
 
       for (let i = 0; i < d.length; i++) {
         const path = document.createElementNS(safeBase64Decode(SVG_NS), 'path');

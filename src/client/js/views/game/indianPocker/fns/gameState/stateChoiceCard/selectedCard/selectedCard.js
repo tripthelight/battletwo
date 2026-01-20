@@ -5,11 +5,11 @@ import createNumber from '@/client/js/views/game/indianPocker/fns/gameState/stat
 export default (nCode, payload) =>
   new Promise(async (resolve) => {
     try {
-      const { HASHES, N_PAYLOADS, T_SHAPE_SEED, T_SHAPE_PAYLOADS, T_CASE_PAYLOADS } = payload;
+      const { HASHES, IDX, N_PAYLOADS, T_SHAPE_SEED, T_SHAPE_PAYLOADS, T_CASE_PAYLOADS } = payload;
       const data = await createSVG(nCode);
-      await Promise.all([createNumber({ ...data, HASHES, N_PAYLOADS }), createT({ ...data, HASHES, T_SHAPE_SEED, T_SHAPE_PAYLOADS, T_CASE_PAYLOADS })]);
+      await Promise.all([createNumber({ ...data, HASHES, IDX, N_PAYLOADS }), createT({ ...data, HASHES, IDX, T_SHAPE_SEED, T_SHAPE_PAYLOADS, T_CASE_PAYLOADS })]);
       resolve(data.svg);
     } catch (error) {
-      throw { message: 'selectedCard : make choice card error' + error };
+      throw { errCase: 'cardNum', message: 'selectedCard : make choice card error' + error };
     }
   });

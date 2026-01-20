@@ -36,74 +36,61 @@ export default () => {
   if (!PLAYER_COINS) return errorManagement({ errCase: 'elementLoss', message: '.coins-player 엘리먼트가 없습니다.' });
 
   // 명령
-  setTimeout(() => {
-    // if (BET_USER === 'true') {
-    if (encryptVal1 === encryptVal_2) { // betUser === true
-      ENEMY_CARD.classList.add('disabled');
-      PLAYER_BLOCK.classList.remove('disabled');
-      PLAYER_COINS.classList.remove('disabled');
-      PLAYER_COINS.classList.add('active');
-      ENEMY_COINS.classList.remove('active');
-      setTimeout(() => {
-        // 시, 분 animation
-        timeDraw(true, PLAYER_COINS, ENEMY_COINS);
-        setTimeout(() => {
-          moveCoins();
-          setTimeout(() => {
-            BTN_STATE.SHOW();
-          }, timeInterval_3);
-        }, timeInterval_2);
-      }, timeInterval_1);
-      // timeDraw(true, PLAYER_COINS, ENEMY_COINS);
-      // // 다음 함수 실행
-      // setTimeout(moveCoins, timeInterval_1);
-      // setTimeout(BTN_STATE.SHOW, timeInterval_2);
-    // } else if (BET_USER === 'false') {
-    } else if (encryptVal1 === encryptVal_1) { // betUser === false
-      PLAYER_BLOCK.classList.add('disabled');
-      ENEMY_CARD.classList.remove('disabled');
-      ENEMY_COINS.classList.remove('disabled');
-      ENEMY_COINS.classList.add('active');
-      PLAYER_COINS.classList.remove('active');
-      setTimeout(() => {
-        // 시, 분 animation
-        timeDraw(false, PLAYER_COINS, ENEMY_COINS);
-        setTimeout(() => {
-          disabledMoveCoins();
-          setTimeout(() => {
-            BTN_STATE.HIDE();
-          }, timeInterval_3);
-        }, timeInterval_2);
-      }, timeInterval_1);
-      // timeDraw(false, PLAYER_COINS, ENEMY_COINS);
-      // // 다음 함수 실행
-      // setTimeout(disabledMoveCoins, timeInterval_1);
-      // setTimeout(BTN_STATE.HIDE, timeInterval_2);
-    } else {
-      // errorManagement({ errCase: 'sessionStorageLoss', message: 'betUser 세션이 true도 아니고 false도 아닙니다' });
-      throw throwObj('sessionStorageLoss', 'betuser sessionStorage value not true or false.');
+  // if (BET_USER === 'true') {
+  if (encryptVal1 === encryptVal_2) { // betUser === true
+    ENEMY_CARD.classList.add('disabled');
+    PLAYER_BLOCK.classList.remove('disabled');
+    PLAYER_COINS.classList.remove('disabled');
+    PLAYER_COINS.classList.add('active');
+    ENEMY_COINS.classList.remove('active');
+
+    // 시, 분 animation
+    timeDraw(true, PLAYER_COINS, ENEMY_COINS);
+    moveCoins();
+    BTN_STATE.SHOW();
+
+    // timeDraw(true, PLAYER_COINS, ENEMY_COINS);
+    // // 다음 함수 실행
+    // setTimeout(moveCoins, timeInterval_1);
+    // setTimeout(BTN_STATE.SHOW, timeInterval_2);
+  // } else if (BET_USER === 'false') {
+  } else if (encryptVal1 === encryptVal_1) { // betUser === false
+    PLAYER_BLOCK.classList.add('disabled');
+    ENEMY_CARD.classList.remove('disabled');
+    ENEMY_COINS.classList.remove('disabled');
+    ENEMY_COINS.classList.add('active');
+    PLAYER_COINS.classList.remove('active');
+
+    // 시, 분 animation
+    timeDraw(false, PLAYER_COINS, ENEMY_COINS);
+    disabledMoveCoins();
+    BTN_STATE.HIDE();
+    // timeDraw(false, PLAYER_COINS, ENEMY_COINS);
+    // // 다음 함수 실행
+    // setTimeout(disabledMoveCoins, timeInterval_1);
+    // setTimeout(BTN_STATE.HIDE, timeInterval_2);
+  } else {
+    // errorManagement({ errCase: 'sessionStorageLoss', message: 'betUser 세션이 true도 아니고 false도 아닙니다' });
+    throw throwObj('sessionStorageLoss', 'betuser sessionStorage value not true or false.');
+  }
+  /*
+  const BATTLE_CARD_NUM = window.sessionStorage.battleCardNum;
+  if (BATTLE_CARD_NUM) {
+    const NUMS_ARR = JSON.parse(BATTLE_CARD_NUM);
+    if (NUMS_ARR.length === 2) {
+      LOADING_EVENT.hide();
+      setTimeout(drewCheck, timeInterval_1);
+      // 기본 배팅 후, 남은 코인이 없을 경우
+      // setTimeout(coinOneCheck, timeInterval_1);
     }
-    setTimeout(() => {
-      /*
-      const BATTLE_CARD_NUM = window.sessionStorage.battleCardNum;
-      if (BATTLE_CARD_NUM) {
-        const NUMS_ARR = JSON.parse(BATTLE_CARD_NUM);
-        if (NUMS_ARR.length === 2) {
-          LOADING_EVENT.hide();
-          setTimeout(drewCheck, timeInterval_1);
-          // 기본 배팅 후, 남은 코인이 없을 경우
-          // setTimeout(coinOneCheck, timeInterval_1);
-        }
-      }
-      */
-      // const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
-      // if (BATTLE_CARD_NUM !== null) {
-      const encryptKey2 = findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]); // battleCardNum
-      const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
-      if (encryptVal2 !== null && encryptVal2 !== '') {
-        LOADING_EVENT.hide();
-        setTimeout(drewCheck, timeInterval_1);
-      }
-    }, timeInterval_4);
-  }, timeInterval_1);
+  }
+  */
+  // const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
+  // if (BATTLE_CARD_NUM !== null) {
+  const encryptKey2 = findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]); // battleCardNum
+  const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+  if (encryptVal2 !== null && encryptVal2 !== '') {
+    LOADING_EVENT.hide();
+    drewCheck()
+  }
 };

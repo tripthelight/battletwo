@@ -63,7 +63,8 @@ export default (params) => {
   ENEMY_CARD_LI.classList.add('show');
 
   // 상대에게 받는 카드 번호 flip
-  selectedCard(eNum, mergePayload('pu')).then((svg) => flipSelectCard({ svg, imgEl: ENEMY_CARD_IMG, btnEl: ENEMY_CARD_BTN, liEl: ENEMY_CARD_LI }));
+  selectedCard(eNum, mergePayload())
+    .then((svg) => flipSelectCard({ svg, imgEl: ENEMY_CARD_IMG, btnEl: ENEMY_CARD_BTN, liEl: ENEMY_CARD_LI }));
 
   // const findCardNumb = cardNumCodeDecryption(ENEMY_NUMBER);
   // ENEMY_CARD_IMG.setAttribute('src', imgGetCardNum(findCardNumb));

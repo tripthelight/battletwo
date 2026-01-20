@@ -1,8 +1,10 @@
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import betUserCheck from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/betUserCheck';
+import mergePayload from '@/client/js/views/game/indianPocker/fns/common/compareCard/mergePayload';
+import createPayload from '@/client/js/views/game/indianPocker/fns/common/compareCard/createPayload';
 import selectedCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/selectedCard';
-import flipSelectCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipSelectCard';
+import flipSelectCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/flipSelectCard';
 import imgGetCardNum from '@/client/js/views/game/indianPocker/fns/common/images/getCards';
 
 export default (_idx) => {
@@ -22,9 +24,15 @@ export default (_idx) => {
     elem.classList.add('enemy-card');
     ENEMY_BLOCK.appendChild(elem); */
 
-    selectedCard(_idx).then((svg) => flipSelectCard({ svg, imgEl: IMG, btnEl: BTN, liEl: LI }));
+    const svgWrap = document.createElement('div');
+    svgWrap.classList.add('enemy-card');
 
-    betUserCheck();
+    selectedCard(_idx, createPayload(_idx))
+      .then((svg) => {
+        flipSelectCard({ svg, svgWrap, wrap: ENEMY_BLOCK })
+        betUserCheck();
+      });
+
   } else {
     betUserCheck();
   }

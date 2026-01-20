@@ -49,8 +49,9 @@ export default (obj, keypair, role) => {
             nested[innerKey] = (CRC32.str(concatInner) >>> 0).toString(16); // 양수로 변환
           }
         } else if (numsExceptionPrivate(entry.k)) {
+          const key = (role === 'impolite' ? keypair.private.polite : keypair.private.impolite);
           for (const innerKey in newNumsObj) {
-            const concatInner = entry.v[innerKey] + (role === 'impolite' ? keypair.private.polite : keypair.private.impolite);
+            const concatInner = entry.v[innerKey] + key;
             nested[innerKey] = (CRC32.str(concatInner) >>> 0).toString(16); // 양수로 변환
           }
         }
@@ -60,8 +61,9 @@ export default (obj, keypair, role) => {
             nested[innerKey] = entry.v[innerKey];
           }
         } else {
+          const key = (role === 'impolite' ? keypair.private.impolite : keypair.private.polite);
           for (const innerKey in entry.v) {
-            const concatInner = entry.v[innerKey] + (role === 'impolite' ? keypair.private.impolite : keypair.private.polite);
+            const concatInner = entry.v[innerKey] + key;
             nested[innerKey] = (CRC32.str(concatInner) >>> 0).toString(16); // 양수로 변환
           }
         }

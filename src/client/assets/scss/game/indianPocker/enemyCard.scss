@@ -32,14 +32,16 @@
     z-index: 6;
   }
   &.round-fin {
-    .enemy-card img {
-      top: -200%;
-      transition: all 0.2s ease-in;
+    .enemy-card {
+      img, svg {
+        top: -200%;
+        transition: all 0.2s ease-in;
+      }
     }
   }
   &.round-restart {
     .enemy-card {
-      img {
+      img, svg {
         top: 50%;
         transition: all 0.2s ease-in;
       }

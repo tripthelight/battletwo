@@ -7,6 +7,7 @@ import SVG_BACK from '@/client/assets/images/svg/indian_poker/indian_poker_card/
 import imgSetCardNum from '@/client/js/views/game/indianPocker/fns/common/images/setCards';
 import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipUserCardCheck';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
+import mergePayload from '@/client/js/views/game/indianPocker/fns/common/compareCard/mergePayload';
 import selectedCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/selectedCard';
 import flipSelectCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipSelectCard';
 
@@ -131,7 +132,8 @@ export default () => {
     // 새로고침 하면 여기서 선택한 카드 뒤집음
     flipCard[side] = encNumber;
     LI.classList.add('show');
-    selectedCard(encNumber).then((svg) => flipSelectCard({ svg, imgEl: IMG, btnEl: BTN, liEl: LI }));
+    selectedCard(encNumber, mergePayload())
+      .then((svg) => flipSelectCard({ svg, imgEl: IMG, btnEl: BTN, liEl: LI }));
   }
 
   // 상대 peer가 선택한 카드 있음

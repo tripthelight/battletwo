@@ -8,7 +8,7 @@ import buildNumber from '@/client/js/views/game/indianPocker/fns/gameState/state
 export default (_d) =>
   new Promise((resolve) => {
     try {
-      const { nCode, encryptSize, SVG_NS, svg, HASHES, N_PAYLOADS } = _d;
+      const { nCode, encryptSize, SVG_NS, svg, HASHES, IDX, N_PAYLOADS } = _d;
 
       function toSvgPathsN(input) {
         const isPair = (v) => Array.isArray(v) && v.length === 2 && typeof v[0] === 'number' && typeof v[1] === 'number';
@@ -76,7 +76,7 @@ export default (_d) =>
         throw new Error('지원하지 않는 입력 형태입니다.');
       }
 
-      const d_num = toSvgPathsN(buildNumber({ HASHES, N_PAYLOADS, nCode }));
+      const d_num = toSvgPathsN(buildNumber({ HASHES, IDX, N_PAYLOADS, nCode }));
 
       const pathNumber = {
         f: document.createElementNS(safeBase64Decode(SVG_NS), 'path'),

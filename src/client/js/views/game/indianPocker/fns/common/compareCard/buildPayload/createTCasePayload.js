@@ -1,11 +1,33 @@
-import int16ToU8 from '@/client/js/module/base64/int16ToU8';
-import cryptInPlace from '@/client/js/module/base64/cryptInPlace';
-import u8ToB64 from '@/client/js/module/base64/u8ToB64';
+import buildCasePayload from '@/client/js/views/game/indianPocker/fns/common/compareCard/buildPayload/buildCasePayload';
 import findTPayloadPublic from '@/client/js/views/game/indianPocker/fns/common/compareCard/buildPayload/findTPayloadPublic';
 import findTPayloadPrivate from '@/client/js/views/game/indianPocker/fns/common/compareCard/buildPayload/findTPayloadPrivate';
 
-export default (heads, _case, _limit) => {
-  // 1) 케이스 10개 정의(recs)
+export default (heads, _limit) => {
+  // 1) 케이스 10개 정의 (길이만 필요하면 굳이 객체 10개 만들 필요 없음)
+  const CASE_COUNT = 10;
+
+  // 2) 공통 값/함수는 미리 한 번만 계산
+  // const h = heads?.[heads.length - 1];
+  if (!Array.isArray(heads) || heads.length === 0) {
+    return { T_CASE_PAYLOADS: [] };
+  }
+
+  const limit = Math.max(
+    0,
+    Math.min(_limit ?? CASE_COUNT, CASE_COUNT, heads.length) // heads[i] 안전
+  );
+
+  // 4) map 한 번으로 끝
+  return { T_CASE_PAYLOADS: Array.from({ length: limit }, (_, i) => i).map((i) => {
+      const seed = heads[i] >>> 0;
+      const { mode, recs } = findTPayloadPublic(heads[i], heads?.[heads.length - 1]);
+      return buildCasePayload(mode, recs, seed);
+    })
+  };
+
+
+
+  /* // 1) 케이스 10개 정의(recs)
   // recs: [ [anchorX, anchorY, shapeId], ... ]
   const CASE_RECS = [{},{},{},{},{},{},{},{},{},{}];
 
@@ -29,5 +51,5 @@ export default (heads, _case, _limit) => {
       return buildCasePayload(mode, recs, heads[i]);
     }
   });
-  return { T_CASE_PAYLOADS };
+  return { T_CASE_PAYLOADS }; */
 };

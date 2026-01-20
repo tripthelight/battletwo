@@ -25,11 +25,13 @@ export const GET_BASIC_BETTING = {
       })
       .then((_data) => {
         const { coinCount, betCount, originCount } = _data;
+
         // 상대 peer에게 받은 기본배팅 하기 전 코인 개수와
         // 내가 가지고 있는 상대 코인 개수가 맞는지 검증 필요
         const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
         if (encryptVal1 === null) throw throwObj('sessionStorageLoss', 'basic bet sessionStorage enemy coins failed.');
         const decryptVal = dec(encryptVal1); // coinsEnemy value number
+
         if (
           betCount !== 1 ||
           originCount !== decryptVal ||

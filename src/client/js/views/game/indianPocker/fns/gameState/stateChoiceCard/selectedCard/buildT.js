@@ -5,12 +5,25 @@ import b64ToU8 from '@/client/js/module/base64/b64ToU8';
 import decryptInPlace from '@/client/js/module/base64/decryptInPlace';
 
 export default (_params) => {
-  const { HASHES, T_SHAPE_SEED, T_SHAPE_PAYLOADS: TSP, T_CASE_PAYLOADS: TCP, nCode: TOKEN } = _params;
+  const { HASHES, IDX, T_SHAPE_SEED, T_SHAPE_PAYLOADS: TSP, T_CASE_PAYLOADS: TCP, nCode: TOKEN } = _params;
 
   const T_SHAPE_PAYLOADS = unpack(TSP);
   const T_CASE_PAYLOADS = unpack(TCP);
+
+  // console.log("HASHES =============== > ", HASHES);
+  // console.log("T_SHAPE_SEED ========= > ", T_SHAPE_SEED);
+  // console.log("T_SHAPE_PAYLOADS ===== > ", T_SHAPE_PAYLOADS);
+  // console.log("T_CASE_PAYLOADS ====== > ", T_CASE_PAYLOADS);
+
+
   // HASHES 에서 카드번호 10개만 추출해서 payloads 와 key: value로 병합
-  const CASE_PAYLOADS = Object.fromEntries(HASHES.slice(0, 10).map((k, i) => [k, T_CASE_PAYLOADS[i]]));
+  const CASE_PAYLOADS = T_CASE_PAYLOADS.length > 1 ?
+    Object.fromEntries(HASHES.slice(0, 10).map((k, i) => [k, T_CASE_PAYLOADS[i]])) :
+    Object.fromEntries([[HASHES[IDX], T_CASE_PAYLOADS[0]]])
+
+
+  // console.log("CASE_PAYLOADS ======== > ", CASE_PAYLOADS);
+
 
   // --------- nested token stream parser (OPEN/CLOSE + int16 pairs) ---------
   const parseNestedPoints = (u8) => {
@@ -93,7 +106,6 @@ export default (_params) => {
   // --------- case decode + assemble ---------
   const buildByIndex = (hash) => {
     let cached = null;
-
     const u8 = b64ToU8(CASE_PAYLOADS[hash]);
     decryptInPlace(u8, hash);
     const { mode, recs } = parseCaseTemplate(u8);

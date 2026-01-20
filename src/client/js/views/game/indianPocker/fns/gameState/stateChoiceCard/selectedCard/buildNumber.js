@@ -5,13 +5,15 @@ import b64ToU8 from '@/client/js/module/base64/b64ToU8';
 import decryptInPlace from '@/client/js/module/base64/decryptInPlace';
 
 export default (_params) => {
-  const { HASHES, N_PAYLOADS: NP, nCode: TOKEN } = _params;
+  const { HASHES, IDX, N_PAYLOADS: NP, nCode: TOKEN } = _params;
 
   const N_PAYLOADS = unpack(NP);
 
 
   // HASHES 에서 카드번호 10개만 추출해서 payloads 와 key: value로 병합
-  const PAYLOADS = Object.fromEntries(HASHES.slice(0, 10).map((k, i) => [k, N_PAYLOADS[i]]));
+  const PAYLOADS = N_PAYLOADS.length > 1 ?
+    Object.fromEntries(HASHES.slice(0, 10).map((k, i) => [k, N_PAYLOADS[i]])) :
+    Object.fromEntries([[HASHES[IDX], N_PAYLOADS[0]]]);
 
   // ---------- 토큰 스트림 -> 중첩 배열 파싱 ----------
   // OPEN=-32768, CLOSE=32767, SCALE=10 (모든 좌표는 x10 정수로 저장되어 있음)

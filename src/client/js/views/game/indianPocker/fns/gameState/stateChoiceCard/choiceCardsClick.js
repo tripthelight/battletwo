@@ -30,7 +30,7 @@ export default () => {
           if (
             event.target.tagName === "svg" ||
             event.target.closest("li").classList.contains("show")
-          ) return; // 상대가 선택한 오픈된 카드일 경우 return
+          ) return; // 상대가 선택한 오픈된 카드 클릭 시 return
 
           await pickCardInit(event);
 

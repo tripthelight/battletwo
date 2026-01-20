@@ -1,9 +1,8 @@
-import { selectCompairNumbers as prcn, publicCardNumbs as pucn } from '@/client/store/encryptionStore';
+import { publicCardNumbs as pucn } from '@/client/store/encryptionStore';
 import rand32 from '@/client/js/module/base64/rand32';
 import fnv1a32 from '@/client/js/module/base64/fnv1a32';
 
-export default (_c) => {
-  const pr = prcn();
+export default () => {
   const pu = pucn();
   const SEED = rand32(); // 공통 seed
 
@@ -15,10 +14,10 @@ export default (_c) => {
     if (isLast) {
       HASHES.push(SEED);
     } else if (isHead) {
-      HASHES.push(fnv1a32(_c === 'pr' ? pr[i] : pu[i], SEED));
+      HASHES.push(fnv1a32(pu[i], SEED));
     } else {
       HASHES.push(rand32());
     }
-  }
+  };
   return { HASHES };
 };

@@ -19,9 +19,9 @@ export default (_hash, _key) => {
       case key(findCharCode([69, 74, 76, 85, 73, 77, 84, 88, 80, 67])): return [[[0, 0],[0, 8],[8, -8],[10, 0],[0, 2.8],[-2, 2],[0, -2.8],[-7.5, 0],[-6.5, 6.5],[0, 10.3],[16, -16],[0, 15.2],[-8, 8],[-2.5, 0],[8.5, -8.5],[0, -10.3],[-16, 16]],[[0, 0],[0, 8],[8, -8],[2.5, 0],[-8.5, 8.5],[0, 10.3],[16, -16],[0, 15.2],[-8, 8],[-10, 0],[0, -2.8],[2, -2],[0, 2.8],[7.5, 0],[6.5, -6.5],[0, -10.3],[-16, 16]]]; // CARD NUM : 9
       case key(findCharCode([75, 69, 67, 68, 78, 66, 70, 65, 88, 77])): return [[[[0, 0],[0, 4],[2, -4],[0, 22],[-2, 4],[0, -22],],[[6, 0],[2, -4],[10, 0],[0, 22],[-2, 4],[-10, 0],[2, -2],[7, 0],[1, -2],[0, -20],[-7, 0],[-1, 2],[0, 20],[-2, 2]]],[[[0, 0],[0, 4],[2, -4],[10, 0],[0, 22],[-2, 4],[-10, 0],[2, -2],[7, 0],[1, -2],[0, -20],[-7, 0],[-1, 2],[0, 20],[-2, 2],[0, -22]],[[16, 0],[2, -4],[0, 22],[-2, 4],[0, -22]]]]; // CARD NUM : 10
 
-      default: throw throwObj('select card value', 'select card value not descryption');
+      default: throw { errCase: 'cardNum', message: 'find private card payload Validation error' };
     }
   } catch (error) {
-    throw throwObj(error?.errCase ?? 'find payload value descryption Validation', error?.message ?? 'find payload Validation error');
+    throw throwObj(error?.errCase ?? 'cardNum', error?.message ?? 'find payload Validation error');
   }
 }
