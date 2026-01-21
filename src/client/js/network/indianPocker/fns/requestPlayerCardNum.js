@@ -16,6 +16,8 @@ export default (data) => {
     return errorManagement({ errCase: 'sessionStorageLoss', message: 'round end battleCardNum key 세션 없음' });
   };
 
+  // 여기서 내 화면의 battleCardNum과 publicCardNum과 매칭된 publicCard 코드를 전송
+
   // request('responsePlayerCardNum', { clickBtn: clickBtn, num: REMOTE_CARD_NUM });
   request('responsePlayerCardNum', { clickBtn: clickBtn, num: encryptVal1 });
 };
