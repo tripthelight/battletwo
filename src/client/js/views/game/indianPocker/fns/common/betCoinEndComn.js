@@ -10,6 +10,7 @@ export default (_event) => {
   const encryptVal3 = findCharCode([77, 86, 83, 87, 69, 73, 72, 88, 80, 89]); // extraBetting
   // if (window.sessionStorage.betState === 'basicBetting') {
   // betState === basicBetting
+
   if (encryptVal1 === encryptVal2) {
     // 기본 배팅
     SET_BASIC_BETTING.setBasicBetting(_event);

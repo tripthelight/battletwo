@@ -19,6 +19,8 @@ export default () => {
   // const BET_STATE = BET_USER === 'true' ? true : false;
   const BET_STATE = booleanReturn([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser - true or false or error
   if (BET_STATE === '')  return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 betUser 세션이 없습니다.' });
+  console.log("BET_STATE ------------- 1 : ", BET_STATE);
+
 
 
   const encryptKey = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
@@ -26,31 +28,29 @@ export default () => {
   const decryptVel = encryptVal ? dec(encryptVal) : 0; // coinsEnemy value number ?? 0
 
   // 명령
-  setTimeout(() => {
-    // 새로 고침 시 여기를 탐
-    let elem = document.createElement('ul');
-    let liEl = new Object();
-    let minuteEl = new Object();
-    let hourEl = new Object();
-    elem.classList.add('coins');
-    elem.classList.add('coins-enemy');
-    // let coinCount = Number(window.sessionStorage.coinsEnemy);
-    // for (let i = 0; i < coinCount; i++) {
-    for (let i = 0; i < decryptVel; i++) {
-      liEl = document.createElement('li');
-      minuteEl = document.createElement('span');
-      hourEl = document.createElement('span');
-      minuteEl.classList.add('m');
-      hourEl.classList.add('h');
-      liEl.appendChild(minuteEl);
-      liEl.appendChild(hourEl);
-      elem.appendChild(liEl);
-      // 내 차례면 enemy coin은 시간이 멈추고, 내 차례가 아니면 enemy coin은 시간이 감
-      BET_STATE ? posClock(hourEl, minuteEl) : animateClock(hourEl, minuteEl, false);
-    }
-    ENEMY_BLOCK.appendChild(elem);
+  // 새로 고침 시 여기를 탐
+  const elem = document.createElement('ul');
+  let liEl = new Object();
+  let minuteEl = new Object();
+  let hourEl = new Object();
+  elem.classList.add('coins');
+  elem.classList.add('coins-enemy');
+  // let coinCount = Number(window.sessionStorage.coinsEnemy);
+  // for (let i = 0; i < coinCount; i++) {
+  for (let i = 0; i < decryptVel; i++) {
+    liEl = document.createElement('li');
+    minuteEl = document.createElement('span');
+    hourEl = document.createElement('span');
+    minuteEl.classList.add('m');
+    hourEl.classList.add('h');
+    liEl.appendChild(minuteEl);
+    liEl.appendChild(hourEl);
+    elem.appendChild(liEl);
+    // 내 차례면 enemy coin은 시간이 멈추고, 내 차례가 아니면 enemy coin은 시간이 감
+    BET_STATE ? posClock(hourEl, minuteEl) : animateClock(hourEl, minuteEl, false);
+  }
+  ENEMY_BLOCK.appendChild(elem);
 
-    // 다음 함수 실행
-    setTimeout(drawBettingZonePlaying, timeInterval_1);
-  }, timeInterval_1);
+  // 다음 함수 실행
+  drawBettingZonePlaying();
 };

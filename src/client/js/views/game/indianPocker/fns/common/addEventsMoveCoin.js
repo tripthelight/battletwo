@@ -19,7 +19,7 @@ function onDrop(event) {
   try {
     moveDrop();
   } catch (error) {
-    console.log('error moveDrop : ');
+    console.log('error moveDrop : ', error);
     errorManager(error, true);
   };
 };

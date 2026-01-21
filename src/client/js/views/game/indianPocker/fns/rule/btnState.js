@@ -66,7 +66,7 @@ export const BTN_STATE = {
   },
   CHANGE: () => {
     if (!ELEMENT.CHECK('.bottom-buttons', 'find')) return;
-    if (!INDIANPOCKER_SESSION('EFB') || INDIANPOCKER_SESSION('EFB') === 'false') {
+    if (!INDIANPOCKER_SESSION('EFB') || String(INDIANPOCKER_SESSION('EFB')) === 'false') {
       // 첫 배팅일 경우
       const BTN_BETTING = ELEMENT.CHECK('.betting', 'findCheck');
       // disabled
@@ -76,7 +76,7 @@ export const BTN_STATE = {
       } else {
         BTN_BETTING.setAttribute('disabled', true);
       }
-    } else if (INDIANPOCKER_SESSION('EFB') && INDIANPOCKER_SESSION('EFB') === 'true') {
+    } else if (INDIANPOCKER_SESSION('EFB') && String(INDIANPOCKER_SESSION('EFB')) === 'true') {
       // 처음 이후 추가 배팅일 경우
       const BTN_CALL_RAISE = ELEMENT.CHECK('.call', 'findCheck');
       // // 문구 변경 - CALL | RAISE
@@ -91,9 +91,14 @@ export const BTN_STATE = {
       changeBottomComnText(BTN_CALL_RAISE, CPB, CPEB, CEB, CEEB);
       changeBottomComnDisabled(BTN_CALL_RAISE, CP, CPB, CPEB, CE, CEB, CEEB);
       // if (CPB === CEB) BTN_CALL_RAISE.onclick = () => RULES.CALL();
+
+      console.log("여까지 오시냐 ????????? ");
+
+
       if (CPB === CEB) BTN_CALL_RAISE.onclick = () => BTN_STATE.HANDLER('call');
       if (CPB > CEB && CPB - CEB <= CE) BTN_CALL_RAISE.onclick = () => RULES.RAISE();
     }
+
     const BTN_FOLD = ELEMENT.CHECK('.fold', 'findCheck');
     // BTN_FOLD.onclick = () => RULES.FOLD();
     BTN_FOLD.onclick = () => BTN_STATE.HANDLER('fold');

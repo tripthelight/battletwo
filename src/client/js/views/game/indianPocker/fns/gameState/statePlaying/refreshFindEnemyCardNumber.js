@@ -22,15 +22,13 @@ export default () => {
   const decryptVal1 = dec(encryptVal1);
 
   // 명령
-  setTimeout(() => {
-    /*
-    const NUM = refreshEnemyNumber(BATTLE_CARD_ARR);
-    */
+  /*
+  const NUM = refreshEnemyNumber(BATTLE_CARD_ARR);
+  */
 
-    // const NUM = playerNum(BATTLE_CARD_NUM);
-    const NUM = playerNum(decryptVal1);
+  // const NUM = playerNum(BATTLE_CARD_NUM);
+  const NUM = playerNum(decryptVal1);
 
-    // 다음 함수 실행
-    setTimeout(refreshDrawEnemyCard, timeInterval_1, NUM);
-  }, timeInterval_1);
+  // 다음 함수 실행
+  refreshDrawEnemyCard(NUM);
 };

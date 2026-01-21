@@ -104,8 +104,11 @@ export default (_state) => {
   // if (!ENEMY_COIN_LEN || parseInt(ENEMY_COIN_LEN) < 1) return;
   const encryptKey2 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
   const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+
   if (encryptVal2 === null) return;
-  const decryptVal2 = enc(encryptVal2); // coinsEnemy value number
+  // const decryptVal2 = enc(encryptVal2); // coinsEnemy value number
+  const decryptVal2 = dec(encryptVal2); // coinsEnemy value number
+  console.log("num dec =======--- ", decryptVal2);
   if (decryptVal2 < 1) return;
 
   // coins enemy 코인 다시 그리기

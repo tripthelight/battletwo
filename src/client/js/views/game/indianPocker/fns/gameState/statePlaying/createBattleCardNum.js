@@ -1,3 +1,4 @@
+import { selectCompairNumbers } from '@/client/store/encryptionStore';
 import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
@@ -36,17 +37,32 @@ export default () => {
     // 내 카드 리스트(cardNum)가 배열 형식의 문자열이 아님
     return errorManagement({ errCase: 'sessionStorageLoss', message: '내 카드 리스트(cardNum)가 배열 형식의 문자열이 아님' });
   }
-  if (JSON.parse(decryptVal2) <= 0) {
+  const cardNumArr = JSON.parse(decryptVal2) || [];
+  if (cardNumArr.length <= 0) {
     // 내 카드 리스트(cardNum)가 0개임
     return errorManagement({ errCase: 'sessionStorageLoss', message: '내 카드 리스트(cardNum)가 0개임' });
-  }
+  };
+
+  // 상대 화면에 보여질 내 카드 번호 추출 - 이 카드 번호는 상대 keypair로만 decrypt 가능
+  const arrNumbs = selectCompairNumbers();
+  if (!arrNumbs || (arrNumbs && arrNumbs.length === 0)) {
+    return errorManagement({ errCase: "cardNum", message: 'create battle cardNum length failed.' });
+  };
+  const battleCard = arrNumbs[Math.floor(Math.random() * arrNumbs.length)];
 
   // 상대 peer에게 내 cardNum을 보내
   request('requestCardNumList', {
     step: 'randomNumCard',
+    remoteLen: cardNumArr.length,
+    battleCard,
+  });
+
+  /* // 상대 peer에게 내 cardNum을 보내
+  request('requestCardNumList', {
+    step: 'randomNumCard',
     list: decryptVal2,
     storeageKey: encryptKey2,
-  });
+  }); */
 
   /*
 

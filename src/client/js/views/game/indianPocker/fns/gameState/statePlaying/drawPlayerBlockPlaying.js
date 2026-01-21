@@ -9,12 +9,10 @@ export default () => {
   if (PLAYER_BLOCK) return;
 
   // 명령
-  setTimeout(() => {
-    let elem = document.createElement('div');
-    elem.classList.add('player-block');
-    GAME_SCENE.appendChild(elem);
+  const elem = document.createElement('div');
+  elem.classList.add('player-block');
+  GAME_SCENE.appendChild(elem);
 
-    // 다음 함수 실행
-    setTimeout(drawPlayerCoinsPlaying, timeInterval_1);
-  }, timeInterval_1);
+  // 다음 함수 실행
+  drawPlayerCoinsPlaying();
 };

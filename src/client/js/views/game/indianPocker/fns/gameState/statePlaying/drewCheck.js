@@ -46,7 +46,7 @@ export default () => {
   const encryptKey4 = findCharCode([80, 73, 68, 65, 90, 69, 88, 86, 82, 67]); // coinsEnemyExtBet
   const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
   if (encryptVal4 === null) return errorManagement({ errCase: 'sessionStorageLoss', message: 'drew 상태에서 coinsEnemyExtBet 세션이 없습니다' });
-  const decryptVal4 = encryptVal4 !== "" ? dec(encryptVal4) : 0; // coinsEnemyExtBet value number
+  const decryptVal4 = encryptVal4 !== "" ? dec(encryptVal4) : ""; // coinsEnemyExtBet value number
 
   // const BET_USER = window.sessionStorage.betUser;
   // if (!BET_USER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'drew 상태에서 betUser 세션이 없습니다' });
@@ -67,6 +67,7 @@ export default () => {
   if (!decryptVal_2 && decryptVal_1) return;
 
   const compairCoins = encryptNumOfStr(GRS([_t([101]), _t([119])],parseInt(_t([52])))); // ex) "ewew" : 0
+
   // if (Number(COINS_ENEMY_EXT_BET) === 0 && (Number(COINS_ENEMY) === 0 || Number(COINS_PLAYER) === 0)) {
   if (
     // coinsEnemyExtBet === 0

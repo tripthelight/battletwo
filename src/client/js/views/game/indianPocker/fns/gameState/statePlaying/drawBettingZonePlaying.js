@@ -9,12 +9,10 @@ export default () => {
   if (BETTING_ZONE) return;
 
   // 명령
-  setTimeout(() => {
-    let elem = document.createElement('div');
-    elem.classList.add('betting-zone');
-    GAME_SCENE.appendChild(elem);
+  let elem = document.createElement('div');
+  elem.classList.add('betting-zone');
+  GAME_SCENE.appendChild(elem);
 
-    // 다음 함수 실행
-    setTimeout(drawBettingZoneCoinsPlaying, timeInterval_1);
-  }, timeInterval_1);
+  // 다음 함수 실행
+  drawBettingZoneCoinsPlaying();
 };

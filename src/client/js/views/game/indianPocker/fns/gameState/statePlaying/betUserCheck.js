@@ -37,7 +37,7 @@ export default () => {
 
   // 명령
   // if (BET_USER === 'true') {
-  if (encryptVal1 === encryptVal_2) { // betUser === true
+  if (encryptVal1 === encryptVal_1) { // betUser === true
     ENEMY_CARD.classList.add('disabled');
     PLAYER_BLOCK.classList.remove('disabled');
     PLAYER_COINS.classList.remove('disabled');
@@ -54,7 +54,7 @@ export default () => {
     // setTimeout(moveCoins, timeInterval_1);
     // setTimeout(BTN_STATE.SHOW, timeInterval_2);
   // } else if (BET_USER === 'false') {
-  } else if (encryptVal1 === encryptVal_1) { // betUser === false
+  } else if (encryptVal1 === encryptVal_2) { // betUser === false
     PLAYER_BLOCK.classList.add('disabled');
     ENEMY_CARD.classList.remove('disabled');
     ENEMY_COINS.classList.remove('disabled');

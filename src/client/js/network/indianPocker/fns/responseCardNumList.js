@@ -21,13 +21,6 @@ export default async (data) => {
   // const { step, encryptCardNum, storeageKey } = data;
   const { step, battleCard } = data;
 
-  storageMethod(
-    's',
-    'SET_ITEM',
-    findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]), // battleCardNum
-    battleCard,
-  );
-
   // const secretKeyKey = findCharCode([83, 88, 73, 69, 85, 68, 66, 76, 80, 78]); // SECRET_KEY
   // const secretKeyVal = window.sessionStorage.getItem(secretKeyKey);
   // if (secretKeyVal === null || (secretKeyVal !== null && secretKeyVal === '')) {
@@ -36,18 +29,18 @@ export default async (data) => {
 
   // randomNumCard ----------------------------------------
   if (step === 'randomNumCard') {
-    const arrNumbs = selectCompairNumbers();
-    if (!arrNumbs || (arrNumbs && arrNumbs.length === 0)) {
-      throw { message: 'battle cardNum length failed.' };
-    }
-    const battleCardNum = arrNumbs[Math.floor(Math.random() * arrNumbs.length)];
+    // const arrNumbs = selectCompairNumbers();
+    // if (!arrNumbs || (arrNumbs && arrNumbs.length === 0)) {
+    //   throw { message: 'battle cardNum length failed.' };
+    // }
+    // const battleCardNum = arrNumbs[Math.floor(Math.random() * arrNumbs.length)];
 
-    request('requestCardNumList', {
-      step: 'nextStep',
-      battleCardNum,
-    });
+    // request('requestCardNumList', {
+    //   step: 'nextStep',
+    //   battleCardNum,
+    // });
 
-    drawPlayerCard();
+    // drawPlayerCard();
 
     /* storageMethod('s', 'SET_ITEM', storeageKey.local, encryptCardNum.local);
 
@@ -106,8 +99,15 @@ export default async (data) => {
   }
 
   // nextStep ----------------------------------------
-  // if (step === 'nextStep') {
-  //   // 다음 함수 실행
-  //   drawPlayerCard();
-  // }
+  if (step === 'nextStep') {
+    storageMethod(
+      's',
+      'SET_ITEM',
+      findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]), // battleCardNum
+      battleCard,
+    );
+
+    // 다음 함수 실행
+    drawPlayerCard();
+  }
 };

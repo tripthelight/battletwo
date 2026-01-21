@@ -72,7 +72,7 @@ const tag = (K, n, s) => mix((K ^ n ^ s) >>> 0) & 15;
  * @returns {string} 난독화 문자
  */
 export function enc(num) {
-  if (!Number.isInteger(num) || num < 0 || num > 0xffffffff) throw throwObj('errorComn', 'range error.');
+  if (!Number.isInteger(num) || num < 0 || num > 0xffffffff) throw throwObj('errorComn', 'enc - range error.');
   const K = ensureKey();
   const s = (rnd() ^ mix((Date.now() >>> 0) ^ K)) & 0x1f; // 5비트 nonce
   const t = tag(K, num, s);

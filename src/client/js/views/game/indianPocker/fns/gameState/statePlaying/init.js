@@ -18,7 +18,7 @@ export const STATE_PLAYING = {
     // TODO: 여기서 서로의 coinsEnemy, coinsPlayer 확인
     request('enterPlaying', [112, 108, 97, 121, 105, 110, 103]); // playing
 
-    setTimeout(sessionInitPlaying, timeInterval_1);
+    sessionInitPlaying();
   },
   drew: () => {
     // storageMethod('s', 'REMOVE_ITEM', 'betResulting');

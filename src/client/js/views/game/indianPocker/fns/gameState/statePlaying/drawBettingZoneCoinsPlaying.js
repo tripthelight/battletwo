@@ -19,36 +19,36 @@ export default () => {
   const BET_RES = booleanReturn([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser - true or false or error
   if (BET_RES === '')  return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 betUser 세션이 없습니다.' });
 
-  // 명령
-  setTimeout(() => {
-    const BET_COIN_ARR = JSON.parse(BET_COIN_POS);
-    if (!BET_COIN_ARR || BET_COIN_ARR.length <= 0) return drawPlayerBlock();
-    let elem = document.createElement('ul');
-    let liEl = new Object();
-    let minuteEl = new Object();
-    let hourEl = new Object();
-    elem.classList.add('bet-coins');
-    for (let i = 0; i < BET_COIN_ARR.length; i++) {
-      liEl = document.createElement('li');
-      minuteEl = document.createElement('span');
-      hourEl = document.createElement('span');
-      minuteEl.classList.add('m');
-      hourEl.classList.add('h');
-      liEl.appendChild(minuteEl);
-      liEl.appendChild(hourEl);
-      if (BET_COIN_ARR[i].host === 'player') {
-        BET_RES ? animateClock(hourEl, minuteEl, false) : posClock(hourEl, minuteEl);
-      }
-      if (BET_COIN_ARR[i].host === 'enemy') {
-        liEl.classList.add('e');
-        BET_RES ? posClock(hourEl, minuteEl) : animateClock(hourEl, minuteEl, false);
-      }
-      liEl.style.transform = 'translate(' + BET_COIN_ARR[i].translateX + 'px, ' + BET_COIN_ARR[i].translateY + 'px)';
-      elem.appendChild(liEl);
-    }
-    BETTING_ZONE.appendChild(elem);
+  console.log("BET_RES ------------- 2 : ", BET_RES);
 
-    // 다음 함수 실행
-    setTimeout(drawPlayerBlockPlaying, timeInterval_1);
-  }, timeInterval_1);
+  // 명령
+  const BET_COIN_ARR = JSON.parse(BET_COIN_POS);
+  if (!BET_COIN_ARR || BET_COIN_ARR.length <= 0) return drawPlayerBlock();
+  let elem = document.createElement('ul');
+  let liEl = new Object();
+  let minuteEl = new Object();
+  let hourEl = new Object();
+  elem.classList.add('bet-coins');
+  for (let i = 0; i < BET_COIN_ARR.length; i++) {
+    liEl = document.createElement('li');
+    minuteEl = document.createElement('span');
+    hourEl = document.createElement('span');
+    minuteEl.classList.add('m');
+    hourEl.classList.add('h');
+    liEl.appendChild(minuteEl);
+    liEl.appendChild(hourEl);
+    if (BET_COIN_ARR[i].host === 'player') {
+      BET_RES ? animateClock(hourEl, minuteEl, false) : posClock(hourEl, minuteEl);
+    }
+    if (BET_COIN_ARR[i].host === 'enemy') {
+      liEl.classList.add('e');
+      BET_RES ? posClock(hourEl, minuteEl) : animateClock(hourEl, minuteEl, false);
+    }
+    liEl.style.transform = 'translate(' + BET_COIN_ARR[i].translateX + 'px, ' + BET_COIN_ARR[i].translateY + 'px)';
+    elem.appendChild(liEl);
+  }
+  BETTING_ZONE.appendChild(elem);
+
+  // 다음 함수 실행
+  drawPlayerBlockPlaying();
 };

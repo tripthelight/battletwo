@@ -42,7 +42,7 @@ function F(r16, subkey, round) {
 export function encrypt32ToHex8(n, rounds = 8) {
   if (!Number.isInteger(n) || n < 0 || n > 0xffffffff) {
     // 0~2^32-1 범위의 정수만 지원;
-    throw throwObj('errorComn', 'integer range error.');
+    throw throwObj('errorComn', 'encrypt32ToHex8 - integer range error.');
   }
   let L = (n >>> 16) & 0xffff;
   let R = n & 0xffff;

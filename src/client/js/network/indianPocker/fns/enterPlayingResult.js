@@ -27,6 +27,7 @@ export default (_data) => {
         }
         // gameState === 'playing'
         if (decryptVal === encryptVal) {
+
           const decryptVal2 = booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
           if (decryptVal2 === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) { // true
             createBattleCardNum();

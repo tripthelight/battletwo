@@ -29,7 +29,5 @@ export default () => {
   );
 
   // 명령
-  setTimeout(() => {
-    setTimeout(drawEnemyBlockPlaying, timeInterval_1);
-  }, timeInterval_1);
+  drawEnemyBlockPlaying();
 };

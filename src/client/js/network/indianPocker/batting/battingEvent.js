@@ -18,7 +18,7 @@ function bettingEventSetParams() {
   const encryptKey1 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
   const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
   const decryptVal1 = dec(encryptVal1); // coinsPlayer value number
-  const encryptKey2 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayerBet
+  const encryptKey2 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]);  // coinsPlayerBet
   const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
   const decryptVal2 = dec(encryptVal2); // coinsPlayerBet value number
   const encryptKey3 = findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]); // coinsPlayerExtBet
@@ -114,6 +114,7 @@ export default {
             findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
             X.enc(decodeTF(textDE([115, 102, 112, 97]))) // "sfpa" : true
           );
+
           GET_BETTING.sessionExtraBet(_data);
         })
         .catch((error) => {

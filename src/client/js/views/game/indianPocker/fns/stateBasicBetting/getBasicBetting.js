@@ -26,6 +26,10 @@ export const GET_BASIC_BETTING = {
       .then((_data) => {
         const { coinCount, betCount, originCount } = _data;
 
+        console.log("recive coinCount :::::::: ", coinCount);
+        console.log("recive betCount ::::::::: ", betCount);
+        console.log("recive originCount :::::: ", originCount);
+
         // 상대 peer에게 받은 기본배팅 하기 전 코인 개수와
         // 내가 가지고 있는 상대 코인 개수가 맞는지 검증 필요
         const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
