@@ -29,10 +29,15 @@ export default {
       const E_NUM = refreshEnemyNumber(BATTLE_CARD_ARR);
       */
 
-      const PLAYER_CARD_NUM = window.sessionStorage.getItem('playCardNum');
+      /* const PLAYER_CARD_NUM = window.sessionStorage.getItem('playCardNum');
       if (PLAYER_CARD_NUM === null || (PLAYER_CARD_NUM !== null && PLAYER_CARD_NUM === '')) {
         return errorManagement({ errCase: 'errorComn', message: 'error - refreshInit.js - playCardNum null' });
-      }
+      } */
+      const encryptKey1 = findCharCode([77, 87, 85, 88, 83, 80, 79, 90, 65, 66]); // playCardNum
+      const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+      if (encryptVal1 === null || (encryptVal1 !== null && encryptVal1 === '')) {
+        return errorManagement({ errCase: 'errorComn', message: 'error - refreshInit.js - playCardNum null' });
+      };
 
       // const BATTLE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
       // if (BATTLE_CARD_NUM === null || (BATTLE_CARD_NUM !== null && BATTLE_CARD_NUM === '')) {

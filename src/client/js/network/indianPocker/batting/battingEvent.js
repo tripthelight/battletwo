@@ -13,6 +13,7 @@ import { GET_RAISE } from '@/client/js/views/game/indianPocker/fns/statePlaying/
 import { GET_FOLD } from '@/client/js/views/game/indianPocker/fns/statePlaying/fold/getFold';
 import { requestBatting } from '@/client/js/network/indianPocker/batting/requestBatting';
 import { request } from '@/client/js/network/indianPocker/request';
+import findRemoteCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/findRemoteCard';
 
 function bettingEventSetParams() {
   const encryptKey1 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
@@ -65,6 +66,9 @@ export default {
         return errorManagement({ errCase: 'errorComn', message: 'error CALL request !BATTLE_CARD_NUM' });
       };
 
+      // 여기서 내 화면의 battleCardNum과 publicCardNum과 매칭된 publicCard 코드를 전송
+        const remoteCard = findRemoteCard(encryptVal4);
+
       /* request('call', {
         coinCount: Number(window.sessionStorage.coinsPlayer),
         coinBet: Number(window.sessionStorage.coinsPlayerBet),
@@ -74,7 +78,7 @@ export default {
       request('call', {
         ...bettingEventSetParams(),
         // playerCardNum: BATTLE_CARD_NUM,
-        playerCardNum: encryptVal4,
+        playerCardNum: remoteCard,
       });
     },
     RAISE: () => {
@@ -145,7 +149,11 @@ export default {
         .then((_data) => {
           // 새로고침 시 상대 카드번호 필요하여 storage에 저장
           // 한 라운드가 끝난 후 삭제 필요
-          storageMethod('s', 'SET_ITEM', 'playCardNum', _data.playerCardNum);
+          storageMethod('s',
+            'SET_ITEM',
+            findCharCode([77, 87, 85, 88, 83, 80, 79, 90, 65, 66]), // playCardNum
+            _data.playerCardNum
+          );
           GET_CALL.receiveCallBet(_data);
         })
         .catch((error) => {
@@ -174,7 +182,12 @@ export default {
         .then((_data) => {
           // 새로고침 시 상대 카드번호 필요하여 storage에 저장
           // 한 라운드가 끝난 후 삭제 필요
-          storageMethod('s', 'SET_ITEM', 'playCardNum', _data.playerCardNum);
+          storageMethod(
+            's',
+            'SET_ITEM',
+            findCharCode([77, 87, 85, 88, 83, 80, 79, 90, 65, 66]), // playCardNum
+            _data.playerCardNum
+          );
           GET_FOLD.receivefold(_data);
         })
         .catch((error) => {

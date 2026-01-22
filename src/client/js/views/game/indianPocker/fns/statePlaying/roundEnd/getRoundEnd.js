@@ -16,6 +16,13 @@ import playerNumRes from '@/client/js/views/game/indianPocker/fns/common/playerN
 import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState';
 import flipPlayerCardComn from '@/client/js/views/game/indianPocker/fns/common/flipPlayerCardComn';
 import flipPlayerCard from '@/client/js/views/game/indianPocker/fns/common/flipPlayerCard';
+import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipUserCardCheck';
+import selectedCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/selectedCard';
+import flipLocalCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/flipLocalCard';
+import createPayload from '@/client/js/views/game/indianPocker/fns/common/compareCard/createPayload';
+import cardCompare from '@/client/js/views/game/indianPocker/fns/common/compareCard/cardCompare';
+import mergePayload from '@/client/js/views/game/indianPocker/fns/common/compareCard/mergePayload';
+import findRemoteCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/findRemoteCard';
 import playerNum from '@/client/js/views/game/indianPocker/fns/common/playerNum';
 import getLocalCardNum from '@/client/js/views/game/indianPocker/fns/common/getLocalCardNum';
 import BattingZoneMovePlayerBlock from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMovePlayerBlock';
@@ -40,7 +47,7 @@ export const GET_ROUND_END = {
       LOADING_EVENT.hide();
       storageMethod('s', 'REMOVE_ITEM', 'drewCardReady');
     }
-    setTimeout(GET_ROUND_END.stopBetUser, timeInterval_1);
+    GET_ROUND_END.stopBetUser();
   },
   stopBetUser: () => {
     const PLAYER_BLOCK = document.querySelector('.player-block');
@@ -81,7 +88,7 @@ export const GET_ROUND_END = {
     ENEMY_CARD.classList.add('disabled');
     // disabled touch move
     disabledMoveCoins();
-    setTimeout(GET_ROUND_END.removeBottomButtons, timeInterval_1);
+    GET_ROUND_END.removeBottomButtons();
   },
   removeBottomButtons: () => {
     BTN_STATE.HIDE();
@@ -91,7 +98,7 @@ export const GET_ROUND_END = {
     // drewState === true
     if (encryptVal1 !== null && encryptVal1 !== '' && X.dec(encryptVal1)) LOADING_EVENT.hide();
 
-    setTimeout(GET_ROUND_END.flipPlayCard, timeInterval_1);
+    GET_ROUND_END.flipPlayCard();
   },
   flipPlayCard: () => {
     /*
@@ -107,11 +114,55 @@ export const GET_ROUND_END = {
     const PLAYER_CARD_NUMBER = playerNum(PLAYER_CARD_NUM);
     */
 
-    const PLAYER_CARD_NUMBER = getLocalCardNum();
-    flipPlayerCardComn(flipPlayerCard, getLocalCardNum());
-    setTimeout(GET_ROUND_END.cardNumCompare, timeInterval_401, PLAYER_CARD_NUMBER);
+    // const PLAYER_CARD_NUMBER = getLocalCardNum();
+    // flipPlayerCardComn(flipPlayerCard, getLocalCardNum());
+    // setTimeout(GET_ROUND_END.cardNumCompare, timeInterval_401, PLAYER_CARD_NUMBER);
+
+    // battleCardNum
+    // 상대한테 받은 내 화면에서 보여진 상대 카드 번호
+    const encryptKey1 = findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]);
+    const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+    if (encryptVal1 === null) {
+      return errorManagement({ errCase: 'cardNum', message: 'round end battleCardNum key 세션 없음' });
+    };
+    console.log("상대한테 받은 내 화면에서 보여진 상대 카드 번호 -:::::::::- ", encryptKey1);
+    const remoteCard = findRemoteCard(encryptVal1);
+
+    // playCardNum
+    // 상대가 requestPlayerCardNum으로 보내준 내 카드 번호
+    const encryptKey2 = findCharCode([77, 87, 85, 88, 83, 80, 79, 90, 65, 66]);
+    const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+    if (encryptVal2 === null || (encryptVal2 !== null && encryptVal2 === '')) {
+      return errorManagement({ errCase: 'cardNum', message: 'error - getRoundEnd.js - playCardNum null' });
+    };
+
+    console.log("상대가 requestPlayerCardNum으로 보내준 내 카드 번호 -:::::::::- ", encryptVal2);
+
+    const PLAYER_BLOCK = document.querySelector('.player-block');
+    if (!PLAYER_BLOCK) {
+      console.log('error - getRoundEnd.js - !PLAYER_BLOCK');
+      return errorManagement({ errCase: 'errorComn' });
+    }
+    const PLAYER_CARD = document.querySelector('.player-card');
+    if (!PLAYER_CARD) {
+      console.log('error - getRoundEnd.js - !PLAYER_BLOCK');
+      return errorManagement({ errCase: 'errorComn' });
+    }
+    const CARD_IMG = PLAYER_CARD.querySelector('img.card');
+    if (!CARD_IMG) {
+      console.log('error - getRoundEnd.js - !PLAYER_CARD');
+      return errorManagement({ errCase: 'errorComn' });
+    }
+    PLAYER_BLOCK.classList.add('round-end');
+
+    selectedCard(encryptVal2, mergePayload())
+      .then((svg) => setTimeout(flipLocalCard, 200, { svg, svgWrap: PLAYER_CARD, imgEl: CARD_IMG }));
+
+    GET_ROUND_END.cardNumCompare({_r: remoteCard, _l: encryptVal2});
   },
-  cardNumCompare: (_playerNumRes) => {
+  // cardNumCompare: (_playerNumRes) => {
+  cardNumCompare: (_cards) => {
+    const { _r, _l } = _cards;
     /*
     const BATTLE_CARD_NUM = window.sessionStorage.battleCardNum;
     if (!BATTLE_CARD_NUM) {
@@ -150,7 +201,16 @@ export const GET_ROUND_END = {
     // if (BATTLE_CARD_NUM === null) {
     //   return errorManagement({ errCase: 'errorComn', message: 'error - getRoundEnd.js - !BATTLE_CARD_NUM' });
     // }
-    const encryptKey3 = findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]); // battleCardNum
+
+
+
+
+
+
+
+
+
+    /* const encryptKey3 = findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]); // battleCardNum
     const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
     if (encryptVal3 === null) {
       return errorManagement({ errCase: 'errorComn', message: 'error - getRoundEnd.js - !BATTLE_CARD_NUM' });
@@ -211,12 +271,39 @@ export const GET_ROUND_END = {
     } else {
       console.log('error - getRoundEnd.js - cardNumCompare !result');
       errorManagement({ errCase: 'errorComn' });
-    }
+    } */
+
+    cardCompare(_l, _r)
+      .then(result => {
+        switch (Number(result)) {
+          case 0: // 내 카드가 낮음
+
+            break;
+          case 1: // 내 카드가 높음
+
+            break;
+          case 2: // 같은 카드
+
+            break;
+          default:
+            throw { errCase: 'cardNum', message: 'compare card failed.' };
+        };
+
+        GET_ROUND_END.savsSessionResult(result);
+      })
+      .catch(err => {
+        throw { errCase: err?.errCase ?? 'cardNum', message: err?.message ?? 'Compare card cardCompare failed.' };
+      });
 
     // 내 카드 확인 완료 했으니 storage 에서 제거
-    storageMethod('s', 'REMOVE_ITEM', 'playCardNum');
+    storageMethod(
+      's',
+      'REMOVE_ITEM',
+      findCharCode([77, 87, 85, 88, 83, 80, 79, 90, 65, 66]) // playCardNum
+    );
 
-    setTimeout(GET_ROUND_END.savsSessionResult, timeInterval_1, result);
+    // GET_ROUND_END.savsSessionResult(result);
+    // setTimeout(GET_ROUND_END.savsSessionResult, timeInterval_1, result);
   },
   savsSessionResult: (_result) => {
     const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true

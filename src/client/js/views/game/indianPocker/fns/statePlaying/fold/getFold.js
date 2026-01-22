@@ -32,7 +32,11 @@ export const GET_FOLD = {
         */
         flipPlayerCardComn(flipPlayerCard, getLocalCardNum());
         // 내 카드 확인 완료 했으니 storage 에서 제거
-        storageMethod('s', 'REMOVE_ITEM', 'playCardNum');
+        storageMethod(
+          's',
+          'REMOVE_ITEM',
+          findCharCode([77, 87, 85, 88, 83, 80, 79, 90, 65, 66]) // playCardNum
+        );
 
         GET_FOLD.roundResultDisplay();
         BattingZoneMovePlayerBlock('win').then((_state) => {

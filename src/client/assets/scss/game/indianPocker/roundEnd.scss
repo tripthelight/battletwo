@@ -1,17 +1,23 @@
 .player-block {
+  svg {
+    height: 100%;
+    width: auto;
+    background-color: rgba(255,255,255,1);
+    border-radius: 8px;
+  }
   &.round-end {
     perspective: 320px;
     transform-style: preserve-3d;
     transition: all 0.2s ease-in;
     .player-card {
-      animation-name: rotateRoundBack;
+      animation-name: rotateRoundBackStart;
       animation-duration: 0.4s;
       animation-iteration-count: 1;
       animation-direction: alternate;
       animation-fill-mode: forwards;
       animation-timing-function: ease-in;
     }
-    @keyframes rotateRoundBack {
+    @keyframes rotateRoundBackStart {
       from {
         transform: translate(-50%, 0) rotateY(0deg);
       }
@@ -21,11 +27,14 @@
     }
   }
   &.round-end {
-    .player-card img.card {
-      bottom: auto;
-      top: 50%;
-      left: 50%;
-      transform: rotateY(-180deg);
+    .player-card {
+      img.card,
+      svg {
+        bottom: auto;
+        top: 50%;
+        left: 50%;
+        transform: rotateY(-180deg);
+      }
     }
   }
 }

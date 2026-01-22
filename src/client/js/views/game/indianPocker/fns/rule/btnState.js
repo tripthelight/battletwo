@@ -92,9 +92,6 @@ export const BTN_STATE = {
       changeBottomComnDisabled(BTN_CALL_RAISE, CP, CPB, CPEB, CE, CEB, CEEB);
       // if (CPB === CEB) BTN_CALL_RAISE.onclick = () => RULES.CALL();
 
-      console.log("여까지 오시냐 ????????? ");
-
-
       if (CPB === CEB) BTN_CALL_RAISE.onclick = () => BTN_STATE.HANDLER('call');
       if (CPB > CEB && CPB - CEB <= CE) BTN_CALL_RAISE.onclick = () => RULES.RAISE();
     }

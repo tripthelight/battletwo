@@ -239,6 +239,9 @@ export const obfuscationList = {
       BATTLE_CARD_NUM: {
         k: 'IKHAMRUPBW' // [73, 75, 72, 65, 77, 82, 85, 80, 66, 87]
       },
+      PLAYER_CARD_NUM: {
+        k: 'MWUXSPOZAB' // [77, 87, 85, 88, 83, 80, 79, 90, 65, 66]
+      },
       PLAYING_RELOAD_USER: {
         k: 'KQSPYXVHRM' // [75, 81, 83, 80, 89, 88, 86, 72, 82, 77]
       },
