@@ -6,7 +6,8 @@ import roundEndBetMoveEnd from '@/client/js/views/game/indianPocker/fns/common/r
 
 export default (_state) => {
   return new Promise((resolve, reject) => {
-    let STATE_CASE = ['win', 'lose'];
+    // let STATE_CASE = ['win', 'lose'];
+    const STATE_CASE = [0, 1];
     if (STATE_CASE.filter((item) => _state === item).length) {
       const BET_COINS = document.querySelector('.bet-coins');
       if (!BET_COINS) return errorManagement({ errCase: 'elementLoss', message: '.betting-zone에서 .enemy-block으로 칩을 옯길 때 .bet-coins 엘리먼트가 없습니다' });
@@ -34,10 +35,12 @@ export default (_state) => {
             ch = BET_COINS_ELEM.clientHeight;
 
             // call case
-            if (_state === 'lose') {
+            // if (_state === 'lose') {
+            if (_state === 0) {
               enemyX = roundEndBetEnemyMoveXY(cw, ch, ty, 'end').x;
               enemyY = roundEndBetEnemyMoveXY(cw, ch, ty, 'end').y;
-            } else if (_state === 'win') {
+            // } else if (_state === 'win') {
+            } else if (_state === 1) {
               enemyX = roundEndBetEnemyMoveXY(cw, ch, ty, 'add').x;
               enemyY = roundEndBetEnemyMoveXY(cw, ch, ty, 'add').y;
             }
@@ -47,7 +50,8 @@ export default (_state) => {
             // call case
             return {
               el: BET_COINS_ELEM,
-              state: _state === 'lose' ? document.querySelector('.coins-enemy') : _state === 'win' ? document.querySelector('.coins-player') : undefined,
+              // state: _state === 'lose' ? document.querySelector('.coins-enemy') : _state === 'win' ? document.querySelector('.coins-player') : undefined,
+              state: _state === 0 ? document.querySelector('.coins-enemy') : _state === 1 ? document.querySelector('.coins-player') : undefined,
               result: _state,
             };
           })

@@ -162,7 +162,6 @@ export const GET_ROUND_END = {
   },
   // cardNumCompare: (_playerNumRes) => {
   cardNumCompare: (_cards) => {
-    const { _r, _l } = _cards;
     /*
     const BATTLE_CARD_NUM = window.sessionStorage.battleCardNum;
     if (!BATTLE_CARD_NUM) {
@@ -273,27 +272,7 @@ export const GET_ROUND_END = {
       errorManagement({ errCase: 'errorComn' });
     } */
 
-    cardCompare(_l, _r)
-      .then(result => {
-        switch (Number(result)) {
-          case 0: // 내 카드가 낮음
-
-            break;
-          case 1: // 내 카드가 높음
-
-            break;
-          case 2: // 같은 카드
-
-            break;
-          default:
-            throw { errCase: 'cardNum', message: 'compare card failed.' };
-        };
-
-        GET_ROUND_END.savsSessionResult(result);
-      })
-      .catch(err => {
-        throw { errCase: err?.errCase ?? 'cardNum', message: err?.message ?? 'Compare card cardCompare failed.' };
-      });
+    const { _r, _l } = _cards;
 
     // 내 카드 확인 완료 했으니 storage 에서 제거
     storageMethod(
@@ -301,6 +280,50 @@ export const GET_ROUND_END = {
       'REMOVE_ITEM',
       findCharCode([77, 87, 85, 88, 83, 80, 79, 90, 65, 66]) // playCardNum
     );
+
+    cardCompare(_l, _r)
+      .then(result => {
+        const compRes = Number(result);
+        const encryptKey1 = findCharCode([67, 71, 79, 68, 76, 73, 84, 74, 80, 77]); // drewState
+        switch (compRes) {
+          case 0: // 내 카드가 낮음
+            storageMethod('s', 'REMOVE_ITEM', encryptKey1); // drewState
+            break;
+          case 1: // 내 카드가 높음
+            storageMethod('s', 'REMOVE_ITEM', encryptKey1); // drewState
+            break;
+          case 2: // 같은 카드
+            const encryptKey3 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
+            const encryptVal3 = booleanCheck([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
+            storageMethod('s', 'SET_ITEM', encryptKey3, encryptVal3);
+            storageMethod(
+              's',
+              'SET_ITEM',
+              encryptKey1, // drewState
+              X.enc(decodeTF(_t([115, 102, 114, 97]))), // "sfra" : true
+            );
+            storageMethod(
+              's',
+              'SET_ITEM',
+              findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]), // roundEnd
+              X.enc(decodeTF(_t([106, 103, 118, 116, 97]))), // "jgvta" : false
+            );
+            storageMethod(
+              's',
+              'SET_ITEM',
+              findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
+              X.enc(decodeTF(_t([120, 111, 118, 116, 97]))), // "xovta" : false
+            );
+            break;
+          default:
+            throw { errCase: 'cardNum', message: 'compare card failed.' };
+        };
+
+        GET_ROUND_END.savsSessionResult(compRes);
+      })
+      .catch(err => {
+        throw { errCase: err?.errCase ?? 'cardNum', message: err?.message ?? 'Compare card cardCompare failed.' };
+      });
 
     // GET_ROUND_END.savsSessionResult(result);
     // setTimeout(GET_ROUND_END.savsSessionResult, timeInterval_1, result);
@@ -371,15 +394,19 @@ export const GET_ROUND_END = {
       errorManagement({ errCase: 'errorComn' });
     }
     */
+
     const insertBet = enc(encryptNumOfStr(GRS([_t([119]), _t([119])], parseInt(_t([50]))))); // ex) "ee" : 0
-    const PNUM = Number(COINS_PLAYER_BET);
-    const ENUM = Number(COINS_ENEMY_BET);
+    // const PNUM = Number(COINS_PLAYER_BET);
+    const PNUM = Number(dec(encryptVal5));
+    // const ENUM = Number(COINS_ENEMY_BET);
+    const ENUM = Number(dec(encryptVal7));
     const RESULT = Number(PNUM) + Number(ENUM);
 
     // if (_result !== 'drew') storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', 0);
-    if (_result !== 'drew') storageMethod('s', 'SET_ITEM', encryptKey5, insertBet);
-
-    if (_result !== 'drew') storageMethod('s', 'SET_ITEM', encryptKey7, insertBet); // coinsEnemyBet
+    // if (_result !== 'drew') storageMethod('s', 'SET_ITEM', encryptKey5, insertBet);
+    // if (_result !== 'drew') storageMethod('s', 'SET_ITEM', encryptKey7, insertBet); // coinsEnemyBet
+    if (_result !== 2) storageMethod('s', 'SET_ITEM', encryptKey5, insertBet);
+    if (_result !== 2) storageMethod('s', 'SET_ITEM', encryptKey7, insertBet); // coinsEnemyBet
 
     // storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 0);
     storageMethod('s', 'SET_ITEM', encryptKey6, insertBet); // coinsPlayerExtBet
@@ -393,39 +420,34 @@ export const GET_ROUND_END = {
       encryptKey1, // roundEnd
       X.enc(decodeTF(_t([99, 109, 114, 97]))), // "cmra" : true
     );
+
     switch (_result) {
-      case 'win':
+      case 0:
+        // storageMethod('s', 'SET_ITEM', 'betUser', false);
+        storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal_2); // betUser, false
+        // storageMethod('s', 'SET_ITEM', encryptKey3, enc(Number(COINS_ENEMY) + RESULT)); // coinsEnemy
+        const decryptVal3 = dec(encryptVal3); // coinsEnemy value number
+        storageMethod('s', 'SET_ITEM', encryptKey3, enc(Number(decryptVal3) + RESULT)); // coinsEnemy
+        break;
+      case 1:
         // storageMethod('s', 'SET_ITEM', 'betUser', true);
         storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal_1); // betUser, true
         // storageMethod('s', 'SET_ITEM', 'coinsPlayer', Number(COINS_PLAYER) + RESULT);
         const decryptVal4 = dec(encryptVal4); // coinsPlayer value number
         storageMethod('s', 'SET_ITEM', encryptKey4, enc(Number(decryptVal4) + RESULT)); // coinsPlayer
         break;
-      case 'lose':
-        // storageMethod('s', 'SET_ITEM', 'betUser', false);
-        storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal_2); // betUser, false
-        storageMethod('s', 'SET_ITEM', encryptKey3, enc(Number(COINS_ENEMY) + RESULT)); // coinsEnemy
-        break;
-      case 'drew':
+      case 2:
         break;
       default:
         console.log('error - getRoundEnd.js - savsSessionResult !_result');
         errorManagement({ errCase: 'errorComn' });
         break;
     }
-    setTimeout(GET_ROUND_END.getWinnerCoin, timeInterval_1, _result);
+    GET_ROUND_END.getWinnerCoin(_result);
   },
   getWinnerCoin: (_result) => {
     switch (_result) {
-      case 'win':
-        BattingZoneMovePlayerBlock(_result).then((_state) => {
-          GET_ROUND_END.roundResultDisplay(_state);
-          BettingZoneMoveComnCallRaise(_state).then((_stateNext) => {
-            GET_ROUND_END.getWinnerCoinNext(_stateNext);
-          });
-        });
-        break;
-      case 'lose':
+      case 0:
         BattingZoneMoveEnemyBlock(_result).then((_state) => {
           GET_ROUND_END.roundResultDisplay(_state);
           BettingZoneMoveComnCallRaise(_state).then((_stateNext) => {
@@ -433,7 +455,15 @@ export const GET_ROUND_END = {
           });
         });
         break;
-      case 'drew':
+      case 1:
+        BattingZoneMovePlayerBlock(_result).then((_state) => {
+          GET_ROUND_END.roundResultDisplay(_state);
+          BettingZoneMoveComnCallRaise(_state).then((_stateNext) => {
+            GET_ROUND_END.getWinnerCoinNext(_stateNext);
+          });
+        });
+        break;
+      case 2:
         GET_ROUND_END.getWinnerCoinNext(_result);
         break;
       default:
@@ -457,13 +487,16 @@ export const GET_ROUND_END = {
     resultEl.classList.add('round-result');
     resultEl.classList.add(_result);
     switch (_result) {
-      case 'win':
-        txtArr = ['YOU', 'WIN', 'NEXT'];
-        break;
-      case 'lose':
+      // case 'lose':
+      case 0:
         txtArr = ['YOU', 'LOSE', 'NEXT'];
         break;
-      case 'drew':
+      // case 'win':
+      case 1:
+        txtArr = ['YOU', 'WIN', 'NEXT'];
+        break;
+      // case 'drew':
+      case 2:
         txtArr = ['WE', 'DREW', 'NEXT'];
         break;
       default:
@@ -473,18 +506,18 @@ export const GET_ROUND_END = {
     }
     resultEl.innerHTML = txtArr[0];
     BETTING_ZONE.appendChild(resultEl);
-    setTimeout(resultTxtInnerHtml, timeInterval_1000, resultEl, txtArr, 1);
-    setTimeout(resultTxtInnerHtml, timeInterval_2000, resultEl, txtArr, 2);
-    setTimeout(() => {
-      resultEl.remove();
-    }, timeInterval_3201);
+    setTimeout(resultTxtInnerHtml,              timeInterval_1000, resultEl, txtArr, 1);
+    setTimeout(resultTxtInnerHtml,              timeInterval_2000, resultEl, txtArr, 2);
+    setTimeout(resultEl.remove(),                 timeInterval_3201);
     setTimeout(GET_ROUND_END.cardHideAnimation, timeInterval_3202, _result);
   },
   cardHideAnimation: (_result) => {
-    const RES_STATE = ['win', 'lose', 'drew'];
+    // const RES_STATE = ['win', 'lose', 'drew'];
+    const RES_STATE = [0, 1, 2];
     if (RES_STATE.filter((item) => _result === item).length) {
       cardHideAnimationComn();
-      if (_result === 'drew') setTimeout(GET_ROUND_END.goNextRound, timeInterval_402, _result);
+      // if (_result === 'drew') setTimeout(GET_ROUND_END.goNextRound, timeInterval_402, _result);
+      if (_result === 2) setTimeout(GET_ROUND_END.goNextRound, timeInterval_402, _result);
     }
   },
   goNextRound: (_result) => {
@@ -522,10 +555,12 @@ export const GET_ROUND_END = {
 
         if (!_result) return;
         console.log('2 ************* ', _result);
-        if (_result === 'drew') {
+        // if (_result === 'drew') {
+        if (_result === 2) {
           return STATE_PLAYING.drew();
         }
-        if (_result !== 'drew') {
+        // if (_result !== 'drew') {
+        if (_result !== 2) {
           return indianPockerGameState.basicBet();
         }
         resolve();
@@ -548,10 +583,13 @@ export const GET_ROUND_END = {
       */
       .then(() => {
         console.log('4 ************* ', _result);
-        if (!_result) return;
+        // if (!_result) return;
+        if (_result !== 0 && _result !== 1 && _result !== 2) return;
         console.log('5 ************* ', _result);
-        if (_result === 'drew') return STATE_PLAYING.drew();
-        if (_result !== 'drew') {
+        // if (_result === 'drew') return STATE_PLAYING.drew();
+        if (_result === 2) return STATE_PLAYING.drew();
+        // if (_result !== 'drew') {
+        if (_result !== 2) {
           return indianPockerGameState.basicBet();
         }
       })
@@ -563,7 +601,8 @@ export const GET_ROUND_END = {
   },
   getWinnerCoinNext: (_result) => {
     // 동점이 아닐 때
-    if (_result === 'drew') return setTimeout(GET_ROUND_END.roundResultDisplay, timeInterval_202, _result, false);
+    // if (_result === 'drew') return setTimeout(GET_ROUND_END.roundResultDisplay, timeInterval_202, _result, false);
+    if (_result === 2) return setTimeout(GET_ROUND_END.roundResultDisplay, timeInterval_202, _result, false);
     const BET_COINS = document.querySelector('.bet-coins');
     if (!BET_COINS) return errorManagement({ errCase: 'elementLoss', message: 'call | raise 결과에서 .bet-coins 엘리먼트가 없습니다' });
     const CPINS_ENEMY = document.querySelector('.coins-enemy');
@@ -610,6 +649,6 @@ export const GET_ROUND_END = {
     const encryptKey3 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
     const encryptVal3 = findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
     storageMethod('s', 'SET_ITEM', encryptKey3, encryptVal3);
-    setTimeout(GET_ROUND_END.goNextRound, timeInterval_402, _result);
+    GET_ROUND_END.goNextRound(_result);
   },
 };
