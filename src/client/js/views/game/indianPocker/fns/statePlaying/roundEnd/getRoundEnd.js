@@ -610,7 +610,13 @@ export const GET_ROUND_END = {
       });
   },
   getWinnerCoinNext: (_result) => {
-    // [1(win), 3(die), 0(lose), 1(win), 2(drew)]
+    /**
+     * _result :
+        - 0 : lose
+        - 1 : win
+        - 2 : drew
+        - 3 : die
+     */
     // 동점이 아닐 때
     // if (_result === 'drew') return setTimeout(GET_ROUND_END.roundResultDisplay, timeInterval_202, _result, false);
     if (_result === 2) return setTimeout(GET_ROUND_END.roundResultDisplay, timeInterval_202, _result, false);
