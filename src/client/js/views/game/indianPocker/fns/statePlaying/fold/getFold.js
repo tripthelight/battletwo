@@ -10,6 +10,9 @@ import { timeInterval_1, timeInterval_1000, timeInterval_2000, timeInterval_3201
 import { bottomSheet } from '@/client/components/popup/bottomSheet/bottomSheet';
 import flipPlayerCardComn from '@/client/js/views/game/indianPocker/fns/common/flipPlayerCardComn';
 import flipPlayerCard from '@/client/js/views/game/indianPocker/fns/common/flipPlayerCard';
+import selectedCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/selectedCard';
+import mergePayload from '@/client/js/views/game/indianPocker/fns/common/compareCard/mergePayload';
+import flipLocalCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/flipLocalCard';
 import playerNumRes from '@/client/js/views/game/indianPocker/fns/common/playerNumRes';
 import getLocalCardNum from '@/client/js/views/game/indianPocker/fns/common/getLocalCardNum';
 import BattingZoneMovePlayerBlock from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMovePlayerBlock';
@@ -27,10 +30,38 @@ export const GET_FOLD = {
     });
     PROMISE
       .then((_data) => {
+        const { penalty, playerCardNum } = _data;
         /*
         flipPlayerCardComn(flipPlayerCard, playerNumRes());
         */
-        flipPlayerCardComn(flipPlayerCard, getLocalCardNum());
+
+
+
+
+        // flipPlayerCardComn(flipPlayerCard, getLocalCardNum());
+
+        const PLAYER_BLOCK = document.querySelector('.player-block');
+        if (!PLAYER_BLOCK) {
+          console.log('error - getRoundEnd.js - !PLAYER_BLOCK');
+          return errorManagement({ errCase: 'errorComn' });
+        }
+        const PLAYER_CARD = document.querySelector('.player-card');
+        if (!PLAYER_CARD) {
+          console.log('error - getRoundEnd.js - !PLAYER_BLOCK');
+          return errorManagement({ errCase: 'errorComn' });
+        }
+        const CARD_IMG = PLAYER_CARD.querySelector('img.card');
+        if (!CARD_IMG) {
+          console.log('error - getRoundEnd.js - !PLAYER_CARD');
+          return errorManagement({ errCase: 'errorComn' });
+        }
+        PLAYER_BLOCK.classList.add('round-end');
+        selectedCard(playerCardNum, mergePayload())
+          .then((svg) => setTimeout(flipLocalCard, 200, { svg, svgWrap: PLAYER_CARD, imgEl: CARD_IMG }));
+
+
+
+
         // 내 카드 확인 완료 했으니 storage 에서 제거
         storageMethod(
           's',
@@ -65,7 +96,7 @@ export const GET_FOLD = {
             foldSendResultComn();
             // storageMethod('s', 'SET_ITEM', 'betUser', true);
             storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_1); // betUser, true
-            if (_data.penalty) {
+            if (penalty) {
               // 상대 카드가 10일 때
               bottomSheet.show(text.indianpocker.benefit, timeInterval_5000);
               EnemyBlockMovePlayerBlock().then((_result) => {
@@ -128,7 +159,8 @@ export const GET_FOLD = {
       setTimeout(() => {
         // GET_ROUND_END.getWinnerCoinNext('win');
         setTimeout(() => {
-          GET_ROUND_END.getWinnerCoinNext('win');
+          // GET_ROUND_END.getWinnerCoinNext('win');
+          GET_ROUND_END.getWinnerCoinNext(1);
           // GET_ROUND_END.goNextRound('win');
         }, timeInterval_1);
       }, timeInterval_1);

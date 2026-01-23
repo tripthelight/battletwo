@@ -1,5 +1,7 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import findCharDecCode from '@/client/js/functions/findCharDecCode';
 import { timeInterval_1 } from '@/client/js/functions/variable';
+import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState.js';
 import { comnText } from '@/client/js/functions/language';
 import getLocalCardNum from '@/client/js/views/game/indianPocker/fns/common/getLocalCardNum';
@@ -46,10 +48,16 @@ export const RULES = {
     /*
     const P_NUM_RES = playerNumRes();
     */
-    const P_NUM_RES = getLocalCardNum();
+    // const P_NUM_RES = getLocalCardNum();
+    const encryptKey1 = findCharCode([77, 87, 85, 88, 83, 80, 79, 90, 65, 66]); // playCardNum
+    const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+    if (encryptVal1 === null || (encryptVal1 !== null && encryptVal1 === '')) {
+      errorManagement({ errCase: 'errorComn', message: 'error - rules.js - playCardNum null' });
+    };
+    const P_NUM_RES = encryptVal1 === findCharDecCode([74, 82, 80, 70, 73, 71, 83, 66, 68, 78]); // FOLD 시 패널티 받는 카드 숫자 10
     foldPreCalculation(P_NUM_RES);
     RULES.COMN(comnText.fold);
-    SET_FOLD.setFold(P_NUM_RES);
+    SET_FOLD.setFold({ _penalty: P_NUM_RES, _num: encryptVal1});
     SOCKET_EVENT.SET.FOLD(P_NUM_RES);
   },
   ALLIN: () => {

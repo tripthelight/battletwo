@@ -5,6 +5,9 @@ import { bottomSheet } from '@/client/components/popup/bottomSheet/bottomSheet';
 import { text } from '@/client/js/functions/language';
 import flipPlayerCardComn from '@/client/js/views/game/indianPocker/fns/common/flipPlayerCardComn';
 import flipPlayerCard from '@/client/js/views/game/indianPocker/fns/common/flipPlayerCard';
+import selectedCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/selectedCard';
+import mergePayload from '@/client/js/views/game/indianPocker/fns/common/compareCard/mergePayload';
+import flipLocalCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/flipLocalCard';
 import BattingZoneMoveEnemyBlock from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMoveEnemyBlock';
 import BettingZoneMoveComnFold from '@/client/js/views/game/indianPocker/fns/common/BettingZoneMoveComnFold';
 import PlayerBlockMoveEnemyBlock from '@/client/js/views/game/indianPocker/fns/common/PlayerBlockMoveEnemyBlock';
@@ -48,7 +51,8 @@ export const SET_FOLD = {
     pcDraggableCheck('coins-player', false);
     setTimeout(
       () => {
-        GET_ROUND_END.getWinnerCoinNext('die');
+        // GET_ROUND_END.getWinnerCoinNext('die');
+        GET_ROUND_END.getWinnerCoinNext(3);
         cardHideAnimationComn();
         // setTimeout(GET_ROUND_END.goNextRound, timeInterval_1);
       },
@@ -72,12 +76,13 @@ export const SET_FOLD = {
       resultEl.remove();
     }, timeInterval_3201);
   },
-  setFold: (_num) => {
+  setFold: (_data) => {
     const PROMISE = new Promise((resolve, reject) => {
-      resolve(_num);
+      resolve(_data);
     });
     PROMISE
-      .then((_numRes) => {
+      .then((_data) => {
+        const { _penalty, _num } = _data;
         const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
         const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
         const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
@@ -85,7 +90,32 @@ export const SET_FOLD = {
         // storageMethod('s', 'SET_ITEM', 'betUser', false);
         storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_2); // betUser, false
         storageMethod('s', 'REMOVE_ITEM', findCharCode([67, 71, 79, 68, 76, 73, 84, 74, 80, 77])); // drewState
-        flipPlayerCardComn(flipPlayerCard, _numRes);
+
+
+        // flipPlayerCardComn(flipPlayerCard, _numRes);
+
+        const PLAYER_BLOCK = document.querySelector('.player-block');
+        if (!PLAYER_BLOCK) {
+          console.log('error - getRoundEnd.js - !PLAYER_BLOCK');
+          return errorManagement({ errCase: 'errorComn' });
+        }
+        const PLAYER_CARD = document.querySelector('.player-card');
+        if (!PLAYER_CARD) {
+          console.log('error - getRoundEnd.js - !PLAYER_BLOCK');
+          return errorManagement({ errCase: 'errorComn' });
+        }
+        const CARD_IMG = PLAYER_CARD.querySelector('img.card');
+        if (!CARD_IMG) {
+          console.log('error - getRoundEnd.js - !PLAYER_CARD');
+          return errorManagement({ errCase: 'errorComn' });
+        }
+        PLAYER_BLOCK.classList.add('round-end');
+        selectedCard(_num, mergePayload())
+          .then((svg) => setTimeout(flipLocalCard, 200, { svg, svgWrap: PLAYER_CARD, imgEl: CARD_IMG }));
+
+
+
+
 
         // 내 카드 확인 완료 했으니 storage 에서 제거
         storageMethod(
@@ -149,7 +179,8 @@ export const SET_FOLD = {
             // storageMethod('s', 'SET_ITEM', 'coinsPlayer', FOLD_CP + FOLD_CPEB);
             storageMethod('s', 'SET_ITEM', encryptKey2, enc(FOLD_CP + FOLD_CPEB)); // coinsPlayer
 
-            if (_num === 10) {
+            // if (_num === 10) {
+            if (_penalty) {
               bottomSheet.show(text.indianpocker.penalty, timeInterval_5000);
               PlayerBlockMoveEnemyBlock().then(() => {
                 SET_FOLD.foldPenaltySessionModify(true);

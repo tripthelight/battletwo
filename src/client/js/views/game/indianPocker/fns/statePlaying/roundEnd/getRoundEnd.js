@@ -485,18 +485,21 @@ export const GET_ROUND_END = {
     let txtArr = [];
     let resultEl = document.createElement('div');
     resultEl.classList.add('round-result');
-    resultEl.classList.add(_result);
+    // resultEl.classList.add(_result);
     switch (_result) {
       // case 'lose':
       case 0:
+        resultEl.classList.add("lose");
         txtArr = ['YOU', 'LOSE', 'NEXT'];
         break;
       // case 'win':
       case 1:
+        resultEl.classList.add("win");
         txtArr = ['YOU', 'WIN', 'NEXT'];
         break;
       // case 'drew':
       case 2:
+        resultEl.classList.add("drew");
         txtArr = ['WE', 'DREW', 'NEXT'];
         break;
       default:
@@ -553,7 +556,14 @@ export const GET_ROUND_END = {
         }
         */
 
-        if (!_result) return;
+        console.log("_result --------- : ", _result);
+
+        console.log("VALITION ------ 1 : ", _result === undefined);
+        console.log("VALITION ------ 2 : ", _result === null);
+        console.log("VALITION ------ 3 : ", !Number.isInteger(_result));
+
+
+        if (_result === undefined || _result === null || !Number.isInteger(_result)) return resolve();
         console.log('2 ************* ', _result);
         // if (_result === 'drew') {
         if (_result === 2) {
@@ -582,7 +592,7 @@ export const GET_ROUND_END = {
       })
       */
       .then(() => {
-        console.log('4 ************* ', _result);
+        /* console.log('4 ************* ', _result);
         // if (!_result) return;
         if (_result !== 0 && _result !== 1 && _result !== 2) return;
         console.log('5 ************* ', _result);
@@ -591,7 +601,7 @@ export const GET_ROUND_END = {
         // if (_result !== 'drew') {
         if (_result !== 2) {
           return indianPockerGameState.basicBet();
-        }
+        } */
       })
       .catch((err) => {
         // request('opponentFouls', { message: err });
@@ -600,6 +610,7 @@ export const GET_ROUND_END = {
       });
   },
   getWinnerCoinNext: (_result) => {
+    // [1(win), 3(die), 0(lose), 1(win), 2(drew)]
     // 동점이 아닐 때
     // if (_result === 'drew') return setTimeout(GET_ROUND_END.roundResultDisplay, timeInterval_202, _result, false);
     if (_result === 2) return setTimeout(GET_ROUND_END.roundResultDisplay, timeInterval_202, _result, false);

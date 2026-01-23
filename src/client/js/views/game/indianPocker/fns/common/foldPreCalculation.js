@@ -14,6 +14,7 @@ import { request } from '@/client/js/network/indianPocker/request';
  * 만든 data 삭제 필요
  * FOLD를 실행한 USER만 data가 생성
  * 내가 새로고침 했는지 상대에게 알려야함 - 상대도 동시에 새고고침 할 수 있음
+ * @param {boolean} myCardNum 내 카드가 10인면 true
  */
 export default (myCardNum) => {
   // FOLD 상태 저장
@@ -122,7 +123,8 @@ export default (myCardNum) => {
   };
 
   firstCalc();
-  if (myCardNum === 10) penaltyCalc();
+  // if (myCardNum === 10) penaltyCalc();
+  if (myCardNum) penaltyCalc();
 
   const encryptVal6_2 = window.sessionStorage.getItem(encryptKey6); // coinsEnemyLocalFold value
   const decryptVal6_2 = dec(encryptVal6_2); // coinsEnemyLocalFold value number

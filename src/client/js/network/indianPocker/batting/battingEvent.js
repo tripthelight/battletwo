@@ -99,11 +99,14 @@ export default {
       if (encryptVal5 === null) {
         return errorManagement({ errCase: 'errorComn', message: 'error FOLD request !BATTLE_CARD_NUM' });
       };
+      const remoteCard = findRemoteCard(encryptVal5);
 
       request('foldSend', {
-        penalty: Number(_penalty) === 10 ? true : false,
+        // penalty: Number(_penalty) === 10 ? true : false,
+        penalty: _penalty, // _penalty : 내가 포기한 카드가 10이면 true
         // playerCardNum: BATTLE_CARD_NUM,
-        playerCardNum: encryptVal5,
+        // playerCardNum: encryptVal5,
+        playerCardNum: remoteCard,
       });
     },
   },
