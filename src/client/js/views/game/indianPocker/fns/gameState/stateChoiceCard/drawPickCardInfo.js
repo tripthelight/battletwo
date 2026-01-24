@@ -37,7 +37,5 @@ export default () => {
   elem.classList.add('modal-popup');
   CONTAINER.appendChild(elem);
 
-  btnClose.onclick = () => {
-    closePopup(btnClose);
-  };
+  btnClose.onclick = closePopup(btnClose);
 };

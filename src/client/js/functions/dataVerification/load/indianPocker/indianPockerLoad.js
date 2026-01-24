@@ -1,4 +1,3 @@
-// import { consRefresh } from '@/client/js/webRTC/rtcConn'
 import findCharCode from '@/client/js/functions/findCharCode';
 import { CHOICE_CARD_DATA_HANDLER } from '@/client/js/functions/dataVerification/load/indianPocker/choiceCard';
 import { BASIC_BET_DATA_HANDLER } from '@/client/js/functions/dataVerification/load/indianPocker/basicBet';
@@ -28,4 +27,9 @@ export default (gameState, storageKeys) => {
       BASIC_BET_DATA_HANDLER.handleInitialLoad(storageKeys);
     };
   }; */
+
+  // gameState: choiceCard
+  if (gameState === findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82])) {
+    CHOICE_CARD_DATA_HANDLER.handleInitialLoad(storageKeys);
+  }
 };

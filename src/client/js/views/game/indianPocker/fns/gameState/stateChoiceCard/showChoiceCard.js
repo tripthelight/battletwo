@@ -26,9 +26,7 @@ export default (_event, _playerNum) => {
   const encryptKey1 = findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]); // playerFirstNumber
   const encryptKey2 = findCharCode([78, 73, 68, 76, 67, 82, 87, 83, 89, 70]); // ulIndex
   const encryptKey3 = findCharCode([83, 70, 79, 67, 65, 71, 66, 87, 77, 86]); // liIndex
-
   storageMethod('s', 'SET_ITEM', encryptKey1, _playerNum);
-
   // 내가 클릭한 카드버튼이 속한 ul의 index : 두줄이니까 0 or 1
   const uIdx = findIndexElem(TARGET_UL, TARGET_WRAP);
   const uRes = findCharCode(makeSeq(uIdx)); // makeSeq 는 0 ~ 1 중 하나를 받아서 1 ~ 1 중 +1된 결과를 리턴
@@ -37,7 +35,6 @@ export default (_event, _playerNum) => {
   const lIdx = findIndex(TARGET_LI);
   const lRes = findCharCode(makeSeq(lIdx)); // makeSeq 는 0 ~ 9 중 하나를 받아서 1 ~ 10 중 +1된 결과를 리턴
   storageMethod('s', 'SET_ITEM', encryptKey3, lRes);
-
   TARGET_LI.classList.add('show');
   showChoiceCardSrc(_playerNum, { imgEl: TARGET_TAG_NAME, btnEl: TARGET_BTN, liEl: TARGET_LI });
 };

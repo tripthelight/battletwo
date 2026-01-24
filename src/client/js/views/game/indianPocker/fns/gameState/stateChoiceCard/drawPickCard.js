@@ -102,7 +102,6 @@ export default () => {
     if (ulIdxStr == null || liIdxStr == null || encNumber == null) {
       throw throwObj('elementLoss', 'select card element or cardNum sesstionStorage error.');
     }
-    console.log('새로고침 여기 타나');
 
     const ulIdx = Number(findCardNum(ulIdxStr)) - 1;
     const liIdx = Number(findCardNum(liIdxStr)) - 1;
@@ -119,16 +118,6 @@ export default () => {
     const IMG = BTN?.querySelector('img');
     if (!IMG || !BTN || !LI) throw throwObj('elementLoss', 'select card element failed.');
 
-    // 숫자 복호화 및 이미지 반영
-    // const cardNum = cardNumDecryption(encNumber);
-    // flipCard[side] = cardNum;
-
-    // IMG.setAttribute('src', imgSetCardNum(cardNum));
-    // LI.classList.add('show');
-
-    // ———————————————————————————————————————————————————————————————————
-    // ———————————————————————————————————————————————————————————————————
-    // ———————————————————————————————————————————————————————————————————
     // 새로고침 하면 여기서 선택한 카드 뒤집음
     flipCard[side] = encNumber;
     LI.classList.add('show');

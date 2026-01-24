@@ -10,7 +10,7 @@ import deliverToGame from '@/client/js/module/webRTC/reliable/indianPoker/delive
 import handleEnvelope from '@/client/js/module/webRTC/reliable/indianPoker/handleEnvelope';
 import makeCard from '@/client/js/views/game/indianPocker/fns/common/makeCard/makeCard';
 import makePayload from '@/client/js/views/game/indianPocker/fns/common/makePayload/makePayload';
-// import indianPockerGameState from '@/client/js/gameState/indianPocker';
+import indianPockerGameState from '@/client/js/gameState/indianPocker';
 
 LOADING_EVENT.show();
 const GAME_NAME = 'indianPocker';
@@ -22,7 +22,7 @@ async function startGame() {
   waitPeer(2);
   await makeCard();
   makePayload(); // 카드 선택 시 보여지는 카드의 svg > path의 number/T payload
-  // indianPockerGameState.choiceCard();
+  indianPockerGameState.choiceCard();
   LOADING_EVENT.hide();
 };
 
