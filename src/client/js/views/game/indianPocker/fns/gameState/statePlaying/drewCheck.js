@@ -6,7 +6,7 @@ import _t from '@/client/js/module/crypts/textDE';
 import {GRS} from '@/client/js/module/crypts/generateRandomString';
 import booleanReturn from '@/client/js/functions/validation/booleanReturn';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import { timeInterval_1, timeInterval_2 } from '@/client/js/functions/variable.js';
+// import { timeInterval_1, timeInterval_2 } from '@/client/js/functions/variable.js';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import pcDraggableCheck from '@/client/js/views/game/indianPocker/fns/common/pcDraggableCheck.js';
 import disabledMoveCoins from '@/client/js/views/game/indianPocker/fns/common/disabledMoveCoins.js';

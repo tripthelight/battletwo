@@ -1,12 +1,12 @@
 import validateStore, { updateEnum } from '@/client/store/validateStore';
-import storageMethod from '@/client/js/module/storage/storageMethod';
-import { timeInterval_1 } from '@/client/js/functions/variable';
-import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
-import { request } from '@/client/js/network/indianPocker/request';
-import P1 from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/P1';
-import P2 from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/P2';
-import P3 from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/P3';
 import findCharCode from '@/client/js/functions/findCharCode';
+import { request } from '@/client/js/network/indianPocker/request';
+// import storageMethod from '@/client/js/module/storage/storageMethod';
+// import { timeInterval_1 } from '@/client/js/functions/variable';
+// import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
+// import P1 from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/P1';
+// import P2 from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/P2';
+// import P3 from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/P3';
 
 export default (_enum) => {
   // element | seeeion 체크

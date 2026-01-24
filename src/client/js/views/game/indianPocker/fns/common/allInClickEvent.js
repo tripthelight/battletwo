@@ -1,12 +1,12 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { dec, enc } from '@/client/js/module/crypts/obf8lower';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import INDIANPOCKER_RULES from '@/client/js/views/game/indianPocker/fns/rules/rules.js';
+import INDIANPOCKER_RULES from '@/client/js/views/game/indianPocker/fns/rules/rules';
 import PlayerBlockMoveBattingZone from '@/client/js/views/game/indianPocker/fns/common/PlayerBlockMoveBattingZone.js';
 import BattingZoneMovePlayerBlock from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMovePlayerBlock.js';
 import BettingZoneMoveAllin from '@/client/js/views/game/indianPocker/fns/common/BettingZoneMoveAllin.js';
 import BattingZoneMoveAllinTime from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMoveAllinTime';
-import { RULES } from '@/client/js/views/game/indianPocker/fns/rule/rules.js';
+// import { RULES } from '@/client/js/views/game/indianPocker/fns/rule/rules.js';
 import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState';
 import SOCKET_EVENT from '@/client/js/network/indianPocker/batting/battingEvent';
 

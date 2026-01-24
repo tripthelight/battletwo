@@ -1,12 +1,12 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
-import { timeInterval_1, timeInterval_2, timeInterval_3, timeInterval_4 } from '@/client/js/functions/variable';
+// import { timeInterval_1, timeInterval_2, timeInterval_3, timeInterval_4 } from '@/client/js/functions/variable';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import moveCoins from '@/client/js/views/game/indianPocker/fns/common/moveCoins';
 import disabledMoveCoins from '@/client/js/views/game/indianPocker/fns/common/disabledMoveCoins';
 import drewCheck from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/drewCheck';
-import coinOneCheck from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/coinOneCheck';
+// import coinOneCheck from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/coinOneCheck';
 import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState';
 import timeDraw from '@/client/js/views/game/indianPocker/fns/common/timeDraw';
 

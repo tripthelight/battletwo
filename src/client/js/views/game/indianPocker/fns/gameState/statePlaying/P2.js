@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { timeInterval_1 } from '@/client/js/functions/variable';
-import findCharCode from '@/client/js/functions/findCharCode';
+// import findCharCode from '@/client/js/functions/findCharCode';
 
 export default (data) => {
   return new Promise((resolve, reject) => {

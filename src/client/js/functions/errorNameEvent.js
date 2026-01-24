@@ -1,5 +1,3 @@
-import { text } from '@/client/js/functions/language';
-
 export default function errorNameEvent(_bodyElem, _txt) {
   const INFO_TEXT_EL = document.querySelector('.info-change-name');
   if (INFO_TEXT_EL) return;

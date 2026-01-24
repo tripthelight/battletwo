@@ -1,7 +1,7 @@
-import { connObj } from '@/client/js/webRTC/rtcConn';
+// import { connObj } from '@/client/js/webRTC/rtcConn';
 
 export function request(k, v) {
-  const dataChannel = connObj.dataChannel;
+  /* const dataChannel = connObj.dataChannel;
 
   if (!dataChannel || (dataChannel && dataChannel.readyState !== 'open')) return;
   switch (k) {
@@ -39,5 +39,5 @@ export function request(k, v) {
       break;
     default:
       break;
-  };
+  }; */
 };

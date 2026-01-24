@@ -1,10 +1,10 @@
 import findCharCode from '@/client/js/functions/findCharCode';
-import { timeInterval_1, timeInterval_2 } from '@/client/js/functions/variable';
+// import { timeInterval_1, timeInterval_2 } from '@/client/js/functions/variable';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { STATE_PLAYING } from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/init';
-import REFRESH_STATE_PLAYING from '@/client/js/refresh/indianpoker/refreshPlaying/refreshInit';
-import reload from '@/client/js/module/reload';
+// import REFRESH_STATE_PLAYING from '@/client/js/refresh/indianpoker/refreshPlaying/refreshInit';
+// import reload from '@/client/js/module/reload';
 
 export default () => {
   // 이전 게임에서 FOLD 한 경우 playing 새로 진입 시 모두 제거
@@ -20,18 +20,17 @@ export default () => {
 
   const BET_RESULTING = window.sessionStorage.betResulting;
   if (BET_RESULTING && BET_RESULTING === 'true') {
-    if (reload) {
-      REFRESH_STATE_PLAYING.main();
-    }
+    // if (reload) {
+    //   REFRESH_STATE_PLAYING.main();
+    // }
   } else {
     // if (window.sessionStorage.drewState && window.sessionStorage.drewState === "true") return STATE_PLAYING.drew();
-    console.log('여기를 탔다는 건데....');
     STATE_PLAYING.main();
     LOADING_EVENT.show();
     // refresh event
-    if (reload) {
-      REFRESH_STATE_PLAYING.main();
-    }
+    // if (reload) {
+    //   REFRESH_STATE_PLAYING.main();
+    // }
   }
 
   /* setTimeout(() => {

@@ -3,7 +3,7 @@ import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import textDE from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import { timeInterval_1, timeInterval_5200 } from '@/client/js/functions/variable';
+// import { timeInterval_1, timeInterval_5200 } from '@/client/js/functions/variable';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import { request } from '@/client/js/network/indianPocker/request';
 import sessionInitPlaying from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/sessionInitPlaying';

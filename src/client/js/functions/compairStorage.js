@@ -1,14 +1,9 @@
 import CRC32 from 'crc-32';
-// import { encrypt } from '@/client/js/webRTC/rtcConn'
 import { KEY } from '@/client/js/module/webRTC/connectSignaling';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export default (_key) => {
   try {
-    // webRTC 연결 후 keypair 생성 전까지는 이 부분을 타면 안됨
-    // if (!encrypt || (encrypt && encrypt.keypair === '')) {
-    //   throw 'encrypt error';
-    // };
     const keypair = KEY.prk; // private key
     if (!keypair) {
       throw 'encrypt error';

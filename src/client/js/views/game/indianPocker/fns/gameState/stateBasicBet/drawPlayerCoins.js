@@ -8,7 +8,7 @@ import bettingCoin from '@/client/js/views/game/indianPocker/fns/gameState/state
 import drawBetInfo from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/drawBetInfo';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
-import REFRESH_STATE_BASIC_BET from '@/client/js/refresh/indianpoker/refreshBasicBet/refreshInit';
+// import REFRESH_STATE_BASIC_BET from '@/client/js/refresh/indianpoker/refreshBasicBet/refreshInit';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import removeUserCoins from '@/client/js/views/game/indianPocker/fns/common/removeUserCoins';
 
@@ -68,6 +68,6 @@ export default () => {
   // 둘 중의 한명의 칩 개수가 0개면 game over
   if (gameResultCheck()) return gameEnd();
   drawBetInfo();
-  REFRESH_STATE_BASIC_BET.main();
+  // REFRESH_STATE_BASIC_BET.main();
   bettingCoin();
 };

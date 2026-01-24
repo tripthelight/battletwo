@@ -1,13 +1,9 @@
 import errorModal from '@/client/components/popup/modal/errorModal';
 import { text } from '@/client/js/functions/language';
-import { setDisConnect } from '@/client/js/webRTC/rtcConn';
-import delCookies from '@/client/js/module/cookies/delCookies';
 import renameSessionStorageKeys from '@/client/js/module/errorHandler/renameSessionStorageKeys';
 
 // UI 알림 표시 함수
 function showErrorNotification(errCase, component, message, target) {
-  console.log('errCase ????????????? ', errCase);
-
   if (errCase === 'webRTC') {
     // CASE : webRTC error
     switch (component) {
@@ -89,32 +85,23 @@ function showErrorNotification(errCase, component, message, target) {
     console.log('server error : ', target + ' -> ' + message);
   } else if (errCase === 'foul') {
     errorModal(text.leaveRoom);
-    console.log('errorComn error : ', message);
   } else if (errCase === 'cookies') {
     errorModal(text.err);
-    console.log('cookies error : ', message);
   } else if (errCase === 'elementLoss') {
     errorModal(text.err);
-    console.log('elementLoss error : ', message);
   } else if (errCase === 'sessionStorageLoss') {
     errorModal(text.err);
-    console.log('sessionStorageLoss error : ', message);
   } else if (errCase === 'cardNum') {
     errorModal(text.error_text);
-    console.log('cardNum error : ', message);
   } else if (errCase === 'errorComn') {
     errorModal(text.err);
-    console.log('errorComn error : ', message);
   };
 
-  // disconnected common
   renameSessionStorageKeys();
-  // delCookies('gc_at');
-  setDisConnect();
 };
 
 // 오류 복구 로직
-function handleRecovery(component, event) {
+/* function handleRecovery(component, event) {
   if (component === 'peerConnection' && event.includes('connectionstatechange')) {
     console.log('재연결 시도 가능');
     // 필요 시 재연결 로직 추가
@@ -124,16 +111,16 @@ function handleRecovery(component, event) {
     errorModal(text.networkLost);
     // 재접속 시도 가능
   }
-}
+} */
 
 // 서버로 오류 로그 전송
-function sendErrorLogToServer(errorData) {
+/* function sendErrorLogToServer(errorData) {
   fetch('/log-error', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(errorData),
   }).catch((err) => console.error('오류 로그 전송 실패:', err));
-}
+} */
 
 /**
  * error 관리 모듈

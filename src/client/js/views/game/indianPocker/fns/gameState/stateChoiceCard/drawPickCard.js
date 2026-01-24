@@ -1,10 +1,10 @@
 import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
-import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
+// import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
 import findCharCode from '@/client/js/functions/findCharCode';
 import choiceCardsClick from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/choiceCardsClick';
 import drawPickCardInfo from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/drawPickCardInfo';
 import SVG_BACK from '@/client/assets/images/svg/indian_poker/indian_poker_card/back.svg';
-import imgSetCardNum from '@/client/js/views/game/indianPocker/fns/common/images/setCards';
+// import imgSetCardNum from '@/client/js/views/game/indianPocker/fns/common/images/setCards';
 import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipUserCardCheck';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import mergePayload from '@/client/js/views/game/indianPocker/fns/common/compareCard/mergePayload';

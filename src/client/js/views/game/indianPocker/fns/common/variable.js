@@ -1,6 +1,3 @@
-import bcrypt from 'bcryptjs';
-
-// export let bcrypt = bcrypt;
 export let activeCard = {};
 export let pcActiveEl;
 export let pcOffsetLeft = 0;

@@ -1,4 +1,4 @@
-import { publicCardNumbs, pathPayload } from '@/client/store/encryptionStore';
+import { publicCardNumbs } from '@/client/store/encryptionStore';
 import encryptionStore, { updatePathN, updatePathT } from '@/client/store/encryptionStore';
 import { __fnv1a32 } from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/fns/n/f';
 import { H } from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/fns/t/f';

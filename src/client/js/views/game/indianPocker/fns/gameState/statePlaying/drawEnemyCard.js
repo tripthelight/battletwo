@@ -1,9 +1,9 @@
 import findCharCode from '@/client/js/functions/findCharCode';
-import { dec } from '@/client/js/module/crypts/obf8lower';
-import bcrypt from 'bcryptjs';
-import { selectCompairNumbers } from '@/client/store/encryptionStore';
-import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
-import { timeInterval_1 } from '@/client/js/functions/variable';
+// import { dec } from '@/client/js/module/crypts/obf8lower';
+// import bcrypt from 'bcryptjs';
+// import { selectCompairNumbers } from '@/client/store/encryptionStore';
+// import findCardNum from '@/client/js/views/game/indianPocker/fns/common/findCardNum';
+// import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import comnDrawEnemyCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/comnDrawEnemyCard';
 

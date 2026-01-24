@@ -1,14 +1,14 @@
 import findCharCode from '@/client/js/functions/findCharCode';
-import validateStore, { updateRandomNum } from '@/client/store/validateStore';
-import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
+// import validateStore, { updateRandomNum } from '@/client/store/validateStore';
+// import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import { timeInterval_1 } from '@/client/js/functions/variable';
-import { request } from '@/client/js/network/indianPocker/request';
-import encryptCardNumber from '@/client/js/views/game/indianPocker/fns/common/makeCard/encryptCardNumber';
-import CryptoJS from 'crypto-js';
-import randomArray from '@/client/js/views/game/indianPocker/fns/common/randomArray';
-import sessionActiveCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/sessionActiveCard';
-import { selectCompairNumbers } from '@/client/store/encryptionStore';
+// import { timeInterval_1 } from '@/client/js/functions/variable';
+// import { request } from '@/client/js/network/indianPocker/request';
+// import encryptCardNumber from '@/client/js/views/game/indianPocker/fns/common/makeCard/encryptCardNumber';
+// import CryptoJS from 'crypto-js';
+// import randomArray from '@/client/js/views/game/indianPocker/fns/common/randomArray';
+// import sessionActiveCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/sessionActiveCard';
+// import { selectCompairNumbers } from '@/client/store/encryptionStore';
 import drawPlayerCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/drawPlayerCard';
 
 /**

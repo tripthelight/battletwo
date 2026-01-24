@@ -1,4 +1,3 @@
-import { debug } from '@/client/js/module/debug';
 import { storageClear } from '@/client/js/module/storage/storageClear';
 import storageEventStore, { updateStorageEvent } from '@/client/store/storageEvent';
 import GAME_LIST from '@/client/js/webpack/JSON/gameList.json';

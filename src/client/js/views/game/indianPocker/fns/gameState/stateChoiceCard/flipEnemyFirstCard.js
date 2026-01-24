@@ -1,5 +1,5 @@
-import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
-import cardNumCodeDecryption from '@/client/js/functions/bcrypt/cardNumCodeDecryption';
+// import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
+// import cardNumCodeDecryption from '@/client/js/functions/bcrypt/cardNumCodeDecryption';
 import findCharCode from '@/client/js/functions/findCharCode';
 import makeSeq from '@/client/js/views/game/indianPocker/fns/common/mappingCardNum';
 import storageMethod from '@/client/js/module/storage/storageMethod';
@@ -8,7 +8,7 @@ import mergePayload from '@/client/js/views/game/indianPocker/fns/common/compare
 import selectedCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/selectedCard';
 import flipSelectCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipSelectCard';
 import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipUserCardCheck';
-import imgGetCardNum from '@/client/js/views/game/indianPocker/fns/common/images/getCards';
+// import imgGetCardNum from '@/client/js/views/game/indianPocker/fns/common/images/getCards';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export default (params) => {

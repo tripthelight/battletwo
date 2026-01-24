@@ -1,9 +1,9 @@
-import cardNumCodeDecryption from '@/client/js/functions/bcrypt/cardNumCodeDecryption';
+// import cardNumCodeDecryption from '@/client/js/functions/bcrypt/cardNumCodeDecryption';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/network/indianPocker/request';
 import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipUserCardCheck';
-import imgSetCardNum from '@/client/js/views/game/indianPocker/fns/common/images/setCards';
-import throwObj from '@/client/js/module/errorHandler/throwObj';
+// import imgSetCardNum from '@/client/js/views/game/indianPocker/fns/common/images/setCards';
+// import throwObj from '@/client/js/module/errorHandler/throwObj';
 import mergePayload from '@/client/js/views/game/indianPocker/fns/common/compareCard/mergePayload';
 import selectedCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/selectedCard';
 import flipSelectCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipSelectCard';

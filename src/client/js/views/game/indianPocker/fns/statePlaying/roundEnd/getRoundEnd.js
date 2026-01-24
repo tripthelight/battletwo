@@ -8,23 +8,23 @@ import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import { timeInterval_1, timeInterval_1000, timeInterval_2000, timeInterval_202, timeInterval_3201, timeInterval_3202, timeInterval_401, timeInterval_402 } from '@/client/js/functions/variable';
-import { request } from '@/client/js/network/indianPocker/request';
+// import { request } from '@/client/js/network/indianPocker/request';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import disabledMoveCoins from '@/client/js/views/game/indianPocker/fns/common/disabledMoveCoins';
-import playerNumRes from '@/client/js/views/game/indianPocker/fns/common/playerNumRes';
+// import playerNumRes from '@/client/js/views/game/indianPocker/fns/common/playerNumRes';
 import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState';
-import flipPlayerCardComn from '@/client/js/views/game/indianPocker/fns/common/flipPlayerCardComn';
-import flipPlayerCard from '@/client/js/views/game/indianPocker/fns/common/flipPlayerCard';
-import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipUserCardCheck';
+// import flipPlayerCardComn from '@/client/js/views/game/indianPocker/fns/common/flipPlayerCardComn';
+// import flipPlayerCard from '@/client/js/views/game/indianPocker/fns/common/flipPlayerCard';
+// import flipUserCardCheck from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipUserCardCheck';
 import selectedCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/selectedCard';
 import flipLocalCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/flipLocalCard';
-import createPayload from '@/client/js/views/game/indianPocker/fns/common/compareCard/createPayload';
+// import createPayload from '@/client/js/views/game/indianPocker/fns/common/compareCard/createPayload';
 import cardCompare from '@/client/js/views/game/indianPocker/fns/common/compareCard/cardCompare';
 import mergePayload from '@/client/js/views/game/indianPocker/fns/common/compareCard/mergePayload';
 import findRemoteCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/findRemoteCard';
-import playerNum from '@/client/js/views/game/indianPocker/fns/common/playerNum';
-import getLocalCardNum from '@/client/js/views/game/indianPocker/fns/common/getLocalCardNum';
+// import playerNum from '@/client/js/views/game/indianPocker/fns/common/playerNum';
+// import getLocalCardNum from '@/client/js/views/game/indianPocker/fns/common/getLocalCardNum';
 import BattingZoneMovePlayerBlock from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMovePlayerBlock';
 import BettingZoneMoveComnCallRaise from '@/client/js/views/game/indianPocker/fns/common/BettingZoneMoveComnCallRaise';
 import BattingZoneMoveEnemyBlock from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMoveEnemyBlock';
@@ -32,8 +32,8 @@ import cardHideAnimationComn from '@/client/js/views/game/indianPocker/fns/commo
 import { STATE_PLAYING } from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/init';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import resultTxtInnerHtml from '@/client/js/views/game/indianPocker/fns/common/resultTxtInnerHtml';
-import encryptCardNumber from '@/client/js/views/game/indianPocker/fns/common/makeCard/encryptCardNumber.js';
-import makeCard from '@/client/js/views/game/indianPocker/fns/common/makeCard/makeCard.js';
+// import encryptCardNumber from '@/client/js/views/game/indianPocker/fns/common/makeCard/encryptCardNumber.js';
+// import makeCard from '@/client/js/views/game/indianPocker/fns/common/makeCard/makeCard.js';
 
 export const GET_ROUND_END = {
   receiveRoundEnd: () => {

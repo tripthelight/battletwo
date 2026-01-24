@@ -1,14 +1,13 @@
-import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
-import cardNumCodeDecryption from '@/client/js/functions/bcrypt/cardNumCodeDecryption';
-import cardNumEncryption from '@/client/js/functions/bcrypt/cardNumEncryption';
+// import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
+// import cardNumCodeDecryption from '@/client/js/functions/bcrypt/cardNumCodeDecryption';
+// import cardNumEncryption from '@/client/js/functions/bcrypt/cardNumEncryption';
 import findCharCode from '@/client/js/functions/findCharCode';
 import storageKeys from '@/client/js/functions/dataVerification/storageKeys';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import flipEnemyFirstCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/flipEnemyFirstCard';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
-
-import findCardPukNum from '@/client/js/views/game/indianPocker/fns/test/findCardPukNum';
+// import findCardPukNum from '@/client/js/views/game/indianPocker/fns/test/findCardPukNum';
 
 export default async (_data) => {
   try {
@@ -49,8 +48,8 @@ export default async (_data) => {
     }; */
 
     const { eNum, pNum } = _data;
-    console.log('내가 받은 상대가 선택한 카드 숫자 ::::::::: ', findCardPukNum(eNum));
-    console.log('내가 받은 상대가 보낸 내가 선택한 카드 숫자 ::::: ', pNum);
+    // console.log('내가 받은 상대가 선택한 카드 숫자 ::::::::: ', findCardPukNum(eNum));
+    // console.log('내가 받은 상대가 보낸 내가 선택한 카드 숫자 ::::: ', pNum);
     const encryptKey1 = findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85]); // enemyFirstNumber
     const encryptKey2 = findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87]); // playerFirstNumber
     const encryptVal1 = window.sessionStorage.getItem(encryptKey1);

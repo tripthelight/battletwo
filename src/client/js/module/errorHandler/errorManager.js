@@ -3,8 +3,6 @@ import { errorManagement } from '@/client/js/module/errorHandler/errorManagement
 import eventHanlerErrorComn from '@/client/js/module/eventHanlerErrorComn';
 
 export default (error, handler) => {
-  console.log('error : ', error);
-
   request('opponentFouls', { message: error?.sendMsg ?? 'remote player error' });
 
   const safe = (error && typeof error === 'object') ? error : {};

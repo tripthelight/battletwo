@@ -1,8 +1,8 @@
 import { pack } from '@/client/js/module/splitArray';
-import buildHashs from '@/client/js/views/game/indianPocker/fns/common/compareCard/buildPayload/buildHashs';
-import buildNumPayload from '@/client/js/views/game/indianPocker/fns/common/compareCard/buildPayload/buildNumPayload';
+// import buildHashs from '@/client/js/views/game/indianPocker/fns/common/compareCard/buildPayload/buildHashs';
+// import buildNumPayload from '@/client/js/views/game/indianPocker/fns/common/compareCard/buildPayload/buildNumPayload';
 import createTShape from '@/client/js/views/game/indianPocker/fns/common/compareCard/buildPayload/createTShape';
-import createTCasePayload from '@/client/js/views/game/indianPocker/fns/common/compareCard/buildPayload/createTCasePayload';
+// import createTCasePayload from '@/client/js/views/game/indianPocker/fns/common/compareCard/buildPayload/createTCasePayload';
 
 import fnv1a32 from '@/client/js/module/base64/fnv1a32';
 import rand32 from '@/client/js/module/base64/rand32';

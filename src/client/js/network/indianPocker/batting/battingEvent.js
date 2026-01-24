@@ -11,7 +11,7 @@ import { GET_ALLIN } from '@/client/js/views/game/indianPocker/fns/statePlaying/
 import { GET_CALL } from '@/client/js/views/game/indianPocker/fns/statePlaying/call/getCall';
 import { GET_RAISE } from '@/client/js/views/game/indianPocker/fns/statePlaying/raise/getRaise';
 import { GET_FOLD } from '@/client/js/views/game/indianPocker/fns/statePlaying/fold/getFold';
-import { requestBatting } from '@/client/js/network/indianPocker/batting/requestBatting';
+// import { requestBatting } from '@/client/js/network/indianPocker/batting/requestBatting';
 import { request } from '@/client/js/network/indianPocker/request';
 import findRemoteCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/findRemoteCard';
 

@@ -1,11 +1,11 @@
-import findCharCode from '@/client/js/functions/findCharCode';
+/* import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { RF_END_DREW } from '@/client/js/refresh/indianpoker/refreshPlaying/refreshRoundEndDrew/refreshDrewInit';
 import { request } from '@/client/js/network/indianPocker/request';
-import createBattleCardNum from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/createBattleCardNum';
+import createBattleCardNum from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/createBattleCardNum'; */
 
 export default (data) => {
-  setTimeout(() => {
+  /* setTimeout(() => {
     storageMethod('s', 'REMOVE_ITEM', 'betResulting');
     storageMethod('s', 'REMOVE_ITEM', 'roundEndReload');
     RF_END_DREW.main();
@@ -21,5 +21,5 @@ export default (data) => {
         if (encryptVal === decryptVal) createBattleCardNum(); // betUser === true
       }, 202);
     }, 201);
-  }, 200);
+  }, 200); */
 };

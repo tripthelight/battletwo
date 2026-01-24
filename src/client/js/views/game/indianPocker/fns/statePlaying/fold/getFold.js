@@ -8,13 +8,13 @@ import { errorManagement } from '@/client/js/module/errorHandler/errorManagement
 import { text } from '@/client/js/functions/language';
 import { timeInterval_1, timeInterval_1000, timeInterval_2000, timeInterval_3201, timeInterval_5000 } from '@/client/js/functions/variable';
 import { bottomSheet } from '@/client/components/popup/bottomSheet/bottomSheet';
-import flipPlayerCardComn from '@/client/js/views/game/indianPocker/fns/common/flipPlayerCardComn';
-import flipPlayerCard from '@/client/js/views/game/indianPocker/fns/common/flipPlayerCard';
+// import flipPlayerCardComn from '@/client/js/views/game/indianPocker/fns/common/flipPlayerCardComn';
+// import flipPlayerCard from '@/client/js/views/game/indianPocker/fns/common/flipPlayerCard';
 import selectedCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/selectedCard';
 import mergePayload from '@/client/js/views/game/indianPocker/fns/common/compareCard/mergePayload';
 import flipLocalCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/flipLocalCard';
-import playerNumRes from '@/client/js/views/game/indianPocker/fns/common/playerNumRes';
-import getLocalCardNum from '@/client/js/views/game/indianPocker/fns/common/getLocalCardNum';
+// import playerNumRes from '@/client/js/views/game/indianPocker/fns/common/playerNumRes';
+// import getLocalCardNum from '@/client/js/views/game/indianPocker/fns/common/getLocalCardNum';
 import BattingZoneMovePlayerBlock from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMovePlayerBlock';
 import BettingZoneMoveComn from '@/client/js/views/game/indianPocker/fns/common/BettingZoneMoveComn';
 import foldSendResultComn from '@/client/js/views/game/indianPocker/fns/common/foldSendResultComn';

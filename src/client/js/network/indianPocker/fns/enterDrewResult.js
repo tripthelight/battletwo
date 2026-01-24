@@ -4,7 +4,7 @@ import { timeInterval_100, timeInterval_101, timeInterval_102, timeInterval_1000
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { request } from '@/client/js/network/indianPocker/request';
-import { RF_END_DREW } from '@/client/js/refresh/indianpoker/refreshPlaying/refreshRoundEndDrew/refreshDrewInit';
+// import { RF_END_DREW } from '@/client/js/refresh/indianpoker/refreshPlaying/refreshRoundEndDrew/refreshDrewInit';
 import createBattleCardNum from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/createBattleCardNum';
 
 export default (_data) => {
@@ -20,7 +20,7 @@ export default (_data) => {
         if (BET_RESULTING && BET_RESULTING === 'true') {
           // round end 화면에서 drew일 때 새로고침하면,
           // 상대방에게 여기를 받고 내 화면을, 완벽히 그려야돼
-          RF_END_DREW.main();
+          // RF_END_DREW.main();
           setTimeout(() => {
             const ROUND_END_RELOAD = window.sessionStorage.roundEndReload;
             if (ROUND_END_RELOAD && ROUND_END_RELOAD === 'true') {

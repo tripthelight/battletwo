@@ -1,4 +1,4 @@
-import { timeInterval_1 } from '@/client/js/functions/variable';
+// import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import { text } from '@/client/js/functions/language';
@@ -12,24 +12,18 @@ export default () => {
   const CHECH_DREW_INFO = document.querySelector('.check-drew-info');
   if (CHECH_DREW_INFO) return;
 
-  setTimeout(() => {
-    let elem = document.createElement('div');
-    let inner = document.createElement('span');
-    inner.innerHTML = text.indianpocker.touchInfo;
-    elem.appendChild(inner);
-    elem.classList.add('check-drew-info');
-    const GAME_SCENE = document.getElementById('gameScene');
-    if (!GAME_SCENE) return errorManagement({ errCase: 'elementLoss', message: 'drew 상태에서 GAME_SCENE 엘리먼트가 없습니다' });
-    GAME_SCENE.appendChild(elem);
-    setTimeout(() => {
-      const CHECH_DREW_INFO_EL = document.querySelector('.check-drew-info');
-      if (!CHECH_DREW_INFO_EL) return errorManagement({ errCase: 'elementLoss', message: 'drew 상태에서 .check-drew-info 엘리먼트가 없습니다' });
-      const H_RES = PLAYER_BLOCK.offsetTop + PLAYER_CARD.offsetTop - CHECH_DREW_INFO_EL.clientHeight;
-      CHECH_DREW_INFO_EL.style.top = H_RES + 'px';
-      setTimeout(() => {
-        LOADING_EVENT.hide();
-        PLAYER_CARD.onclick = () => btnCallRaiseEventBefore();
-      }, timeInterval_1);
-    }, timeInterval_1);
-  }, timeInterval_1);
+  let elem = document.createElement('div');
+  let inner = document.createElement('span');
+  inner.innerHTML = text.indianpocker.touchInfo;
+  elem.appendChild(inner);
+  elem.classList.add('check-drew-info');
+  const GAME_SCENE = document.getElementById('gameScene');
+  if (!GAME_SCENE) return errorManagement({ errCase: 'elementLoss', message: 'drew 상태에서 GAME_SCENE 엘리먼트가 없습니다' });
+  GAME_SCENE.appendChild(elem);
+  const CHECH_DREW_INFO_EL = document.querySelector('.check-drew-info');
+  if (!CHECH_DREW_INFO_EL) return errorManagement({ errCase: 'elementLoss', message: 'drew 상태에서 .check-drew-info 엘리먼트가 없습니다' });
+  const H_RES = PLAYER_BLOCK.offsetTop + PLAYER_CARD.offsetTop - CHECH_DREW_INFO_EL.clientHeight;
+  CHECH_DREW_INFO_EL.style.top = H_RES + 'px';
+  LOADING_EVENT.hide();
+  PLAYER_CARD.onclick = () => btnCallRaiseEventBefore();
 };

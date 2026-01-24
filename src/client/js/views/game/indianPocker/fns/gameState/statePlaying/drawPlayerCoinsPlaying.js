@@ -3,10 +3,10 @@ import { dec } from '@/client/js/module/crypts/obf8lower';
 import booleanReturn from '@/client/js/functions/validation/booleanReturn';
 import deviceStateStore from '@/client/store/deviceStateStore';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
-import { timeInterval_1 } from '@/client/js/functions/variable';
+// import { timeInterval_1 } from '@/client/js/functions/variable';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
-import refreshFindEnemyCardNumber from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/refreshFindEnemyCardNumber';
+// import refreshFindEnemyCardNumber from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/refreshFindEnemyCardNumber';
 
 export default () => {
   // element | seeeion 체크
@@ -55,5 +55,5 @@ export default () => {
   PLAYER_BLOCK.appendChild(elem);
 
   // 다음 함수 실행
-  refreshFindEnemyCardNumber();
+  // refreshFindEnemyCardNumber();
 };

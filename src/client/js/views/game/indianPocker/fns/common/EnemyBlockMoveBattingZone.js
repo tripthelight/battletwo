@@ -3,7 +3,7 @@ import { dec } from '@/client/js/module/crypts/obf8lower';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { getStyle } from '@/client/js/functions/comnExport';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
-import { timeInterval_201 } from '@/client/js/functions/variable.js';
+import { timeInterval_201 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import randomNumberMinMax from '@/client/js/views/game/indianPocker/fns/common/randomNumberMinMax.js';
 import getTranslateMH from '@/client/js/views/game/indianPocker/fns/common/getTranslateMH.js';

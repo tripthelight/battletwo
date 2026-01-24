@@ -1,12 +1,12 @@
 import CryptoJS from 'crypto-js';
 import { request } from '@/client/js/network/indianPocker/request';
-import storageMethod from '@/client/js/module/storage/storageMethod';
-import validateStore, { updateRandomNum } from '@/client/store/validateStore';
+// import storageMethod from '@/client/js/module/storage/storageMethod';
+// import validateStore, { updateRandomNum } from '@/client/store/validateStore';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
-import { timeInterval_1 } from '@/client/js/functions/variable';
+// import { timeInterval_1 } from '@/client/js/functions/variable';
 import findCharCode from '@/client/js/functions/findCharCode';
-import randomArray from '@/client/js/views/game/indianPocker/fns/common/randomArray';
-import sessionActiveCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/sessionActiveCard';
+// import randomArray from '@/client/js/views/game/indianPocker/fns/common/randomArray';
+// import sessionActiveCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/sessionActiveCard';
 
 /**
  * 상대 peer의 secret key로 복호화한 내 cardNum 리스트를 받아서 이후 단계 진행

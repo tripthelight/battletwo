@@ -1,16 +1,20 @@
 import { getDeviceType } from '@/client/js/module/isPC';
 import insertStorageDate from '@/client/js/functions/insertStorageDate';
 import encryptionStore from '@/client/store/encryptionStore';
-import cardVerification from '@/client/js/views/game/indianPocker/fns/common/cardVerification';
 
 const ICE_SERVERS = [
   // 공개 STUN 예시(실서비스는 TURN 필요)
   { urls: 'stun:stun.l.google.com:19302' },
 ];
 
-// ———————————————————————————————————————————————————
+/**
+ * ———————————————————————————————————————————————————————————————————
+ * COMMON VARIABLE
+ */
 
 const REJOIN_GRACE_MS = 3000; // 3초 유예: 새로고침 감지 윈도우
+const T = (() => ![] + [] ? !![] : ![])(); // true 난독화
+const F = (() => ![] + [] ? ![] : !![])(); // false 난독화
 
 /**
  * ———————————————————————————————————————————————————————————————————
@@ -49,10 +53,10 @@ const STATE = {
   pc: null,
   dc: null,
   reloadTimer: null,
-  paired: false,
-  makingOffer: false,
-  ignoreOffer: false,
-  isSettingRemoteAnswerPending: false,
+  paired: F,
+  makingOffer: F,
+  ignoreOffer: F,
+  isSettingRemoteAnswerPending: F,
 };
 function safeWsSend(obj) {
   if (STATE.ws && STATE.ws.readyState === WebSocket.OPEN) {
@@ -68,13 +72,13 @@ function isPolite() {
 }
 
 const READY = {
-  myHelloSent: false,
-  peerHelloSeen: false,
+  myHelloSent: F,
+  peerHelloSeen: F,
   connectedAt: 0,
   waiter: null, // Promise resolver
 };
 export function setReady() {
-  READY.peerHelloSeen = true;
+  READY.peerHelloSeen = T;
 }
 function isBrowserConnected() {
   return STATE.pc && STATE.pc.connectionState === 'connected';
@@ -86,7 +90,7 @@ function isDcOpen() {
 function waitConnected(timeoutMs = 5000) {
   // 이미 만족했으면 즉시 resolve
   if (isBrowserConnected() && isDcOpen() && READY.myHelloSent && READY.peerHelloSeen) {
-    return Promise.resolve(true);
+    return Promise.resolve(T);
   }
   return new Promise((resolve) => {
     READY.waiter = resolve;
@@ -94,7 +98,7 @@ function waitConnected(timeoutMs = 5000) {
     setTimeout(() => {
       if (READY.waiter) {
         READY.waiter = null;
-        resolve(false);
+        resolve(F);
       }
     }, timeoutMs);
   });
@@ -105,7 +109,7 @@ export function maybeResolveReady() {
     READY.connectedAt = Date.now();
     const r = READY.waiter;
     READY.waiter = null;
-    r(true);
+    r(T);
     log('✅ Peer READY: both HELLO exchanged & DC open.');
   }
 }
@@ -124,7 +128,7 @@ function scheduleWsReconnect() {
   const delay = WS_RETRY_BASE * Math.pow(2, t);
   WS_RETRY.timer = setTimeout(() => {
     WS_RETRY.timer = null;
-    connectSignaling(true);
+    connectSignaling(T);
   }, delay);
 }
 
@@ -142,12 +146,12 @@ async function doIceRestart() {
 
   log('ICE Restart: creating new offer with iceRestart:true');
   try {
-    STATE.makingOffer = true;
-    const offer = await pc.createOffer({ iceRestart: true });
+    STATE.makingOffer = T;
+    const offer = await pc.createOffer({ iceRestart: T });
     await pc.setLocalDescription(offer);
     sendSignal(STATE.partnerId, { sdp: pc.localDescription });
   } finally {
-    STATE.makingOffer = false;
+    STATE.makingOffer = F;
   }
 }
 function debounceIceRestart() {
@@ -267,7 +271,7 @@ export function handleReliableReceive(env) {
 
   // 정확히 다음에 전달되어야 할 패킷(seq === expected)
   // deliverToGame(env.payload, { reliable: true, seq });
-  FNS.deliverToGame(env.payload, { reliable: true, seq });
+  FNS.deliverToGame(env.payload, { reliable: T, seq });
 
   // 전달 완료 → expectedSeq 증가
   RELIABLE.expectedSeq++;
@@ -277,14 +281,14 @@ export function handleReliableReceive(env) {
     const nextEnv = RELIABLE.buffer.get(RELIABLE.expectedSeq);
     RELIABLE.buffer.delete(RELIABLE.expectedSeq);
     // deliverToGame(nextEnv.payload, { reliable: true, seq: RELIABLE.expectedSeq });
-    FNS.deliverToGame(nextEnv.payload, { reliable: true, seq: RELIABLE.expectedSeq });
+    FNS.deliverToGame(nextEnv.payload, { reliable: T, seq: RELIABLE.expectedSeq });
     RELIABLE.expectedSeq++;
   }
 
   // 전달 후 ack 전송(상대의 재전송 종료를 빠르게)
   rawSend({ v: 1, t: 'ACK', seq: RELIABLE.expectedSeq - 1 });
 }
-export function sendGame(payload, { reliable = true, id = undefined } = {}) {
+export function sendGame(payload, { reliable = T, id = undefined } = {}) {
   if (!STATE.dc || STATE.dc.readyState !== 'open') return;
 
   if (!reliable) {
@@ -321,7 +325,7 @@ export function sendGame(payload, { reliable = true, id = undefined } = {}) {
  */
 function channelClose() {
   console.log('Remote Peer Left...');
-  cleanupPeerConnection(false);
+  cleanupPeerConnection(F);
   if (STATE.ws) {
     try {
       STATE.ws.close(4000, 'remote_peer_left');
@@ -373,9 +377,9 @@ function attachDataChannelHandlers(dc, tag) {
     // startPingLoop();
 
     // 앱 레벨 핸드셰이크 시작
-    READY.myHelloSent = true;
+    READY.myHelloSent = T;
     // sendEnvelope({ t: 'HELLO', payload: { from: STATE.peerId } });
-    sendGame({ type: 'ROUND/START', from: STATE.peerId }, { reliable: false });
+    sendGame({ type: 'ROUND/START', from: STATE.peerId }, { reliable: F });
   };
   dc.onmessage = (ev) => {
     let msg;
@@ -400,7 +404,7 @@ function attachDataChannelHandlers(dc, tag) {
     reloadConnectCheck();
   };
 }
-function cleanupPeerConnection(logIt = true) {
+function cleanupPeerConnection(logIt = T) {
   if (STATE.dc) {
     try {
       STATE.dc.close();
@@ -418,29 +422,29 @@ function cleanupPeerConnection(logIt = true) {
     STATE.pc = null;
   }
 
-  STATE.makingOffer = false;
-  STATE.ignoreOffer = false;
-  STATE.isSettingRemoteAnswerPending = false;
+  STATE.makingOffer = F;
+  STATE.ignoreOffer = F;
+  STATE.isSettingRemoteAnswerPending = F;
 
-  READY.myHelloSent = false;
-  READY.peerHelloSeen = false;
+  READY.myHelloSent = F;
+  READY.peerHelloSeen = F;
   READY.connectedAt = 0;
   READY.waiter = null;
 
   if (logIt) log('pc clean up');
 }
 async function startPeerConnection() {
-  cleanupPeerConnection(false);
+  cleanupPeerConnection(F);
 
   const pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
   STATE.pc = pc;
 
-  STATE.makingOffer = false;
-  STATE.ignoreOffer = false;
-  STATE.isSettingRemoteAnswerPending = false;
+  STATE.makingOffer = F;
+  STATE.ignoreOffer = F;
+  STATE.isSettingRemoteAnswerPending = F;
 
-  READY.myHelloSent = false;
-  READY.peerHelloSeen = false;
+  READY.myHelloSent = F;
+  READY.peerHelloSeen = F;
   READY.connectedAt = 0;
   READY.waiter = null;
 
@@ -454,13 +458,13 @@ async function startPeerConnection() {
   pc.onnegotiationneeded = async () => {
     if (STATE.role !== 'impolite') return;
     try {
-      STATE.makingOffer = true;
+      STATE.makingOffer = T;
       await pc.setLocalDescription(await pc.createOffer());
       sendSignal(STATE.partnerId, { sdp: pc.localDescription });
     } catch (err) {
       console.error('onnegotiationneeded error : ', err);
     } finally {
-      STATE.makingOffer = false;
+      STATE.makingOffer = F;
     }
   };
   pc.ondatachannel = (ev) => {
@@ -502,10 +506,10 @@ async function handleRemoveSignal(msg) {
           await pc.setLocalDescription({ type: 'rollback' });
         }
         await pc.setRemoteDescription(desc);
-        STATE.isSettingRemoteAnswerPending = true;
+        STATE.isSettingRemoteAnswerPending = T;
         await pc.setLocalDescription(await pc.createAnswer());
         sendSignal(STATE.partnerId, { sdp: pc.localDescription });
-        STATE.isSettingRemoteAnswerPending = false;
+        STATE.isSettingRemoteAnswerPending = F;
       } else {
         await pc.setRemoteDescription(desc);
       }
@@ -527,7 +531,7 @@ async function handleRemoveSignal(msg) {
  * ———————————————————————————————————————————————————————————————————
  * CONNECT SIGNALING
  */
-export function connectSignaling(connected = false, fns) {
+export function connectSignaling(connected = F, fns) {
   if (fns && fns.deliverToGame && fns.handleEnvelope) {
     FNS.deliverToGame = fns.deliverToGame;
     FNS.handleEnvelope = fns.handleEnvelope;

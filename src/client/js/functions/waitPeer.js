@@ -57,9 +57,7 @@ const WAIT_ENEMY = {
       waitEl.appendChild(playerEl);
       waitEl.appendChild(enemyEl);
       CONTAINER.appendChild(waitEl);
-      setTimeout(() => {
-        LOADING_EVENT.hide();
-      }, timeInterval_1);
+      setTimeout(LOADING_EVENT.hide(), timeInterval_1);
     }
   },
   hide: () => {

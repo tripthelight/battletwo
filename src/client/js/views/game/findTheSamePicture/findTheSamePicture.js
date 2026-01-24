@@ -1,14 +1,13 @@
 import '@/client/assets/scss/game/findTheSamePicture/common';
 import '@/client/js/common/common';
-import rtcPeer from '@/client/js/webRTC/rtcPeer';
-import reload from '@/client/js/module/reload';
-import storageMethod from '@/client/js/module/storage/storageMethod';
-import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
-
-import { request } from '@/client/js/network/findTheSamePicture/request';
+// import rtcPeer from '@/client/js/webRTC/rtcPeer';
+// import reload from '@/client/js/module/reload';
+// import storageMethod from '@/client/js/module/storage/storageMethod';
+// import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
+// import { request } from '@/client/js/network/findTheSamePicture/request';
 
 // onMounted
-document.onreadystatechange = async () => {
+/* document.onreadystatechange = async () => {
   const state = document.readyState;
   if (state === 'interactive') {
   } else if (state === 'complete') {
@@ -37,4 +36,4 @@ document.onreadystatechange = async () => {
       errorManagement(error);
     }
   }
-};
+}; */

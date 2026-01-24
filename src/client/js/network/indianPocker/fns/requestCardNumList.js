@@ -2,14 +2,14 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { selectCompairNumbers } from '@/client/store/encryptionStore';
-import validateStore, { updateRandomNum } from '@/client/store/validateStore';
+// import validateStore, { updateRandomNum } from '@/client/store/validateStore';
 import { request } from '@/client/js/network/indianPocker/request';
-import encryptCardNumber from '@/client/js/views/game/indianPocker/fns/common/makeCard/encryptCardNumber';
-import CryptoJS from 'crypto-js';
-import randomArray from '@/client/js/views/game/indianPocker/fns/common/randomArray';
+// import encryptCardNumber from '@/client/js/views/game/indianPocker/fns/common/makeCard/encryptCardNumber';
+// import CryptoJS from 'crypto-js';
+// import randomArray from '@/client/js/views/game/indianPocker/fns/common/randomArray';
 import drawPlayerCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/drawPlayerCard';
 import isArrayLikeString from '@/client/js/module/isArrayLikeString';
-import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
+// import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
 
 export default async (data) => {
   // const { step, list, storeageKey } = data;
