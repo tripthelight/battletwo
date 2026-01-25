@@ -7,11 +7,18 @@ export default function storageMethod(_storage, _method, _key, _value, _keys) {
   switch (_method) {
     case 'SET_ITEM':
       if (_storage === 'l') {
-        localStorage.setItem(_key, _value);
+        window.localStorage.setItem(_key, _value);
         saveLocalStorage();
       } else if (_storage === 's') {
-        sessionStorage.setItem(_key, _value);
+        window.sessionStorage.setItem(_key, _value);
         saveSessionStorage();
+      }
+      break;
+    case 'GET_ITEM':
+      if (_storage === 'l') {
+        return window.localStorage.getItem(_key);
+      } else if (_storage === 's') {
+        return  window.sessionStorage.getItem(_key);
       }
       break;
     case 'REMOVE_ITEM':

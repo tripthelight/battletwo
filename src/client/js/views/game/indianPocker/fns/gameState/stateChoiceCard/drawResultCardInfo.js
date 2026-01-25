@@ -38,7 +38,6 @@ export default (_state) => {
       await stateResultBetting(_state);
       if (document.querySelector('.choice-card-info')) document.querySelector('.choice-card-info').remove();
     } catch (error) {
-      console.log('drawResultCardInfo.js onclick error : ');
       errorManager(error, true);
     };
   };

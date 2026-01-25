@@ -24,7 +24,7 @@ export default () => {
   for (let i = 0; i < CARDS.length; i++) {
     // onclick event handler는 try-catch로 감싸도 나중에 브라우저(이벤트 시스템)가 호출
     // 그래서 최종 부모(indianPocker.js)의 try catch에서 못잡음
-    CARDS[i].onclick = async (event) => {
+    CARDS[i].onclick = (event) => {
       try {
         if (event.target) {
           if (
@@ -32,7 +32,7 @@ export default () => {
             event.target.closest("li").classList.contains("show")
           ) return; // 상대가 선택한 오픈된 카드 클릭 시 return
 
-          await pickCardInit(event);
+          pickCardInit(event);
 
           invalidateCardClick();
 

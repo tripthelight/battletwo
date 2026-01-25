@@ -1,3 +1,4 @@
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import findCharCode from '@/client/js/functions/findCharCode';
 
 export default (_code) => {
@@ -38,10 +39,6 @@ export default (_code) => {
     case findCharCode([74, 82, 80, 70, 73, 71, 83, 66, 68, 78]):
       return decoder(27 + 30, 100 / 2 - 1, 10 * 5 - 2, 42 + 8); // 10 49, 48
     default:
-      throw {
-        errCase: 'cardNum',
-        message: 'local drawEnemyCard.js - not find card',
-        sendMsg: 'remote drawEnemyCard.js - not find card',
-      };
+      throw throwObj('cardNum', 'drawEnemyCard.js - not find card');
   }
 };

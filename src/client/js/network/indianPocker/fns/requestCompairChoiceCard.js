@@ -18,11 +18,6 @@ export default async (_data) => {
     }
 
     // 같은 카드였던 상태에서 내가 팝업 x 버튼을 먼저 누르고 대기 상태 일 경우
-    // const bRes = booleanCheck([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]);  // tieWait
-    // if (bRes === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) { // true
-    //   request('responseCompairChoiceCard', { result: true, tieWaitConfirmed: true });
-    //   return;
-    // }
     const encryptKey3 = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
     const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
     if (encryptVal3 !== '' && X.dec(encryptVal3)) { // tieWait === true
@@ -40,9 +35,8 @@ export default async (_data) => {
       return cardNumDecryption(_card);
     };
 
-    const compairRemote = remoteStorage.encryptVal1 !== compairCard(encryptVal2); // remote
-    const compairLocal = remoteStorage.encryptVal2 !== compairCard(encryptVal1); // local
-
+    const compairRemote = encryptVal2 !== "" && remoteStorage.encryptVal1 !== encryptVal2; // remote
+    const compairLocal = encryptVal1 !== "" && remoteStorage.encryptVal2 !== encryptVal1; // local
     const compairBetUser = compairBoolStr(remoteStorage.encryptVal3, booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88])); // betUser
     const compairBetUserFirst = compairBoolStr(remoteStorage.encryptVal4, booleanCheck([90, 89, 80, 70, 68, 84, 65, 77, 74, 78])); // betUserFirst
 

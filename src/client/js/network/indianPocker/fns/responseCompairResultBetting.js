@@ -23,7 +23,6 @@ export default async (_data) => {
       throw throwObj('errorComn', 'select card compair error.');
     }
   } catch (error) {
-    console.log('responseCompairResultBetting() error : ');
     errorManager(error, true);
   };
 };

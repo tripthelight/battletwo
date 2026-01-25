@@ -1,20 +1,43 @@
 import { getDeviceType } from '@/client/js/module/isPC';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import insertStorageDate from '@/client/js/functions/insertStorageDate';
 import encryptionStore from '@/client/store/encryptionStore';
-
-const ICE_SERVERS = [
-  // 공개 STUN 예시(실서비스는 TURN 필요)
-  { urls: 'stun:stun.l.google.com:19302' },
-];
 
 /**
  * ———————————————————————————————————————————————————————————————————
  * COMMON VARIABLE
  */
-
+const ICE_SERVERS = [
+  // 공개 STUN 예시(실서비스는 TURN 필요)
+  { urls: 'stun:stun.l.google.com:19302' },
+];
 const REJOIN_GRACE_MS = 3000; // 3초 유예: 새로고침 감지 윈도우
 const T = (() => ![] + [] ? !![] : ![])(); // true 난독화
 const F = (() => ![] + [] ? ![] : !![])(); // false 난독화
+
+/**
+ * ———————————————————————————————————————————————————————————————————
+ * RELOAD LOCAL BROWSER
+ */
+class ReloadTask {
+  #reload; // private 필드
+  constructor() {
+    this.#reload = F;
+  };
+  get() { return this.#reload};
+  set(_) { this.#reload = _; };
+};
+const R = new ReloadTask();
+export function getRL() {
+  // 값이 true라면 반환하기 전에 false로 바꿔줌
+  if (R.get()) {
+    R.set(F);
+    return T;  // 조건문에서는 true로 평가됨
+  }
+  return F;
+};
+R.set(Boolean(storageMethod("s", "GET_ITEM", "reload")));
+storageMethod("s", "REMOVE_ITEM", "reload");
 
 /**
  * ———————————————————————————————————————————————————————————————————
@@ -349,17 +372,18 @@ function reloadConnectCheck() {
  * BROWSER RELOAD EVENT
  */
 function leavePage() {
+  storageMethod('s', 'SET_ITEM', "reload", T);
   if (STATE.roomId && STATE.initRole) {
     const pool = STATE.initRole === 'impolite' ? createChars('a') : createChars('b');
     const randomChar = pool[Math.floor(Math.random() * pool.length)];
-    window.sessionStorage.setItem('roomId', `${STATE.roomId}${randomChar}`);
+    storageMethod('s', 'SET_ITEM', "roomId", `${STATE.roomId}${randomChar}`);
   }
-}
+};
 if (getDeviceType() === 'PC') {
   window.addEventListener('beforeunload', () => {
     leavePage();
   });
-}
+};
 
 /**
  * ———————————————————————————————————————————————————————————————————

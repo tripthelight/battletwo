@@ -19,11 +19,15 @@ const GAME_NAME = 'indianPocker';
 // START GAME ——————————————————————————————————
 // —————————————————————————————————————————————
 async function startGame() {
-  waitPeer(2);
-  await makeCard();
-  makePayload(); // 카드 선택 시 보여지는 카드의 svg > path의 number/T payload
-  indianPockerGameState.choiceCard();
-  LOADING_EVENT.hide();
+  try {
+    waitPeer(2);
+    await makeCard();
+    makePayload(); // 카드 선택 시 보여지는 카드의 svg > path의 number/T payload
+    indianPockerGameState.choiceCard();
+    LOADING_EVENT.hide();
+  } catch (error) {
+    errorManager(error, false);
+  }
 };
 
 // —————————————————————————————————————————————
@@ -38,10 +42,6 @@ async function init() {
 // —————————————————————————————————————————————
 // PAGE SHOW ———————————————————————————————————
 // —————————————————————————————————————————————
-window.addEventListener('pageshow', () => {
-  try {
-    init();
-  } catch (error) {
-    errorManager(error, false);
-  }
+window.addEventListener('pageshow', async () => {
+  await init();
 });

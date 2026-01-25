@@ -1,4 +1,4 @@
-import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
+// import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
 import X from '@/client/js/module/crypts/bool-obf';
 import booleanReturn from '@/client/js/functions/validation/booleanReturn';
 import findCharCode from '@/client/js/functions/findCharCode';
@@ -24,7 +24,8 @@ export const CHOICE_CARD_DATA_HANDLER = {
     if (encryptKey1) {
       const encryptVal = window.sessionStorage.getItem(encryptKey1);
       if (encryptVal !== '') {
-        selectCard.local = cardNumDecryption(encryptVal);
+        // selectCard.local = cardNumDecryption(encryptVal);
+        selectCard.local = encryptVal;
       }
     }
 
@@ -32,7 +33,8 @@ export const CHOICE_CARD_DATA_HANDLER = {
     if (encryptKey2) {
       const encryptVal = window.sessionStorage.getItem(encryptKey2);
       if (encryptVal !== '') {
-        selectCard.remote = cardNumDecryption(encryptVal);
+        // selectCard.remote = cardNumDecryption(encryptVal);
+        selectCard.remote = encryptVal;
       }
     }
 
@@ -45,11 +47,6 @@ export const CHOICE_CARD_DATA_HANDLER = {
     };
 
     // 같은 카드였던 상태에서 내가 팝업 x 버튼 먼저 누르고 대기 상태 일 경우
-    // const bRes = booleanCheck([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
-    // if (bRes === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) { // true
-    //   request('requestCompairChoiceCard', { remoteStorage: params, tieWait: true });
-    //   return;
-    // }
     const encryptKey3 = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
     const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
     if (encryptVal3 !== '' && X.dec(encryptVal3)) {

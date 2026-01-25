@@ -59,7 +59,6 @@ export default (_eNum, _pNum) => {
       throw throwObj('errorComn', 'flipEnemyCardCheck _eNum, _pNum failed.');
     }; */
   } catch (error) {
-    console.log('error : ', error);
     throw throwObj(
       error?.errCase ?? 'errorComn',
       error?.message ?? 'flipEnemyCardCheck error.'

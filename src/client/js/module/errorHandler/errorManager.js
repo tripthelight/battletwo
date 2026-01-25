@@ -7,7 +7,7 @@ export default (error, handler) => {
 
   const safe = (error && typeof error === 'object') ? error : {};
   const params = {
-    errCase: 'errorComn',
+    errCase: error.errCase ? error.errCase : 'errorComn',
     errorDetails: error,
     ...safe
   };

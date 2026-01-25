@@ -129,6 +129,9 @@ function showErrorNotification(errCase, component, message, target) {
 export function errorManagement(errData) {
   const { component, event, message, errCase, target, errorDetails } = errData;
 
+  console.warn("ERROR : ", message);
+
+
   const errorMessage = `[Error] ${component} - ${event}: ${message}`;
 
   // 1. 콘솔에 오류 출력

@@ -8,7 +8,7 @@ export default async () => {
     const encryptKey = findCharCode([80, 76, 72, 71, 86, 73, 69, 66, 78, 81]); // cardNum
     const decryptVal = window.sessionStorage.getItem(encryptKey);
     if (decryptVal !== null && JSON.parse(decryptVal).length > 0) {
-      console.log('이미 만들어진 카드 있음');
+      // 이미 만들어진 카드 있음
       return;
     }
 
