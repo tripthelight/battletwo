@@ -1,3 +1,4 @@
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import { sendGame } from '@/client/js/module/webRTC/connectSignaling';
 import {
   REQUEST_COMMON_HANDLERS,
@@ -27,6 +28,6 @@ export function request(k, v) {
     // onDataChannel.send(JSON.stringify(message));
     sendGame({ ...message });
   } else {
-    throw { errCase: 'errorComn', message: k + ' : Undefined message type' };
+    throw throwObj('errorComn', `${k} : Undefined message type`);
   }
 }

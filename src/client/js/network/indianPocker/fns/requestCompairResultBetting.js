@@ -95,7 +95,6 @@ export default async (_data) => {
     // 5) 문제 없으면 응답 전송
     request('responseCompairResultBetting', params);
   } catch (error) {
-    console.log('drawResultCardInfo.js onclick error : ');
     errorManager(error, true);
   };
 };

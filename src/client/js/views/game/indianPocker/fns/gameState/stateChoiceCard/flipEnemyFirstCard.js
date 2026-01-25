@@ -1,5 +1,6 @@
 // import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
 // import cardNumCodeDecryption from '@/client/js/functions/bcrypt/cardNumCodeDecryption';
+import errorManager from '@/client/js/module/errorHandler/errorManager';
 import findCharCode from '@/client/js/functions/findCharCode';
 import makeSeq from '@/client/js/views/game/indianPocker/fns/common/mappingCardNum';
 import storageMethod from '@/client/js/module/storage/storageMethod';
@@ -64,7 +65,10 @@ export default (params) => {
 
   // 상대에게 받는 카드 번호 flip
   selectedCard(eNum, mergePayload())
-    .then((svg) => flipSelectCard({ svg, imgEl: ENEMY_CARD_IMG, btnEl: ENEMY_CARD_BTN, liEl: ENEMY_CARD_LI }));
+    .then((svg) => flipSelectCard({ svg, imgEl: ENEMY_CARD_IMG, btnEl: ENEMY_CARD_BTN, liEl: ENEMY_CARD_LI }))
+    .catch((error) => {
+      errorManager(error, false);
+    });
 
   // const findCardNumb = cardNumCodeDecryption(ENEMY_NUMBER);
   // ENEMY_CARD_IMG.setAttribute('src', imgGetCardNum(findCardNumb));

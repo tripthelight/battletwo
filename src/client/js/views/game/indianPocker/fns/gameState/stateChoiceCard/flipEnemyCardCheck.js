@@ -1,3 +1,4 @@
+import errorManager from '@/client/js/module/errorHandler/errorManager';
 import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import drawResultCardInfo from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/drawResultCardInfo';
@@ -10,8 +11,6 @@ export default (_eNum, _pNum) => {
     const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
     const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
     const encryptKey2 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
-
-    // ————————————————————————————————————————————————————————————————————————————————————————————
 
     // 내 카드와 상대 카드 비교
     cardCompare(_pNum, _eNum)
@@ -31,33 +30,16 @@ export default (_eNum, _pNum) => {
             drawResultCardInfo('tie');
             break;
           default:
-            throw { message: 'Select card compare failed.' };
+            throw throwObj('cardNum', 'Select card compare failed.');
         };
 
         // TEST: 같은카드 테스트
         // drawResultCardInfo('tie');
       })
-      .catch(err => {
-        throw { message: err?.message ?? 'Select card compare failed.' };
+      .catch(error => {
+        errorManager(error, false);
       });
 
-
-
-    // ————————————————————————————————————————————————————————————————————————————————————————————
-
-    /* if (_eNum > _pNum) {
-      drawResultCardInfo('end');
-      storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_2);
-      storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal_2);
-    } else if (_eNum < _pNum) {
-      drawResultCardInfo('start');
-      storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_1);
-      storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal_1);
-    } else if (_eNum === _pNum) {
-      drawResultCardInfo('tie');
-    } else {
-      throw throwObj('errorComn', 'flipEnemyCardCheck _eNum, _pNum failed.');
-    }; */
   } catch (error) {
     throw throwObj(
       error?.errCase ?? 'errorComn',

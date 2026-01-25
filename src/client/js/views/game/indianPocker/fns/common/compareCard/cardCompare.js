@@ -1,3 +1,4 @@
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import { publicCardNumbs } from '@/client/store/encryptionStore';
 import findBits from "@/client/js/views/game/indianPocker/fns/common/compareCard/findBits";
 // import CardIdx from "@/client/js/views/game/indianPocker/fns/common/compareCard/CardIdx";
@@ -13,7 +14,7 @@ export default async function(_l, _r) {
     if (_l === _r) return 2;
     const cardCodes = publicCardNumbs();
     if (!cardCodes || (cardCodes && cardCodes.length === 0)) {
-      throw { message: 'select card - public card code length failed.' };
+      throw throwObj('cardNum', 'select card - public card code length failed.');
     };
 
     const na = Object.create(null);

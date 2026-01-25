@@ -41,10 +41,9 @@ export default () => {
             X.enc(decodeTF(textDE([120, 111, 98, 116, 117]))) // "xobtu" : false
           );
         } else {
-          throw { errCase: 'elementLoss', message: '.choice-card element failed'}
+          throw throwObj('elementLoss', '.choice-card element failed');
         }
       } catch (error) {
-        console.log('choiceCardsClick.js onclick error : ');
         errorManager(error, true);
       };
     };

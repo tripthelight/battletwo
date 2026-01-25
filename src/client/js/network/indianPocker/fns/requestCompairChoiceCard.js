@@ -86,7 +86,6 @@ export default async (_data) => {
       request('responseCompairChoiceCard', { result: true, tieWaitConfirmed: false });
     }
   } catch (error) {
-    console.log('requestCompairChoiceCard.js onclick error : ');
     errorManager(error, true);
   };
 };

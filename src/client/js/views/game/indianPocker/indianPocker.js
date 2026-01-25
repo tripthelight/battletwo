@@ -27,9 +27,6 @@ async function startGame() {
     makePayload(); // 카드 선택 시 보여지는 카드의 svg > path의 number/T payload
 
     switch (storageMethod("s", "GET_ITEM", findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]))) { // gameState
-      // case findCharCode([74, 75, 71, 90, 87, 79, 85, 69, 65, 88]): // waitEnemy
-      //   indianPockerGameState.waitEnemy();
-      //   break;
       case findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82]): // choiceCard
         indianPockerGameState.choiceCard();
         break;
