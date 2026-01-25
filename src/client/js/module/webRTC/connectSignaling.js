@@ -372,7 +372,10 @@ function reloadConnectCheck() {
  * BROWSER RELOAD EVENT
  */
 function leavePage() {
-  storageMethod('s', 'SET_ITEM', "reload", T);
+  if (STATE.partnerId && STATE.dc) {
+    // 상대 PEER와 매칭이 되었을 떄만 새로고침 storage 저장
+    storageMethod('s', 'SET_ITEM', "reload", T);
+  }
   if (STATE.roomId && STATE.initRole) {
     const pool = STATE.initRole === 'impolite' ? createChars('a') : createChars('b');
     const randomChar = pool[Math.floor(Math.random() * pool.length)];
