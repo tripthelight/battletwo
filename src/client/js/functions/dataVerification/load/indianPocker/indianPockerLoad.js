@@ -29,3 +29,29 @@ export default (gameState, storageKeys) => {
     };
   };
 };
+
+/* // 리펙토링 코드
+export default (gameState, storageKeys) => {
+  // 공통 실행: getRL() 결과에 따라 handler 메서드 선택
+  const runByReloadFlag = (handler, storageKeys) => {
+    const method = getRL() ? "handleReload" : "handleInitialLoad";
+    handler[method](storageKeys);
+  };
+
+  // gameState 문자열을 매번 findCharCode로 만들지 않게(1회만) 상수화
+  const GAME_STATE = {
+    choiceCard: findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82]),
+    basicBet: findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]),
+  };
+
+  // gameState -> handler 매핑
+  const HANDLERS = {
+    [GAME_STATE.choiceCard]: CHOICE_CARD_DATA_HANDLER,
+    [GAME_STATE.basicBet]: BASIC_BET_DATA_HANDLER,
+  };
+
+  const handler = HANDLERS[gameState];
+  if (!handler) return; // 해당 없으면 아무것도 안 함
+  runByReloadFlag(handler, storageKeys);
+};
+*/

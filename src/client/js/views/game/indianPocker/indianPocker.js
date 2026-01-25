@@ -5,12 +5,14 @@ import errorManager from '@/client/js/module/errorHandler/errorManager';
 import initNickName from '@/client/js/functions/initNickName';
 import findNickname from '@/client/js/functions/findNickname';
 import waitPeer from '@/client/js/functions/waitPeer';
-import { connectSignaling } from '@/client/js/module/webRTC/connectSignaling';
+import { connectSignaling, getRL } from '@/client/js/module/webRTC/connectSignaling';
 import deliverToGame from '@/client/js/module/webRTC/reliable/indianPoker/deliverToGame';
 import handleEnvelope from '@/client/js/module/webRTC/reliable/indianPoker/handleEnvelope';
 import makeCard from '@/client/js/views/game/indianPocker/fns/common/makeCard/makeCard';
 import makePayload from '@/client/js/views/game/indianPocker/fns/common/makePayload/makePayload';
+import findCharCode from '@/client/js/functions/findCharCode';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 
 LOADING_EVENT.show();
 const GAME_NAME = 'indianPocker';
@@ -23,7 +25,20 @@ async function startGame() {
     waitPeer(2);
     await makeCard();
     makePayload(); // 카드 선택 시 보여지는 카드의 svg > path의 number/T payload
-    indianPockerGameState.choiceCard();
+
+    switch (storageMethod("s", "GET_ITEM", findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]))) { // gameState
+      case findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82]): // choiceCard
+        indianPockerGameState.choiceCard();
+        break;
+      case findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]): // basicBet
+        indianPockerGameState.basicBet();
+        break;
+
+      default:
+        indianPockerGameState.choiceCard();
+        break;
+    }
+
     LOADING_EVENT.hide();
   } catch (error) {
     errorManager(error, false);
