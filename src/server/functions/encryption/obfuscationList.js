@@ -13,10 +13,10 @@ export const obfuscationList = {
         },
       },
       */
-      SECRET_KEY: {
+      /* SECRET_KEY: {
         k: 'SXIEUDBLPN', // [83, 88, 73, 69, 85, 68, 66, 76, 80, 78]
         v: makeAesSecretKey(),
-      },
+      }, */
       PUBLIC_CARD_NUMS: {
         k: 'TNUFGJXDCM', // [84, 78, 85, 70, 71, 74, 88, 68, 67, 77]
         v: {

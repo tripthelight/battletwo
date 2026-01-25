@@ -507,11 +507,12 @@ export const GET_ROUND_END = {
         errorManagement({ errCase: 'errorComn' });
         break;
     }
+
     resultEl.innerHTML = txtArr[0];
     BETTING_ZONE.appendChild(resultEl);
     setTimeout(resultTxtInnerHtml,              timeInterval_1000, resultEl, txtArr, 1);
     setTimeout(resultTxtInnerHtml,              timeInterval_2000, resultEl, txtArr, 2);
-    setTimeout(resultEl.remove(),                 timeInterval_3201);
+    setTimeout(() => { resultEl.remove() },                 timeInterval_3201);
     setTimeout(GET_ROUND_END.cardHideAnimation, timeInterval_3202, _result);
   },
   cardHideAnimation: (_result) => {

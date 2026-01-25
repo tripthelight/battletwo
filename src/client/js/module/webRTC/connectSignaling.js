@@ -264,7 +264,7 @@ function resetReliableLayer() {
   stopResendLoop();
 }
 export function ackUntil(seq) {
-  console.log('ackUntil 진입', seq);
+  // console.log('ackUntil 진입', seq);
   // seq 이하 outbox를 정리
   let removed = 0;
   for (const s of Array.from(RELIABLE.outbox.keys())) {
