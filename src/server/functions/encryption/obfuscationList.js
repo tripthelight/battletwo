@@ -279,9 +279,7 @@ export const obfuscationList = {
           },
         },
       },
-
       // e: sessionStorage keys
-
       // s: click event
       // choiceCardClick
       CHOICE_CARD_CLICK: {
@@ -291,6 +289,130 @@ export const obfuscationList = {
         k: 'BHINYATMSV', // [66, 72, 73, 78, 89, 65, 84, 77, 83, 86]
       },
       // e: click event
+      */
+
+      /**
+       * playing
+       */
+      /*
+      // s: sessionStorage keys
+      BET_STATE: {
+        k: 'FMPXWVSYKA', // [70, 77, 80, 88, 87, 86, 83, 89, 75, 65]
+        v: {
+          basicBetting: 'FTKWJCIMPA', // [70, 84, 75, 87, 74, 67, 73, 77, 80, 65]
+          extraBetting: 'MVSWEIHXPY', // [77, 86, 83, 87, 69, 73, 72, 88, 80, 89]
+        },
+      },
+      ROUND_END: { // true/false
+        k: 'SNVODIGWRU', // [83, 78, 86, 79, 68, 73, 71, 87, 82, 85]
+      },
+      BASIC_BET_READY: { // true/false
+        k: 'HQIOSFNPKX', // [72, 81, 73, 79, 83, 70, 78, 80, 75, 88]
+      },
+      EXT_FIRST_BET: { // true/false
+        k: 'MLCXOWSZYV', // [77, 76, 67, 88, 79, 87, 83, 90, 89, 86]
+      },
+      BET_USER: { // true/false/''
+        k: 'HFUCSDYRMX', // [72, 70, 85, 67, 83, 68, 89, 82, 77, 88]
+      },
+      BET_USER_FIRST: { // true/false/''
+        k: 'ZYPFDTAMJN', // [90, 89, 80, 70, 68, 84, 65, 77, 74, 78]
+      },
+      COINS_PLAYER: {
+        k: 'QCEDGMSZAJ', // [81, 67, 69, 68, 71, 77, 83, 90, 65, 74]
+      },
+      COINS_PLAYER_BET: {
+        k: 'XOVJHPGFEM', // [88, 79, 86, 74, 72, 80, 71, 70, 69, 77]
+      },
+      COINS_PLAYER_EXT_BET: {
+        k: 'FZOCXMERTQ' //  [70, 90, 79, 67, 88, 77, 69, 82, 84, 81]
+      },
+      COINS_ENEMY: {
+        k: 'SNTDBPGACW', // [83, 78, 84, 68, 66, 80, 71, 65, 67, 87]
+      },
+      COINS_ENEMY_BET: {
+        k: 'COBFKRJXED', // [67, 79, 66, 70, 75, 82, 74, 88, 69, 68]
+      },
+      COINS_ENEMY_EXT_BET: {
+        k: 'PIDAZEXVRC' //  [80, 73, 68, 65, 90, 69, 88, 86, 82, 67]
+      },
+      DREW_READY: { // true/false
+        k: 'RCFEDVXJSN', // [82, 67, 70, 69, 68, 86, 88, 74, 83, 78]
+      },
+      BASIC_BETTING_STATE: { // true/false
+        k: 'QEMHKCIWOJ', // [81, 69, 77, 72, 75, 67, 73, 87, 79, 74]
+      },
+      DREW_STATE: { // true/false
+        k: 'CGODLITJPM' // [67, 71, 79, 68, 76, 73, 84, 74, 80, 77]
+      },
+      RESULT: { // true/false
+        k: 'OUMJGNPCQH' // [79, 85, 77, 74, 71, 78, 80, 67, 81, 72]
+      }
+      DROP_STATE: { // true/false
+        k: 'QEGTUZRCMY' // [81, 69, 71, 84, 85, 90, 82, 67, 77, 89]
+      },
+      COINS_ENEMY_LOCAL_FOLD: {
+        k: 'VZQMJHXSAP' // [86, 90, 81, 77, 74, 72, 88, 83, 65, 80]
+      },
+      COINS_PLAYER_LOCAL_FOLD: {
+        k: 'PNAJRFBCQE' // [80, 78, 65, 74, 82, 70, 66, 67, 81, 69]
+      },
+      COINS_ENEMY_REMOTE_FOLD: {
+        k: 'OZJGNYERXT' // [79, 90, 74, 71, 78, 89, 69, 82, 88, 84]
+      },
+      COINS_PLAYER_REMOTE_FOLD: {
+        k: 'WDMXVZKOJR' // [87, 68, 77, 88, 86, 90, 75, 79, 74, 82]
+      },
+      FOLD_USER: {
+        k: 'BAQLTGCVRS' // [66, 65, 81, 76, 84, 71, 67, 86, 82, 83]
+      },
+      FOLD_STATE: {
+        k: 'AHBKUEWOXV' // [65, 72, 66, 75, 85, 69, 87, 79, 88, 86]
+      },
+      BATTLE_CARD_NUM: {
+        k: 'IKHAMRUPBW' // [73, 75, 72, 65, 77, 82, 85, 80, 66, 87]
+      },
+      PLAYER_CARD_NUM: {
+        k: 'MWUXSPOZAB' // [77, 87, 85, 88, 83, 80, 79, 90, 65, 66]
+      },
+      PLAYING_RELOAD_USER: {
+        k: 'KQSPYXVHRM' // [75, 81, 83, 80, 89, 88, 86, 72, 82, 77]
+      },
+      BET_COIN: { : TODO:
+        k: 'DUHITAZFYX', // [68, 85, 72, 73, 84, 65, 90, 70, 89, 88]
+        v: {
+          betState: {
+            k: '',
+            v: {
+              end: '',
+            }
+          },
+          host: {
+            k: '',
+            v: {
+              'pleyer': ''
+              'enemy': ''
+            }
+          },
+          index: ',
+          translateX: '',
+          translateY: '',
+          offsetLeft: '',
+          offsetTop: '',
+          tm: '',
+          th: '',
+        }
+      },
+      BET_COIN_POS: { : TODO:
+        k: 'DEKHCVZPAO', // [68, 69, 75, 72, 67, 86, 90, 80, 65, 79]
+          v: {
+            host: '',
+            translateX: '',
+            translateY: '',
+          },
+        },
+      },
+      // e: sessionStorage keys
       */
     };
   },

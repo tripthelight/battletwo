@@ -1,4 +1,3 @@
-import { timeInterval_1 } from '@/client/js/functions/variable';
 import drawEnemyCoinsPlaying from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/drawEnemyCoinsPlaying';
 
 export default () => {

@@ -3,22 +3,28 @@ import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import textDE from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-// import { timeInterval_1, timeInterval_5200 } from '@/client/js/functions/variable';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import { request } from '@/client/js/network/indianPocker/request';
 import sessionInitPlaying from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/sessionInitPlaying';
 import refreshDrawDrew from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/refreshDrawDrew';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
+import dataHandler from '@/client/js/functions/dataVerification/load/dataHandler';
 
 export const STATE_PLAYING = {
   main: () => {
-    console.log('playing main 진입 >>>>>>>>>> ');
+    // dataHandler({
+    //   p1: findCharCode([68, 74, 69, 77, 70, 75, 76, 86, 68, 69]), // indianPocker
+    //   p2: findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]), // playing
+    // });
+
+    // ——————————————————————————————————————————————————————
+    // TODO: dataHandler 이 후 실행할 명령들
+    // ——————————————————————————————————————————————————————
     LOADING_EVENT.show();
-    // request('enterPlaying', 'playing');
     // TODO: 여기서 서로의 coinsEnemy, coinsPlayer 확인
     request('enterPlaying', [112, 108, 97, 121, 105, 110, 103]); // playing
-
     sessionInitPlaying();
+    // ——————————————————————————————————————————————————————
   },
   drew: () => {
     // storageMethod('s', 'REMOVE_ITEM', 'betResulting');

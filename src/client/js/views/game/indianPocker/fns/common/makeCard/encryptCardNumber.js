@@ -1,12 +1,14 @@
 import bcrypt from 'bcryptjs';
 import { selectCompairNumbers } from '@/client/store/encryptionStore';
 import shuffleArray from '@/client/js/views/game/indianPocker/fns/common/makeCard/shuffleArray';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
+
 
 export default async () => {
   try {
     const arrNumbs = selectCompairNumbers(); // 1 ~ 40 - signalingServer에서 암호화한 carcNum key 리스트
     if (!arrNumbs || (arrNumbs && arrNumbs.length === 0)) {
-      throw { message: 'cardNum length failed.' };
+      throw throwObj('cardNum', 'cardNum length failed.');
     }
 
     // 카드 배열을 1 ~ 10까지의 숫자로 섞어서 2세트로 지정
@@ -17,6 +19,6 @@ export default async () => {
       return bcrypt.hashSync(item.toString(), 3);
     });
   } catch (error) {
-    throw { message: error.message ?? 'encrypt card number failed.' };
+    throw throwObj(error?.errCase ?? 'cardNum', error?.message ?? 'encrypt card number failed.');
   }
 };

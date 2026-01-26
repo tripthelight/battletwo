@@ -1,3 +1,4 @@
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import { publicCardNumbs } from '@/client/store/encryptionStore';
 import encryptionStore, { updatePathN, updatePathT } from '@/client/store/encryptionStore';
 import { __fnv1a32 } from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/fns/n/f';
@@ -8,7 +9,7 @@ import nt from "@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCar
 export default () => {
   const cardCodes = publicCardNumbs();
   if (!cardCodes || (cardCodes && cardCodes.length === 0)) {
-    throw { message: 'public card code length failed.' };
+    throw throwObj('cardNum', 'public card code length failed.');
   };
 
   /**

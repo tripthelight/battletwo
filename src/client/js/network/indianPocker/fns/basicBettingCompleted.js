@@ -17,7 +17,6 @@ export default () => {
       };
     })
     .catch((error) => {
-      console.log('error basicBettingCompleted.js');
       errorManager(error, true);
     });
 };

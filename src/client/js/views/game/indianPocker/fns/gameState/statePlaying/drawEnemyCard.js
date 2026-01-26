@@ -10,6 +10,8 @@ import comnDrawEnemyCard from '@/client/js/views/game/indianPocker/fns/gameState
 export default () => {
   // element | seeeion 체크
   const ENEMY_CARD = document.querySelector('.enemy-card');
+  console.log("ENEMY_CARD :::::::: ", ENEMY_CARD);
+
   if (ENEMY_CARD) return;
   const GAME_SCENE = document.getElementById('gameScene');
   if (!GAME_SCENE) return errorManagement({ errCase: 'elementLoss', message: '#gameScene 엘리먼트가 없습니다.' });

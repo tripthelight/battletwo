@@ -1,6 +1,7 @@
 import '@/client/assets/scss/game/indianPocker/common';
 import '@/client/js/common/common';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
 import initNickName from '@/client/js/functions/initNickName';
 import findNickname from '@/client/js/functions/findNickname';
@@ -11,6 +12,9 @@ import handleEnvelope from '@/client/js/module/webRTC/reliable/indianPoker/handl
 import makeCard from '@/client/js/views/game/indianPocker/fns/common/makeCard/makeCard';
 import makePayload from '@/client/js/views/game/indianPocker/fns/common/makePayload/makePayload';
 import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import textDE from '@/client/js/module/crypts/textDE';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 
@@ -26,18 +30,89 @@ async function startGame() {
     await makeCard();
     makePayload(); // 카드 선택 시 보여지는 카드의 svg > path의 number/T payload
 
-    switch (storageMethod("s", "GET_ITEM", findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]))) { // gameState
+    /* switch (storageMethod("s", "GET_ITEM", findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]))) { // gameState
       case findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82]): // choiceCard
         indianPockerGameState.choiceCard();
         break;
       case findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]): // basicBet
         indianPockerGameState.basicBet();
         break;
+      case findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]): // playing
+        indianPockerGameState.playing();
+        break;
 
       default:
         indianPockerGameState.choiceCard();
         break;
+    } */
+
+    if (getRL(false)) {
+      const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
+      const decryptVal = window.sessionStorage.getItem(encryptKey);
+
+      // 새로 고침 후 재연결인 경우
+      switch (decryptVal) {
+        // case 'waitEnemy':
+        case findCharCode([74, 75, 71, 90, 87, 79, 85, 69, 65, 88]):
+          // choiceCard
+          indianPockerGameState.choiceCard();
+          break;
+        // case 'choiceCard':
+        case findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82]):
+          indianPockerGameState.choiceCard();
+          break;
+        // case 'basicBet':
+        case findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]):
+          indianPockerGameState.basicBet();
+          break;
+        // case 'playing':
+        case findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]):
+          // playing 중 새로고침 한 사용자
+          storageMethod(
+            's',
+            'SET_ITEM',
+            findCharCode([75, 81, 83, 80, 89, 88, 86, 72, 82, 77]), // playingReloadUser
+            X.enc(decodeTF(textDE([99,119,104,117]))) // "cwhu" : true
+          );
+          const encryptKey1 = findCharCode([65, 72, 66, 75, 85, 69, 87, 79, 88, 86]); // foldState
+          const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+          if (encryptVal1 !== null && encryptVal1 !== "") {
+            // 이전 판에서 FOLD animation 실행중 일 때 새로고침 한 경우
+            if (X.dec(encryptVal1)) { // foldState : true
+              // FOLD를 실행한 PLAYER
+              const encryptKey2 = findCharCode([66, 65, 81, 76, 84, 71, 67, 86, 82, 83]); // foldUser
+              const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+              if (encryptVal2 !== null && encryptVal2 !== "") {
+                if (X.dec(encryptVal2)) { // foldUser : true
+                  // FOLD를 실행한 PLAY가 새고로침
+                  indianPockerGameState.basicBet('foldLocal');
+                } else { // foldUser : false
+                  // FOLD를 받은 PLAY가 새고로침
+                  indianPockerGameState.basicBet('foldRemote');
+                }
+              }
+            }
+          } else {
+            indianPockerGameState.playing();
+          }
+          break;
+        // case 'gameOver':
+        case findCharCode([65, 70, 79, 73, 76, 85, 88, 87, 86, 75]):
+          indianPockerGameState.gameOver();
+          break;
+        default:
+          throw throwObj('errorComn', 'refresh gameState failed.');
+      }
+    } else {
+      // choiceCard
+      indianPockerGameState.choiceCard();
     }
+
+
+
+
+
+
 
     LOADING_EVENT.hide();
   } catch (error) {

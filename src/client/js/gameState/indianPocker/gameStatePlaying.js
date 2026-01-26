@@ -20,6 +20,15 @@ export default () => {
 
   const BET_RESULTING = window.sessionStorage.betResulting;
   if (BET_RESULTING && BET_RESULTING === 'true') {
+    //
+  } else {
+    STATE_PLAYING.main();
+    LOADING_EVENT.show();
+  }
+
+
+  /* const BET_RESULTING = window.sessionStorage.betResulting;
+  if (BET_RESULTING && BET_RESULTING === 'true') {
     // if (reload) {
     //   REFRESH_STATE_PLAYING.main();
     // }
@@ -31,7 +40,7 @@ export default () => {
     // if (reload) {
     //   REFRESH_STATE_PLAYING.main();
     // }
-  }
+  } */
 
   /* setTimeout(() => {
     const BET_RESULTING = window.sessionStorage.betResulting;

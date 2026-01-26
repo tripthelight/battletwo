@@ -15,6 +15,8 @@ export default (reloadState) => {
     findCharCode([65, 72, 66, 75, 85, 69, 87, 79, 88, 86]), // foldState
   ];
   if (reloadState) {
+    console.log("폴드 후 새로고침 -------> ", reloadState);
+
     /**
      * 이전 판에서 FOLD 후 새로고침 해서 기본배팅 화면으로 진입한 경우
      * betState 는 basicBetting이 되어야 함

@@ -24,9 +24,9 @@ export default () => {
   const encryptKey5 = findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]); // extFirstBet
   const decryptVal5 = window.sessionStorage.getItem(encryptKey5);
   if (decryptVal5 === null) storageMethod('s', 'SET_ITEM',
-    encryptKey5, // extFirstBet
-    X.enc(decodeTF(textDE([100, 103, 108, 116, 117]))) // "dgltu" : false
-  );
+      encryptKey5, // extFirstBet
+      X.enc(decodeTF(textDE([100, 103, 108, 116, 117]))) // "dgltu" : false
+    );
 
   // 명령
   drawEnemyBlockPlaying();

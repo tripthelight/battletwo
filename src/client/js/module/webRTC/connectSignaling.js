@@ -28,10 +28,10 @@ class ReloadTask {
   set(_) { this.#reload = _; };
 };
 const R = new ReloadTask();
-export function getRL() {
+export function getRL(_revert) {
   // 값이 true라면 반환하기 전에 false로 바꿔줌
   if (R.get()) {
-    R.set(F);
+    if (_revert) R.set(F);
     return T;  // 조건문에서는 true로 평가됨
   }
   return F;

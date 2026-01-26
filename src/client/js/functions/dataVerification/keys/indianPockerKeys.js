@@ -18,7 +18,7 @@ export default (gameState) => {
       'playing', // playing
       'gameOver', // gameOver
     ]; */
-  }
+  };
 
   // gameState: choiceCard
   if (gameState === findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82])) {
@@ -50,7 +50,7 @@ export default (gameState) => {
       'myNextStepState', // myNextStepState
       'nextStepChoiceCard', // nextStepChoiceCard
     ]; */
-  }
+  };
 
   // gameState: basicBet
   if (gameState === findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68])) {
@@ -83,5 +83,12 @@ export default (gameState) => {
       'betCoin', // findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]), // betCoin
       'betCoinPos', // findCharCode([68, 69, 75, 72, 67, 86, 90, 80, 65, 79]), // betCoinPos
     ];
+  };
+
+  // gameState: playing
+  if (gameState === findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71])) {
+    return [
+      findCharCode(),
+    ]
   }
 };
