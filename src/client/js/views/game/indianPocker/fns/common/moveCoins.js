@@ -16,7 +16,7 @@ export default () => {
   const moveState = lastBettingCheck();
   if (moveState) return;
 
-  let moveCoins = COINS.querySelectorAll('li');
+  const moveCoins = COINS.querySelectorAll('li');
   [].forEach.call(moveCoins, (item) => {
     addEventsMoveCoin(item);
   });

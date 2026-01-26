@@ -13,124 +13,76 @@ import moveTouchEnd from '@/client/js/views/game/indianPocker/fns/common/moveTou
 // addEventListener 내부에 화살표 함수로 삽입하면 매번 새로운 함수 객체를 만들어 등록하므로 중복 실행됨
 // 핸들러를 바깥으로 빼 동일 참조 유지
 // ────────────────────────────────────────────────────────
-// PC *****************************
-function onDrop(event) {
-  event.preventDefault();
-  try {
-    moveDrop();
-  } catch (error) {
-    console.log('error moveDrop : ', error);
-    errorManager(error, true);
+const withGuard = (fn, { prevent = false } = {}) => {
+  return (event) => {
+    if (prevent) event?.preventDefault();
+    try {
+      return fn(event);
+    } catch (error) {
+      errorManager(error, true);
+    }
   };
 };
-function onMoveDragover(event) {
-  event.preventDefault();
-  try {
-    moveDragover();
-  } catch (error) {
-    console.log('error onMoveDragover : ');
-    errorManager(error, true);
-  };
-};
-function onMoveDragleave(event) {
-  event.preventDefault();
-  try {
-    moveDragleave();
-  } catch (error) {
-    console.log('error onMoveDragleave : ');
-    errorManager(error, true);
-  };
-};
-function onMoveDragStart(event) {
-  try {
-    moveDragStart(event);
-  } catch (error) {
-    console.log('error onMoveDragStart : ');
-    errorManager(error, true);
-  };
-};
-function onMoveDrag(event) {
-  try {
-    moveDrag(event);
-  } catch (error) {
-    console.log('error onMoveDrag : ');
-    errorManager(error, true);
-  };
-};
-function onMoveDragEnd(event) {
-  try {
-    moveDragEnd();
-  } catch (error) {
-    console.log('error onMoveDragEnd : ');
-    errorManager(error, true);
-  };
-};
+
+// ✅ 실제 로직(try/catch, preventDefault 제거한 "순수 핸들러")
+const handleDrop = () => moveDrop();
+const handleDragover = () => moveDragover();
+const handleDragleave = () => moveDragleave();
+const handleDragStart = (event) => moveDragStart(event);
+const handleDrag = (event) => moveDrag(event);
+const handleDragEnd = () => moveDragEnd();
+const handleTouchStart = (event) => moveTouchStart(event);
+const handleTouchMove = (event) => moveTouchMove(event);
+const handleTouchEnd = (event) => moveTouchEnd(event);
+
+// ✅ 이벤트에 붙일 최종 핸들러(옵션 적용)
+const onDrop = withGuard(handleDrop, { prevent: true });
+const onMoveDragover = withGuard(handleDragover, { prevent: true });
+const onMoveDragleave = withGuard(handleDragleave, { prevent: true });
+const onMoveDragStart = withGuard(handleDragStart);
+const onMoveDrag = withGuard(handleDrag);
+const onMoveDragEnd = withGuard(handleDragEnd);
+const onMoveTouchStart = withGuard(handleTouchStart);
+const onMoveTouchMove = withGuard(handleTouchMove);
+const onMoveTouchEnd = withGuard(handleTouchEnd);
+
 // ────────────────────────────────────────────────────────
-// MOBILE *************************
-function onMoveTouchStart(event) {
-  try {
-    moveTouchStart(event);
-  } catch (error) {
-    console.log('error onMoveTouchStart : ');
-    errorManager(error, true);
-  };
-};
-function onMoveTouchMove(event) {
-  try {
-    moveTouchMove(event);
-  } catch (error) {
-    console.log('error onMoveTouchMove : ');
-    errorManager(error, true);
-  };
-};
-function onMoveTouchEnd(event) {
-  try {
-    moveTouchEnd(event);
-  } catch (error) {
-    console.log('error onMoveTouchEnd : ');
-    errorManager(error, true);
-  };
+// 바인딩 중복 제거 유틸
+const DEFAULT_OPTS = false;
+
+const bindEvents = (bindings, opts = DEFAULT_OPTS) => {
+  bindings.forEach(([target, type, handler]) => {
+    if (!target) return;
+    target.removeEventListener(type, handler, opts);
+    target.addEventListener(type, handler, opts);
+  });
 };
 
 export default (el) => {
   const deviceState = deviceStateStore.getState().deviceStateState.deviceState;
+  const BATTING_ZONE = document.querySelector('.betting-zone');
 
-  switch (deviceState) {
-    case 'pc':
-      const BATTING_ZONE = document.querySelector('.betting-zone');
-      if (!BATTING_ZONE) return;
+  if (deviceState === 'pc') {
+    if (!BATTING_ZONE || !el) return;
 
-      // BATTING_ZONE.addEventListener('drop', moveDrop, false);
-      BATTING_ZONE.removeEventListener('drop', onDrop);
-      BATTING_ZONE.addEventListener('drop', onDrop, false);
-      // BATTING_ZONE.addEventListener('dragover', moveDragover, false);
-      BATTING_ZONE.removeEventListener('dragover', onMoveDragover);
-      BATTING_ZONE.addEventListener('dragover', onMoveDragover, false);
-      // BATTING_ZONE.addEventListener('dragleave', moveDragleave, false);
-      BATTING_ZONE.removeEventListener('dragleave', onMoveDragleave);
-      BATTING_ZONE.addEventListener('dragleave', onMoveDragleave, false);
-      // el.addEventListener('dragstart', moveDragStart, false);
-      el.removeEventListener('dragstart', onMoveDragStart);
-      el.addEventListener('dragstart', onMoveDragStart, false);
-      // el.addEventListener('drag', moveDrag, false);
-      el.removeEventListener('drag', onMoveDrag);
-      el.addEventListener('drag', onMoveDrag, false);
-      // el.addEventListener('dragend', moveDragEnd, false);
-      el.removeEventListener('dragend', onMoveDragEnd);
-      el.addEventListener('dragend', onMoveDragEnd, false);
-      break;
-    case 'mobile':
-      // el.addEventListener('touchstart', moveTouchStart, false);
-      el.removeEventListener('touchstart', onMoveTouchStart);
-      el.addEventListener('touchstart', onMoveTouchStart, false);
-      // el.addEventListener('touchmove', moveTouchMove, false);
-      el.removeEventListener('touchmove', onMoveTouchMove);
-      el.addEventListener('touchmove', onMoveTouchMove, false);
-      // el.addEventListener('touchend', moveTouchEnd, false);
-      el.removeEventListener('touchend', onMoveTouchEnd);
-      el.addEventListener('touchend', onMoveTouchEnd, false);
-      break;
-    default:
-      break;
+    bindEvents([
+      [BATTING_ZONE, 'drop', onDrop],
+      [BATTING_ZONE, 'dragover', onMoveDragover],
+      [BATTING_ZONE, 'dragleave', onMoveDragleave],
+      [el, 'dragstart', onMoveDragStart],
+      [el, 'drag', onMoveDrag],
+      [el, 'dragend', onMoveDragEnd],
+    ]);
+    return;
+  }
+
+  if (deviceState === 'mobile') {
+    if (!el) return;
+
+    bindEvents([
+      [el, 'touchstart', onMoveTouchStart],
+      [el, 'touchmove', onMoveTouchMove],
+      [el, 'touchend', onMoveTouchEnd],
+    ]);
   }
 };

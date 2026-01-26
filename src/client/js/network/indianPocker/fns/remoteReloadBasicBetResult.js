@@ -1,14 +1,25 @@
+import throwObj from '@/client/js/module/errorHandler/throwObj';
+import errorManager from '@/client/js/module/errorHandler/errorManager';
 import findCharCode from '@/client/js/functions/findCharCode';
 import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import textDE from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import sessionInit from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/sessionInit';
+
+// _data 배열이 두자리 숫자 8개의 배열인지 아닌지 확인
+const isTwoDigitArrayOf8 = (arr) =>
+  Array.isArray(arr) &&
+  arr.length === 8 &&
+  arr.every((n) => Number.isInteger(n) && n >= 10 && n <= 116);
 
 export default (_data) => {
   const PROMISE = new Promise((resolve, reject) => {
-    resolve(_data);
+    if (isTwoDigitArrayOf8(_data)) {
+      resolve(_data);
+    } else {
+      reject(throwObj('dataManipulation', 'remoteReloadBasicBetResult - _data validate failed.'));
+    }
   });
   PROMISE.then((_data) => {
     // basicBet
@@ -45,8 +56,10 @@ export default (_data) => {
 
         sessionInit();
       }
+    } else {
+      throw throwObj('dataManipulation', 'remoteReloadBasicBetResult - basicBet key failed.');
     }
   }).catch((error) => {
-    errorManagement({ errCase: 'errorComn', message: 'remoteReloadBasicBetResult() 함수를 못탐' });
+    errorManager(error, true);
   });
 };

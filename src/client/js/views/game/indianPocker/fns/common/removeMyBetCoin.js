@@ -83,7 +83,6 @@ export default (_data) => {
     if (decryptVal === encryptVal2) {
       // 추가배팅일 경우 -> gameState : playing
       // if (BET_STATE) {
-      console.log("encryptVal3 ========= ",   encryptVal3);
 
       if (booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]) === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) { // true
         // 추가 배팅이고, 내 차례면 animateClock()

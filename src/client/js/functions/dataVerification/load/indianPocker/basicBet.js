@@ -104,9 +104,13 @@ export const BASIC_BET_DATA_HANDLER = {
     };
 
     request(
-      _t([114, 101, 113, 117, 101, 115, 116, 67, 111, 109, 112, 97, 105, 114, 66, 97, 115, 105, 99, 66, 101, 116]),
+      _t([114, 101, 113, 117, 101, 115, 116, 67, 111, 109, 112, 97, 105, 114, 66, 97, 115, 105, 99, 66, 101, 116]), // requestCompairBasicBet
       params
     ); */
+
+
+    console.log("basicBet 새로고침 : ", _t([114, 101, 113, 117, 101, 115, 116, 67, 111, 109, 112, 97, 105, 114, 66, 97, 115, 105, 99, 66, 101, 116]));
+
 
     // product mode ***********************************
     const F = findCharCode, S = window.sessionStorage, T = throwObj, R = request, D = _t, B = booleanReturn, QE = decodeTF, ENC = X.enc, DEC = X.dec, DN = dec;
@@ -157,7 +161,7 @@ export const BASIC_BET_DATA_HANDLER = {
     };
 
     // ─────────────────── 요청 (문자 배열 해독)
-    R(D([114,101,113,117,101,115,116,67,111,109,112,97,105,114,66,97,115,105,99,66,101,116]), P);
+    R(D([114,101,113,117,101,115,116,67,111,109,112,97,105,114,66,97,115,105,99,66,101,116]), P); // request : requestCompairBasicBet
   },
   // gameState : basicBet에 처음 입장
   handleInitialLoad(storageKeys) {

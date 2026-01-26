@@ -26,10 +26,6 @@ export const GET_BASIC_BETTING = {
       .then((_data) => {
         const { coinCount, betCount, originCount } = _data;
 
-        console.log("recive coinCount :::::::: ", coinCount);
-        console.log("recive betCount ::::::::: ", betCount);
-        console.log("recive originCount :::::: ", originCount);
-
         // 상대 peer에게 받은 기본배팅 하기 전 코인 개수와
         // 내가 가지고 있는 상대 코인 개수가 맞는지 검증 필요
         const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
@@ -74,56 +70,58 @@ export const GET_BASIC_BETTING = {
               resolve();
             })
             .catch((err) => {
-              console.log('error EnemyBlockMoveBattingZone()');
-              // errorManagement({ errCase: 'errorComn' });
-              throw {
+              reject({
                 ...throwObj('errorComn', 'EnemyBlockMoveBattingZone failed.'),
                 errorDetails: err
-              };
+              })
             });
         });
         ENEMY_MOVE_COIN_INCREASE.then(() => {
           const REMOVE_ENEMY_BET_COIN = new Promise((resolve, reject) => {
-            // enemy의 기본배팅을 받고 player에서 enemy coin을 다시 그림
-            const ENEMY_COIN_UL = document.querySelector('ul.coins-enemy');
-            if (!ENEMY_COIN_UL) return;
-            const COINS = ENEMY_COIN_UL.querySelectorAll('li');
+            try {
+              // enemy의 기본배팅을 받고 player에서 enemy coin을 다시 그림
+              const ENEMY_COIN_UL = document.querySelector('ul.coins-enemy');
+              if (!ENEMY_COIN_UL) return;
+              const COINS = ENEMY_COIN_UL.querySelectorAll('li');
 
-            // enemy 코인을 지우기 전 시간 deg 저장 array 변수 선언
-            let timeDegArr = [];
-            if (COINS.length > 0) {
-              for (let i = 0; i < COINS.length; i++) {
-                if (i === COINS.length - 1) {
-                  // 기본 배팅에서는 마지막 코인이 빠지므로 마지막 코인의 시간 POS는 없어야 됨
-                } else {
-                  timeDegArr.push([getTranslateMH(COINS[i]).m, getTranslateMH(COINS[i]).h]);
+              // enemy 코인을 지우기 전 시간 deg 저장 array 변수 선언
+              let timeDegArr = [];
+              if (COINS.length > 0) {
+                for (let i = 0; i < COINS.length; i++) {
+                  if (i === COINS.length - 1) {
+                    // 기본 배팅에서는 마지막 코인이 빠지므로 마지막 코인의 시간 POS는 없어야 됨
+                  } else {
+                    timeDegArr.push([getTranslateMH(COINS[i]).m, getTranslateMH(COINS[i]).h]);
+                  }
+                  COINS[i].remove();
                 }
-                COINS[i].remove();
               }
-            }
-            // const ENEMY_COINS = Number(window.sessionStorage.coinsEnemy);
-            const ENEMY_COINS = Number(_data.coinCount);
-            if (ENEMY_COINS > 0) {
-              let coinsElem = new Object();
-              let minuteEl = new Object();
-              let hourEl = new Object();
-              for (let i = 0; i < ENEMY_COINS; i++) {
-                coinsElem = document.createElement('li');
-                minuteEl = document.createElement('span');
-                hourEl = document.createElement('span');
-                minuteEl.classList.add('m');
-                hourEl.classList.add('h');
-                coinsElem.appendChild(minuteEl);
-                coinsElem.appendChild(hourEl);
-                // 기본 배팅이 끝나면 시간이 멈춰야 됨
-                minuteEl.style.transform = `translate(-50%, -96%) rotate(${timeDegArr[i][0]}deg)`;
-                hourEl.style.transform = `translate(-50%, -86%) rotate(${timeDegArr[i][1]}deg)`;
-                ENEMY_COIN_UL.appendChild(coinsElem);
-                // 모두 다시 그리면 다음 함수 실행
-                if (i === ENEMY_COINS - 1) resolve();
-              }
-            } else {
-              resolve();
+              // const ENEMY_COINS = Number(window.sessionStorage.coinsEnemy);
+              const ENEMY_COINS = Number(_data.coinCount);
+              if (ENEMY_COINS > 0) {
+                let coinsElem = new Object();
+                let minuteEl = new Object();
+                let hourEl = new Object();
+                for (let i = 0; i < ENEMY_COINS; i++) {
+                  coinsElem = document.createElement('li');
+                  minuteEl = document.createElement('span');
+                  hourEl = document.createElement('span');
+                  minuteEl.classList.add('m');
+                  hourEl.classList.add('h');
+                  coinsElem.appendChild(minuteEl);
+                  coinsElem.appendChild(hourEl);
+                  // 기본 배팅이 끝나면 시간이 멈춰야 됨
+                  minuteEl.style.transform = `translate(-50%, -96%) rotate(${timeDegArr[i][0]}deg)`;
+                  hourEl.style.transform = `translate(-50%, -86%) rotate(${timeDegArr[i][1]}deg)`;
+                  ENEMY_COIN_UL.appendChild(coinsElem);
+                  // 모두 다시 그리면 다음 함수 실행
+                  if (i === ENEMY_COINS - 1) resolve();
+                }
+              } else {
+                resolve();
+              };
+            } catch (error) {
+              reject(error);
             }
           });
           REMOVE_ENEMY_BET_COIN.then(() => {
@@ -152,8 +150,6 @@ export const GET_BASIC_BETTING = {
             let x = 0;
             let y = 0;
             if (BET_COINS) {
-              console.log('1 =============== ');
-
               // EMEMY의 기본배팅을 받고 PLAYER 기본배팅 =========================
               const PLAYER_COIN = BET_COIN_ARR.filter((item) => item.host === 'player');
               const BET_COINS_LIST = BET_COINS.querySelectorAll('li');
@@ -161,7 +157,6 @@ export const GET_BASIC_BETTING = {
               for (let i = 0; i < BET_COIN_LIST.length; i++) {
                 if (i === BET_COIN_LIST.length - 1 && BET_COIN_LIST[i].host === 'enemy') {
                   elemLi = document.createElement('li');
-
                   minuteEl = document.createElement('span');
                   hourEl = document.createElement('span');
                   minuteEl.classList.add('m');
@@ -209,24 +204,19 @@ export const GET_BASIC_BETTING = {
               saveBetCoinSession('enemy', x, y);
             };
           }).catch((err) => {
-            console.log('error REMOVE_ENEMY_BET_COIN');
-            throw {
+            errorManager({
               ...throwObj('errorComn', 'REMOVE_ENEMY_BET_COIN failed.'),
               errorDetails: err
-            };
+            }, true);
           });
         }).catch((err) => {
-          console.log('error ENEMY_MOVE_COIN_INCREASE');
-          console.log('err : ', err);
-
-          throw {
+          errorManager({
             ...throwObj('errorComn', 'ENEMY_MOVE_COIN_INCREASE failed.'),
             errorDetails: err
-          };
+          }, true);
         });
       })
       .catch((err) => {
-        console.log('error getBasicBetting receiveBasicBetting : ');
         errorManager(err, true);
       });
   },

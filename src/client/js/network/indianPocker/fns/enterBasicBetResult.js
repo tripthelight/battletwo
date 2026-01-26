@@ -1,3 +1,4 @@
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import findCharCode from '@/client/js/functions/findCharCode';
 import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
@@ -6,9 +7,19 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
 import sessionInit from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/sessionInit';
 
+// _data 배열이 두자리 숫자 8개의 배열인지 아닌지 확인
+const isTwoDigitArrayOf8 = (arr) =>
+  Array.isArray(arr) &&
+  arr.length === 8 &&
+  arr.every((n) => Number.isInteger(n) && n >= 10 && n <= 116);
+
 export default (_data) => {
   const PROMISE = new Promise((resolve, reject) => {
-    resolve(_data);
+    if (isTwoDigitArrayOf8(_data)) {
+      resolve(_data);
+    } else {
+      reject(throwObj('dataManipulation', 'enterBasicBetResult - _data validate failed.'));
+    }
   });
   PROMISE.then((_data) => {
     // basicBet
@@ -20,9 +31,6 @@ export default (_data) => {
         const encryptKey2 = findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]); // roundEnd
         const encryptVal4 = X.enc(decodeTF(textDE([106, 103, 118, 105, 97]))); // "jgvia" : false
         storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal4);
-
-        console.log('sessionInit 진입 - enterBasicBetResult 받고 진입');
-
         sessionInit();
       } else if (encryptVal1 !== encryptVal2) {
         storageMethod(
@@ -33,10 +41,9 @@ export default (_data) => {
         );
       }
     } else {
-      // TODO: error 처리
+      throw throwObj('sessionStorageLoss', 'enterBasicBetResult - basicBet key failed.');
     }
   }).catch((error) => {
-    console.log('enterBasicBetResult() function error.');
-    errorManager(error, true);
+    errorManager(error, false);
   });
 };

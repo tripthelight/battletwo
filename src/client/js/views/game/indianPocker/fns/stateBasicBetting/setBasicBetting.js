@@ -67,8 +67,6 @@ export const SET_BASIC_BETTING = {
     const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
     const decryptVal1 = findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
     if (encryptVal1 === decryptVal1) {
-      console.log('기본 배팅 진입');
-
       const encryptKey2 = findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]); // basicBettingState
       const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
       // if (window.sessionStorage.basicBettingState === 'true') {
@@ -78,8 +76,6 @@ export const SET_BASIC_BETTING = {
         encryptVal2 !== '' &&
         X.dec(encryptVal2)
       ) {
-        console.log('내가 먼저 배팅하고 상대의 배팅 코인을 받음');
-
         const encryptKey3 = findCharCode([67, 79, 66, 70, 75, 82, 74, 88, 69, 68]); // coinsEnemyBet
         const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
         // if (window.sessionStorage.coinsEnemyBet) {
@@ -93,7 +89,6 @@ export const SET_BASIC_BETTING = {
   },
   betCoinStateAddEnd: (_host) => {
     const COIN_BET = window.sessionStorage.betCoin;
-    // if (!COIN_BET) return errorManagement({ errCase: 'sessionStorageLoss', message: '기본배팅 할 때 betCoin 세션이 없습니다.' });
     if (!COIN_BET) throw throwObj('sessionStorageLoss', 'betCoinStateAddEnd - basic bet as betCoin sessionStorage key failed.');
     const COIN_BET_ARR = JSON.parse(COIN_BET);
 
@@ -112,12 +107,9 @@ export const SET_BASIC_BETTING = {
     }
     // 기본배팅 일 때만 실행
     if (_host === 'player') {
-      console.log('player >>>> ');
       pcDraggableCheck('coins-player', false);
       sendCoinsPlayer();
     } else if (_host === 'enemy') {
-      console.log('enemy >>>> ');
-      console.log('나는 상대의 기본 배팅 코인을 받음 ---------- ');
       // enemy의 기본배팅을 받았을 경우 enemy의 시간이 멈춰야 됨
       stopEnemyTime();
       SET_BASIC_BETTING.enemyBetStateCheck();

@@ -235,7 +235,6 @@ export default async (_data) => {
     );
     */
   } catch (error) {
-    console.log('requestCompairBasicBet.js error : ');
     errorManager(error, true);
   };
 };

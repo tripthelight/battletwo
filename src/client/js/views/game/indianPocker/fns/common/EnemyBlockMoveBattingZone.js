@@ -19,7 +19,6 @@ export default (_case) => {
   if (!ENEMY_COIN_WRAP) return errorManagement({ errCase: 'elementLoss', message: '.enemy-block에서 .betting-zone으로 칩을 옯길 때 .coins-enemy 엘리먼트가 없습니다' });
   const COINS = ENEMY_COIN_WRAP.querySelectorAll('li');
 
-
   // const COINS_ENEMY_BET = window.sessionStorage.coinsEnemyBet;
   const encryptKey1 = findCharCode([67, 79, 66, 70, 75, 82, 74, 88, 69, 68]); // coinsEnemyBet
   const encryptVal1 = window.sessionStorage.getItem(encryptKey1);

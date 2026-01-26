@@ -43,8 +43,6 @@ export default () => {
   const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
   const decryptVal2 = dec(encryptVal2); // coinsPlayer value number
 
-  console.log('coinCount PLAYER ============ > ', decryptVal2);
-
   // for (let i = 0; i < coinCount; i++) {
   for (let i = 0; i < Number(decryptVal2); i++) {
     liEl = document.createElement('li');

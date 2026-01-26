@@ -36,12 +36,6 @@ export default () => {
   const betCount = dec(encryptVal5);;
 
   const originCount = coinCount + betCount;
-
-  console.log("send coinCount :::::::: ", coinCount);
-  console.log("send betCount ::::::::: ", betCount);
-  console.log("send originCount :::::: ", originCount);
-
-
   request('basicBetting', { coinCount, betCount, originCount });
 
   // if (window.sessionStorage.betState === 'basicBetting') setTimeout(betStateCheck, timeInterval_1);

@@ -1,16 +1,18 @@
-import findCharCode from '@/client/js/functions/findCharCode';
-import X from '@/client/js/module/crypts/bool-obf';
-import { LOADING_EVENT } from '@/client/components/popup/full/loading';
-import drawPickCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/drawPickCard';
+// import findCharCode from '@/client/js/functions/findCharCode';
+// import X from '@/client/js/module/crypts/bool-obf';
+// import { LOADING_EVENT } from '@/client/components/popup/full/loading';
+// import drawPickCard from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/drawPickCard';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
 import basicBetInit from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/basicBetInit';
 
-export default async (_data) => {
+export default (_data) => {
   try {
     const { result } = _data;
     if (result) {
       basicBetInit();
-    };
+    } else {
+      throw throwObj('dataManipulation', 'responseCompairBasicBet - result failed.');
+    }
     /* const { result, tieWaitConfirmed } = _data;
 
     if (result) {
@@ -41,7 +43,6 @@ export default async (_data) => {
       };
     }; */
   } catch (error) {
-    console.log('responseCompairBasicBet() error : ');
-    errorManager(error, true);
+    errorManager(error, false);
   };
 };
