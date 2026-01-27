@@ -17,7 +17,7 @@ import drawPlayerCard from '@/client/js/views/game/indianPocker/fns/gameState/st
  * @param {string} storeageKey cardNum 배열을 주입할 sessionStorage key
  * @return null
  */
-export default async (data) => {
+export default (data) => {
   // const { step, encryptCardNum, storeageKey } = data;
   const { step, battleCard } = data;
 
@@ -100,12 +100,14 @@ export default async (data) => {
 
   // nextStep ----------------------------------------
   if (step === 'nextStep') {
-    storageMethod(
-      's',
-      'SET_ITEM',
-      findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]), // battleCardNum
-      battleCard,
-    );
+    if (battleCard) {
+      storageMethod(
+        's',
+        'SET_ITEM',
+        findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]), // battleCardNum
+        battleCard,
+      );
+    }
 
     // 다음 함수 실행
     drawPlayerCard();

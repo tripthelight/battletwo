@@ -2,8 +2,12 @@ import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import drawEnemyCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/drawEnemyCard';
 import SVG_BACK from '@/client/assets/images/svg/indian_poker/indian_poker_card/back.svg';
+import drawEnemyBlockPlaying from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/drawEnemyBlockPlaying';
 
 export default () => {
+  // 새로고침 후 .enemy-block, .player-block, .betting-zone 없어진 상태로 진입 시
+  drawEnemyBlockPlaying();
+
   // element | seeeion 체크
   const PLAYER_CARD = document.querySelector('.player-card');
   if (PLAYER_CARD) return;

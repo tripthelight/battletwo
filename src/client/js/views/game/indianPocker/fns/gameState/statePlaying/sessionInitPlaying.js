@@ -29,5 +29,5 @@ export default () => {
     );
 
   // 명령
-  drawEnemyBlockPlaying();
+  // drawEnemyBlockPlaying();
 };

@@ -11,9 +11,9 @@ import drawPlayerCard from '@/client/js/views/game/indianPocker/fns/gameState/st
 import isArrayLikeString from '@/client/js/module/isArrayLikeString';
 // import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
 
-export default async (data) => {
+export default (data) => {
   // const { step, list, storeageKey } = data;
-  const { step, remoteLen, battleCard } = data;
+  const { step, remoteLen, battleCard: bc } = data;
 
   // const secretKeyKey = findCharCode([83, 88, 73, 69, 85, 68, 66, 76, 80, 78]); // SECRET_KEY
   // const secretKeyVal = window.sessionStorage.getItem(secretKeyKey);
@@ -36,24 +36,6 @@ export default async (data) => {
     request('opponentFouls', { subject: 'remote', message: '내 카드리스트가 문자열 배열이 아님' });
     return errorManagement({ errCase: 'foul', message: '상대 카드 받았는데, 상대 카드리스트가 문자열 배열이 아님' });
   } */
-  const cardNumArr = JSON.parse(decryptVal1) || [];
-  if (cardNumArr.length <= 0) {
-    // 내 카드 리스트(cardNum)가 0개임
-    return errorManagement({ errCase: 'sessionStorageLoss', message: '내 카드 리스트(cardNum)가 0개임' });
-  };
-
-  if (remoteLen !== cardNumArr.length) {
-    // 내 카드 리스트(cardNum) 개수와 상대 카드 리스트 개수 다름
-    return errorManagement({ errCase: 'sessionStorageLoss', message: '내 카드 리스트(cardNum) 개수와 상대 카드 리스트 개수 다름' });
-  }
-
-  storageMethod(
-    's',
-    'SET_ITEM',
-    findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]), // battleCardNum
-    battleCard,
-  );
-
   // randomNumCard ----------------------------------------
   if (step === 'randomNumCard') {
     // console.log('상대의 기본배팅을 받고 ------------------ ');
@@ -66,6 +48,24 @@ export default async (data) => {
       // 상대 카드 받았는데, 내 카드리스트와 상대 카드리스트 개수 다름
       return errorManagement({ errCase: 'sessionStorageLoss', message: '상대 카드 받았는데, 내 카드리스트와 상대 카드리스트 개수 다름' });
     } */
+
+    const cardNumArr = JSON.parse(decryptVal1) || [];
+    if (cardNumArr.length <= 0) {
+      // 내 카드 리스트(cardNum)가 0개임
+      return errorManagement({ errCase: 'sessionStorageLoss', message: '내 카드 리스트(cardNum)가 0개임' });
+    };
+
+    if (remoteLen !== cardNumArr.length) {
+      // 내 카드 리스트(cardNum) 개수와 상대 카드 리스트 개수 다름
+      return errorManagement({ errCase: 'sessionStorageLoss', message: '내 카드 리스트(cardNum) 개수와 상대 카드 리스트 개수 다름' });
+    }
+
+    storageMethod(
+      's',
+      'SET_ITEM',
+      findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]), // battleCardNum
+      bc,
+    );
 
     // STEP 2 : battleCardNum 생성
     const arrNumbs = selectCompairNumbers();
@@ -151,11 +151,11 @@ export default async (data) => {
   }
 
   // nextStep ----------------------------------------
-  // if (step === 'nextStep') {
+  if (step === 'nextStep') {
   //   // storageMethod('s', 'SET_ITEM', storeageKey, list);
-  //   // request('responseCardNumList', {
-  //   //   step: 'nextStep',
-  //   // });
+    request('responseCardNumList', {
+      step: 'nextStep',
+    });
 
   //   storageMethod(
   //     's',
@@ -164,7 +164,7 @@ export default async (data) => {
   //     battleCardNum,
   //   );
 
-  //   // 다음 함수 실행
-  //   drawPlayerCard();
-  // }
+    // 다음 함수 실행
+    drawPlayerCard();
+  }
 };

@@ -30,22 +30,6 @@ async function startGame() {
     await makeCard();
     makePayload(); // 카드 선택 시 보여지는 카드의 svg > path의 number/T payload
 
-    /* switch (storageMethod("s", "GET_ITEM", findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]))) { // gameState
-      case findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82]): // choiceCard
-        indianPockerGameState.choiceCard();
-        break;
-      case findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]): // basicBet
-        indianPockerGameState.basicBet();
-        break;
-      case findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]): // playing
-        indianPockerGameState.playing();
-        break;
-
-      default:
-        indianPockerGameState.choiceCard();
-        break;
-    } */
-
     if (getRL(false)) {
       const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
       const decryptVal = window.sessionStorage.getItem(encryptKey);
@@ -79,14 +63,21 @@ async function startGame() {
           if (encryptVal1 !== null && encryptVal1 !== "") {
             // 이전 판에서 FOLD animation 실행중 일 때 새로고침 한 경우
             if (X.dec(encryptVal1)) { // foldState : true
+
+              console.log("foldState :::::::::: true");
+
               // FOLD를 실행한 PLAYER
               const encryptKey2 = findCharCode([66, 65, 81, 76, 84, 71, 67, 86, 82, 83]); // foldUser
               const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
               if (encryptVal2 !== null && encryptVal2 !== "") {
                 if (X.dec(encryptVal2)) { // foldUser : true
+                  console.log("foldUser :::::::::: true");
+
                   // FOLD를 실행한 PLAY가 새고로침
                   indianPockerGameState.basicBet('foldLocal');
                 } else { // foldUser : false
+                  console.log("foldUser :::::::::: false");
+
                   // FOLD를 받은 PLAY가 새고로침
                   indianPockerGameState.basicBet('foldRemote');
                 }

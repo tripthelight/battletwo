@@ -94,6 +94,9 @@ export default async (_data) => {
     // betUserFirst true/false 상태 - choiceCard에서 높은 카드를 선택한 peer가 true
     const decryptVal4 = booleanReturn([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]) // betUser
     const decryptVal5 = booleanReturn([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]) // betUserFirst
+    console.log("betUser -----------> ", decryptVal4);
+    console.log("betUserFirst ------> ", decryptVal5);
+
     if (decryptVal4 !== decryptVal5) {
       throw throwObj('foul', 'basicBet - betUser/betUserFirst sessionStorage value compair failed.');
     };

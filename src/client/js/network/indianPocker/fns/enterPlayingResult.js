@@ -1,15 +1,24 @@
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import booleanCheck from '@/client/js/functions/validation/booleanCheck';
-import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
+import errorManager from '@/client/js/module/errorHandler/errorManager';
 import { timeInterval_1000 } from '@/client/js/functions/variable';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/network/indianPocker/request';
 import createBattleCardNum from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/createBattleCardNum.js';
 
-export default (_data) => {
-  console.log('_data >>>>>>>>>>>>>>>>>>> ', _data);
+// _data 배열이 두자리 숫자 8개의 배열인지 아닌지 확인
+const isTwoDigitArrayOf8 = (arr) =>
+  Array.isArray(arr) &&
+  arr.length === 7 &&
+  arr.every((n) => Number.isInteger(n) && n >= 10 && n <= 121);
 
+export default (_data) => {
   const PROMISE = new Promise((resolve, reject) => {
-    resolve(_data);
+    if (isTwoDigitArrayOf8(_data)) {
+        resolve(_data);
+      } else {
+        reject(throwObj('dataManipulation', 'enterPlayingResult - _data validate failed.'));
+      }
   });
   PROMISE
     .then((_data) => {
@@ -19,28 +28,37 @@ export default (_data) => {
       ];
       if (JSON.stringify(_data) === JSON.stringify(arr[0])) {
         const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
-        const decryptVal = window.sessionStorage.getItem(encryptKey);
-        const encryptVal = findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]); // playing
+        const decryptVal1 = window.sessionStorage.getItem(encryptKey);
+        const encryptVal1 = findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]); // playing
         // gameState !== 'playing'
-        if (decryptVal !== encryptVal) {
+        if (decryptVal1 !== encryptVal1) {
           request('enterPlaying', arr[1]);
-        }
+        };
         // gameState === 'playing'
-        if (decryptVal === encryptVal) {
+        if (decryptVal1 === encryptVal1) {
+          const encryptKey2 = findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]); // battleCardNum
+          const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+          if (encryptVal2 !== null && encryptVal2 !== '') {
+            request('requestCardNumList', {
+              step: 'nextStep',
+            });
+            return;
+          };
 
-          const decryptVal2 = booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
-          if (decryptVal2 === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) { // true
+          const decryptVal3 = booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
+          if (decryptVal3 === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) { // true
             createBattleCardNum();
-          }
-        }
+          };
+        };
       } else if (JSON.stringify(_data) === JSON.stringify(arr[1])) {
         setTimeout(() => {
           request('enterPlaying', arr[0]);
         }, timeInterval_1000);
+      } else {
+        throw throwObj('sessionStorageLoss', 'enterPlayingResult - playing key failed.');
       }
     })
     .catch((error) => {
-      console.log('error : ', error);
-      errorManagement({ errCase: 'errorComn', message: `enterPlayingResult() 함수를 못탐` });
+      errorManager(error, false);
     });
 };
