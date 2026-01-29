@@ -38,19 +38,24 @@ async function startGame() {
       switch (decryptVal) {
         // case 'waitEnemy':
         case findCharCode([74, 75, 71, 90, 87, 79, 85, 69, 65, 88]):
+          console.log("새로고침 후 : waitEnemy");
+
           // choiceCard
           indianPockerGameState.choiceCard();
           break;
         // case 'choiceCard':
         case findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82]):
+          console.log("새로고침 후 : choiceCard");
           indianPockerGameState.choiceCard();
           break;
         // case 'basicBet':
         case findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]):
+          console.log("새로고침 후 : basicBet");
           indianPockerGameState.basicBet();
           break;
         // case 'playing':
         case findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]):
+          console.log("새로고침 후 : playing");
           // playing 중 새로고침 한 사용자
           storageMethod(
             's',
@@ -89,8 +94,10 @@ async function startGame() {
           break;
         // case 'gameOver':
         case findCharCode([65, 70, 79, 73, 76, 85, 88, 87, 86, 75]):
+          console.log("새로고침 후 : gameOver");
           indianPockerGameState.gameOver();
           break;
+
         default:
           throw throwObj('errorComn', 'refresh gameState failed.');
       }

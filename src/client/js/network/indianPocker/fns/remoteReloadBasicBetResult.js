@@ -13,6 +13,12 @@ const isTwoDigitArrayOf8 = (arr) =>
   arr.length === 8 &&
   arr.every((n) => Number.isInteger(n) && n >= 10 && n <= 116);
 
+/**
+ * playing 결과 animation 중 새로고침 한 peer가 받음
+ * 상대 peer의 playing 결과 animation 이 끝난 후 받아서, 다음 단계로 진행시킴
+ * @param {Array<number>} _data basicBet storage key
+ * @returns null
+ */
 export default (_data) => {
   const PROMISE = new Promise((resolve, reject) => {
     if (isTwoDigitArrayOf8(_data)) {

@@ -296,6 +296,12 @@ export const GET_ROUND_END = {
             const encryptKey3 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
             const encryptVal3 = booleanCheck([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
             storageMethod('s', 'SET_ITEM', encryptKey3, encryptVal3);
+            // storageMethod(
+            //   's',
+            //   'SET_ITEM',
+            //   encryptVal3, // betUserFirst
+            //   storageMethod('s', 'GET_ITEM', findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]))
+            // );
             storageMethod(
               's',
               'SET_ITEM',
@@ -557,7 +563,7 @@ export const GET_ROUND_END = {
         }
         */
 
-        console.log("_result --------- : ", _result);
+        /* console.log("_result --------- : ", _result);
 
         console.log("VALITION ------ 1 : ", _result === undefined);
         console.log("VALITION ------ 2 : ", _result === null);
@@ -573,7 +579,7 @@ export const GET_ROUND_END = {
         // if (_result !== 'drew') {
         if (_result !== 2) {
           return indianPockerGameState.basicBet();
-        }
+        } */
         resolve();
       }
     });
@@ -603,6 +609,17 @@ export const GET_ROUND_END = {
         if (_result !== 2) {
           return indianPockerGameState.basicBet();
         } */
+
+        if (_result === undefined || _result === null || !Number.isInteger(_result)) return resolve();
+        console.log('2 ************* ', _result);
+        // if (_result === 'drew') {
+        if (_result === 2) {
+          return STATE_PLAYING.drew();
+        }
+        // if (_result !== 'drew') {
+        if (_result !== 2) {
+          return indianPockerGameState.basicBet();
+        }
       })
       .catch((err) => {
         // request('opponentFouls', { message: err });
@@ -618,9 +635,9 @@ export const GET_ROUND_END = {
         - 2 : drew
         - 3 : die
      */
-    // 동점이 아닐 때
     // if (_result === 'drew') return setTimeout(GET_ROUND_END.roundResultDisplay, timeInterval_202, _result, false);
     if (_result === 2) return setTimeout(GET_ROUND_END.roundResultDisplay, timeInterval_202, _result, false);
+    // 동점이 아닐 때
     const BET_COINS = document.querySelector('.bet-coins');
     if (!BET_COINS) return errorManagement({ errCase: 'elementLoss', message: 'call | raise 결과에서 .bet-coins 엘리먼트가 없습니다' });
     const CPINS_ENEMY = document.querySelector('.coins-enemy');

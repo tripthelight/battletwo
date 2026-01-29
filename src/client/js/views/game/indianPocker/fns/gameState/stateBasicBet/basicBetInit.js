@@ -19,10 +19,13 @@ export default () => {
     const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
     const encryptKey2 = findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
     if (encryptVal1 === encryptKey2) {
+      console.log("playing 결과 보고 진입 ------------> ");
+
+      // 진입 CASE 1 : 둘 다 새로고침 안하고 정상적으로 playing의 결과를 기다렸다가 진입하는 경우
+      // 진입 CASE 2 : 상대가 call, raise, allin 애니메이션 중 새로고침 했고,
       sessionInit();
       LOADING_EVENT.hide();
-      // 상대가 call, fold 애니메이션 중 새로고침 했고
-      // 나는 새로고침 안했을 경우
+      // playing 결과 animation 화면에서, 나는 새로고침 안했고, 상대는 새로고침해서 대기중일 경우,
       // 상대를 기본배팅 시키기 위해 request 보내야 됨
       request('remoteReloadBasicBet', encodeKey);
     } else {

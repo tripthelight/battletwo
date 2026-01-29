@@ -4,16 +4,22 @@ import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import _t from '@/client/js/module/crypts/textDE';
 import { dec } from '@/client/js/module/crypts/obf8lower';
 // import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
-// import booleanCheck from '@/client/js/functions/validation/booleanCheck';
+import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import booleanReturn from '@/client/js/functions/validation/booleanReturn';
 import { request } from '@/client/js/network/indianPocker/request';
-// import compairBoolStr from '@/client/js/functions/validation/compairBoolStr';
+import compairBoolStr from '@/client/js/functions/validation/compairBoolStr';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
 
 export default async (_data) => {
   try {
     // development mode *******************************
+
+    // 상대 peer가 playing result 결과 animation 중 새로고침하고 요청을 보냈을 경우 return;
+    const encryptK1 = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
+    const decryptV1 = window.sessionStorage.getItem(encryptK1);
+    const encryptK2 = findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]); // basicBet
+    if (decryptV1 !== encryptK2) return;
 
     const {
       p1, // remote betState
@@ -92,28 +98,61 @@ export default async (_data) => {
     // betUser/betUserFirst 검증
     // betUser true/false 상태 - choiceCard에서 높은 카드를 선택한 peer가 true
     // betUserFirst true/false 상태 - choiceCard에서 높은 카드를 선택한 peer가 true
-    const decryptVal4 = booleanReturn([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]) // betUser
-    const decryptVal5 = booleanReturn([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]) // betUserFirst
-    console.log("betUser -----------> ", decryptVal4);
-    console.log("betUserFirst ------> ", decryptVal5);
+    const compairBetUser = compairBoolStr(decryptVal2, booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88])); // betUser
+    const compairBetUserFirst = compairBoolStr(decryptVal3, booleanCheck([90, 89, 80, 70, 68, 84, 65, 77, 74, 78])); // betUserFirst
 
-    if (decryptVal4 !== decryptVal5) {
+    if (compairBetUser || compairBetUserFirst) {
+      const message = {
+        bat: {
+          user: '상대 betUser와 내 betUser 검증 실패',
+          first: '상대 betUserFirst와 내 betUserFirst 검증 실패',
+        },
+      };
+
+      function msgState(peer) {
+        if (peer !== 'local' && peer !== 'remote') {
+          throw throwObj('sessionStorageLoss', 'requestCompairBasicBet - select card parameter error.');
+        }
+
+        // peer에 따라 compair 메시지만 스왑
+        const checks = [
+          [() => compairBetUser, message.bat.user],
+          [() => compairBetUserFirst, message.bat.first],
+        ];
+
+        for (const [cond, msg] of checks) {
+          if (cond()) return msg;
+        }
+        return null; // 해당 없음
+      }
+
+      ['local', 'remote'].some(s => {
+        const m = msgState(s);
+        if (m) throw throwObj('foul', m);
+        return false;
+      });
+    }
+
+    /* if (
+      (decryptVal4 === encryptVal_1 && decryptVal5 === encryptVal_2) ||
+      (decryptVal4 === encryptVal_2 && decryptVal5 === encryptVal_1)
+    ) {
       throw throwObj('foul', 'basicBet - betUser/betUserFirst sessionStorage value compair failed.');
     };
     if (
       (
-        (decryptVal2 && decryptVal3) &&
-        (!decryptVal4 && !decryptVal5)
+        (decryptVal2 === encryptVal_1 && decryptVal3 === encryptVal_1) &&
+        (decryptVal4 === encryptVal_2 && decryptVal5 === encryptVal_2)
       ) ||
       (
-        (!decryptVal2 && !decryptVal3) &&
-        (decryptVal4 && decryptVal5)
+        (decryptVal2 === encryptVal_2 && decryptVal3 === encryptVal_2) &&
+        (decryptVal4 === encryptVal_1 && decryptVal5 === encryptVal_1)
       )
     ) {
       // betUser/betUserFirst 검증 정상
     } else {
       throw throwObj('foul', 'basicBet - betUser/betUserFirst compair failed.');
-    };
+    }; */
 
     // ────────────────────────────────────────────────────────────────────────────────────────────────────────────
     // coinsPlayer 검증

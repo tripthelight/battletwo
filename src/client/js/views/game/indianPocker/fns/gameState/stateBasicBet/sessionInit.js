@@ -50,11 +50,12 @@ export default () => {
     );
   }
 
-  // coinsPlayerBet === 1
+  // 나의 기본배팅 여부(coinsPlayerBet) : true / false
   if (
     encryptVal5 !== '' &&
     dec(encryptVal5) === encryptNumOfStr(textDE([119, 101, 101, 114])) // weer : 0001
   ) {
+    // 내가 기본배팅 했음
     storageMethod(
       's',
       'SET_ITEM',
@@ -62,6 +63,7 @@ export default () => {
       X.enc(decodeTF(textDE([99, 109, 104, 117]))), // "cmhu" : true
     );
   } else {
+    // 내가 기본배팅 안했음
     storageMethod(
       's',
       'SET_ITEM',

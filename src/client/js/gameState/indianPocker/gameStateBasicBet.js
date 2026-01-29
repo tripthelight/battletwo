@@ -42,7 +42,7 @@ export default (reloadState) => {
         const encryptVal6 = window.sessionStorage.getItem(deleteParams[2]); // coinsEnemyRemoteFold value
         const encryptVal7 = window.sessionStorage.getItem(deleteParams[3]); // coinsPlayerRemoteFold value
         // FOLD를 받은 PLAY가 새고로침
-        storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_1); // betUser
+        storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_1); // betUser, true
         storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal6); // coinsEnemy, coinsEnemyRemoteFold
         storageMethod('s', 'SET_ITEM', encryptKey3, encryptVal7); // coinsPlayer, coinsPlayerRemoteFold
       };

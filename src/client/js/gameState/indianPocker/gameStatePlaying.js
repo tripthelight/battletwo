@@ -18,12 +18,14 @@ export default () => {
     findCharCode([65, 72, 66, 75, 85, 69, 87, 79, 88, 86])  // foldState
   ]);
 
+  LOADING_EVENT.show();
   const BET_RESULTING = window.sessionStorage.betResulting;
   if (BET_RESULTING && BET_RESULTING === 'true') {
-    //
+    // call / raise / allin 상태에서 새로고침
+    console.log("call / raise / allin 상태에서 새로고침 ----------- ");
+
   } else {
     STATE_PLAYING.main();
-    LOADING_EVENT.show();
   }
 
 

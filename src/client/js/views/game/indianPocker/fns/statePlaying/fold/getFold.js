@@ -73,7 +73,8 @@ export const GET_FOLD = {
         BattingZoneMovePlayerBlock('win').then((_state) => {
           BettingZoneMoveComn(_state).then((_stateNext) => {
             const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
-            const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
+            const encryptKey1_1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
+            const encryptKey1_2 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]);  // betUserFirst
 
             // const COINS_PLAYER = window.sessionStorage.coinsPlayer;
             const encryptKey2 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer
@@ -95,7 +96,8 @@ export const GET_FOLD = {
 
             foldSendResultComn();
             // storageMethod('s', 'SET_ITEM', 'betUser', true);
-            storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_1); // betUser, true
+            storageMethod('s', 'SET_ITEM', encryptKey1_1, encryptVal_1); // betUser, true
+            storageMethod('s', 'SET_ITEM', encryptKey1_2, encryptVal_1); // betUserFirst, true
             if (penalty) {
               // 상대 카드가 10일 때
               bottomSheet.show(text.indianpocker.benefit, timeInterval_5000);

@@ -86,9 +86,11 @@ export const SET_FOLD = {
         const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
         const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
         const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
+        const encryptKey2 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]);  // betUserFirst
 
         // storageMethod('s', 'SET_ITEM', 'betUser', false);
         storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_2); // betUser, false
+        storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal_2); // betUserFirst, false
         storageMethod('s', 'REMOVE_ITEM', findCharCode([67, 71, 79, 68, 76, 73, 84, 74, 80, 77])); // drewState
 
 
