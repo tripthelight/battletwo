@@ -67,7 +67,7 @@ export default {
       };
 
       // 여기서 내 화면의 battleCardNum과 publicCardNum과 매칭된 publicCard 코드를 전송
-        const remoteCard = findRemoteCard(encryptVal4);
+      const remoteCard = findRemoteCard(encryptVal4);
 
       /* request('call', {
         coinCount: Number(window.sessionStorage.coinsPlayer),
@@ -150,6 +150,10 @@ export default {
       });
       PROMISE
         .then((_data) => {
+          // 내가 call / fold 누름 -> 상대에게 card num 받음
+          // 상대 PEER의 call / fold 를 받음
+          // 상대 PEER의 card num을 알아냈음
+          // TODO: 여기서 sessstorage 정의
           // 새로고침 시 상대 카드번호 필요하여 storage에 저장
           // 한 라운드가 끝난 후 삭제 필요
           storageMethod('s',
