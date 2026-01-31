@@ -107,7 +107,7 @@ export const SET_BASIC_BETTING = {
           COIN_BET_ARR[i].betState = 'end'; // string
         };
         // storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(COIN_BET_ARR));
-        storageMethod('s', 'SET_ITEM', encryptKey4, JSON.stringify(COIN_BET_ARR));
+        storageMethod('s', 'SET_ITEM', encryptKey4, JSON.stringify(COIN_BET_ARR)); // betCoin
       }
     }
     // 기본배팅 일 때만 실행

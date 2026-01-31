@@ -35,13 +35,6 @@ export default () => {
 
   // 무료 회원 - 첫 진입 시, 기본 배팅 20 코인
   // 유료 회원 - 첫 진입 시, 기본 배팅 금액 DB 조회 필요
-
-
-  console.log("20 TEST :::::::: 1 ", textDE([101, 119, 114, 111]));
-  console.log("20 TEST :::::::: 2 ", encryptNumOfStr(textDE([101, 119, 114, 111])));
-  console.log("20 TEST :::::::: 3 ", enc(encryptNumOfStr(textDE([101, 119, 114, 111]))));
-
-
   if (encryptVal1 === '' && encryptVal2 === '') {
     storageMethod(
       's',

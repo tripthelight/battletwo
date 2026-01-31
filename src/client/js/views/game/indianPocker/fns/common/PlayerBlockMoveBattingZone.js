@@ -75,7 +75,7 @@ export default (_coins, _coinsRes, _coinsDelete) => {
       let betCoinArr = JSON.parse(encryptVal2);
       betCoinArr.push(DATA);
       // storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(betCoinArr));
-      storageMethod('s', 'SET_ITEM', encryptKey2, JSON.stringify(betCoinArr));
+      storageMethod('s', 'SET_ITEM', encryptKey2, JSON.stringify(betCoinArr)); // betCoin
       xyArr.push({ x: x, y: y });
     }
     setTimeout(() => {

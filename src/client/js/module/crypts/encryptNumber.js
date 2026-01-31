@@ -200,7 +200,7 @@ export function deobfuscateNumber(s, secret = 0x5a3c_1f29) {
 // 숫자 난독화 - 양수/음수 지원
 // int32 난독화: -2147483648 ~ 2147483647 지원
 export function obfuscateInt32(n, secret = 0x5a3c_1f29) {
-  if (!Number.isInteger(n)) throw new Error("정수만 지원");
+  if (!Number.isInteger(n)) throw throwObj('dataManipulation', 'Int32 failed.'); // 정수만 지원
   // int32 범위로 강제 (음수 포함)
   const v = n | 0;
 

@@ -69,11 +69,11 @@ export default (_case) => {
 
         // let betCoin = window.sessionStorage.betCoin;
         // let betCoinArr = JSON.parse(betCoin);
-        const encryptVal3_1 = storageMethod("s", "GET_ITEM", encryptKey3);
+        const encryptVal3_1 = storageMethod("s", "GET_ITEM", encryptKey3); // betCoin
         let betCoinArr = JSON.parse(encryptVal3_1);
         betCoinArr.push(DATA);
         // storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(betCoinArr));
-        storageMethod('s', 'SET_ITEM', encryptKey3, JSON.stringify(betCoinArr));
+        storageMethod('s', 'SET_ITEM', encryptKey3, JSON.stringify(betCoinArr)); // betCoin
         moveArr.push({ x: x, y: y });
       }
 

@@ -27,10 +27,6 @@ export default (_elem, _state) => {
     const BET_COIN_ARR = JSON.parse(encryptVal1);
     if (!BET_COIN_ARR || BET_COIN_ARR.length < 1) return;
 
-    console.log("BET_COIN_ARR ::::: ", BET_COIN_ARR.length);
-    console.log("COINS :::::::::::: ", COINS.length);
-
-
     for (let i = 0; i < COINS.length; i++) {
       if (_state) {
         if (BET_COIN_ARR[i].host === 'enemy' || (BET_COIN_ARR[i].betState && BET_COIN_ARR[i].betState === 'end')) {

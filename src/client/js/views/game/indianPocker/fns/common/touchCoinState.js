@@ -12,7 +12,7 @@ export default (dragCoin) => {
   const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
   // const COIN_BET_ARR = JSON.parse(COIN_BET);
   const COIN_BET_ARR = JSON.parse(encryptVal1);
-  if (!COIN_BET_ARR || COIN_BET_ARR.length <= 0) return false;
+  if (!COIN_BET_ARR || COIN_BET_ARR.length < 1) return false;
   if (COIN_BET_ARR[reactiveState.mTargetIdx].host === 'enemy') return false;
   if (COIN_BET_ARR[reactiveState.mTargetIdx].betState === 'end') return false;
   return true;

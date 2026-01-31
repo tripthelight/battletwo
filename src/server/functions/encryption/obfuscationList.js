@@ -378,29 +378,29 @@ export const obfuscationList = {
       PLAYING_RELOAD_USER: {
         k: 'KQSPYXVHRM' // [75, 81, 83, 80, 89, 88, 86, 72, 82, 77]
       },
-      BET_COIN: { : TODO:
+      BET_COIN: {
         k: 'DUHITAZFYX', // [68, 85, 72, 73, 84, 65, 90, 70, 89, 88]
         v: {
           betState: {
-            k: '',
+            k: 'PHSXLKNTAY', // [80, 72, 83, 88, 76, 75, 78, 84, 65, 89]
             v: {
-              end: '',
+              end: 'KBWQGMYSUE', // [75, 66, 87, 81, 71, 77, 89, 83, 85, 69]
             }
           },
           host: {
-            k: '',
+            k: 'XOHKGSQURT', // [88, 79, 72, 75, 71, 83, 81, 85, 82, 84]
             v: {
-              'pleyer': ''
-              'enemy': ''
+              'pleyer': 'WDXFUYIGVT' // [87, 68, 88, 70, 85, 89, 73, 71, 86, 84]
+              'enemy': 'KEMUTIOBNV' // [75, 69, 77, 85, 84, 73, 79, 66, 78, 86]
             }
           },
-          index: ',
-          translateX: '',
-          translateY: '',
-          offsetLeft: '',
-          offsetTop: '',
-          tm: '',
-          th: '',
+          index: 'MKWFRXSJYP', // [77, 75, 87, 70, 82, 88, 83, 74, 89, 80]
+          translateX: 'QPJVGMEZIO', // [81, 80, 74, 86, 71, 77, 69, 90, 73, 79]
+          translateY: 'LPARWENJSZ', // [76, 80, 65, 82, 87, 69, 78, 74, 83, 90]
+          offsetLeft: 'CEROSXMTPK', // [67, 69, 82, 79, 83, 88, 77, 84, 80, 75]
+          offsetTop: 'UTYKGQEAHS', // [85, 84, 89, 75, 71, 81, 69, 65, 72, 83]
+          tm: 'FVGWETUYJB', // [70, 86, 71, 87, 69, 84, 85, 89, 74, 66]
+          th: 'SLEBKQTIZA', // [83, 76, 69, 66, 75, 81, 84, 73, 90, 65]
         }
       },
       BET_COIN_POS: { : TODO:
