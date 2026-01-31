@@ -57,12 +57,13 @@ export default (_removeCoins) => {
             let arr = [];
             let arrPos = [];
             // if (window.sessionStorage.betCoin) arr = JSON.parse(window.sessionStorage.betCoin);
-            if (BET_COIN !== null) arr = JSON.parse(BET_COIN);
+            const BET_COIN_OBJ = storageMethod("s", "GET_ITEM", BET_COIN_KEY); // betCoin value
+            if (BET_COIN_OBJ !== null && BET_COIN_OBJ !== "" && JSON.parse(BET_COIN_OBJ).length > 0) arr = JSON.parse(BET_COIN_OBJ);
             if (window.sessionStorage.betCoinPos) arrPos = JSON.parse(window.sessionStorage.betCoinPos);
             arr.pop();
             arrPos.pop();
             // storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(arr));
-            storageMethod('s', 'SET_ITEM', BET_COIN_KEY, JSON.stringify(arr));
+            storageMethod('s', 'SET_ITEM', BET_COIN_KEY, JSON.stringify(arr)); // betCoin
             storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(arrPos));
             if (i === _removeCoins.rc - 1) return resolve(_removeCoins);
           }, Number(aniTime));
