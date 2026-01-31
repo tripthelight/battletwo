@@ -41,7 +41,7 @@ export const SET_FOLD = {
       findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]), // coinsPlayerBet
       findCharCode([80, 73, 68, 65, 90, 69, 88, 86, 82, 67]), // coinsEnemyExtBet
       findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]), // coinsPlayerExtBet
-      'betCoin',
+      findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]), // betCoin
       'betCoinPos',
       findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
       findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78]), // drewReady

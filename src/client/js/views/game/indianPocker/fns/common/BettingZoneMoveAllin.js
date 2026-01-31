@@ -1,4 +1,5 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
+import findCharCode from '@/client/js/functions/findCharCode';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import roundEndBetMoveEnd from '@/client/js/views/game/indianPocker/fns/common/roundEndBetMoveEnd.js';
 import roundEndBetEnemyMoveXY from '@/client/js/views/game/indianPocker/fns/common/roundEndBetEnemyMoveXY.js';
@@ -7,8 +8,12 @@ export default (_removeCoins) => {
   return new Promise((resolve, reject) => {
     if (_removeCoins.rc < 1) return resolve(_removeCoins);
 
-    const BET_COIN = window.sessionStorage.betCoin;
+    const BET_COIN_KEY = findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]); // betCoin
+    const BET_COIN = storageMethod("s", "GET_ITEM", BET_COIN_KEY);
     const BET_COIN_ARR = JSON.parse(BET_COIN);
+
+    // const BET_COIN = window.sessionStorage.betCoin;
+    // const BET_COIN_ARR = JSON.parse(BET_COIN);
     const BET_COINS = document.querySelector('.bet-coins');
     const BET_COINS_LI = BET_COINS.querySelectorAll('li');
     if (BET_COIN_ARR.length !== BET_COINS_LI.length) {
@@ -51,11 +56,13 @@ export default (_removeCoins) => {
             // betCoin, betCoinPos 세션을 뒤에서 부터 하나씩 삭제
             let arr = [];
             let arrPos = [];
-            if (window.sessionStorage.betCoin) arr = JSON.parse(window.sessionStorage.betCoin);
+            // if (window.sessionStorage.betCoin) arr = JSON.parse(window.sessionStorage.betCoin);
+            if (BET_COIN !== null) arr = JSON.parse(BET_COIN);
             if (window.sessionStorage.betCoinPos) arrPos = JSON.parse(window.sessionStorage.betCoinPos);
             arr.pop();
             arrPos.pop();
-            storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(arr));
+            // storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(arr));
+            storageMethod('s', 'SET_ITEM', BET_COIN_KEY, JSON.stringify(arr));
             storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(arrPos));
             if (i === _removeCoins.rc - 1) return resolve(_removeCoins);
           }, Number(aniTime));

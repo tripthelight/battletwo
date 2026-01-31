@@ -58,9 +58,13 @@ export const GET_CALL = {
     });
   },
   sessionCallCoinPos: (_data) => {
-    const ENEMY_POS = window.sessionStorage.betCoin;
-    if (!ENEMY_POS) return;
-    const BET_COIN_LIST = JSON.parse(window.sessionStorage.betCoin);
+    // const ENEMY_POS = window.sessionStorage.betCoin;
+    // if (!ENEMY_POS) return;
+    // const BET_COIN_LIST = JSON.parse(window.sessionStorage.betCoin);
+    const encryptKey3 = findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]); // betCoin
+    const encryptVal3 = storageMethod("s", "GET_ITEM", encryptKey3);
+    if (encryptVal3 === null) return;
+    const BET_COIN_LIST = JSON.parse(encryptVal3);
     if (!BET_COIN_LIST || BET_COIN_LIST.length <= 0) return;
 
     // const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet;

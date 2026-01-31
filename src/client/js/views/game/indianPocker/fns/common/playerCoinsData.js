@@ -32,5 +32,6 @@ export default (_event) => {
     th: th,
     activeLi: ACTIVE_LI,
   };
+
   saveSessionBetCoin(DATA);
 };

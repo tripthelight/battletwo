@@ -125,8 +125,11 @@ export const GET_BASIC_BETTING = {
             }
           });
           REMOVE_ENEMY_BET_COIN.then(() => {
-            const ENEMY_POS = window.sessionStorage.betCoin;
-            if (!ENEMY_POS) return;
+            // const ENEMY_POS = window.sessionStorage.betCoin;
+            // if (!ENEMY_POS) return;
+            const encryptKey3 = findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]); // betCoin
+            const encryptVal3_1 = storageMethod("s", "GET_ITEM", encryptKey3);
+            if (!encryptVal3_1) return;
             const ENEMY_COIN_UL = document.querySelector('ul.coins-enemy');
             if (!ENEMY_COIN_UL) return;
             const COINS = ENEMY_COIN_UL.querySelectorAll('li');
@@ -135,11 +138,14 @@ export const GET_BASIC_BETTING = {
             const COINS_P = PLAYER_COIN_UL.querySelectorAll('li');
             const BETTING_ZONE = document.querySelector('.betting-zone');
             if (!BETTING_ZONE) return;
-            const BET_COIN_LIST = JSON.parse(ENEMY_POS);
+            // const BET_COIN_LIST = JSON.parse(ENEMY_POS);
+            const BET_COIN_LIST = JSON.parse(encryptVal3_1);
             if (!BET_COIN_LIST || BET_COIN_LIST.length <= 0) return;
 
-            const BET_COIN = window.sessionStorage.betCoin;
-            const BET_COIN_ARR = JSON.parse(BET_COIN);
+            // const BET_COIN = window.sessionStorage.betCoin;
+            // const BET_COIN_ARR = JSON.parse(BET_COIN);
+            const encryptVal3_2 = storageMethod("s", "GET_ITEM", encryptKey3);
+            const BET_COIN_ARR = JSON.parse(encryptVal3_2);
             let minuteEl = new Object();
             let hourEl = new Object();
 

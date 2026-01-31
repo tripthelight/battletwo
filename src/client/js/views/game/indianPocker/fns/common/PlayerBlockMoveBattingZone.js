@@ -68,10 +68,14 @@ export default (_coins, _coinsRes, _coinsDelete) => {
         translateY: y,
       };
 
-      let betCoin = window.sessionStorage.betCoin;
-      let betCoinArr = JSON.parse(betCoin);
+      // let betCoin = window.sessionStorage.betCoin;
+      // let betCoinArr = JSON.parse(betCoin);
+      const encryptKey2 = findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]); // betCoin
+      const encryptVal2 = storageMethod("s", "GET_ITEM", encryptKey2);
+      let betCoinArr = JSON.parse(encryptVal2);
       betCoinArr.push(DATA);
-      storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(betCoinArr));
+      // storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(betCoinArr));
+      storageMethod('s', 'SET_ITEM', encryptKey2, JSON.stringify(betCoinArr));
       xyArr.push({ x: x, y: y });
     }
     setTimeout(() => {

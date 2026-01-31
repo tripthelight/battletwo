@@ -1,5 +1,6 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import saveBetCoinSession from '@/client/js/views/game/indianPocker/fns/common/saveBetCoinSession';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 
@@ -9,9 +10,12 @@ export default () => {
   const BETTING_ZONE = document.querySelector('.betting-zone');
   if (!BETTING_ZONE) return;
   const BET_COINS = document.querySelector('.bet-coins');
-  const BET_COIN_SESSION = window.sessionStorage.betCoin;
-  if (!BET_COIN_SESSION) return;
-  const BET_COIN_LIST = JSON.parse(BET_COIN_SESSION);
+  // const BET_COIN_SESSION = window.sessionStorage.betCoin;
+  // const BET_COIN_LIST = JSON.parse(BET_COIN_SESSION);
+  const encryptK1 = findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]); // betCoin
+  const decryptV1 = storageMethod("s", "GET_ITEM", encryptK1);
+  if (decryptV1 === null || decryptV1 === "" || (decryptV1 && JSON.parse(decryptV1).length === 0)) return;
+  const BET_COIN_LIST = JSON.parse(decryptV1);
 
   // const GAME_STATE = window.sessionStorage.gameState;
   // if (!GAME_STATE) errorManagement({ errCase: 'errorComn', message: 'gameState not found' });

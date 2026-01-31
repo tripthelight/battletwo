@@ -12,6 +12,10 @@ export default (_state) => {
       const BET_COINS = document.querySelector('.bet-coins');
       if (!BET_COINS) return errorManagement({ errCase: 'elementLoss', message: '.betting-zone에서 .enemy-block으로 칩을 옯길 때 .bet-coins 엘리먼트가 없습니다' });
       const BET_COIN_RES_ARR = BattingZoneMoveRt();
+
+      // TODO: 코인 넣었다가 뺐다가 올인하면 간혈적으로 여기서 에러남
+      console.log("여기까지 오시냐 ?-?-?- 5 ", BET_COIN_RES_ARR);
+
       let cw = 0;
       let ch = 0;
       let ty = 0;

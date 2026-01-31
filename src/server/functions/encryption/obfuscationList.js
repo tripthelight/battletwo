@@ -412,6 +412,16 @@ export const obfuscationList = {
           },
         },
       },
+      // choice card 이후 playing에서 추가된 key 들
+      BET_RESULTING: {
+        k: 'ARITSWJCYZ' // [65, 82, 73, 84, 83, 87, 74, 67, 89, 90]
+      },
+      DREW_FLIP_CARD_MODE: {
+        k: 'OLXTKAMIHV' // [79, 76, 88, 84, 75, 65, 77, 73, 72, 86]
+      },
+      DREW_CARD_READY: {
+        k: 'ZMGTADWQFR' // [90, 77, 71, 84, 65, 68, 87, 81, 70, 82]
+      },
       // e: sessionStorage keys
       */
     };

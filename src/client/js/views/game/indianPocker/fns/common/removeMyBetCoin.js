@@ -34,8 +34,8 @@ export default (_data) => {
   // const BET_STATE = BET_USER === 'true' ? true : false;
   // const BET_STATE = BET_USER === 'true' ? true : false;
 
-  const BET_COIN = window.sessionStorage.betCoin;
-  const BET_COIN_ARR = JSON.parse(BET_COIN);
+  // const BET_COIN = window.sessionStorage.betCoin;
+  // const BET_COIN_ARR = JSON.parse(BET_COIN);
 
   // player 코인을 지우기 전 시간 deg 저장 array 변수 선언
   let timeDegArr = [];

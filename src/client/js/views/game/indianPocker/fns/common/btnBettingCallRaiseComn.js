@@ -34,12 +34,15 @@ export default (_state) => {
   );
   // 배팅된 칩의 betState: 'end'
   if (_state === comnText.fold) return;
+  const encryptKey2 = findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]); // betCoin
+  const encryptVal2 = storageMethod("s", "GET_ITEM", encryptKey2);
   storageMethod(
     's',
     'SET_ITEM',
-    'betCoin',
+    encryptKey2, // betCoin
     JSON.stringify(
-      JSON.parse(window.sessionStorage.betCoin).map((item) => {
+      // JSON.parse(window.sessionStorage.betCoin).map((item) => {
+      JSON.parse(encryptVal2).map((item) => {
         item.betState = 'end';
         return item;
       }),

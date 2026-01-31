@@ -37,16 +37,29 @@ import resultTxtInnerHtml from '@/client/js/views/game/indianPocker/fns/common/r
 
 export const GET_ROUND_END = {
   receiveRoundEnd: () => {
-    storageMethod('s', 'SET_ITEM', 'betResulting', true); // refresh check
-    storageMethod('s', 'REMOVE_ITEM', 'drewFlipCardMode');
+    storageMethod( // refresh check
+      's',
+      'SET_ITEM',
+      findCharCode([65, 72, 66, 75, 85, 69, 87, 79, 88, 86]), // betResulting
+      X.enc(decodeTF(_t([107, 102, 114, 117]))) // "kfru" : true
+    );
+    // storageMethod('s', 'REMOVE_ITEM', 'drewFlipCardMode');
+    storageMethod('s', 'REMOVE_ITEM', findCharCode([79, 76, 88, 84, 75, 65, 77, 73, 72, 86])); // drewFlipCardMode
     // storageMethod('s', 'REMOVE_ITEM', 'drewReady');
     storageMethod('s', 'REMOVE_ITEM', findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78])); // drewReady
     // storageMethod('s', 'REMOVE_ITEM', 'dropState');
     storageMethod('s', 'REMOVE_ITEM', findCharCode([81, 69, 71, 84, 85, 90, 82, 67, 77, 89])); // dropState
-    if (window.sessionStorage.drewCardReady) {
+
+    const encryptKey1 = findCharCode([90, 77, 71, 84, 65, 68, 87, 81, 70, 82]); // drewCardReady
+    const encryptVal1 = storageMethod('s', 'GET_ITEM', encryptKey1);
+
+    // if (window.sessionStorage.drewCardReady) {
+    if (encryptVal1 !== null && encryptVal1 !== '' && X.dec(encryptVal1)) {
       LOADING_EVENT.hide();
-      storageMethod('s', 'REMOVE_ITEM', 'drewCardReady');
+      // storageMethod('s', 'REMOVE_ITEM', 'drewCardReady');
+      storageMethod('s', 'REMOVE_ITEM', encryptKey1); // drewCardReady
     }
+
     GET_ROUND_END.stopBetUser();
   },
   stopBetUser: () => {
@@ -449,6 +462,7 @@ export const GET_ROUND_END = {
         errorManagement({ errCase: 'errorComn' });
         break;
     }
+
     GET_ROUND_END.getWinnerCoin(_result);
   },
   getWinnerCoin: (_result) => {
@@ -670,7 +684,9 @@ export const GET_ROUND_END = {
     for (let l = 0; l < ENUM; l++) CPINS_ENEMY.appendChild(document.createElement('li'));
     */
     BET_COINS.remove();
-    storageMethod('s', 'SET_ITEM', 'betCoin', []);
+    // storageMethod('s', 'SET_ITEM', 'betCoin', []);
+    const encryptKey9 = findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]); // betCoin
+    storageMethod('s', 'SET_ITEM', encryptKey9, []); // betCoin
     storageMethod('s', 'SET_ITEM', 'betCoinPos', []);
 
     // storageMethod('s', 'SET_ITEM', 'basicBettingState', false);

@@ -29,6 +29,9 @@ export default (_case) => {
   const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
   const decryptVal2 = encryptVal2 !== null && encryptVal2 !== '' ? dec(encryptVal2) : 0; // coinsEnemyExtBet value number
 
+  // BET COIN
+  const encryptKey3 = findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]); // betCoin
+
   if (_case === 'allin') {
     return new Promise((resolve, reject) => {
       const BET_COINS = document.querySelector('.bet-coins');
@@ -64,10 +67,13 @@ export default (_case) => {
           translateY: y,
         };
 
-        let betCoin = window.sessionStorage.betCoin;
-        let betCoinArr = JSON.parse(betCoin);
+        // let betCoin = window.sessionStorage.betCoin;
+        // let betCoinArr = JSON.parse(betCoin);
+        const encryptVal3_1 = storageMethod("s", "GET_ITEM", encryptKey3);
+        let betCoinArr = JSON.parse(encryptVal3_1);
         betCoinArr.push(DATA);
-        storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(betCoinArr));
+        // storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(betCoinArr));
+        storageMethod('s', 'SET_ITEM', encryptKey3, JSON.stringify(betCoinArr));
         moveArr.push({ x: x, y: y });
       }
 
@@ -167,11 +173,16 @@ export default (_case) => {
           };
 
           let arr = [];
-          if (window.sessionStorage.betCoin) {
-            arr = JSON.parse(window.sessionStorage.betCoin);
+          // if (window.sessionStorage.betCoin) {
+          //   arr = JSON.parse(window.sessionStorage.betCoin);
+          // }
+          const encryptVal3_2 = storageMethod("s", "GET_ITEM", encryptKey3); // betCoin value
+          if (encryptVal3_2 !== null && encryptVal3_2 !== "" && JSON.parse(encryptVal3_2).length > 0) {
+            arr = JSON.parse(encryptVal3_2);
           }
           arr.push(ACTIVE_COIN);
-          storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(arr));
+          // storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(arr));
+          storageMethod('s', 'SET_ITEM', encryptKey3, JSON.stringify(arr)); // betCoin
           setTimeout(() => {
             if (i === COINS.length - NUMS) resolve();
           }, timeInterval_201);
@@ -203,11 +214,16 @@ export default (_case) => {
         };
 
         let arr = [];
-        if (window.sessionStorage.betCoin) {
-          arr = JSON.parse(window.sessionStorage.betCoin);
+        // if (window.sessionStorage.betCoin) {
+        //   arr = JSON.parse(window.sessionStorage.betCoin);
+        // }
+        const encryptVal3_3 = storageMethod("s", "GET_ITEM", encryptKey3); // betCoin value
+        if (encryptVal3_3 !== null && encryptVal3_3 !== "" && JSON.parse(encryptVal3_3).length > 0) {
+          arr = JSON.parse(encryptVal3_3);
         }
         arr.push(ACTIVE_COIN);
-        storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(arr));
+        // storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(arr));
+        storageMethod('s', 'SET_ITEM', encryptKey3, JSON.stringify(arr)); // betCoin
 
         setTimeout(() => {
           resolve();

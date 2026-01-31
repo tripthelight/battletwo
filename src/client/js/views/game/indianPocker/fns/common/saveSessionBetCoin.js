@@ -19,11 +19,17 @@ export default (data) => {
     th: data.th, // number
   };
   let arr = [];
-  if (window.sessionStorage.betCoin) {
-    arr = JSON.parse(window.sessionStorage.betCoin);
+  // if (window.sessionStorage.betCoin) {
+  //   arr = JSON.parse(window.sessionStorage.betCoin);
+  // }
+  const encryptKey1 = findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]); // betCoin
+  const encryptVal1_1 = storageMethod("s", "GET_ITEM", encryptKey1);
+  if (encryptVal1_1 !== null && encryptVal1_1 !== "" && JSON.parse(encryptVal1_1).length > 0) {
+    arr = JSON.parse(encryptVal1_1);
   }
   arr.push(ACTIVE_COIN);
-  storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(arr));
+  // storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(arr));
+  storageMethod('s', 'SET_ITEM', encryptKey1, JSON.stringify(arr)); // betCoin
 
   // 칩 넣기
   // const PLAYER_NUMB = dec(window.sessionStorage.getItem('coinsPlayer')) - 1;
@@ -39,9 +45,11 @@ export default (data) => {
   storageMethod('s', 'SET_ITEM', encryptKey2, decryptVal2_3); // coinsPlayer
 
   // storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', JSON.parse(window.sessionStorage.betCoin).filter((coins) => coins.host === 'player').length);
+  const encryptVal1_2 = storageMethod("s", "GET_ITEM", encryptKey1);
   storageMethod('s', 'SET_ITEM',
     encryptKey3, // coinsPlayerBet
-    enc(JSON.parse(window.sessionStorage.betCoin).filter((coins) => coins.host === 'player').length)
+    // enc(JSON.parse(window.sessionStorage.betCoin).filter((coins) => coins.host === 'player').length)
+    enc(JSON.parse(encryptVal1_2).filter((coins) => coins.host === 'player').length)
   );
 
   const encryptKey4 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState

@@ -33,11 +33,14 @@ export default (event) => {
   POS_ARR.splice(reactiveState.mTargetIdx, 1);
   storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(POS_ARR));
 
-  const BET = window.sessionStorage.betCoin;
+  // const BET = window.sessionStorage.betCoin;
+  const BET_KEY = findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]); // betCoin
+  const BET = storageMethod("s", "GET_ITEM", BET_KEY);
   const BET_ARR = JSON.parse(BET);
   if (!BET_ARR || BET_ARR.length <= 0) return;
   BET_ARR.splice(reactiveState.mTargetIdx, 1);
-  storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(BET_ARR));
+  // storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(BET_ARR));
+  storageMethod('s', 'SET_ITEM', BET_KEY, JSON.stringify(BET_ARR)); // betCoin
 
   const BET_COINS = document.querySelector('.bet-coins');
   if (!BET_COINS) return errorManagement({ errCase: 'errorComn', message: '.bet-coins 엘리먼트를 찾을 수 없습니다.' });

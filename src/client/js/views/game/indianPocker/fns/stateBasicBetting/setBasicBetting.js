@@ -88,9 +88,13 @@ export const SET_BASIC_BETTING = {
     };
   },
   betCoinStateAddEnd: (_host) => {
-    const COIN_BET = window.sessionStorage.betCoin;
-    if (!COIN_BET) throw throwObj('sessionStorageLoss', 'betCoinStateAddEnd - basic bet as betCoin sessionStorage key failed.');
-    const COIN_BET_ARR = JSON.parse(COIN_BET);
+    // const COIN_BET = window.sessionStorage.betCoin;
+    // if (!COIN_BET) throw throwObj('sessionStorageLoss', 'betCoinStateAddEnd - basic bet as betCoin sessionStorage key failed.');
+    const encryptKey4 = findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]); // betCoin
+    const encryptVal4 = storageMethod("s", "GET_ITEM", encryptKey4);
+    if (encryptVal4 === null) throw throwObj('sessionStorageLoss', 'betCoinStateAddEnd - basic bet as betCoin sessionStorage key failed.');
+    // const COIN_BET_ARR = JSON.parse(COIN_BET);
+    const COIN_BET_ARR = JSON.parse(encryptVal4);
 
     const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
     const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
@@ -102,7 +106,8 @@ export const SET_BASIC_BETTING = {
         for (let i = 0; i < COIN_BET_ARR.length; i++) {
           COIN_BET_ARR[i].betState = 'end'; // string
         };
-        storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(COIN_BET_ARR));
+        // storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(COIN_BET_ARR));
+        storageMethod('s', 'SET_ITEM', encryptKey4, JSON.stringify(COIN_BET_ARR));
       }
     }
     // 기본배팅 일 때만 실행

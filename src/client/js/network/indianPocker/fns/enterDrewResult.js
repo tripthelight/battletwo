@@ -16,8 +16,12 @@ export default (_data) => {
 
     if (_data) {
       setTimeout(() => {
-        const BET_RESULTING = window.sessionStorage.betResulting;
-        if (BET_RESULTING && BET_RESULTING === 'true') {
+        // const BET_RESULTING = window.sessionStorage.betResulting;
+        // if (BET_RESULTING && BET_RESULTING === 'true') {
+
+        const encryptK1 = findCharCode([65, 72, 66, 75, 85, 69, 87, 79, 88, 86]); // betResulting
+        const encryptV1 = storageMethod("s", "GET_ITEM", encryptK1);
+        if (encryptV1 !== null && encryptV1 !== '' && X.dec(encryptV1)) {
           // round end 화면에서 drew일 때 새로고침하면,
           // 상대방에게 여기를 받고 내 화면을, 완벽히 그려야돼
           // RF_END_DREW.main();
@@ -27,7 +31,8 @@ export default (_data) => {
               request('enterDrew', true); // *** 서로 새로고침 하면 없어야 됨
             } else if (ROUND_END_RELOAD && ROUND_END_RELOAD === 'false') {
             }
-            storageMethod('s', 'REMOVE_ITEM', 'betResulting');
+            // storageMethod('s', 'REMOVE_ITEM', 'betResulting');
+            storageMethod('s', 'REMOVE_ITEM', encryptK1); // betResulting
             storageMethod('s', 'REMOVE_ITEM', 'roundEndReload');
             // setSocketEnterDrewCheck(true);
             setTimeout(() => {

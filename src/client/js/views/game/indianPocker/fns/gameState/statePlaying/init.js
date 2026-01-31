@@ -29,7 +29,10 @@ export const STATE_PLAYING = {
   drew: () => {
     // storageMethod('s', 'REMOVE_ITEM', 'betResulting');
     // if (window.sessionStorage.drewReady && window.sessionStorage.drewReady === "true") return refreshDrawDrew(); // refresh
-    if (window.sessionStorage.drewFlipCardMode && window.sessionStorage.drewFlipCardMode === 'true') return refreshDrawDrew();
+    // if (window.sessionStorage.drewFlipCardMode && window.sessionStorage.drewFlipCardMode === 'true') return refreshDrawDrew();
+    const encryptKey1 = findCharCode([79, 76, 88, 84, 75, 65, 77, 73, 72, 86]); // drewFlipCardMode
+    const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
+    if (encryptVal1 !== null && encryptVal1 !== '' && X.dec(encryptVal1)) return refreshDrawDrew();
     LOADING_EVENT.show();
 
     console.log(' s: loading show loop test >>>>>>>>>>>>>>');

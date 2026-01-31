@@ -3,6 +3,7 @@ import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import X from '@/client/js/module/crypts/bool-obf';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import _t from '@/client/js/module/crypts/textDE';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import {GRS} from '@/client/js/module/crypts/generateRandomString';
 import booleanReturn from '@/client/js/functions/validation/booleanReturn';
 import storageMethod from '@/client/js/module/storage/storageMethod';
@@ -79,7 +80,13 @@ export default () => {
       decryptVal3 === compairCoins
     )
   ) {
-    storageMethod('s', 'SET_ITEM', 'drewFlipCardMode', true);
+    // storageMethod('s', 'SET_ITEM', 'drewFlipCardMode', true);
+    storageMethod(
+      's',
+      'SET_ITEM',
+      findCharCode([79, 76, 88, 84, 75, 65, 77, 73, 72, 86]), // drewFlipCardMode
+      X.enc(decodeTF(_t([115, 119, 114, 97]))) // "swra" : true
+    );
     ENEMY_CARD.classList.add('disabled');
     PLAYER_BLOCK.classList.remove('disabled');
     PLAYER_CARD.classList.add('drew-wait-card');

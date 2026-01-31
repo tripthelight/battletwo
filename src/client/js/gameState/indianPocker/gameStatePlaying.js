@@ -2,6 +2,7 @@ import findCharCode from '@/client/js/functions/findCharCode';
 // import { timeInterval_1, timeInterval_2 } from '@/client/js/functions/variable';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import storageMethod from '@/client/js/module/storage/storageMethod';
+import X from '@/client/js/module/crypts/bool-obf';
 import { STATE_PLAYING } from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/init';
 // import REFRESH_STATE_PLAYING from '@/client/js/refresh/indianpoker/refreshPlaying/refreshInit';
 // import reload from '@/client/js/module/reload';
@@ -19,11 +20,14 @@ export default () => {
   ]);
 
   LOADING_EVENT.show();
-  const BET_RESULTING = window.sessionStorage.betResulting;
-  if (BET_RESULTING && BET_RESULTING === 'true') {
+
+  const encryptKey1 = findCharCode([65, 72, 66, 75, 85, 69, 87, 79, 88, 86]); // betResulting
+  const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
+  // X.enc(decodeTF(textDE([115, 102, 104, 97]))) // "sfha" : true
+
+  if (encryptVal1 !== null && encryptVal1 !== '' && X.dec(encryptVal1)) {
     // call / raise / allin 상태에서 새로고침
     console.log("call / raise / allin 상태에서 새로고침 ----------- ");
-
   } else {
     STATE_PLAYING.main();
   }
