@@ -1,11 +1,11 @@
 import buildT from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/buildT';
-import { pathPayload } from '@/client/store/encryptionStore';
-import findCharDecCode from '@/client/js/functions/findCharDecCode';
+// import { pathPayload } from '@/client/store/encryptionStore';
+// import findCharDecCode from '@/client/js/functions/findCharDecCode';
 import { safeBase64Decode } from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/fns/base64Crypt';
 import dAdd from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/fns/dAdd';
-import { H } from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/fns/t/f';
-import C from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/fns/t/C';
-import { reverseString as D } from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/fns/t/reverseString';
+// import { H } from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/fns/t/f';
+// import C from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/fns/t/C';
+// import { reverseString as D } from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/fns/t/reverseString';
 
 export default (_d) =>
   new Promise((resolve) => {

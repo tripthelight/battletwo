@@ -181,18 +181,47 @@ export function encryptNumOfStr(str) {
 // console.log('coinsPlayerCode :::::: ', coinsPlayerCode); // decrypt code
 // console.log('coinsEnemyCode ::::::: ', coinsEnemyCode); // decrypt code
 
-export function obfuscateNumber(n, secret = 0x5a3c_1f29) {
+// 숫자 난독화 - 양수만 지원해서 주석처리함
+/* export function obfuscateNumber(n, secret = 0x5a3c_1f29) {
   if (!Number.isSafeInteger(n) || n < 0) throw new Error("0 이상의 안전한 정수만 지원");
   const x = (n ^ secret) >>> 0;          // 32bit로
   return x.toString(36);                 // 0-9a-z
 }
-
+// 난독화 숫자 복호화 - 양수만 지원해서 주석처리함
 // 난독 문자열 -> 숫자
 export function deobfuscateNumber(s, secret = 0x5a3c_1f29) {
   const x = parseInt(s, 36) >>> 0;
   return (x ^ secret) >>> 0;
 }
-
 // 예)
 // const token = obfuscateNumber(123456);   // 예: "2n9k" 같은 형태
-// const original = deobfuscateNumber(token); // 123456
+// const original = deobfuscateNumber(token); // 123456 */
+
+// 숫자 난독화 - 양수/음수 지원
+// int32 난독화: -2147483648 ~ 2147483647 지원
+export function obfuscateInt32(n, secret = 0x5a3c_1f29) {
+  if (!Number.isInteger(n)) throw new Error("정수만 지원");
+  // int32 범위로 강제 (음수 포함)
+  const v = n | 0;
+
+  // XOR 후 32bit 패턴 유지(부호 없는 uint32로 변환)
+  const x = (v ^ secret) >>> 0;
+
+  // base36 문자열 (0-9a-z)
+  return x.toString(36);
+};
+
+// 난독화 숫자 복호화 - 양수/음수 지원
+export function deobfuscateInt32(s, secret = 0x5a3c_1f29) {
+  const x = (parseInt(s, 36) >>> 0);
+
+  // XOR 복호화 후 int32로 되돌림 (부호 복원)
+  return ((x ^ secret) | 0);
+};
+
+// 예)
+// const t1 = obfuscateInt32(123456);
+// const o1 = deobfuscateInt32(t1); // 123456
+
+// const t2 = obfuscateInt32(-123456);
+// const o2 = deobfuscateInt32(t2); // -123456
