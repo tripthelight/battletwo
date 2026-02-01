@@ -1,5 +1,6 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
+import { deobfuscateInt32 as d } from '@/client/js/module/crypts/encryptNumber';
 import BattingZoneMoveRt from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMoveRt';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
 import roundEndBetEnemyMoveXY from '@/client/js/views/game/indianPocker/fns/common/roundEndBetEnemyMoveXY';
@@ -37,7 +38,7 @@ export default (_state) => {
             const BET_COINS_ELEM = BET_COINS_EL[0];
             cw = BET_COINS_ELEM.clientWidth;
             // ty = BET_COIN_RES_ARR[i].translateY;
-            ty = BET_COIN_RES_ARR[i][encryptKey1];
+            ty = d(BET_COIN_RES_ARR[i][encryptKey1]);
             ch = BET_COINS_ELEM.clientHeight;
 
             // call case

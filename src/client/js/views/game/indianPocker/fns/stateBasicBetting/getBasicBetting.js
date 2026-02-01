@@ -3,6 +3,7 @@ import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import _t from '@/client/js/module/crypts/textDE';
 import {GRS} from '@/client/js/module/crypts/generateRandomString';
+import { deobfuscateInt32 as d } from '@/client/js/module/crypts/encryptNumber';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import storageMethod from '@/client/js/module/storage/storageMethod';
@@ -150,6 +151,10 @@ export const GET_BASIC_BETTING = {
               findCharCode([76, 80, 65, 82, 87, 69, 78, 74, 83, 90]), // translateY
               findCharCode([67, 69, 82, 79, 83, 88, 77, 84, 80, 75]), // offsetLeft
             ];
+            const KS = [
+              findCharCode([87, 68, 88, 70, 85, 89, 73, 71, 86, 84]), // host : pleyer
+              findCharCode([75, 69, 77, 85, 84, 73, 79, 66, 78, 86]), // host : enemy
+            ];
 
             // const BET_COIN = window.sessionStorage.betCoin;
             // const BET_COIN_ARR = JSON.parse(BET_COIN);
@@ -168,12 +173,12 @@ export const GET_BASIC_BETTING = {
             if (BET_COINS) {
               // EMEMY의 기본배팅을 받고 PLAYER 기본배팅 =========================
               // const PLAYER_COIN = BET_COIN_ARR.filter((item) => item.host === 'player');
-              const PLAYER_COIN = BET_COIN_ARR.filter((item) => item[K[0]] === 'player');
+              const PLAYER_COIN = BET_COIN_ARR.filter((item) => item[K[0]] === KS[0]); // host === player
               const BET_COINS_LIST = BET_COINS.querySelectorAll('li');
               if (BET_COINS_LIST.length === BET_COIN_LIST.length) return;
               for (let i = 0; i < BET_COIN_LIST.length; i++) {
                 // if (i === BET_COIN_LIST.length - 1 && BET_COIN_LIST[i].host === 'enemy') {
-                if (i === BET_COIN_LIST.length - 1 && BET_COIN_LIST[i][K[0]] === 'enemy') {
+                if (i === BET_COIN_LIST.length - 1 && BET_COIN_LIST[i][K[0]] === KS[1]) { // host === enemy
                   elemLi = document.createElement('li');
                   minuteEl = document.createElement('span');
                   hourEl = document.createElement('span');
@@ -182,18 +187,20 @@ export const GET_BASIC_BETTING = {
                   elemLi.appendChild(minuteEl);
                   elemLi.appendChild(hourEl);
                   // minuteEl.style.transform = `translate(-50%, -96%) rotate(${PLAYER_COIN[0]?.tm ?? 0}deg)`;
-                  minuteEl.style.transform = `translate(-50%, -96%) rotate(${PLAYER_COIN[0]?.[K[1]] ?? 0}deg)`;
+                  minuteEl.style.transform = `translate(-50%, -96%) rotate(${ d(PLAYER_COIN[0]?.[K[1]] ?? 0) }deg)`;
                   // hourEl.style.transform = `translate(-50%, -86%) rotate(${PLAYER_COIN[0]?.th ?? 0}deg)`;
-                  hourEl.style.transform = `translate(-50%, -86%) rotate(${PLAYER_COIN[0]?.[K[2]] ?? 0}deg)`;
+                  hourEl.style.transform = `translate(-50%, -86%) rotate(${ d(PLAYER_COIN[0]?.[K[2]] ?? 0) }deg)`;
 
                   // if (BET_COIN_LIST[i].host === 'enemy') elemLi.classList.add('e');
-                  if (BET_COIN_LIST[i][K[0]] === 'enemy') elemLi.classList.add('e');
+                  if (BET_COIN_LIST[i][K[0]] === KS[1]) // host === enemy
+                    elemLi.classList.add('e');
                   // let xRes = BET_COIN_LIST[i].translateX < 0 ? BET_COIN_LIST[i].translateX + COINS_WIDTH : BET_COIN_LIST[i].translateX;
-                  let xRes = BET_COIN_LIST[i][K[3]] < 0 ? BET_COIN_LIST[i][K[3]] + COINS_WIDTH : BET_COIN_LIST[i][K[3]];
+                  const TX = d(BET_COIN_LIST[i][K[3]]);
+                  let xRes = TX < 0 ? TX + COINS_WIDTH : TX;
                   // x = BET_COIN_LIST[i].offsetLeft + xRes;
-                  x = BET_COIN_LIST[i][K[5]] + xRes;
+                  x = d(BET_COIN_LIST[i][K[5]]) + xRes;
                   // y = BET_COIN_LIST[i].translateY - ENEMY_COIN_UL.clientHeight + COINS_HEIGHT;
-                  y = BET_COIN_LIST[i][K[4]] - ENEMY_COIN_UL.clientHeight + COINS_HEIGHT;
+                  y = d(BET_COIN_LIST[i][K[4]]) - ENEMY_COIN_UL.clientHeight + COINS_HEIGHT;
                   elemLi.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
                   BET_COINS.appendChild(elemLi);
                   saveBetCoinSession('enemy', x, y);
@@ -204,7 +211,7 @@ export const GET_BASIC_BETTING = {
               // PLAYER 첫 기본 배팅 ============================================
               // ENEMY의 첫 기본배팅을 받음
               // const ENEMY_COIN = BET_COIN_ARR.filter((item) => item.host === 'enemy');
-              const ENEMY_COIN = BET_COIN_ARR.filter((item) => item[K[0]] === 'enemy');
+              const ENEMY_COIN = BET_COIN_ARR.filter((item) => item[K[0]] === KS[1]); // host === enemy
               let elem = document.createElement('ul');
               elem.classList.add('bet-coins');
               for (let i = 0; i < BET_COIN_LIST.length; i++) {
@@ -217,17 +224,19 @@ export const GET_BASIC_BETTING = {
                 elemLi.appendChild(hourEl);
                 elem.appendChild(elemLi);
                 // minuteEl.style.transform = `translate(-50%, -96%) rotate(${ENEMY_COIN[0].tm}deg)`;
-                minuteEl.style.transform = `translate(-50%, -96%) rotate(${ENEMY_COIN[0][K[1]]}deg)`;
+                minuteEl.style.transform = `translate(-50%, -96%) rotate(${ d(ENEMY_COIN[0]?.[K[1]] ?? 0) }deg)`;
                 // hourEl.style.transform = `translate(-50%, -86%) rotate(${ENEMY_COIN[0].th}deg)`;
-                hourEl.style.transform = `translate(-50%, -86%) rotate(${ENEMY_COIN[0][K[2]]}deg)`;
+                hourEl.style.transform = `translate(-50%, -86%) rotate(${ d(ENEMY_COIN[0]?.[K[2]] ?? 0) }deg)`;
                 // if (BET_COIN_LIST[i].host === 'enemy') elemLi.classList.add('e');
-                if (BET_COIN_LIST[i][K[0]] === 'enemy') elemLi.classList.add('e');
+                if (BET_COIN_LIST[i][K[0]] === KS[1]) // host === enemy
+                  elemLi.classList.add('e');
                 // let xRes = BET_COIN_LIST[i].translateX < 0 ? BET_COIN_LIST[i].translateX + COINS_WIDTH : BET_COIN_LIST[i].translateX;
-                let xRes = BET_COIN_LIST[i][K[3]] < 0 ? BET_COIN_LIST[i][K[3]] + COINS_WIDTH : BET_COIN_LIST[i][K[3]];
+                const TX = d(BET_COIN_LIST[i][K[3]]);
+                let xRes = TX < 0 ? TX + COINS_WIDTH : TX;
                 // x = BET_COIN_LIST[i].offsetLeft + xRes;
-                x = BET_COIN_LIST[i][K[5]] + xRes;
+                x = d(BET_COIN_LIST[i][K[5]]) + xRes;
                 // y = BET_COIN_LIST[i].translateY - ENEMY_COIN_UL.clientHeight + COINS_HEIGHT;
-                y = BET_COIN_LIST[i][K[4]] - ENEMY_COIN_UL.clientHeight + COINS_HEIGHT;
+                y = d(BET_COIN_LIST[i][K[4]]) - ENEMY_COIN_UL.clientHeight + COINS_HEIGHT;
                 elemLi.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
                 elem.appendChild(elemLi);
               }

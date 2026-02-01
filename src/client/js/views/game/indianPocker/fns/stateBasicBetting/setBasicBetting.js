@@ -101,13 +101,14 @@ export const SET_BASIC_BETTING = {
     const decryptVal1 = findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
 
     const encryptKey1_1 = findCharCode([80, 72, 83, 88, 76, 75, 78, 84, 65, 89]); // betState
+    const encryptVal1_1 = findCharCode([75, 66, 87, 81, 71, 77, 89, 83, 85, 69]); // betState : end
 
     // if (window.sessionStorage.betState === 'basicBetting') {
     if (encryptVal1 === decryptVal1) {
       if (COIN_BET_ARR.length > 0) {
         for (let i = 0; i < COIN_BET_ARR.length; i++) {
           // COIN_BET_ARR[i].betState = 'end'; // string
-          COIN_BET_ARR[i][encryptKey1_1] = 'end'; // string
+          COIN_BET_ARR[i][encryptKey1_1] = encryptVal1_1; // betState = end
         };
         // storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(COIN_BET_ARR));
         storageMethod('s', 'SET_ITEM', encryptKey4, JSON.stringify(COIN_BET_ARR)); // betCoin

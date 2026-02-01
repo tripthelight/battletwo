@@ -1,4 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import { deobfuscateInt32 as d } from '@/client/js/module/crypts/encryptNumber';
 import BattingZoneMoveRt from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMoveRt.js';
 import roundEndBetMoveEnd from '@/client/js/views/game/indianPocker/fns/common/roundEndBetMoveEnd.js';
 import roundEndBetEnemyMoveXY from '@/client/js/views/game/indianPocker/fns/common/roundEndBetEnemyMoveXY.js';
@@ -14,6 +15,9 @@ export default (_state) => {
       const K = [
         findCharCode([76, 80, 65, 82, 87, 69, 78, 74, 83, 90]), // translateY
         findCharCode([80, 72, 83, 88, 76, 75, 78, 84, 65, 89]), // betState
+      ];
+      const KS = [
+        findCharCode([75, 66, 87, 81, 71, 77, 89, 83, 85, 69]), // betState : end
       ];
 
       const BET_COIN_RES_ARR = BattingZoneMoveRt(); // return sessionStorage betCoin
@@ -37,7 +41,7 @@ export default (_state) => {
             const BET_COINS_ELEM = BET_COINS_EL[0];
             cw = BET_COINS_ELEM.clientWidth;
             // ty = BET_COIN_RES_ARR[i].translateY;
-            ty = BET_COIN_RES_ARR[i][K[0]];
+            ty = d(BET_COIN_RES_ARR[i][K[0]]);
             ch = BET_COINS_ELEM.clientHeight;
 
             // call case
@@ -50,7 +54,7 @@ export default (_state) => {
             } else if (_state === 'fold') {
               // fold case
               // if (BET_COIN_RES_ARR[i].betState === 'end') {
-              if (BET_COIN_RES_ARR[i][K[1]] === 'end') {
+              if (BET_COIN_RES_ARR[i][K[1]] === KS[0]) { // betState === end
                 enemyX = roundEndBetEnemyMoveXY(cw, ch, ty, 'end').x;
                 enemyY = roundEndBetEnemyMoveXY(cw, ch, ty, 'end').y;
               } else {
@@ -72,7 +76,7 @@ export default (_state) => {
                 break;
               case 'fold':
                 // if (BET_COIN_RES_ARR[i].betState === 'end') {
-                if (BET_COIN_RES_ARR[i][K[1]] === 'end') {
+                if (BET_COIN_RES_ARR[i][K[1]] === KS[0]) { // betState === end
                   stateRes = document.querySelector('.coins-enemy');
                 } else {
                   stateRes = document.querySelector('.coins-player');

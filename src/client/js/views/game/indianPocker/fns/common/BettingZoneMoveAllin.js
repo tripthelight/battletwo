@@ -1,5 +1,6 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import findCharCode from '@/client/js/functions/findCharCode';
+import { deobfuscateInt32 as d } from '@/client/js/module/crypts/encryptNumber';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import roundEndBetMoveEnd from '@/client/js/views/game/indianPocker/fns/common/roundEndBetMoveEnd.js';
 import roundEndBetEnemyMoveXY from '@/client/js/views/game/indianPocker/fns/common/roundEndBetEnemyMoveXY.js';
@@ -40,7 +41,7 @@ export default (_removeCoins) => {
           const MOVE_EL = BET_COINS_LOOP_LI[BET_COINS_LOOP_LI.length - 1];
           cw = MOVE_EL.clientWidth;
           // ty = BET_COIN_ARR[BET_COIN_ARR.length - 1].translateY;
-          ty = BET_COIN_ARR[BET_COIN_ARR.length - 1][encryptKey1];
+          ty = d(BET_COIN_ARR[BET_COIN_ARR.length - 1][encryptKey1]);
           ch = MOVE_EL.clientHeight;
           enemyX = roundEndBetEnemyMoveXY(cw, ch, ty, 'add').x;
           enemyY = roundEndBetEnemyMoveXY(cw, ch, ty, 'add').y;

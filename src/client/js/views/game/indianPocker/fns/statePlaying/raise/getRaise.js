@@ -3,6 +3,7 @@ import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import textDE from '@/client/js/module/crypts/textDE';
+import { deobfuscateInt32 as d } from '@/client/js/module/crypts/encryptNumber';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import EnemyBlockMoveBattingZone from '@/client/js/views/game/indianPocker/fns/common/EnemyBlockMoveBattingZone';
@@ -80,11 +81,12 @@ export const GET_RAISE = {
     let xRes = 0;
     for (let i = BET_COIN_LIST.length - 1; i > BET_COIN_LIST.length - 1 - NUMS; i--) {
       // xRes = BET_COIN_LIST[i].translateX < 0 ? BET_COIN_LIST[i].translateX + COINS_WIDTH : BET_COIN_LIST[i].translateX;
-      xRes = BET_COIN_LIST[i][K[0]] < 0 ? BET_COIN_LIST[i][K[0]] + COINS_WIDTH : BET_COIN_LIST[i][K[0]];
+      const TX = d(BET_COIN_LIST[i][K[0]]);
+      xRes = TX < 0 ? TX + COINS_WIDTH : TX;
       // x = BET_COIN_LIST[i].offsetLeft + xRes;
-      x = BET_COIN_LIST[i][K[2]] + xRes;
+      x = d(BET_COIN_LIST[i][K[2]]) + xRes;
       // y = BET_COIN_LIST[i].translateY - COINS_ENEMY.clientHeight + COINS_HEIGHT;
-      y = BET_COIN_LIST[i][K[1]] - COINS_ENEMY.clientHeight + COINS_HEIGHT;
+      y = d(BET_COIN_LIST[i][K[1]]) - COINS_ENEMY.clientHeight + COINS_HEIGHT;
       saveBetCoinSession('enemy', x, y);
     }
     // enemy coins 모두 제거

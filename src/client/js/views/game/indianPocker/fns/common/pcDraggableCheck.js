@@ -31,11 +31,21 @@ export default (_elem, _state) => {
       findCharCode([88, 79, 72, 75, 71, 83, 81, 85, 82, 84]), // host
       findCharCode([80, 72, 83, 88, 76, 75, 78, 84, 65, 89]), // betState
     ];
+    const KS = [
+      findCharCode([75, 66, 87, 81, 71, 77, 89, 83, 85, 69]), // betState : end
+      findCharCode([75, 69, 77, 85, 84, 73, 79, 66, 78, 86]), // host : enemy
+    ];
 
     for (let i = 0; i < COINS.length; i++) {
       if (_state) {
         // if (BET_COIN_ARR[i].host === 'enemy' || (BET_COIN_ARR[i].betState && BET_COIN_ARR[i].betState === 'end')) {
-        if (BET_COIN_ARR[i][K[0]] === 'enemy' || (BET_COIN_ARR[i][K[1]] && BET_COIN_ARR[i][K[1]] === 'end')) {
+        if (
+          BET_COIN_ARR[i][K[0]] === KS[1] || // host === enemy
+          (
+            BET_COIN_ARR[i][K[1]] &&
+            BET_COIN_ARR[i][K[1]] === KS[0] // batState === end
+          )
+        ) {
           COINS[i].setAttribute('draggable', false);
         } else {
           COINS[i].setAttribute('draggable', true);

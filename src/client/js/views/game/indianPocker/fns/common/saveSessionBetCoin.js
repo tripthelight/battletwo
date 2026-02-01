@@ -2,6 +2,7 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import textDE from '@/client/js/module/crypts/textDE';
+import { obfuscateInt32 as o } from '@/client/js/module/crypts/encryptNumber';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 // import { pcOffsetLeft, pcOffsetTop } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
@@ -20,6 +21,9 @@ export default (data) => {
     findCharCode([70, 86, 71, 87, 69, 84, 85, 89, 74, 66]), // tm
     findCharCode([83, 76, 69, 66, 75, 81, 84, 73, 90, 65]), // th
   ];
+  const KS = [
+    findCharCode([87, 68, 88, 70, 85, 89, 73, 71, 86, 84]), // host : pleyer
+  ];
 
   /* const ACTIVE_COIN = {
     host: 'player', // string
@@ -34,14 +38,14 @@ export default (data) => {
 
   const ACTIVE_COIN = betCoinsData(K,
     [
-      "player", // host
-      data.activeLi, // index
-      data.tx, // translateX
-      data.ty, // translateY
-      reactiveState.pcOffsetLeft, // offsetLeft
-      reactiveState.pcOffsetTop, // offsetTop
-      data.tm, // tm
-      data.th, // th,
+      KS[0], // host : player
+      o(data.activeLi), // index
+      o(data.tx), // translateX
+      o(data.ty), // translateY
+      o(reactiveState.pcOffsetLeft), // offsetLeft
+      o(reactiveState.pcOffsetTop), // offsetTop
+      o(data.tm), // tm
+      o(data.th), // th,
     ]
   );
 
@@ -77,7 +81,9 @@ export default (data) => {
     encryptKey3, // coinsPlayerBet
     // enc(JSON.parse(window.sessionStorage.betCoin).filter((coins) => coins.host === 'player').length)
     // enc(JSON.parse(encryptVal1_2).filter((coins) => coins.host === 'player').length)
-    enc(JSON.parse(encryptVal1_2).filter((coins) => coins[K[0]] === 'player').length)
+    enc(JSON.parse(encryptVal1_2).filter((coins) =>
+      coins[K[0]] === KS[0] // host === player
+  ).length)
   );
 
   const encryptKey4 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState

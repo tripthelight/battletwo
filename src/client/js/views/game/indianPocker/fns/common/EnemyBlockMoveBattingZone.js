@@ -1,5 +1,6 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { dec } from '@/client/js/module/crypts/obf8lower';
+import { obfuscateInt32 as o } from '@/client/js/module/crypts/encryptNumber';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { getStyle } from '@/client/js/functions/comnExport';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
@@ -50,6 +51,10 @@ export default (_case) => {
       findCharCode([83, 76, 69, 66, 75, 81, 84, 73, 90, 65]), // th
     ]
   ];
+  const KS = [
+    findCharCode([75, 66, 87, 81, 71, 77, 89, 83, 85, 69]), // betState : end
+    findCharCode([75, 69, 77, 85, 84, 73, 79, 66, 78, 86]), // host : enemy
+  ];
 
   if (_case === 'allin') {
     return new Promise((resolve, reject) => {
@@ -89,13 +94,13 @@ export default (_case) => {
 
         const DATA = betCoinsData(K[0].concat(K[1]),
           [
-            "end", // betState
-            "enemy", // host
-            COINS_LOOP.length - 1 - i, // index
-            x, // translateX
-            y, // translateY
-            moveCoin.offsetLeft, // offsetLeft
-            moveCoin.offsetTop, // offsetTop
+            KS[0], // betState : end
+            KS[1], // host : enemy
+            o(COINS_LOOP.length - 1 - i), // index
+            o(x), // translateX
+            o(y), // translateY
+            o(moveCoin.offsetLeft), // offsetLeft
+            o(moveCoin.offsetTop), // offsetTop
           ]
         );
 
@@ -205,14 +210,14 @@ export default (_case) => {
           }; */
           const ACTIVE_COIN = betCoinsData(K[0].concat(K[2]),
             [
-              "end", // betState
-              "enemy", // host
-              COINS.length - 1, // index
-              x, // translateX
-              y, // translateY
-              leftEl, // offsetLeft
-              tm, // tm
-              th, // th
+              KS[0], // betState : end
+              KS[1], // host : enemy
+              o(COINS.length - 1), // index
+              o(x), // translateX
+              o(y), // translateY
+              o(leftEl), // offsetLeft
+              o(tm), // tm
+              o(th), // th
             ]
           );
 
@@ -258,14 +263,14 @@ export default (_case) => {
         }; */
         const ACTIVE_COIN = betCoinsData(K[0].concat(K[2]),
           [
-            "end", // betState
-            "enemy", // host
-            TARGET.length - 1, // index
-            x, // translateX
-            y, // translateY
-            leftEl, // offsetLeft
-            tm, // tm
-            th, // th
+            KS[0], // betState : end
+            KS[1], // host : enemy
+            o(TARGET.length - 1), // index
+            o(x), // translateX
+            o(y), // translateY
+            o(leftEl), // offsetLeft
+            o(tm), // tm
+            o(th), // th
           ]
         );
 

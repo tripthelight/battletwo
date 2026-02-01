@@ -1,4 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import { deobfuscateInt32 as d } from '@/client/js/module/crypts/encryptNumber';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import BattingZoneMoveRt from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMoveRt';
 import roundEndBetMoveEnd from '@/client/js/views/game/indianPocker/fns/common/roundEndBetMoveEnd';
@@ -12,6 +13,9 @@ export default (_state) => {
     const K = [
       findCharCode([76, 80, 65, 82, 87, 69, 78, 74, 83, 90]), // translateY
       findCharCode([80, 72, 83, 88, 76, 75, 78, 84, 65, 89]), // betState
+    ];
+    const KS = [
+      findCharCode([75, 66, 87, 81, 71, 77, 89, 83, 85, 69]), // betState : end
     ];
 
     const BET_COIN_RES_ARR = BattingZoneMoveRt(); // return sessionStorage betCoin
@@ -36,10 +40,10 @@ export default (_state) => {
           cw = BET_COINS_ELEM.getBoundingClientRect().width;
           ch = BET_COINS_ELEM.getBoundingClientRect().height;
           // ty = BET_COIN_RES_ARR[i].translateY;
-          ty = BET_COIN_RES_ARR[i][K[0]];
+          ty = d(BET_COIN_RES_ARR[i][K[0]]);
 
           // if (BET_COIN_RES_ARR[i].betState === 'end') {
-          if (BET_COIN_RES_ARR[i][K[1]] === 'end') {
+          if (BET_COIN_RES_ARR[i][K[1]] === KS[0]) { // betState : end
             enemyX = roundEndBetEnemyMoveXY(cw, ch, ty, 'end').x;
             enemyY = roundEndBetEnemyMoveXY(cw, ch, ty, 'end').y;
           } else {
@@ -51,7 +55,7 @@ export default (_state) => {
           return {
             el: BET_COINS_ELEM,
             // state: BET_COIN_RES_ARR[i].betState === 'end' ? document.querySelector('.coins-enemy') : document.querySelector('.coins-player'),
-            state: BET_COIN_RES_ARR[i][K[1]] === 'end' ? document.querySelector('.coins-enemy') : document.querySelector('.coins-player'),
+            state: BET_COIN_RES_ARR[i][K[1]] === KS[0] ? document.querySelector('.coins-enemy') : document.querySelector('.coins-player'),
           };
         })
         .then((_data) => {

@@ -1,5 +1,6 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { dec } from '@/client/js/module/crypts/obf8lower';
+import { obfuscateInt32 as o } from '@/client/js/module/crypts/encryptNumber';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { getStyle } from '@/client/js/functions/comnExport';
@@ -42,6 +43,10 @@ export default (_coins, _coinsRes, _coinsDelete) => {
       findCharCode([67, 69, 82, 79, 83, 88, 77, 84, 80, 75]), // offsetLeft
       findCharCode([85, 84, 89, 75, 71, 81, 69, 65, 72, 83]), // offsetTop
     ];
+    const KS = [
+      findCharCode([75, 66, 87, 81, 71, 77, 89, 83, 85, 69]), // betState : end
+      findCharCode([87, 68, 88, 70, 85, 89, 73, 71, 86, 84]), // host : pleyer
+    ];
 
     const BBT = getStyle(BETTING_ZONE, 'border-top-width');
     const CW = COINS_PLAYER_LI.length > 0 ? COINS_PLAYER_LI[0].clientWidth : 0;
@@ -81,13 +86,13 @@ export default (_coins, _coinsRes, _coinsDelete) => {
       }; */
       const DATA = betCoinsData(K,
         [
-          "end", // betState
-          "player", // host
-          COINS_PLAYER_LI.length - i, // index
-          x, // translateX
-          y, // translateY
-          moveCoin.offsetLeft, // offsetLeft
-          moveCoin.offsetTop, // offsetTop
+          KS[0], // betState : end
+          KS[1], // host : player
+          o(COINS_PLAYER_LI.length - i), // index
+          o(x), // translateX
+          o(y), // translateY
+          o(moveCoin.offsetLeft), // offsetLeft
+          o(moveCoin.offsetTop), // offsetTop
         ]
       );
 

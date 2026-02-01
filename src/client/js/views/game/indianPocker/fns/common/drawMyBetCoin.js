@@ -1,5 +1,6 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
+import { deobfuscateInt32 as d } from '@/client/js/module/crypts/encryptNumber';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import saveBetCoinSession from '@/client/js/views/game/indianPocker/fns/common/saveBetCoinSession';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
@@ -47,25 +48,31 @@ export default () => {
     findCharCode([70, 86, 71, 87, 69, 84, 85, 89, 74, 66]), // tm
     findCharCode([83, 76, 69, 66, 75, 81, 84, 73, 90, 65]), // th
   ];
+  const KS = [
+    findCharCode([87, 68, 88, 70, 85, 89, 73, 71, 86, 84]), // host : pleyer
+    findCharCode([75, 69, 77, 85, 84, 73, 79, 66, 78, 86]), // host : enemy
+  ];
 
   // if (GAME_STATE === 'basicBet') {
   if (decryptVal === encryptVal1) {
     // const COIN_POS = BET_COINS ? BET_COIN_LIST.filter((item) => item.host === 'enemy') : BET_COIN_LIST.filter((item) => item.host === 'player');
-    const COIN_POS = BET_COINS ? BET_COIN_LIST.filter((item) => item[K[0]] === 'enemy') : BET_COIN_LIST.filter((item) => item[K[0]] === 'player');
+    const COIN_POS = BET_COINS ?
+      BET_COIN_LIST.filter((item) => item[K[0]] === KS[1]) : // host === enemy
+      BET_COIN_LIST.filter((item) => item[K[0]] === KS[0]); // host === player
     // minuteEl.style.transform = `translate(-50%, -96%) rotate(${COIN_POS[0].tm}deg)`;
-    minuteEl.style.transform = `translate(-50%, -96%) rotate(${COIN_POS[0][K[5]]}deg)`;
+    minuteEl.style.transform = `translate(-50%, -96%) rotate(${ d(COIN_POS[0][K[5]]) }deg)`;
     // hourEl.style.transform = `translate(-50%, -86%) rotate(${COIN_POS[0].th}deg)`;
-    hourEl.style.transform = `translate(-50%, -86%) rotate(${COIN_POS[0][K[6]]}deg)`;
+    hourEl.style.transform = `translate(-50%, -86%) rotate(${ d(COIN_POS[0][K[6]]) }deg)`;
   }
   // if (GAME_STATE === 'playing') {
   if (decryptVal === encryptVal2) {
     // const COIN_POS = BET_COIN_LIST.filter((item) => item.host === 'player');
-    const COIN_POS = BET_COIN_LIST.filter((item) => item[K[0]] === 'player');
+    const COIN_POS = BET_COIN_LIST.filter((item) => item[K[0]] === KS[0]); // host === player
     const COINS_POS = COIN_POS[COIN_POS.length - 1];
     // minuteEl.style.transform = `translate(-50%, -96%) rotate(${COINS_POS.tm}deg)`;
-    minuteEl.style.transform = `translate(-50%, -96%) rotate(${COINS_POS[K[5]]}deg)`;
+    minuteEl.style.transform = `translate(-50%, -96%) rotate(${ d(COINS_POS[K[5]]) }deg)`;
     // hourEl.style.transform = `translate(-50%, -86%) rotate(${COINS_POS.th}deg)`;
-    hourEl.style.transform = `translate(-50%, -86%) rotate(${COINS_POS[K[6]]}deg)`;
+    hourEl.style.transform = `translate(-50%, -86%) rotate(${ d(COINS_POS[K[6]]) }deg)`;
     animateClock(hourEl, minuteEl, false);
   }
 
@@ -77,13 +84,13 @@ export default () => {
     for (let i = 0; i < BET_COIN_LIST.length; i++) {
       elemLi = document.createElement('li');
       // if (i === BET_COIN_LIST.length - 1 && BET_COIN_LIST[i].host === 'player') {
-      if (i === BET_COIN_LIST.length - 1 && BET_COIN_LIST[i][K[0]] === 'player') {
+      if (i === BET_COIN_LIST.length - 1 && BET_COIN_LIST[i][K[0]] === KS[0]) { // host === player
         elemLi.appendChild(minuteEl);
         elemLi.appendChild(hourEl);
         // x = BET_COIN_LIST[i].offsetLeft + BET_COIN_LIST[i].translateX;
-        x = BET_COIN_LIST[i][K[3]] + BET_COIN_LIST[i][K[1]];
+        x = d(BET_COIN_LIST[i][K[3]]) + d(BET_COIN_LIST[i][K[1]]);
         // y = BETTING_ZONE.clientHeight - Math.abs(BET_COIN_LIST[i].translateY) + BET_COIN_LIST[i].offsetTop;
-        y = BETTING_ZONE.clientHeight - Math.abs(BET_COIN_LIST[i][K[2]]) + BET_COIN_LIST[i][K[4]];
+        y = BETTING_ZONE.clientHeight - Math.abs(d(BET_COIN_LIST[i][K[2]])) + d(BET_COIN_LIST[i][K[4]]);
         elemLi.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
         BET_COINS.appendChild(elemLi);
         saveBetCoinSession('player', x, y);
@@ -100,9 +107,9 @@ export default () => {
       elemLi.appendChild(hourEl);
       elem.appendChild(elemLi);
       // x = BET_COIN_LIST[i].offsetLeft + BET_COIN_LIST[i].translateX;
-      x = BET_COIN_LIST[i][K[3]] + BET_COIN_LIST[i][K[1]];
+      x = d(BET_COIN_LIST[i][K[3]]) + d(BET_COIN_LIST[i][K[1]]);
       // y = BETTING_ZONE.clientHeight - Math.abs(BET_COIN_LIST[i].translateY) + BET_COIN_LIST[i].offsetTop;
-      y = BETTING_ZONE.clientHeight - Math.abs(BET_COIN_LIST[i][K[2]]) + BET_COIN_LIST[i][K[4]];
+      y = BETTING_ZONE.clientHeight - Math.abs(d(BET_COIN_LIST[i][K[2]])) + d(BET_COIN_LIST[i][K[4]]);
       elemLi.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
       elem.appendChild(elemLi);
     }
