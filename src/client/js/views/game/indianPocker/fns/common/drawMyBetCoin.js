@@ -38,18 +38,34 @@ export default () => {
   minuteEl.classList.add('m');
   hourEl.classList.add('h');
 
+  const K = [
+    findCharCode([88, 79, 72, 75, 71, 83, 81, 85, 82, 84]), // host
+    findCharCode([81, 80, 74, 86, 71, 77, 69, 90, 73, 79]), // translateX
+    findCharCode([76, 80, 65, 82, 87, 69, 78, 74, 83, 90]), // translateY
+    findCharCode([67, 69, 82, 79, 83, 88, 77, 84, 80, 75]), // offsetLeft
+    findCharCode([85, 84, 89, 75, 71, 81, 69, 65, 72, 83]), // offsetTop
+    findCharCode([70, 86, 71, 87, 69, 84, 85, 89, 74, 66]), // tm
+    findCharCode([83, 76, 69, 66, 75, 81, 84, 73, 90, 65]), // th
+  ];
+
   // if (GAME_STATE === 'basicBet') {
   if (decryptVal === encryptVal1) {
-    const COIN_POS = BET_COINS ? BET_COIN_LIST.filter((item) => item.host === 'enemy') : BET_COIN_LIST.filter((item) => item.host === 'player');
-    minuteEl.style.transform = `translate(-50%, -96%) rotate(${COIN_POS[0].tm}deg)`;
-    hourEl.style.transform = `translate(-50%, -86%) rotate(${COIN_POS[0].th}deg)`;
+    // const COIN_POS = BET_COINS ? BET_COIN_LIST.filter((item) => item.host === 'enemy') : BET_COIN_LIST.filter((item) => item.host === 'player');
+    const COIN_POS = BET_COINS ? BET_COIN_LIST.filter((item) => item[K[0]] === 'enemy') : BET_COIN_LIST.filter((item) => item[K[0]] === 'player');
+    // minuteEl.style.transform = `translate(-50%, -96%) rotate(${COIN_POS[0].tm}deg)`;
+    minuteEl.style.transform = `translate(-50%, -96%) rotate(${COIN_POS[0][K[5]]}deg)`;
+    // hourEl.style.transform = `translate(-50%, -86%) rotate(${COIN_POS[0].th}deg)`;
+    hourEl.style.transform = `translate(-50%, -86%) rotate(${COIN_POS[0][K[6]]}deg)`;
   }
   // if (GAME_STATE === 'playing') {
   if (decryptVal === encryptVal2) {
-    const COIN_POS = BET_COIN_LIST.filter((item) => item.host === 'player');
+    // const COIN_POS = BET_COIN_LIST.filter((item) => item.host === 'player');
+    const COIN_POS = BET_COIN_LIST.filter((item) => item[K[0]] === 'player');
     const COINS_POS = COIN_POS[COIN_POS.length - 1];
-    minuteEl.style.transform = `translate(-50%, -96%) rotate(${COINS_POS.tm}deg)`;
-    hourEl.style.transform = `translate(-50%, -86%) rotate(${COINS_POS.th}deg)`;
+    // minuteEl.style.transform = `translate(-50%, -96%) rotate(${COINS_POS.tm}deg)`;
+    minuteEl.style.transform = `translate(-50%, -96%) rotate(${COINS_POS[K[5]]}deg)`;
+    // hourEl.style.transform = `translate(-50%, -86%) rotate(${COINS_POS.th}deg)`;
+    hourEl.style.transform = `translate(-50%, -86%) rotate(${COINS_POS[K[6]]}deg)`;
     animateClock(hourEl, minuteEl, false);
   }
 
@@ -60,11 +76,14 @@ export default () => {
     if (BET_COINS_LIST.length === BET_COIN_LIST.length) return;
     for (let i = 0; i < BET_COIN_LIST.length; i++) {
       elemLi = document.createElement('li');
-      if (i === BET_COIN_LIST.length - 1 && BET_COIN_LIST[i].host === 'player') {
+      // if (i === BET_COIN_LIST.length - 1 && BET_COIN_LIST[i].host === 'player') {
+      if (i === BET_COIN_LIST.length - 1 && BET_COIN_LIST[i][K[0]] === 'player') {
         elemLi.appendChild(minuteEl);
         elemLi.appendChild(hourEl);
-        x = BET_COIN_LIST[i].offsetLeft + BET_COIN_LIST[i].translateX;
-        y = BETTING_ZONE.clientHeight - Math.abs(BET_COIN_LIST[i].translateY) + BET_COIN_LIST[i].offsetTop;
+        // x = BET_COIN_LIST[i].offsetLeft + BET_COIN_LIST[i].translateX;
+        x = BET_COIN_LIST[i][K[3]] + BET_COIN_LIST[i][K[1]];
+        // y = BETTING_ZONE.clientHeight - Math.abs(BET_COIN_LIST[i].translateY) + BET_COIN_LIST[i].offsetTop;
+        y = BETTING_ZONE.clientHeight - Math.abs(BET_COIN_LIST[i][K[2]]) + BET_COIN_LIST[i][K[4]];
         elemLi.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
         BET_COINS.appendChild(elemLi);
         saveBetCoinSession('player', x, y);
@@ -80,8 +99,10 @@ export default () => {
       elemLi.appendChild(minuteEl);
       elemLi.appendChild(hourEl);
       elem.appendChild(elemLi);
-      x = BET_COIN_LIST[i].offsetLeft + BET_COIN_LIST[i].translateX;
-      y = BETTING_ZONE.clientHeight - Math.abs(BET_COIN_LIST[i].translateY) + BET_COIN_LIST[i].offsetTop;
+      // x = BET_COIN_LIST[i].offsetLeft + BET_COIN_LIST[i].translateX;
+      x = BET_COIN_LIST[i][K[3]] + BET_COIN_LIST[i][K[1]];
+      // y = BETTING_ZONE.clientHeight - Math.abs(BET_COIN_LIST[i].translateY) + BET_COIN_LIST[i].offsetTop;
+      y = BETTING_ZONE.clientHeight - Math.abs(BET_COIN_LIST[i][K[2]]) + BET_COIN_LIST[i][K[4]];
       elemLi.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
       elem.appendChild(elemLi);
     }

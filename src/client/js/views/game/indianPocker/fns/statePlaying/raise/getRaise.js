@@ -65,6 +65,13 @@ export const GET_RAISE = {
 
     const COINS_ENEMY = document.querySelector('.coins-enemy');
     if (!COINS_ENEMY) return;
+
+    const K = [
+      findCharCode([81, 80, 74, 86, 71, 77, 69, 90, 73, 79]), // translateX
+      findCharCode([76, 80, 65, 82, 87, 69, 78, 74, 83, 90]), // translateY
+      findCharCode([67, 69, 82, 79, 83, 88, 77, 84, 80, 75]), // offsetLeft
+    ];
+
     const COINS = COINS_ENEMY.querySelectorAll('li');
     const COINS_WIDTH = COINS && COINS.length > 0 ? COINS[0].clientWidth : 0;
     const COINS_HEIGHT = COINS && COINS.length > 0 ? COINS[0].clientHeight : 0;
@@ -72,9 +79,12 @@ export const GET_RAISE = {
     let y = 0;
     let xRes = 0;
     for (let i = BET_COIN_LIST.length - 1; i > BET_COIN_LIST.length - 1 - NUMS; i--) {
-      xRes = BET_COIN_LIST[i].translateX < 0 ? BET_COIN_LIST[i].translateX + COINS_WIDTH : BET_COIN_LIST[i].translateX;
-      x = BET_COIN_LIST[i].offsetLeft + xRes;
-      y = BET_COIN_LIST[i].translateY - COINS_ENEMY.clientHeight + COINS_HEIGHT;
+      // xRes = BET_COIN_LIST[i].translateX < 0 ? BET_COIN_LIST[i].translateX + COINS_WIDTH : BET_COIN_LIST[i].translateX;
+      xRes = BET_COIN_LIST[i][K[0]] < 0 ? BET_COIN_LIST[i][K[0]] + COINS_WIDTH : BET_COIN_LIST[i][K[0]];
+      // x = BET_COIN_LIST[i].offsetLeft + xRes;
+      x = BET_COIN_LIST[i][K[2]] + xRes;
+      // y = BET_COIN_LIST[i].translateY - COINS_ENEMY.clientHeight + COINS_HEIGHT;
+      y = BET_COIN_LIST[i][K[1]] - COINS_ENEMY.clientHeight + COINS_HEIGHT;
       saveBetCoinSession('enemy', x, y);
     }
     // enemy coins 모두 제거

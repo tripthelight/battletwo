@@ -5,10 +5,23 @@ import textDE from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 // import { pcOffsetLeft, pcOffsetTop } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
+import betCoinsData from '@/client/js/views/game/indianPocker/fns/common/betCoinsData/betCoinsData';
 import removeMyBetCoin from '@/client/js/views/game/indianPocker/fns/common/removeMyBetCoin';
 
 export default (data) => {
-  const ACTIVE_COIN = {
+
+  const K = [
+    findCharCode([88, 79, 72, 75, 71, 83, 81, 85, 82, 84]), // host
+    findCharCode([77, 75, 87, 70, 82, 88, 83, 74, 89, 80]), // index
+    findCharCode([81, 80, 74, 86, 71, 77, 69, 90, 73, 79]), // translateX
+    findCharCode([76, 80, 65, 82, 87, 69, 78, 74, 83, 90]), // translateY
+    findCharCode([67, 69, 82, 79, 83, 88, 77, 84, 80, 75]), // offsetLeft
+    findCharCode([85, 84, 89, 75, 71, 81, 69, 65, 72, 83]), // offsetTop
+    findCharCode([70, 86, 71, 87, 69, 84, 85, 89, 74, 66]), // tm
+    findCharCode([83, 76, 69, 66, 75, 81, 84, 73, 90, 65]), // th
+  ];
+
+  /* const ACTIVE_COIN = {
     host: 'player', // string
     index: data.activeLi, // number
     translateX: data.tx, // number
@@ -17,7 +30,21 @@ export default (data) => {
     offsetTop: reactiveState.pcOffsetTop, // number
     tm: data.tm, // number
     th: data.th, // number
-  };
+  }; */
+
+  const ACTIVE_COIN = betCoinsData(K,
+    [
+      "player", // host
+      data.activeLi, // index
+      data.tx, // translateX
+      data.ty, // translateY
+      reactiveState.pcOffsetLeft, // offsetLeft
+      reactiveState.pcOffsetTop, // offsetTop
+      data.tm, // tm
+      data.th, // th,
+    ]
+  );
+
   let arr = [];
   // if (window.sessionStorage.betCoin) {
   //   arr = JSON.parse(window.sessionStorage.betCoin);
@@ -45,11 +72,12 @@ export default (data) => {
   storageMethod('s', 'SET_ITEM', encryptKey2, decryptVal2_3); // coinsPlayer
 
   // storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', JSON.parse(window.sessionStorage.betCoin).filter((coins) => coins.host === 'player').length);
-  const encryptVal1_2 = storageMethod("s", "GET_ITEM", encryptKey1);
+  const encryptVal1_2 = storageMethod("s", "GET_ITEM", encryptKey1); // betCoin
   storageMethod('s', 'SET_ITEM',
     encryptKey3, // coinsPlayerBet
     // enc(JSON.parse(window.sessionStorage.betCoin).filter((coins) => coins.host === 'player').length)
-    enc(JSON.parse(encryptVal1_2).filter((coins) => coins.host === 'player').length)
+    // enc(JSON.parse(encryptVal1_2).filter((coins) => coins.host === 'player').length)
+    enc(JSON.parse(encryptVal1_2).filter((coins) => coins[K[0]] === 'player').length)
   );
 
   const encryptKey4 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState

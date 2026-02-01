@@ -36,6 +36,7 @@ export default (_state) => {
   if (_state === comnText.fold) return;
   const encryptKey2 = findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]); // betCoin
   const encryptVal2 = storageMethod("s", "GET_ITEM", encryptKey2);
+  const encryptKey2_1 = findCharCode([80, 72, 83, 88, 76, 75, 78, 84, 65, 89]); // betState
   storageMethod(
     's',
     'SET_ITEM',
@@ -43,7 +44,8 @@ export default (_state) => {
     JSON.stringify(
       // JSON.parse(window.sessionStorage.betCoin).map((item) => {
       JSON.parse(encryptVal2).map((item) => {
-        item.betState = 'end';
+        // item.betState = 'end';
+        item[encryptKey2_1] = 'end'; // betState
         return item;
       }),
     ),

@@ -142,6 +142,15 @@ export const GET_BASIC_BETTING = {
             const BET_COIN_LIST = JSON.parse(encryptVal3_1);
             if (!BET_COIN_LIST || BET_COIN_LIST.length <= 0) return;
 
+            const K = [
+              findCharCode([88, 79, 72, 75, 71, 83, 81, 85, 82, 84]), // host
+              findCharCode([70, 86, 71, 87, 69, 84, 85, 89, 74, 66]), // tm
+              findCharCode([83, 76, 69, 66, 75, 81, 84, 73, 90, 65]), // th
+              findCharCode([81, 80, 74, 86, 71, 77, 69, 90, 73, 79]), // translateX
+              findCharCode([76, 80, 65, 82, 87, 69, 78, 74, 83, 90]), // translateY
+              findCharCode([67, 69, 82, 79, 83, 88, 77, 84, 80, 75]), // offsetLeft
+            ];
+
             // const BET_COIN = window.sessionStorage.betCoin;
             // const BET_COIN_ARR = JSON.parse(BET_COIN);
             const encryptVal3_2 = storageMethod("s", "GET_ITEM", encryptKey3);
@@ -155,13 +164,16 @@ export const GET_BASIC_BETTING = {
             let elemLi;
             let x = 0;
             let y = 0;
+
             if (BET_COINS) {
               // EMEMY의 기본배팅을 받고 PLAYER 기본배팅 =========================
-              const PLAYER_COIN = BET_COIN_ARR.filter((item) => item.host === 'player');
+              // const PLAYER_COIN = BET_COIN_ARR.filter((item) => item.host === 'player');
+              const PLAYER_COIN = BET_COIN_ARR.filter((item) => item[K[0]] === 'player');
               const BET_COINS_LIST = BET_COINS.querySelectorAll('li');
               if (BET_COINS_LIST.length === BET_COIN_LIST.length) return;
               for (let i = 0; i < BET_COIN_LIST.length; i++) {
-                if (i === BET_COIN_LIST.length - 1 && BET_COIN_LIST[i].host === 'enemy') {
+                // if (i === BET_COIN_LIST.length - 1 && BET_COIN_LIST[i].host === 'enemy') {
+                if (i === BET_COIN_LIST.length - 1 && BET_COIN_LIST[i][K[0]] === 'enemy') {
                   elemLi = document.createElement('li');
                   minuteEl = document.createElement('span');
                   hourEl = document.createElement('span');
@@ -169,13 +181,19 @@ export const GET_BASIC_BETTING = {
                   hourEl.classList.add('h');
                   elemLi.appendChild(minuteEl);
                   elemLi.appendChild(hourEl);
-                  minuteEl.style.transform = `translate(-50%, -96%) rotate(${PLAYER_COIN[0]?.tm ?? 0}deg)`;
-                  hourEl.style.transform = `translate(-50%, -86%) rotate(${PLAYER_COIN[0]?.th ?? 0}deg)`;
+                  // minuteEl.style.transform = `translate(-50%, -96%) rotate(${PLAYER_COIN[0]?.tm ?? 0}deg)`;
+                  minuteEl.style.transform = `translate(-50%, -96%) rotate(${PLAYER_COIN[0]?.[K[1]] ?? 0}deg)`;
+                  // hourEl.style.transform = `translate(-50%, -86%) rotate(${PLAYER_COIN[0]?.th ?? 0}deg)`;
+                  hourEl.style.transform = `translate(-50%, -86%) rotate(${PLAYER_COIN[0]?.[K[2]] ?? 0}deg)`;
 
-                  if (BET_COIN_LIST[i].host === 'enemy') elemLi.classList.add('e');
-                  let xRes = BET_COIN_LIST[i].translateX < 0 ? BET_COIN_LIST[i].translateX + COINS_WIDTH : BET_COIN_LIST[i].translateX;
-                  x = BET_COIN_LIST[i].offsetLeft + xRes;
-                  y = BET_COIN_LIST[i].translateY - ENEMY_COIN_UL.clientHeight + COINS_HEIGHT;
+                  // if (BET_COIN_LIST[i].host === 'enemy') elemLi.classList.add('e');
+                  if (BET_COIN_LIST[i][K[0]] === 'enemy') elemLi.classList.add('e');
+                  // let xRes = BET_COIN_LIST[i].translateX < 0 ? BET_COIN_LIST[i].translateX + COINS_WIDTH : BET_COIN_LIST[i].translateX;
+                  let xRes = BET_COIN_LIST[i][K[3]] < 0 ? BET_COIN_LIST[i][K[3]] + COINS_WIDTH : BET_COIN_LIST[i][K[3]];
+                  // x = BET_COIN_LIST[i].offsetLeft + xRes;
+                  x = BET_COIN_LIST[i][K[5]] + xRes;
+                  // y = BET_COIN_LIST[i].translateY - ENEMY_COIN_UL.clientHeight + COINS_HEIGHT;
+                  y = BET_COIN_LIST[i][K[4]] - ENEMY_COIN_UL.clientHeight + COINS_HEIGHT;
                   elemLi.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
                   BET_COINS.appendChild(elemLi);
                   saveBetCoinSession('enemy', x, y);
@@ -185,7 +203,8 @@ export const GET_BASIC_BETTING = {
               console.log('2 =============== ');
               // PLAYER 첫 기본 배팅 ============================================
               // ENEMY의 첫 기본배팅을 받음
-              const ENEMY_COIN = BET_COIN_ARR.filter((item) => item.host === 'enemy');
+              // const ENEMY_COIN = BET_COIN_ARR.filter((item) => item.host === 'enemy');
+              const ENEMY_COIN = BET_COIN_ARR.filter((item) => item[K[0]] === 'enemy');
               let elem = document.createElement('ul');
               elem.classList.add('bet-coins');
               for (let i = 0; i < BET_COIN_LIST.length; i++) {
@@ -197,12 +216,18 @@ export const GET_BASIC_BETTING = {
                 elemLi.appendChild(minuteEl);
                 elemLi.appendChild(hourEl);
                 elem.appendChild(elemLi);
-                minuteEl.style.transform = `translate(-50%, -96%) rotate(${ENEMY_COIN[0].tm}deg)`;
-                hourEl.style.transform = `translate(-50%, -86%) rotate(${ENEMY_COIN[0].th}deg)`;
-                if (BET_COIN_LIST[i].host === 'enemy') elemLi.classList.add('e');
-                let xRes = BET_COIN_LIST[i].translateX < 0 ? BET_COIN_LIST[i].translateX + COINS_WIDTH : BET_COIN_LIST[i].translateX;
-                x = BET_COIN_LIST[i].offsetLeft + xRes;
-                y = BET_COIN_LIST[i].translateY - ENEMY_COIN_UL.clientHeight + COINS_HEIGHT;
+                // minuteEl.style.transform = `translate(-50%, -96%) rotate(${ENEMY_COIN[0].tm}deg)`;
+                minuteEl.style.transform = `translate(-50%, -96%) rotate(${ENEMY_COIN[0][K[1]]}deg)`;
+                // hourEl.style.transform = `translate(-50%, -86%) rotate(${ENEMY_COIN[0].th}deg)`;
+                hourEl.style.transform = `translate(-50%, -86%) rotate(${ENEMY_COIN[0][K[2]]}deg)`;
+                // if (BET_COIN_LIST[i].host === 'enemy') elemLi.classList.add('e');
+                if (BET_COIN_LIST[i][K[0]] === 'enemy') elemLi.classList.add('e');
+                // let xRes = BET_COIN_LIST[i].translateX < 0 ? BET_COIN_LIST[i].translateX + COINS_WIDTH : BET_COIN_LIST[i].translateX;
+                let xRes = BET_COIN_LIST[i][K[3]] < 0 ? BET_COIN_LIST[i][K[3]] + COINS_WIDTH : BET_COIN_LIST[i][K[3]];
+                // x = BET_COIN_LIST[i].offsetLeft + xRes;
+                x = BET_COIN_LIST[i][K[5]] + xRes;
+                // y = BET_COIN_LIST[i].translateY - ENEMY_COIN_UL.clientHeight + COINS_HEIGHT;
+                y = BET_COIN_LIST[i][K[4]] - ENEMY_COIN_UL.clientHeight + COINS_HEIGHT;
                 elemLi.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
                 elem.appendChild(elemLi);
               }

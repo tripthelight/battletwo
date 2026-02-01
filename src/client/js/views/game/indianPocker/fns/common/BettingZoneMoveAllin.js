@@ -20,6 +20,9 @@ export default (_removeCoins) => {
       console.log('error - BettingZoneMoveAllin.js - BET_COIN_ARR.length !== BET_COINS_LI.length');
       return errorManagement({ errCase: 'errorComn' });
     }
+
+    const encryptKey1 = findCharCode([76, 80, 65, 82, 87, 69, 78, 74, 83, 90]); // translateY
+
     let aniTime = Number(1000 / _removeCoins.rc);
     let enemyX = 0;
     let enemyY = 0;
@@ -36,7 +39,8 @@ export default (_removeCoins) => {
           const BET_COINS_LOOP_LI = BET_COINS_LOOP.querySelectorAll('li');
           const MOVE_EL = BET_COINS_LOOP_LI[BET_COINS_LOOP_LI.length - 1];
           cw = MOVE_EL.clientWidth;
-          ty = BET_COIN_ARR[BET_COIN_ARR.length - 1].translateY;
+          // ty = BET_COIN_ARR[BET_COIN_ARR.length - 1].translateY;
+          ty = BET_COIN_ARR[BET_COIN_ARR.length - 1][encryptKey1];
           ch = MOVE_EL.clientHeight;
           enemyX = roundEndBetEnemyMoveXY(cw, ch, ty, 'add').x;
           enemyY = roundEndBetEnemyMoveXY(cw, ch, ty, 'add').y;

@@ -1,3 +1,4 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import BattingZoneMoveRt from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMoveRt';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
@@ -11,7 +12,10 @@ export default (_state) => {
     if (STATE_CASE.filter((item) => _state === item).length) {
       const BET_COINS = document.querySelector('.bet-coins');
       if (!BET_COINS) return errorManagement({ errCase: 'elementLoss', message: '.betting-zone에서 .enemy-block으로 칩을 옯길 때 .bet-coins 엘리먼트가 없습니다' });
-      const BET_COIN_RES_ARR = BattingZoneMoveRt();
+
+      const encryptKey1 = findCharCode([76, 80, 65, 82, 87, 69, 78, 74, 83, 90]); // translateY
+
+      const BET_COIN_RES_ARR = BattingZoneMoveRt(); // return sessionStorage betCoin
 
       let cw = 0;
       let ch = 0;
@@ -30,11 +34,10 @@ export default (_state) => {
             const BET_COINS_EL = BET_COIN_EL.querySelectorAll('li');
             if (!BET_COINS_EL) return errorManagement({ errCase: 'elementLoss', message: 'round end에서 .bet-coins li 엘리먼트가 없습니다' });
 
-            console.log("여기까지 오시냐 ?-?-?- 6 ", BET_COINS_EL);
-
             const BET_COINS_ELEM = BET_COINS_EL[0];
             cw = BET_COINS_ELEM.clientWidth;
-            ty = BET_COIN_RES_ARR[i].translateY;
+            // ty = BET_COIN_RES_ARR[i].translateY;
+            ty = BET_COIN_RES_ARR[i][encryptKey1];
             ch = BET_COINS_ELEM.clientHeight;
 
             // call case

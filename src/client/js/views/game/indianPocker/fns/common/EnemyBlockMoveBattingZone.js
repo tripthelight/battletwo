@@ -9,6 +9,7 @@ import randomNumberMinMax from '@/client/js/views/game/indianPocker/fns/common/r
 import getTranslateMH from '@/client/js/views/game/indianPocker/fns/common/getTranslateMH.js';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
+import betCoinsData from '@/client/js/views/game/indianPocker/fns/common/betCoinsData/betCoinsData';
 
 export default (_case) => {
   const BETTING_ZONE = document.querySelector('.betting-zone');
@@ -32,6 +33,24 @@ export default (_case) => {
   // BET COIN
   const encryptKey3 = findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]); // betCoin
 
+  const K = [
+    [
+      findCharCode([80, 72, 83, 88, 76, 75, 78, 84, 65, 89]), // betState
+      findCharCode([88, 79, 72, 75, 71, 83, 81, 85, 82, 84]), // host
+      findCharCode([77, 75, 87, 70, 82, 88, 83, 74, 89, 80]), // index
+      findCharCode([81, 80, 74, 86, 71, 77, 69, 90, 73, 79]), // translateX
+      findCharCode([76, 80, 65, 82, 87, 69, 78, 74, 83, 90]), // translateY
+      findCharCode([67, 69, 82, 79, 83, 88, 77, 84, 80, 75]), // offsetLeft
+    ],
+    [
+      findCharCode([85, 84, 89, 75, 71, 81, 69, 65, 72, 83]), // offsetTop
+    ],
+    [
+      findCharCode([70, 86, 71, 87, 69, 84, 85, 89, 74, 66]), // tm
+      findCharCode([83, 76, 69, 66, 75, 81, 84, 73, 90, 65]), // th
+    ]
+  ];
+
   if (_case === 'allin') {
     return new Promise((resolve, reject) => {
       const BET_COINS = document.querySelector('.bet-coins');
@@ -48,6 +67,7 @@ export default (_case) => {
       let liX = 0;
       let liY = 0;
       let liIdx = 0;
+
       for (let i = 0; i < MOVE_COINS_LEN; i++) {
         const ENEMY_COIN_LOOP = ENEMY_BLOCK.querySelector('.coins-enemy');
         const COINS_LOOP = ENEMY_COIN_LOOP.querySelectorAll('li');
@@ -57,7 +77,7 @@ export default (_case) => {
         moveCoin.style.transition = 'transform ' + Number(aniTime / 1000) + 's ease-in';
         moveCoin.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
 
-        const DATA = {
+        /* const DATA = {
           betState: 'end',
           host: 'enemy',
           index: COINS_LOOP.length - 1 - i,
@@ -65,7 +85,19 @@ export default (_case) => {
           offsetTop: moveCoin.offsetTop,
           translateX: x,
           translateY: y,
-        };
+        }; */
+
+        const DATA = betCoinsData(K[0].concat(K[1]),
+          [
+            "end", // betState
+            "enemy", // host
+            COINS_LOOP.length - 1 - i, // index
+            x, // translateX
+            y, // translateY
+            moveCoin.offsetLeft, // offsetLeft
+            moveCoin.offsetTop, // offsetTop
+          ]
+        );
 
         // let betCoin = window.sessionStorage.betCoin;
         // let betCoinArr = JSON.parse(betCoin);
@@ -161,7 +193,7 @@ export default (_case) => {
           th = getTranslateMH(COINS[i]).h;
           COINS[i].style.transform = 'translate(' + x + 'px, ' + y + 'px)';
 
-          const ACTIVE_COIN = {
+          /* const ACTIVE_COIN = {
             betState: 'end',
             host: 'enemy',
             index: COINS.length - 1,
@@ -170,7 +202,19 @@ export default (_case) => {
             offsetLeft: leftEl,
             tm: tm,
             th: th,
-          };
+          }; */
+          const ACTIVE_COIN = betCoinsData(K[0].concat(K[2]),
+            [
+              "end", // betState
+              "enemy", // host
+              COINS.length - 1, // index
+              x, // translateX
+              y, // translateY
+              leftEl, // offsetLeft
+              tm, // tm
+              th, // th
+            ]
+          );
 
           let arr = [];
           // if (window.sessionStorage.betCoin) {
@@ -202,7 +246,7 @@ export default (_case) => {
         th = getTranslateMH(TARGET).h;
         TARGET.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
 
-        const ACTIVE_COIN = {
+        /* const ACTIVE_COIN = {
           betState: 'end',
           host: 'enemy',
           index: TARGET.length - 1,
@@ -211,7 +255,19 @@ export default (_case) => {
           offsetLeft: leftEl,
           tm: tm,
           th: th,
-        };
+        }; */
+        const ACTIVE_COIN = betCoinsData(K[0].concat(K[2]),
+          [
+            "end", // betState
+            "enemy", // host
+            TARGET.length - 1, // index
+            x, // translateX
+            y, // translateY
+            leftEl, // offsetLeft
+            tm, // tm
+            th, // th
+          ]
+        );
 
         let arr = [];
         // if (window.sessionStorage.betCoin) {

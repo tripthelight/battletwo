@@ -27,9 +27,15 @@ export default (_elem, _state) => {
     const BET_COIN_ARR = JSON.parse(encryptVal1);
     if (!BET_COIN_ARR || BET_COIN_ARR.length < 1) return;
 
+    const K = [
+      findCharCode([88, 79, 72, 75, 71, 83, 81, 85, 82, 84]), // host
+      findCharCode([80, 72, 83, 88, 76, 75, 78, 84, 65, 89]), // betState
+    ];
+
     for (let i = 0; i < COINS.length; i++) {
       if (_state) {
-        if (BET_COIN_ARR[i].host === 'enemy' || (BET_COIN_ARR[i].betState && BET_COIN_ARR[i].betState === 'end')) {
+        // if (BET_COIN_ARR[i].host === 'enemy' || (BET_COIN_ARR[i].betState && BET_COIN_ARR[i].betState === 'end')) {
+        if (BET_COIN_ARR[i][K[0]] === 'enemy' || (BET_COIN_ARR[i][K[1]] && BET_COIN_ARR[i][K[1]] === 'end')) {
           COINS[i].setAttribute('draggable', false);
         } else {
           COINS[i].setAttribute('draggable', true);

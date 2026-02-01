@@ -1,3 +1,4 @@
+import findCharCode from '@/client/js/functions/findCharCode';
 import BattingZoneMoveRt from '@/client/js/views/game/indianPocker/fns/common/BattingZoneMoveRt.js';
 import roundEndBetMoveEnd from '@/client/js/views/game/indianPocker/fns/common/roundEndBetMoveEnd.js';
 import roundEndBetEnemyMoveXY from '@/client/js/views/game/indianPocker/fns/common/roundEndBetEnemyMoveXY.js';
@@ -9,7 +10,13 @@ export default (_state) => {
     if (STATE_CASE.filter((item) => _state === item).length) {
       const BET_COINS = document.querySelector('.bet-coins');
       if (!BET_COINS) return errorManagement({ errCase: 'elementLoss', message: '.betting-zone에서 .enemy-block으로 칩을 옯길 때 .bet-coins 엘리먼트가 없습니다' });
-      const BET_COIN_RES_ARR = BattingZoneMoveRt();
+
+      const K = [
+        findCharCode([76, 80, 65, 82, 87, 69, 78, 74, 83, 90]), // translateY
+        findCharCode([80, 72, 83, 88, 76, 75, 78, 84, 65, 89]), // betState
+      ];
+
+      const BET_COIN_RES_ARR = BattingZoneMoveRt(); // return sessionStorage betCoin
       let cw = 0;
       let ch = 0;
       let ty = 0;
@@ -29,7 +36,8 @@ export default (_state) => {
 
             const BET_COINS_ELEM = BET_COINS_EL[0];
             cw = BET_COINS_ELEM.clientWidth;
-            ty = BET_COIN_RES_ARR[i].translateY;
+            // ty = BET_COIN_RES_ARR[i].translateY;
+            ty = BET_COIN_RES_ARR[i][K[0]];
             ch = BET_COINS_ELEM.clientHeight;
 
             // call case
@@ -41,7 +49,8 @@ export default (_state) => {
               enemyY = roundEndBetEnemyMoveXY(cw, ch, ty, 'add').y;
             } else if (_state === 'fold') {
               // fold case
-              if (BET_COIN_RES_ARR[i].betState === 'end') {
+              // if (BET_COIN_RES_ARR[i].betState === 'end') {
+              if (BET_COIN_RES_ARR[i][K[1]] === 'end') {
                 enemyX = roundEndBetEnemyMoveXY(cw, ch, ty, 'end').x;
                 enemyY = roundEndBetEnemyMoveXY(cw, ch, ty, 'end').y;
               } else {
@@ -62,7 +71,8 @@ export default (_state) => {
                 stateRes = document.querySelector('.coins-player');
                 break;
               case 'fold':
-                if (BET_COIN_RES_ARR[i].betState === 'end') {
+                // if (BET_COIN_RES_ARR[i].betState === 'end') {
+                if (BET_COIN_RES_ARR[i][K[1]] === 'end') {
                   stateRes = document.querySelector('.coins-enemy');
                 } else {
                   stateRes = document.querySelector('.coins-player');

@@ -6,6 +6,7 @@ import { getStyle } from '@/client/js/functions/comnExport';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock.js';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
+import betCoinsData from '@/client/js/views/game/indianPocker/fns/common/betCoinsData/betCoinsData';
 
 export default (_coins, _coinsRes, _coinsDelete) => {
   return new Promise((resolve, reject) => {
@@ -30,6 +31,17 @@ export default (_coins, _coinsRes, _coinsDelete) => {
     const COINS_PLAYER = document.querySelector('.coins-player');
     if (!COINS_PLAYER) return errorManagement({ errCase: 'elementLoss', message: 'all in 버튼 클릭 시 .coins-player 엘리먼트가 없습니다' });
     const COINS_PLAYER_LI = COINS_PLAYER.querySelectorAll('li');
+
+    const encryptKey2 = findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]); // betCoin
+    const K = [
+      findCharCode([80, 72, 83, 88, 76, 75, 78, 84, 65, 89]), // betState
+      findCharCode([88, 79, 72, 75, 71, 83, 81, 85, 82, 84]), // host
+      findCharCode([77, 75, 87, 70, 82, 88, 83, 74, 89, 80]), // index
+      findCharCode([81, 80, 74, 86, 71, 77, 69, 90, 73, 79]), // translateX
+      findCharCode([76, 80, 65, 82, 87, 69, 78, 74, 83, 90]), // translateY
+      findCharCode([67, 69, 82, 79, 83, 88, 77, 84, 80, 75]), // offsetLeft
+      findCharCode([85, 84, 89, 75, 71, 81, 69, 65, 72, 83]), // offsetTop
+    ];
 
     const BBT = getStyle(BETTING_ZONE, 'border-top-width');
     const CW = COINS_PLAYER_LI.length > 0 ? COINS_PLAYER_LI[0].clientWidth : 0;
@@ -58,7 +70,7 @@ export default (_coins, _coinsRes, _coinsDelete) => {
       moveCoin.style.transition = 'transform ' + Number(aniTime / 1000) + 's ease-in';
       moveCoin.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
 
-      const DATA = {
+      /* const DATA = {
         betState: 'end',
         host: 'player',
         index: COINS_PLAYER_LI.length - i,
@@ -66,11 +78,21 @@ export default (_coins, _coinsRes, _coinsDelete) => {
         offsetTop: moveCoin.offsetTop,
         translateX: x,
         translateY: y,
-      };
+      }; */
+      const DATA = betCoinsData(K,
+        [
+          "end", // betState
+          "player", // host
+          COINS_PLAYER_LI.length - i, // index
+          x, // translateX
+          y, // translateY
+          moveCoin.offsetLeft, // offsetLeft
+          moveCoin.offsetTop, // offsetTop
+        ]
+      );
 
       // let betCoin = window.sessionStorage.betCoin;
       // let betCoinArr = JSON.parse(betCoin);
-      const encryptKey2 = findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]); // betCoin
       const encryptVal2 = storageMethod("s", "GET_ITEM", encryptKey2);
       let betCoinArr = JSON.parse(encryptVal2);
       betCoinArr.push(DATA);
