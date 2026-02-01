@@ -684,10 +684,14 @@ export const GET_ROUND_END = {
     for (let l = 0; l < ENUM; l++) CPINS_ENEMY.appendChild(document.createElement('li'));
     */
     BET_COINS.remove();
+
     // storageMethod('s', 'SET_ITEM', 'betCoin', []);
     const encryptKey9 = findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]); // betCoin
     storageMethod('s', 'SET_ITEM', encryptKey9, []); // betCoin
-    storageMethod('s', 'SET_ITEM', 'betCoinPos', []);
+
+    // storageMethod('s', 'SET_ITEM', 'betCoinPos', []); // betCoinPos
+    const encryptKey10 = findCharCode([68, 69, 75, 72, 67, 86, 90, 80, 65, 79]); // betCoinPos
+    storageMethod('s', 'SET_ITEM', encryptKey10, []); // betCoinPos
 
     // storageMethod('s', 'SET_ITEM', 'basicBettingState', false);
     storageMethod(

@@ -1,4 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { dec, enc } from '@/client/js/module/crypts/obf8lower';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
@@ -44,9 +45,13 @@ export default (_state) => {
     COINS_PLAYER.appendChild(liEl);
   }
 
-  const BET_COIN_POS = window.sessionStorage.betCoinPos;
-  if (!BET_COIN_POS) return;
-  const BET_POS_ARR = JSON.parse(BET_COIN_POS);
+  // const BET_COIN_POS = window.sessionStorage.betCoinPos;
+  // if (!BET_COIN_POS) return;
+  // const BET_POS_ARR = JSON.parse(BET_COIN_POS);
+  const encryptKey3 = findCharCode([68, 69, 75, 72, 67, 86, 90, 80, 65, 79]); // betCoinPos
+  const encryptVal3 = storageMethod("s", "GET_ITEM", encryptKey3);
+  if (encryptVal3 === null) return;
+  const BET_POS_ARR = JSON.parse(encryptVal3);
   const BETTING_ZONE = document.querySelector('.betting-zone');
   if (!BETTING_ZONE) errorManagement({ errCase: 'errorComn', message: '.betting-zone not found' });
   const BET_COIN = BETTING_ZONE.querySelector('.bet-coins');

@@ -33,6 +33,7 @@ export default (_case) => {
 
   // BET COIN
   const encryptKey3 = findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]); // betCoin
+  const encryptKey4 = findCharCode([68, 69, 75, 72, 67, 86, 90, 80, 65, 79]); // betCoinPos
 
   const K = [
     [
@@ -144,10 +145,13 @@ export default (_case) => {
             translateX: liX,
             translateY: liY,
           };
-          let betCoinPos = window.sessionStorage.betCoinPos;
-          let betCoinPosArr = JSON.parse(betCoinPos);
+          // let betCoinPos = window.sessionStorage.betCoinPos;
+          // let betCoinPosArr = JSON.parse(betCoinPos);
+          const encryptVal4_1 = storageMethod("s", "GET_ITEM", encryptKey4); // betCoinPos
+          let betCoinPosArr = JSON.parse(encryptVal4_1);
           betCoinPosArr.push(POS_DATA);
-          storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(betCoinPosArr));
+          // storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(betCoinPosArr));
+          storageMethod('s', 'SET_ITEM', encryptKey4, JSON.stringify(betCoinPosArr));
           liIdx += 1;
           moveCoin.remove();
           if (i === MOVE_COINS_LEN - 1) resolve();

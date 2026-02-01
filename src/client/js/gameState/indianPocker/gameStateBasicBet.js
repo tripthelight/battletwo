@@ -48,6 +48,7 @@ export default (reloadState) => {
       };
 
       const encryptKey8 = findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]);  // betCoin
+      const encryptKey9 = findCharCode([68, 69, 75, 72, 67, 86, 90, 80, 65, 79]);  // betCoinPos
 
       // const D_ARR = ['coinsEnemyBet', 'coinsPlayerBet', 'coinsEnemyExtBet', 'coinsPlayerExtBet', 'betCoin', 'betCoinPos', 'extFirstBet', 'drewReady', 'drewState', 'dropState', 'coinsEnemyLocalFold', 'coinsPlayerLocalFold', 'coinsEnemyRemoteFold', 'coinsPlayerRemoteFold', 'foldUser', 'foldState'];
       // storageMethod('s', 'REMOVE_ARR', '', '', D_ARR);
@@ -57,7 +58,7 @@ export default (reloadState) => {
         findCharCode([80, 73, 68, 65, 90, 69, 88, 86, 82, 67]), // coinsEnemyExtBet
         findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]), // coinsPlayerExtBet
         encryptKey8, // betCoin,
-        'betCoinPos',
+        encryptKey9, // betCoinPos
         findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
         findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78]), // drewReady
         findCharCode([67, 71, 79, 68, 76, 73, 84, 74, 80, 77]), // drewState
@@ -66,7 +67,7 @@ export default (reloadState) => {
       ]);
 
       storageMethod('s', 'SET_ITEM', encryptKey8, ''); // betCoin
-      storageMethod('s', 'SET_ITEM', 'betCoinPos', '');
+      storageMethod('s', 'SET_ITEM', encryptKey9, ''); // betCoinPos
       // storageMethod('s', 'SET_ITEM', 'basicBettingState', false);
       storageMethod('s', 'SET_ITEM',
         findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]), // basicBettingState

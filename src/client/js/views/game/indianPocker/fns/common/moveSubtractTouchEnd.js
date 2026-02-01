@@ -14,13 +14,18 @@ import moveCoins from '@/client/js/views/game/indianPocker/fns/common/moveCoins'
 
 export default (e) => {
   if (!touchCoinState(e.target)) return;
-  const BET_COIN_POS = window.sessionStorage.betCoinPos;
-  if (!BET_COIN_POS) return;
-  const BET_COIN_ARR = JSON.parse(BET_COIN_POS);
+  // const BET_COIN_POS = window.sessionStorage.betCoinPos;
+  // if (!BET_COIN_POS) return;
+  // const BET_COIN_ARR = JSON.parse(BET_COIN_POS);
+  const encryptKey5 = findCharCode([68, 69, 75, 72, 67, 86, 90, 80, 65, 79]); // betCoinPos
+  const encryptVal5_1 = storageMethod("s", "GET_ITEM", encryptKey5);
+  if (encryptVal5_1 === null) return;
+  const BET_COIN_ARR = JSON.parse(encryptVal5_1);
   if (!BET_COIN_ARR || BET_COIN_ARR.length <= 0) return;
   BET_COIN_ARR[reactiveState.mTargetIdx].translateX = reactiveState.mmX;
   BET_COIN_ARR[reactiveState.mTargetIdx].translateY = reactiveState.mmY;
-  storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(BET_COIN_ARR));
+  // storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(BET_COIN_ARR));
+  storageMethod('s', 'SET_ITEM', encryptKey5, JSON.stringify(BET_COIN_ARR)); // betCoinPos
 
   const onTransitionEnd = () => {
     e.target.style.removeProperty('transition');
@@ -34,7 +39,8 @@ export default (e) => {
 
     BET_COIN_ARR[reactiveState.mTargetIdx].translateX = reactiveState.mtX;
     BET_COIN_ARR[reactiveState.mTargetIdx].translateY = reactiveState.mtY;
-    storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(BET_COIN_ARR));
+    // storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(BET_COIN_ARR));
+    storageMethod('s', 'SET_ITEM', encryptKey5, JSON.stringify(BET_COIN_ARR)); // betCoinPos
   }
 
   // touch end 했는데 배팅존에 머무를 경우 여기까지 탐
@@ -50,11 +56,13 @@ export default (e) => {
   const COINS_PLAYER_LI = COINS_PLAYER.querySelectorAll('li');
   if (!PLAYER_BLOCK.classList.contains('over')) return;
 
-  const POS = window.sessionStorage.betCoinPos;
+  // const POS = window.sessionStorage.betCoinPos;
+  const POS = storageMethod("s", "GET_ITEM", encryptKey5);
   const POS_ARR = JSON.parse(POS);
   if (!POS_ARR || POS_ARR.length <= 0) return;
   POS_ARR.splice(reactiveState.mTargetIdx, 1);
-  storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(POS_ARR));
+  // storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(POS_ARR));
+  storageMethod('s', 'SET_ITEM', encryptKey5, JSON.stringify(POS_ARR)); // betCoinPos
 
   // const BET = window.sessionStorage.betCoin;
   const BET_KEY = findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]); // betCoin

@@ -130,10 +130,16 @@ export default (_coins, _coinsRes, _coinsDelete) => {
           translateY: liY,
         };
 
-        let betCoinPos = window.sessionStorage.betCoinPos;
-        let betCoinPosArr = JSON.parse(betCoinPos);
+        // let betCoinPos = window.sessionStorage.betCoinPos;
+        // let betCoinPosArr = JSON.parse(betCoinPos);
+        // betCoinPosArr.push(POS_DATA);
+        // storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(betCoinPosArr));
+
+        const encryptKey3 = findCharCode([68, 69, 75, 72, 67, 86, 90, 80, 65, 79]); // betCoinPos
+        const encryptVal3 = storageMethod("s", "GET_ITEM", encryptKey3);
+        let betCoinPosArr = JSON.parse(encryptVal3);
         betCoinPosArr.push(POS_DATA);
-        storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(betCoinPosArr));
+        storageMethod('s', 'SET_ITEM', encryptKey3, JSON.stringify(betCoinPosArr)); // betCoinPos
         moveCoin.remove();
         appendIdx += 1;
         if (i === _coins) resolve({ ep: _coins, epeb: _coinsRes, rc: _coinsDelete });

@@ -13,6 +13,8 @@ export default (_removeCoins) => {
     const BET_COIN = storageMethod("s", "GET_ITEM", BET_COIN_KEY);
     const BET_COIN_ARR = JSON.parse(BET_COIN);
 
+    const BET_COIN_POS_KEY = findCharCode([68, 69, 75, 72, 67, 86, 90, 80, 65, 79]); // betCoinPos
+
     // const BET_COIN = window.sessionStorage.betCoin;
     // const BET_COIN_ARR = JSON.parse(BET_COIN);
     const BET_COINS = document.querySelector('.bet-coins');
@@ -64,12 +66,17 @@ export default (_removeCoins) => {
             // if (window.sessionStorage.betCoin) arr = JSON.parse(window.sessionStorage.betCoin);
             const BET_COIN_OBJ = storageMethod("s", "GET_ITEM", BET_COIN_KEY); // betCoin value
             if (BET_COIN_OBJ !== null && BET_COIN_OBJ !== "" && JSON.parse(BET_COIN_OBJ).length > 0) arr = JSON.parse(BET_COIN_OBJ);
-            if (window.sessionStorage.betCoinPos) arrPos = JSON.parse(window.sessionStorage.betCoinPos);
             arr.pop();
+
+            // if (window.sessionStorage.betCoinPos) arrPos = JSON.parse(window.sessionStorage.betCoinPos);
+            const BET_COIN_POS_OBJ = storageMethod("s", "GET_ITEM", BET_COIN_POS_KEY);
+            if (BET_COIN_POS_OBJ !== null && BET_COIN_POS_OBJ !== "" && JSON.parse(BET_COIN_POS_OBJ).length > 0) arrPos = JSON.parse(BET_COIN_POS_OBJ);
             arrPos.pop();
+
             // storageMethod('s', 'SET_ITEM', 'betCoin', JSON.stringify(arr));
             storageMethod('s', 'SET_ITEM', BET_COIN_KEY, JSON.stringify(arr)); // betCoin
-            storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(arrPos));
+            // storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(arrPos));
+            storageMethod('s', 'SET_ITEM', BET_COIN_POS_KEY, JSON.stringify(arrPos)); // betCoinPos
             if (i === _removeCoins.rc - 1) return resolve(_removeCoins);
           }, Number(aniTime));
         });

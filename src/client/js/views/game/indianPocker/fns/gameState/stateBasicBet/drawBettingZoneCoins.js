@@ -1,18 +1,26 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import drawPlayerBlock from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/drawPlayerBlock';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export default () => {
   // element | seeeion 체크
-  const BET_COIN_POS = window.sessionStorage.betCoinPos;
+  // const BET_COIN_POS = window.sessionStorage.betCoinPos;
+  // if (!BET_COIN_POS) return drawPlayerBlock();
+
+  const BET_COIN_POS_KEY = findCharCode([68, 69, 75, 72, 67, 86, 90, 80, 65, 79]); // betCoinPos
+  const BET_COIN_POS = storageMethod("s", "GET_ITEM", BET_COIN_POS_KEY);
 
   if (!BET_COIN_POS) return drawPlayerBlock();
+
   const BETTING_ZONE = document.querySelector('.betting-zone');
   if (!BETTING_ZONE) throw throwObj('elementLoss', '.betting-zone element not found.');
 
   // 명령
   const BET_COIN_ARR = JSON.parse(BET_COIN_POS);
   if (!BET_COIN_ARR || BET_COIN_ARR.length <= 0) return drawPlayerBlock();
+
   const elem = document.createElement('ul');
   let liEl = new Object();
   let minuteEl = new Object();

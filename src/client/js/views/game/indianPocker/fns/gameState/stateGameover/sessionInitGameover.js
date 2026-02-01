@@ -21,7 +21,7 @@ export default () => {
 
     const D_ARR = [
       findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]), // betUser
-      'betCoinPos',
+      findCharCode([68, 69, 75, 72, 67, 86, 90, 80, 65, 79]), // betCoinPos
       findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]), // betUserFirst
       findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]), // battleCardNum
       findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]), // basicBettingState

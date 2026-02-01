@@ -17,11 +17,17 @@ export default (_host, _x, _y) => {
     translateY: _y,
   };
   let arr = [];
-  if (window.sessionStorage.betCoinPos) {
-    arr = JSON.parse(window.sessionStorage.betCoinPos);
+  // if (window.sessionStorage.betCoinPos) {
+  //   arr = JSON.parse(window.sessionStorage.betCoinPos);
+  // }
+  const encryptKey3 = findCharCode([68, 69, 75, 72, 67, 86, 90, 80, 65, 79]); // betCoinPos
+  const encryptVal3 = storageMethod("s", "GET_ITEM", encryptKey3);
+  if (encryptVal3 !== null && encryptVal3 !== "" && JSON.parse(encryptVal3).length > 0) {
+    arr = JSON.parse(encryptVal3);
   }
   arr.push(POS_COIN);
-  storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(arr));
+  // storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(arr));
+  storageMethod('s', 'SET_ITEM', encryptKey3, JSON.stringify(arr)); // betCoinPos
 
   const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
   const encryptVal1 = window.sessionStorage.getItem(encryptKey1);

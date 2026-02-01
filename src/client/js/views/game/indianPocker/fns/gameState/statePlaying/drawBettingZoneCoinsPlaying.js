@@ -1,5 +1,6 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import booleanReturn from '@/client/js/functions/validation/booleanReturn';
-import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
@@ -8,7 +9,11 @@ import drawPlayerBlockPlaying from '@/client/js/views/game/indianPocker/fns/game
 
 export default () => {
   // element | seeeion 체크
-  const BET_COIN_POS = window.sessionStorage.betCoinPos;
+  // const BET_COIN_POS = window.sessionStorage.betCoinPos;
+
+  const BET_COIN_POS_KEY = findCharCode([68, 69, 75, 72, 67, 86, 90, 80, 65, 79]); // betCoinPos
+  const BET_COIN_POS = storageMethod("s", "GET_ITEM", BET_COIN_POS_KEY);
+
   if (!BET_COIN_POS) return drawPlayerBlock();
   const BETTING_ZONE = document.querySelector('.betting-zone');
   if (!BETTING_ZONE) return errorManagement({ errCase: 'elementLoss', message: '.betting-zone 엘리먼트가 없습니다' });

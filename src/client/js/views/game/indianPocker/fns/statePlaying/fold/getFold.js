@@ -149,7 +149,7 @@ export const GET_FOLD = {
       findCharCode([80, 73, 68, 65, 90, 69, 88, 86, 82, 67]), // coinsEnemyExtBet
       findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]), // coinsPlayerExtBet
       findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]), // betCoin
-      'betCoinPos',
+      findCharCode([68, 69, 75, 72, 67, 86, 90, 80, 65, 79]), // betCoinPos
       findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet,
       findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78]), // drewReady
       findCharCode([67, 71, 79, 68, 76, 73, 84, 74, 80, 77]) // drewState

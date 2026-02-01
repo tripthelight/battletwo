@@ -81,7 +81,7 @@ export default (gameState) => {
       findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]), // battleCardNum
       findCharCode([75, 81, 83, 80, 89, 88, 86, 72, 82, 77]), // playingReloadUser
       findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]), // betCoin
-      'betCoinPos', // findCharCode([68, 69, 75, 72, 67, 86, 90, 80, 65, 79]), // betCoinPos
+      findCharCode([68, 69, 75, 72, 67, 86, 90, 80, 65, 79]), // betCoinPos
     ];
   };
 

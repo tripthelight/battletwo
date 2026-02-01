@@ -26,12 +26,15 @@ export default (event) => {
     X.dec(encryptVal1)
   ) return;
 
-  const POS = window.sessionStorage.betCoinPos;
-  if (!POS) return;
+  // const POS = window.sessionStorage.betCoinPos;
+  const POS_KEY = findCharCode([68, 69, 75, 72, 67, 86, 90, 80, 65, 79]); // betCoinPos
+  const POS = storageMethod("s", "GET_ITEM", POS_KEY);
+  if (POS === null) return;
   const POS_ARR = JSON.parse(POS);
   if (!POS_ARR || POS_ARR.length <= 0) return;
   POS_ARR.splice(reactiveState.mTargetIdx, 1);
-  storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(POS_ARR));
+  // storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(POS_ARR));
+  storageMethod('s', 'SET_ITEM', POS_KEY, JSON.stringify(POS_ARR)); // betCoinPos
 
   // const BET = window.sessionStorage.betCoin;
   const BET_KEY = findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]); // betCoin

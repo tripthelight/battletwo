@@ -143,8 +143,14 @@ export const GET_RAISE = {
   redrawCoinsRaiseEnemyBet: (_data) => {
     const BET_COINS = document.querySelector('.bet-coins');
     if (!BET_COINS) return;
-    const BET_COIN_POS = window.sessionStorage.betCoinPos;
-    if (!BET_COIN_POS) return;
+
+    // const BET_COIN_POS = window.sessionStorage.betCoinPos;
+    // if (!BET_COIN_POS) return;
+
+    const BET_COIN_POS_KEY = findCharCode([68, 69, 75, 72, 67, 86, 90, 80, 65, 79]); // betCoinPos
+    const BET_COIN_POS = storageMethod("s", "GET_ITEM", BET_COIN_POS_KEY);
+    if (BET_COIN_POS === null) return;
+
     const POS_ARR = JSON.parse(BET_COIN_POS);
     if (!POS_ARR || POS_ARR.length <= 0) return;
     let liEl = new Object();

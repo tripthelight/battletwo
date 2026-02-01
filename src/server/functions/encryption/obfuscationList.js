@@ -403,12 +403,18 @@ export const obfuscationList = {
           th: 'SLEBKQTIZA', // [83, 76, 69, 66, 75, 81, 84, 73, 90, 65]
         }
       },
-      BET_COIN_POS: { : TODO:
+      BET_COIN_POS: {
         k: 'DEKHCVZPAO', // [68, 69, 75, 72, 67, 86, 90, 80, 65, 79]
           v: {
-            host: '',
-            translateX: '',
-            translateY: '',
+            host: {
+              k: 'BUWJOZVSHX', // [66, 85, 87, 74, 79, 90, 86, 83, 72, 88]
+              v: {
+                'pleyer': 'IWVRUTODZB' // [73, 87, 86, 82, 85, 84, 79, 68, 90, 66]
+                'enemy': 'YDVETBMWAZ' // [89, 68, 86, 69, 84, 66, 77, 87, 65, 90]
+              }
+            },
+            translateX: 'UKHEGBJQWT', // [85, 75, 72, 69, 71, 66, 74, 81, 87, 84]
+            translateY: 'PCZURGFBTJ', // [80, 67, 90, 85, 82, 71, 70, 66, 84, 74]
           },
         },
       },

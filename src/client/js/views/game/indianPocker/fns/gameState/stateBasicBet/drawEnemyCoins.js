@@ -1,4 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { dec } from '@/client/js/module/crypts/obf8lower';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import drawBettingZone from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/drawBettingZone';
@@ -15,11 +16,15 @@ export default () => {
   const ENEMY_BLOCK = document.querySelector('.enemy-block');
   if (!ENEMY_BLOCK) throw throwObj('elementLoss', '.enemy-block element not found.')
 
-  const BET_COIN_POS = window.sessionStorage.betCoinPos;
+  // const BET_COIN_POS = window.sessionStorage.betCoinPos;
+
+  const BET_COIN_POS_KEY = findCharCode([68, 69, 75, 72, 67, 86, 90, 80, 65, 79]); // betCoinPos
+  const BET_COIN_POS = storageMethod("s", "GET_ITEM", BET_COIN_POS_KEY);
   let betCoinPosArr = [];
   let enemyBet = [];
   let enemyBetState = false;
-  if (BET_COIN_POS) {
+  // if (BET_COIN_POS) {
+  if (BET_COIN_POS !== null && BET_COIN_POS !== "" && JSON.parse(BET_COIN_POS).length > 0) {
     betCoinPosArr = JSON.parse(BET_COIN_POS);
     enemyBet = betCoinPosArr.filter((item) => item.host === 'enemy');
     enemyBetState = enemyBet.length > 0 ? true : false;
