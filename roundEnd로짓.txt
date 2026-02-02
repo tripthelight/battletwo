@@ -42,7 +42,43 @@ CALL : ####################################
 - "basicBettingState"를 false로 만듬
 - "betState"를 "basicBetting"로 만듬
 
-※ call을 당한 PEER —————————————————
+※ call을 받은 PEER —————————————————
+1. 상대에게 받은 내 카드번호를 "playCardNum" 에 저장시킴
+2. receiveCallBet로 가서,
+- "extFirstBet" 를 false로 만듬
+3. sessionCallBet 에서
+- "betUser" 를 true로 만듬
+- "coinsEnemy" 를 상대에게 받은 "coinsPlayer" 로 바꿈
+- "coinsEnemyBet" 를 상대에게 받은 "coinsPlayerBet" 로 바꿈
+- "coinsEnemyExtBet" 를 상대에게 받은 "coinsPlayerExtBet" 로 바꿈
+4. sessionCallCoinPos 로 가서,
+- "betCoin"이 없으면, return
+- "betCoin"이 있으면, 
+  - "translateX", "offsetLeft", "translateY" 를 가지고
+  - saveBetCoinSession로 가서,
+  - "betCoinPos" 의 "translateX", "translateY" 를 바꿈
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
