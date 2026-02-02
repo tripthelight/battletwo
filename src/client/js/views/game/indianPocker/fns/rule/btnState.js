@@ -1,10 +1,10 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { dec } from '@/client/js/module/crypts/obf8lower';
-import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
-import { timeInterval_1, timeInterval_200 } from '@/client/js/functions/variable';
+// import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
+// import { timeInterval_1, timeInterval_200 } from '@/client/js/functions/variable';
 import { request } from '@/client/js/network/indianPocker/request';
 import { comnText } from '@/client/js/functions/language';
-import storageMethod from '@/client/js/module/storage/storageMethod';
+// import storageMethod from '@/client/js/module/storage/storageMethod';
 import BOTTOM_BUTTONS from '@/client/js/views/game/indianPocker/fns/common/components/bottomButtons';
 import INDIANPOCKER_SESSION from '@/client/js/views/game/indianPocker/fns/rule/indianpockerSession';
 import { ELEMENT } from '@/client/js/views/game/indianPocker/fns/rule/element';

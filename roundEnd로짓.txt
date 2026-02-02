@@ -1,0 +1,71 @@
+CALL : #################################### 
+※ call을 누른 PEER —————————————————
+1. 상대에게 받은 내 카드번호를 "playCardNum" 에 저장시킴
+2. "betCoinPos" 를 가져와서
+- coins player 코인 다시 그리기
+- betting zoin의 코인 다시 그리기
+- coins enemy 코인 다시 그리기
+3. "coinsPlayerExtBet" 를 0으로 만듬
+4. 내 "battleCardNum" 을 상대 PEER에게 전달
+- 내 "coinsPlayer", "coinsPlayerBet", "coinsPlayerExtBet"를 함께 전달
+
+5. receiveRoundEnd로 가서,
+- "betResulting" 를 true로 만듬
+- "drewFlipCardMode" 의 값을 제거
+- "drewReady" 의 값을 제거
+- "dropState" 의 값을 제거
+6. "drewCardReady" 가 true면 값을 제거
+7. 내 카드 확인 완료 했으니 "playCardNum" 제거
+8. cardCompare에서,
+- 내가 지거나, 이겼으면,
+  - "drewState" 값 제거
+- 비겼으면,
+  - "betUser" 를 "betUserFirst"의 값으로 변경
+  - "drewState" 를 true로 만듬
+  - "roundEnd" 를 false로 만듬
+  - "extFirstBet" 를 false로 만듬
+9. savsSessionResult에서
+- 비기지 않았으면
+  - "coinsPlayerBet" 를 0으로 만듬
+  - "coinsEnemyBet" 를 0으로 만듬
+- "coinsPlayerExtBet" 를 0으로 만듬
+- "coinsEnemyExtBet" 를 0으로 만듬
+- "roundEnd"를 true 으로 만듬
+- 졌으면,
+  - "betUser" 를 false로 만듬
+  - "coinsEnemy" 를 내가 건 코인만큼 추가시킴
+- 이겼으면,
+  - "betUser" 를 true로 만듬
+  - "coinsPlayer" 를 상대가 건 코인만큼 추가시킴
+10. getWinnerCoinNext에서
+- "betCoin", "betCoinPos"를 빈문자열로 만듬
+- "basicBettingState"를 false로 만듬
+- "betState"를 "basicBetting"로 만듬
+
+※ call을 당한 PEER —————————————————
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -424,7 +424,7 @@ export const GET_ROUND_END = {
     // if (_result !== 'drew') storageMethod('s', 'SET_ITEM', 'coinsPlayerBet', 0);
     // if (_result !== 'drew') storageMethod('s', 'SET_ITEM', encryptKey5, insertBet);
     // if (_result !== 'drew') storageMethod('s', 'SET_ITEM', encryptKey7, insertBet); // coinsEnemyBet
-    if (_result !== 2) storageMethod('s', 'SET_ITEM', encryptKey5, insertBet);
+    if (_result !== 2) storageMethod('s', 'SET_ITEM', encryptKey5, insertBet); // coinsPlayerBet
     if (_result !== 2) storageMethod('s', 'SET_ITEM', encryptKey7, insertBet); // coinsEnemyBet
 
     // storageMethod('s', 'SET_ITEM', 'coinsPlayerExtBet', 0);
