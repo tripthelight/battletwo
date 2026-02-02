@@ -1,6 +1,7 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { dec, enc } from '@/client/js/module/crypts/obf8lower';
+import { deobfuscateInt32 as d } from '@/client/js/module/crypts/encryptNumber';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
@@ -51,6 +52,17 @@ export default (_state) => {
   const encryptKey3 = findCharCode([68, 69, 75, 72, 67, 86, 90, 80, 65, 79]); // betCoinPos
   const encryptVal3 = storageMethod("s", "GET_ITEM", encryptKey3);
   if (encryptVal3 === null) return;
+
+  const K = [
+    findCharCode([66, 85, 87, 74, 79, 90, 86, 83, 72, 88]), // betCoinPos : host
+    findCharCode([85, 75, 72, 69, 71, 66, 74, 81, 87, 84]), // betCoinPos : translateX
+    findCharCode([80, 67, 90, 85, 82, 71, 70, 66, 84, 74]), // betCoinPos : translateY
+  ];
+  const KS = [
+    findCharCode([89, 68, 86, 69, 84, 66, 77, 87, 65, 90]), // betCoinPos : host : enemy
+    findCharCode([73, 87, 86, 82, 85, 84, 79, 68, 90, 66]), // betCoinPos : host : pleyer
+  ];
+
   const BET_POS_ARR = JSON.parse(encryptVal3);
   const BETTING_ZONE = document.querySelector('.betting-zone');
   if (!BETTING_ZONE) errorManagement({ errCase: 'errorComn', message: '.betting-zone not found' });
@@ -73,9 +85,13 @@ export default (_state) => {
     hourEl.classList.add('h');
     liEl.appendChild(minuteEl);
     liEl.appendChild(hourEl);
-    liEl.style.transform = `translate(${BET_POS_ARR[i].translateX}px, ${BET_POS_ARR[i].translateY}px)`;
+    // liEl.style.transform = `translate(${BET_POS_ARR[i].translateX}px, ${BET_POS_ARR[i].translateY}px)`;
+    const TX = d(BET_POS_ARR[i][K[1]]); // translateX
+    const TY = d(BET_POS_ARR[i][K[2]]); // translateY
+    liEl.style.transform = `translate(${TX}px, ${TY}px)`;
 
-    if (BET_POS_ARR[i].host === 'enemy') {
+    // if (BET_POS_ARR[i].host === 'enemy') {
+    if (BET_POS_ARR[i][K[0]] === KS[0]) { // host === enemy
       liEl.classList.add('e');
       // _state === "betting" ? animateClock(hourEl, minuteEl, false) : posClock(hourEl, minuteEl);
       if (_state === 'betting') {
@@ -87,7 +103,8 @@ export default (_state) => {
       } else {
         errorManagement({ errCase: 'errorComn', message: '_state not found' });
       }
-    } else if (BET_POS_ARR[i].host === 'player') {
+    // } else if (BET_POS_ARR[i].host === 'player') {
+    } else if (BET_POS_ARR[i][K[0]] === KS[1]) { // host === player
       posClock(hourEl, minuteEl);
     } else {
       errorManagement({ errCase: 'errorComn', message: 'betCoinPos not found' });

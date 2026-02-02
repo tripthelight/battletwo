@@ -3,8 +3,8 @@ import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import deviceStateStore from '@/client/store/deviceStateStore';
-// import { timeInterval_1 } from '@/client/js/functions/variable';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
+import { obfuscateInt32 as o } from '@/client/js/module/crypts/encryptNumber';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
@@ -22,8 +22,16 @@ export default (e) => {
   if (encryptVal5_1 === null) return;
   const BET_COIN_ARR = JSON.parse(encryptVal5_1);
   if (!BET_COIN_ARR || BET_COIN_ARR.length <= 0) return;
-  BET_COIN_ARR[reactiveState.mTargetIdx].translateX = reactiveState.mmX;
-  BET_COIN_ARR[reactiveState.mTargetIdx].translateY = reactiveState.mmY;
+
+  const K = [
+    findCharCode([85, 75, 72, 69, 71, 66, 74, 81, 87, 84]), // betCoinPos : translateX
+    findCharCode([80, 67, 90, 85, 82, 71, 70, 66, 84, 74]), // betCoinPos : translateY
+  ];
+
+  // BET_COIN_ARR[reactiveState.mTargetIdx].translateX = reactiveState.mmX;
+  BET_COIN_ARR[reactiveState.mTargetIdx][K[0]] = o(reactiveState.mmX); // translateX
+  // BET_COIN_ARR[reactiveState.mTargetIdx].translateY = reactiveState.mmY;
+  BET_COIN_ARR[reactiveState.mTargetIdx][K[1]] = o(reactiveState.mmY); // translateY
   // storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(BET_COIN_ARR));
   storageMethod('s', 'SET_ITEM', encryptKey5, JSON.stringify(BET_COIN_ARR)); // betCoinPos
 
@@ -37,8 +45,10 @@ export default (e) => {
     e.target.style.transform = 'translate(' + reactiveState.mtX + 'px, ' + reactiveState.mtY + 'px)';
     e.target.addEventListener('transitionend', onTransitionEnd);
 
-    BET_COIN_ARR[reactiveState.mTargetIdx].translateX = reactiveState.mtX;
-    BET_COIN_ARR[reactiveState.mTargetIdx].translateY = reactiveState.mtY;
+    // BET_COIN_ARR[reactiveState.mTargetIdx].translateX = reactiveState.mtX;
+    BET_COIN_ARR[reactiveState.mTargetIdx][K[0]] = o(reactiveState.mtX); // translateX
+    // BET_COIN_ARR[reactiveState.mTargetIdx].translateY = reactiveState.mtY;
+    BET_COIN_ARR[reactiveState.mTargetIdx][K[1]] = o(reactiveState.mtY); // translateY
     // storageMethod('s', 'SET_ITEM', 'betCoinPos', JSON.stringify(BET_COIN_ARR));
     storageMethod('s', 'SET_ITEM', encryptKey5, JSON.stringify(BET_COIN_ARR)); // betCoinPos
   }

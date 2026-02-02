@@ -153,6 +153,16 @@ export const GET_RAISE = {
 
     const POS_ARR = JSON.parse(BET_COIN_POS);
     if (!POS_ARR || POS_ARR.length <= 0) return;
+
+    const K = [
+      findCharCode([66, 85, 87, 74, 79, 90, 86, 83, 72, 88]), // betCoinPos : host
+      findCharCode([85, 75, 72, 69, 71, 66, 74, 81, 87, 84]), // betCoinPos : translateX
+      findCharCode([80, 67, 90, 85, 82, 71, 70, 66, 84, 74]), // betCoinPos : translateY
+    ];
+    const KS = [
+      findCharCode([89, 68, 86, 69, 84, 66, 77, 87, 65, 90]), // betCoinPos : host : enemy
+    ];
+
     let liEl = new Object();
     let minuteEl = new Object();
     let hourEl = new Object();
@@ -164,13 +174,18 @@ export const GET_RAISE = {
       hourEl.classList.add('h');
       liEl.appendChild(minuteEl);
       liEl.appendChild(hourEl);
-      if (POS_ARR[i].host === 'enemy') {
+
+      // if (POS_ARR[i].host === 'enemy') {
+      if (POS_ARR[i][K[0]] === KS[0]) { // host === enemy
         liEl.classList.add('e');
         posClock(hourEl, minuteEl, false);
       } else {
         animateClock(hourEl, minuteEl);
       }
-      liEl.style.transform = 'translate(' + POS_ARR[i].translateX + 'px, ' + POS_ARR[i].translateY + 'px)';
+      // liEl.style.transform = 'translate(' + POS_ARR[i].translateX + 'px, ' + POS_ARR[i].translateY + 'px)';
+      const TX = d(POS_ARR[i][K[1]]); // translateX
+      const TY = d(POS_ARR[i][K[2]]); // translateY
+      liEl.style.transform = 'translate(' + TX + 'px, ' + TY + 'px)';
       BET_COINS.appendChild(liEl);
     }
     setTimeout(betUserCheck, timeInterval_1);

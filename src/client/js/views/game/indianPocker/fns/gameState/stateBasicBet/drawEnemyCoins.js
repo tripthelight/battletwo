@@ -26,7 +26,12 @@ export default () => {
   // if (BET_COIN_POS) {
   if (BET_COIN_POS !== null && BET_COIN_POS !== "" && JSON.parse(BET_COIN_POS).length > 0) {
     betCoinPosArr = JSON.parse(BET_COIN_POS);
-    enemyBet = betCoinPosArr.filter((item) => item.host === 'enemy');
+    // enemyBet = betCoinPosArr.filter((item) => item.host === 'enemy');
+    const HK = findCharCode([66, 85, 87, 74, 79, 90, 86, 83, 72, 88]); // betCoinPos : host
+    const HV = findCharCode([89, 68, 86, 69, 84, 66, 77, 87, 65, 90]); // betCoinPos : host : enemy
+    enemyBet = betCoinPosArr.filter((item) =>
+      item[HK] === HV // host === enemy
+  );
     enemyBetState = enemyBet.length > 0 ? true : false;
   }
 

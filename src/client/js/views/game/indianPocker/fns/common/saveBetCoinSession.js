@@ -1,5 +1,7 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
+import betCoinsData from '@/client/js/views/game/indianPocker/fns/common/betCoinsData/betCoinsData';
+import { obfuscateInt32 as o } from '@/client/js/module/crypts/encryptNumber';
 import sendCoinsPlayer from '@/client/js/views/game/indianPocker/fns/common/sendCoinsPlayer';
 import { SET_BASIC_BETTING } from '@/client/js/views/game/indianPocker/fns/stateBasicBetting/setBasicBetting';
 
@@ -11,11 +13,26 @@ export default (_host, _x, _y) => {
   // 3) PLAYER의 ALLIN 후 ENEMY의 올인 일 때
   // 3) ENEMY BLOCK -> BETTING ZONE으로 내려올 때 탐
 
-  const POS_COIN = {
+  const K = [
+    findCharCode([66, 85, 87, 74, 79, 90, 86, 83, 72, 88]), // betCoinPos : host
+    findCharCode([85, 75, 72, 69, 71, 66, 74, 81, 87, 84]), // betCoinPos : translateX
+    findCharCode([80, 67, 90, 85, 82, 71, 70, 66, 84, 74]), // betCoinPos : translateY
+  ];
+  const KS = [
+    findCharCode([89, 68, 86, 69, 84, 66, 77, 87, 65, 90]), // betCoinPos : host : enemy
+  ];
+  /* const POS_COIN = {
     host: _host,
     translateX: _x,
     translateY: _y,
-  };
+  }; */
+  const POS_COIN = betCoinsData(K,
+    [
+      KS[0], // host : enemy
+      o(_x), // translateX
+      o(_y), // translateY
+    ]
+  );
   let arr = [];
   // if (window.sessionStorage.betCoinPos) {
   //   arr = JSON.parse(window.sessionStorage.betCoinPos);

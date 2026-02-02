@@ -174,7 +174,10 @@ export const BASIC_BET_DATA_HANDLER = {
       } else {
         storageMethod('s', 'SET_ITEM', key, val);
       }
-    }
+    };
+
+    console.log("여기 까지 오시냐 ???????????? ");
+
 
     // basicBet 단계에서 필요한 data insert 후 다음 단계 진행
     basicBetInit();

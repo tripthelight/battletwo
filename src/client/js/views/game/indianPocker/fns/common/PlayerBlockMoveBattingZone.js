@@ -1,13 +1,13 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { dec } from '@/client/js/module/crypts/obf8lower';
 import { obfuscateInt32 as o } from '@/client/js/module/crypts/encryptNumber';
+import betCoinsData from '@/client/js/views/game/indianPocker/fns/common/betCoinsData/betCoinsData';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { getStyle } from '@/client/js/functions/comnExport';
 import { reactiveState } from '@/client/js/views/game/indianPocker/fns/common/variable';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock.js';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
-import betCoinsData from '@/client/js/views/game/indianPocker/fns/common/betCoinsData/betCoinsData';
 
 export default (_coins, _coinsRes, _coinsDelete) => {
   return new Promise((resolve, reject) => {
@@ -35,17 +35,29 @@ export default (_coins, _coinsRes, _coinsDelete) => {
 
     const encryptKey2 = findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]); // betCoin
     const K = [
-      findCharCode([80, 72, 83, 88, 76, 75, 78, 84, 65, 89]), // betState
-      findCharCode([88, 79, 72, 75, 71, 83, 81, 85, 82, 84]), // host
-      findCharCode([77, 75, 87, 70, 82, 88, 83, 74, 89, 80]), // index
-      findCharCode([81, 80, 74, 86, 71, 77, 69, 90, 73, 79]), // translateX
-      findCharCode([76, 80, 65, 82, 87, 69, 78, 74, 83, 90]), // translateY
-      findCharCode([67, 69, 82, 79, 83, 88, 77, 84, 80, 75]), // offsetLeft
-      findCharCode([85, 84, 89, 75, 71, 81, 69, 65, 72, 83]), // offsetTop
+      [
+        // betCoin
+        findCharCode([80, 72, 83, 88, 76, 75, 78, 84, 65, 89]), // betState
+        findCharCode([88, 79, 72, 75, 71, 83, 81, 85, 82, 84]), // host
+        findCharCode([77, 75, 87, 70, 82, 88, 83, 74, 89, 80]), // index
+        findCharCode([81, 80, 74, 86, 71, 77, 69, 90, 73, 79]), // translateX
+        findCharCode([76, 80, 65, 82, 87, 69, 78, 74, 83, 90]), // translateY
+        findCharCode([67, 69, 82, 79, 83, 88, 77, 84, 80, 75]), // offsetLeft
+        findCharCode([85, 84, 89, 75, 71, 81, 69, 65, 72, 83]), // offsetTop
+      ],
+      [
+        // betCoinPos
+        findCharCode([66, 85, 87, 74, 79, 90, 86, 83, 72, 88]), // host
+        findCharCode([85, 75, 72, 69, 71, 66, 74, 81, 87, 84]), // translateX
+        findCharCode([80, 67, 90, 85, 82, 71, 70, 66, 84, 74]), // translateY
+      ],
     ];
     const KS = [
+      // betCoin
       findCharCode([75, 66, 87, 81, 71, 77, 89, 83, 85, 69]), // betState : end
       findCharCode([87, 68, 88, 70, 85, 89, 73, 71, 86, 84]), // host : pleyer
+      // betCoinPos
+      findCharCode([73, 87, 86, 82, 85, 84, 79, 68, 90, 66]), // host : pleyer
     ];
 
     const BBT = getStyle(BETTING_ZONE, 'border-top-width');
@@ -84,7 +96,7 @@ export default (_coins, _coinsRes, _coinsDelete) => {
         translateX: x,
         translateY: y,
       }; */
-      const DATA = betCoinsData(K,
+      const DATA = betCoinsData(K[0],
         [
           KS[0], // betState : end
           KS[1], // host : player
@@ -124,11 +136,18 @@ export default (_coins, _coinsRes, _coinsDelete) => {
         liEl.style.transform = 'translate(' + liX + 'px, ' + liY + 'px)';
         BET_COINS.appendChild(liEl);
 
-        const POS_DATA = {
+        /* const POS_DATA = {
           host: 'player',
           translateX: liX,
           translateY: liY,
-        };
+        }; */
+        const POS_DATA = betCoinsData(K[1],
+          [
+            KS[2], // host : pleyer
+            o(liX), // translateX
+            o(liY), // translateY
+          ]
+        );
 
         // let betCoinPos = window.sessionStorage.betCoinPos;
         // let betCoinPosArr = JSON.parse(betCoinPos);

@@ -36,6 +36,8 @@ export default (_case) => {
   const encryptKey4 = findCharCode([68, 69, 75, 72, 67, 86, 90, 80, 65, 79]); // betCoinPos
 
   const K = [
+    // _case === allin || _case !== allin
+    // betCoin
     [
       findCharCode([80, 72, 83, 88, 76, 75, 78, 84, 65, 89]), // betState
       findCharCode([88, 79, 72, 75, 71, 83, 81, 85, 82, 84]), // host
@@ -44,17 +46,31 @@ export default (_case) => {
       findCharCode([76, 80, 65, 82, 87, 69, 78, 74, 83, 90]), // translateY
       findCharCode([67, 69, 82, 79, 83, 88, 77, 84, 80, 75]), // offsetLeft
     ],
+    // _case === allin
+    // betCoin
     [
       findCharCode([85, 84, 89, 75, 71, 81, 69, 65, 72, 83]), // offsetTop
     ],
+    // _case !== allin
+    // betCoin
     [
       findCharCode([70, 86, 71, 87, 69, 84, 85, 89, 74, 66]), // tm
       findCharCode([83, 76, 69, 66, 75, 81, 84, 73, 90, 65]), // th
-    ]
+    ],
+    // _case === allin
+    // betCoinPos
+    [
+      findCharCode([66, 85, 87, 74, 79, 90, 86, 83, 72, 88]), // host
+      findCharCode([85, 75, 72, 69, 71, 66, 74, 81, 87, 84]), // translateX
+      findCharCode([80, 67, 90, 85, 82, 71, 70, 66, 84, 74]), // translateY
+    ],
   ];
   const KS = [
+    // betCoin
     findCharCode([75, 66, 87, 81, 71, 77, 89, 83, 85, 69]), // betState : end
     findCharCode([75, 69, 77, 85, 84, 73, 79, 66, 78, 86]), // host : enemy
+    // betCoinPos
+    findCharCode([89, 68, 86, 69, 84, 66, 77, 87, 65, 90]), // host : enemy
   ];
 
   if (_case === 'allin') {
@@ -140,11 +156,20 @@ export default (_case) => {
           liEl.classList.add('e');
 
           BET_COINS.appendChild(liEl);
-          const POS_DATA = {
+
+          /* const POS_DATA = {
             host: 'enemy',
             translateX: liX,
             translateY: liY,
-          };
+          }; */
+          const POS_DATA = betCoinsData(K[3],
+            [
+              KS[2], // host : enemy
+              o(liX), // translateX
+              o(liY), // translateY
+            ]
+          );
+
           // let betCoinPos = window.sessionStorage.betCoinPos;
           // let betCoinPosArr = JSON.parse(betCoinPos);
           const encryptVal4_1 = storageMethod("s", "GET_ITEM", encryptKey4); // betCoinPos
