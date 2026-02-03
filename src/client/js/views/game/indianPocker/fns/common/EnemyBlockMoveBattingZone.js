@@ -210,7 +210,7 @@ export default (_case) => {
       let th = 0;
 
       const COINS_LENGTH = COINS.length - 1; // 1, 0
-      const COINS_MAX = COINS.length - 1 - NUMS; // 0, -1 > 0보다 작을 경우가 있음
+      const COINS_MAX = COINS_LENGTH - NUMS; // 0, -1 > 0보다 작을 경우가 있음
 
       if (COINS_LENGTH > 0) {
         // 기본 배팅 후 .coins-enemy에 남은 코인이 있는 경우

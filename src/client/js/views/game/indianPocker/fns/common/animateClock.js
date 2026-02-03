@@ -1,4 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 /**
@@ -14,8 +15,9 @@ export default (_hour, _minute, _stop) => {
   const encryptVal2 = findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]);
   // const GAME_STATE = window.sessionStorage.gameState;
   // gameState: sessionStorage.getItem('gameState'),
-  const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]);
-  const decryptVal = window.sessionStorage.getItem(encryptKey);
+  const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
+  // const decryptVal = window.sessionStorage.getItem(encryptKey);
+  const decryptVal = storageMethod("s", "GET_ITEM", encryptKey);
   // if (!GAME_STATE) errorManagement({ errCase: 'errorComn', message: 'gameState not found' });
   if (!decryptVal) throw throwObj('sessionStorageLoss', 'posClock - gameState not found.');
   // const GAME_RES = GAME_STATE === 'basicBet' || GAME_STATE === 'playing';

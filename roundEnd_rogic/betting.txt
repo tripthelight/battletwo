@@ -1,0 +1,30 @@
+BETTING : #################################### 
+※ betting을 누른 PEER —————————————————
+1. RULES.BETTING 으로 가서
+2. stopPlayerTime으로 가서
+- "coinsPlayer" 만큼 .coins-player에 코인을 다시 그림
+  - posClock에서 "gameState" 가 있는지 검증함
+- "betCoinPos" 의 host : enemy 만큼 배팅존에 추가 후 추가된 코인은 시간을 가게함
+  - animateClock 에서 "gameState" 가 있는지 검증함
+- "coinsEnemy" 만큼 .coins-enemy 에 코인 다시 그리고 시간을 가게함
+3. RULES.COMN으로 가서
+- btnBettingCallRaiseComn 으로 가서,
+  - "betUser" 를 false로 만듬
+  - "extFirstBet" 를 true로 만듬
+  - "betCoin" 의 "betState" 를 "end"로 만듬 
+- "coinsPlayerExtBet" 를 0으로 만듬
+4. SOCKET_EVENT.SET.FIRST_EXT_BET로 가서
+- firstExtBet로 "coinsPlayer", "coinsPlayerBet", "coinsPlayerExtBet" 를 상대 PEER에게 보내
+
+
+※ betting을 받은 PEER —————————————————
+1. SOCKET_EVENT.GET.FIRST_EXT_BET_RESULT로 받아서
+- "extFirstBet" 를 true로 만듬
+
+
+
+
+
+
+
+

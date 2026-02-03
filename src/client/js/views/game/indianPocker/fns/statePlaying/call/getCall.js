@@ -91,6 +91,7 @@ export const GET_CALL = {
     let xRes = 0;
     const INIT_I = BET_COIN_LIST.length - 1;
     const LIMT_I = INIT_I - NUMS;
+
     for (let i = INIT_I; i > LIMT_I; i--) {
       // xRes = BET_COIN_LIST[i].translateX < 0 ? BET_COIN_LIST[i].translateX + COINS_WIDTH : BET_COIN_LIST[i].translateX;
       const TX = d(BET_COIN_LIST[i][K[0]]);
@@ -105,6 +106,8 @@ export const GET_CALL = {
     setTimeout(GET_CALL.removeCallEnemyCoins, timeInterval_1, _data);
   },
   removeCallEnemyCoins: (_data) => {
+    console.log("saveBetCoinSession 이후 >>>>> 1");
+
     const COINS_ENEMY = document.querySelector('.coins-enemy');
     if (!COINS_ENEMY) return;
     const ENEMY_COINS = COINS_ENEMY.querySelectorAll('li');
@@ -116,6 +119,7 @@ export const GET_CALL = {
     setTimeout(GET_CALL.redrawCoinsCallEnemy, timeInterval_1, _data);
   },
   redrawCoinsCallEnemy: (_data) => {
+    console.log("saveBetCoinSession 이후 >>>>> 2");
     // const COINS_ENEMY = window.sessionStorage.coinsEnemy;
     // const COINS_ENEMY_NUM = Number(COINS_ENEMY) || 0;
     const encryptKey2 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
@@ -142,6 +146,7 @@ export const GET_CALL = {
     setTimeout(GET_CALL.removeCoinsCallEnemyBet, timeInterval_1, _data);
   },
   removeCoinsCallEnemyBet: (_data) => {
+    console.log("saveBetCoinSession 이후 >>>>> 3");
     const BET_COINS = document.querySelector('.bet-coins');
     if (!BET_COINS) return;
     const COINS = BET_COINS.querySelectorAll('li');
@@ -153,6 +158,7 @@ export const GET_CALL = {
     setTimeout(GET_CALL.redrawCoinsCallEnemyBet, timeInterval_1, _data);
   },
   redrawCoinsCallEnemyBet: (_data) => {
+    console.log("saveBetCoinSession 이후 >>>>> 4");
     const BET_COINS = document.querySelector('.bet-coins');
     if (!BET_COINS) return;
 

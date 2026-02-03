@@ -8,6 +8,12 @@ export default () => {
   const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
   const encryptVal2 = findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
   const encryptVal3 = findCharCode([77, 86, 83, 87, 69, 73, 72, 88, 80, 89]); // extraBetting
+
+
+  console.log("betState === basicBetting ><><><>< ", encryptVal1 === encryptVal2);
+  console.log("betState === extraBetting ><><><>< ", encryptVal1 === encryptVal3);
+
+
   // if (window.sessionStorage.betState === 'basicBetting') {
   // betState === basicBetting
   if (encryptVal1 === encryptVal2) {

@@ -37,6 +37,7 @@ import resultTxtInnerHtml from '@/client/js/views/game/indianPocker/fns/common/r
 
 export const GET_ROUND_END = {
   receiveRoundEnd: () => {
+    console.log("saveBetCoinSession > round >>>>> 1 ");
     storageMethod( // refresh check
       's',
       'SET_ITEM',
@@ -63,6 +64,7 @@ export const GET_ROUND_END = {
     GET_ROUND_END.stopBetUser();
   },
   stopBetUser: () => {
+    console.log("saveBetCoinSession > round >>>>> 2 ");
     const PLAYER_BLOCK = document.querySelector('.player-block');
     if (!PLAYER_BLOCK) {
       console.log('error - getRoundEnd.js - !PLAYER_BLOCK');
@@ -104,6 +106,7 @@ export const GET_ROUND_END = {
     GET_ROUND_END.removeBottomButtons();
   },
   removeBottomButtons: () => {
+    console.log("saveBetCoinSession > round >>>>> 3 ");
     BTN_STATE.HIDE();
     // if (window.sessionStorage.drewState && window.sessionStorage.drewState === 'true') LOADING_EVENT.hide();
     const encryptKey1 = findCharCode([67, 71, 79, 68, 76, 73, 84, 74, 80, 77]); // drewState
@@ -114,6 +117,7 @@ export const GET_ROUND_END = {
     GET_ROUND_END.flipPlayCard();
   },
   flipPlayCard: () => {
+    console.log("saveBetCoinSession > round >>>>> 4 ");
     /*
     const P_NUM_RES = playerNumRes();
     flipPlayerCardComn(flipPlayerCard, P_NUM_RES);
@@ -175,6 +179,7 @@ export const GET_ROUND_END = {
   },
   // cardNumCompare: (_playerNumRes) => {
   cardNumCompare: (_cards) => {
+    console.log("saveBetCoinSession > round >>>>> 5 ");
     /*
     const BATTLE_CARD_NUM = window.sessionStorage.battleCardNum;
     if (!BATTLE_CARD_NUM) {
@@ -348,6 +353,7 @@ export const GET_ROUND_END = {
     // setTimeout(GET_ROUND_END.savsSessionResult, timeInterval_1, result);
   },
   savsSessionResult: (_result) => {
+    console.log("saveBetCoinSession > round >>>>> 6 ");
     const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
     const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
     const encryptKey1 = findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]); // roundEnd
@@ -466,6 +472,7 @@ export const GET_ROUND_END = {
     GET_ROUND_END.getWinnerCoin(_result);
   },
   getWinnerCoin: (_result) => {
+    console.log("saveBetCoinSession > round >>>>> 7 ");
     switch (_result) {
       case 0:
         BattingZoneMoveEnemyBlock(_result).then((_state) => {
@@ -493,6 +500,7 @@ export const GET_ROUND_END = {
     }
   },
   roundResultDisplay: (_result) => {
+    console.log("saveBetCoinSession > round >>>>> 8 ");
     const ENEMY_CARD = document.querySelector('.enemy-card');
     if (!ENEMY_CARD) return errorManagement({ errCase: 'elementLoss', message: 'roundResultDisplay 에서 .enemy-card 엘리먼트가 없습니다.' });
     const PLAYER_CARD = document.querySelector('.player-card');
@@ -536,6 +544,7 @@ export const GET_ROUND_END = {
     setTimeout(GET_ROUND_END.cardHideAnimation, timeInterval_3202, _result);
   },
   cardHideAnimation: (_result) => {
+    console.log("saveBetCoinSession > round >>>>> 9 ");
     // const RES_STATE = ['win', 'lose', 'drew'];
     const RES_STATE = [0, 1, 2];
     if (RES_STATE.filter((item) => _result === item).length) {
@@ -545,6 +554,7 @@ export const GET_ROUND_END = {
     }
   },
   goNextRound: (_result) => {
+    console.log("saveBetCoinSession > round >>>>> 10 ");
     const encryptCardNumbers = new Promise((resolve, reject) => {
       console.log('1 ************* ', _result);
 
@@ -642,6 +652,7 @@ export const GET_ROUND_END = {
       });
   },
   getWinnerCoinNext: (_result) => {
+    console.log("saveBetCoinSession > round >>>>> 11 ");
     /**
      * _result :
         - 0 : lose

@@ -17,6 +17,9 @@ export default () => {
   // ================================================================
   // game state playing 추가 배팅 일 때
   // ================================================================
+  console.log("betState === extraBetting =--==--= ", encryptVal1 === encryptVal2);
+  console.log("betUser === true =--==--= ", encryptVal3 === encryptVal_1);
+
   if (
     encryptVal1 === encryptVal2 && // betState === extraBetting
     encryptVal3 === encryptVal_1 // betUser === true

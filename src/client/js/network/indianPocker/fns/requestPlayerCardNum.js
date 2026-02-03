@@ -6,8 +6,6 @@ import { request } from '@/client/js/network/indianPocker/request';
 
 export default (data) => {
   try {
-    console.log('data >>>>>>>>> ', data);
-
     const { clickBtn } = data;
     // const REMOTE_CARD_NUM = window.sessionStorage.getItem('battleCardNum');
     // if (REMOTE_CARD_NUM === null) {
@@ -21,8 +19,6 @@ export default (data) => {
 
     // 여기서 내 화면의 battleCardNum과 publicCardNum과 매칭된 publicCard 코드를 전송
     const remoteCard = findRemoteCard(encryptVal1);
-    console.log("상대 카드의 public num -------- ", remoteCard);
-
 
     // request('responsePlayerCardNum', { clickBtn: clickBtn, num: REMOTE_CARD_NUM });
     request('responsePlayerCardNum', { clickBtn: clickBtn, num: remoteCard });

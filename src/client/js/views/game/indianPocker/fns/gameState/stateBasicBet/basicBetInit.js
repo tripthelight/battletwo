@@ -33,6 +33,7 @@ export default () => {
       // 상대를 기본배팅 시키기 위해 request 보내야 됨
       request('remoteReloadBasicBet', encodeKey);
     } else {
+      console.log("choiceCard 결과 안내팝업 누르고 진입 ------------> ");
       // choiceCard 결과 안내팝업 누르고 여기로 진입함
       LOADING_EVENT.show();
       const encryptKey3 = findCharCode([72, 81, 73, 79, 83, 70, 78, 80, 75, 88]); // basicBetReady

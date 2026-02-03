@@ -1,72 +1,167 @@
 CALL : #################################### 
 ※ call을 누른 PEER —————————————————
 1. 상대에게 받은 내 카드번호를 "playCardNum" 에 저장시킴
-2. "betCoinPos" 를 가져와서
-- coins player 코인 다시 그리기
-- betting zoin의 코인 다시 그리기
-- coins enemy 코인 다시 그리기
-3. "coinsPlayerExtBet" 를 0으로 만듬
-4. 내 "battleCardNum" 을 상대 PEER에게 전달
-- 내 "coinsPlayer", "coinsPlayerBet", "coinsPlayerExtBet"를 함께 전달
+
+2. RULES.CALL 로 가서
+1) stopPlayerTime으로 가서
+- "coinsPlayer" 만큼 .coins-player에 코인을 다시 그림
+  - posClock에서 "gameState" 가 있는지 검증함
+- "betCoinPos" 의 host : enemy 만큼 배팅존에 추가 후 추가된 코인은 시간을 가게함
+  - animateClock 에서 "gameState" 가 있는지 검증함
+- "coinsEnemy" 만큼 .coins-enemy 에 코인 다시 그리고 시간을 가게함
+2) btnBettingCallRaiseComn 으로 가서,
+- "betUser" 를 false로 만듬
+- "extFirstBet" 를 true로 만듬
+- "betCoin" 의 "betState" 를 "end"로 만듬 
+3) "coinsPlayerExtBet" 를 0으로 만듬
+
+3. SOCKET_EVENT.SET.CALL로 가서
+1) "battleCardNum" 을 상대에게 보냄
+2) "coinsPlayer", "coinsPlayerBet", "coinsPlayerExtBet" 같이 보냄
+
 
 // --------------------------------------------------
 // call을 한 PEER, 받은 PEER 공통
 // --------------------------------------------------
-5. receiveRoundEnd로 가서,
-- "betResulting" 를 true로 만듬
-- "drewFlipCardMode" 의 값을 제거
-- "drewReady" 의 값을 제거
-- "dropState" 의 값을 제거
-6. "drewCardReady" 가 true면 값을 제거
-7. 내 카드 확인 완료 했으니 "playCardNum" 제거
-8. cardCompare에서,
-- 내가 지거나, 이겼으면,
-  - "drewState" 값 제거
+
+4. GET_ROUND_END.receiveRoundEnd로 가서
+1) "betResulting" 를 true로 만듬
+2) "drewFlipCardMode" 의 값을 삭제함
+3) "drewReady" 의 값을 삭제함 
+4) "dropState" 의 값을 삭제함 
+5) "drewCardReady" 가 true면 
+- "drewCardReady" 을 삭제함
+
+5. removeBottomButtons 로 가서
+1) "drewState" 가 true 면 LOADING hide 시킴
+
+6. flipPlayCard 로 가서
+1) "playCardNum" 을 가지고 내 카드 뒤집음
+2) "battleCardNum" 과 "playCardNum" 을 cardNumCompare 로 보냄
+
+7. cardNumCompare에서
+1) "playCardNum" 의 값을 제거
+2) cardCompare에서
+- 내가 이기거나 졌으면, 
+  - "drewState" 의 값을 제거
 - 비겼으면,
-  - "betUser" 를 "betUserFirst"의 값으로 변경
-  - "drewState" 를 true로 만듬
+  - "betUser"의 값을 "betUserFirst" 의 값으로 변경
+  - "drewState" 를 true 로 만듬
   - "roundEnd" 를 false로 만듬
   - "extFirstBet" 를 false로 만듬
-9. savsSessionResult에서
-- 비기지 않았으면
-  - "coinsPlayerBet" 를 0으로 만듬
-  - "coinsEnemyBet" 를 0으로 만듬
-- "coinsPlayerExtBet" 를 0으로 만듬
-- "coinsEnemyExtBet" 를 0으로 만듬
-- "roundEnd"를 true 으로 만듬
-- 졌으면,
-  - "betUser" 를 false로 만듬
-  - "coinsEnemy" 를 내가 건 코인만큼 추가시킴
-- 이겼으면,
-  - "betUser" 를 true로 만듬
-  - "coinsPlayer" 를 상대가 건 코인만큼 추가시킴
-10. getWinnerCoinNext에서
-- "betCoin", "betCoinPos"를 빈문자열로 만듬
-- "basicBettingState"를 false로 만듬
-- "betState"를 "basicBetting"로 만듬
+
+8. savsSessionResult 로 가서
+1) round 결과가 이기거나 졌으면
+- "coinsPlayerBet" 의 값을 0으로 만듬
+- "coinsEnemyBet" 의 값을 0으로 만듬
+2) "coinsPlayerExtBet", "coinsEnemyExtBet" 의 값을 0으로 만듬
+3) "roundEnd" 의 값을 true로 만듬
+4) 내가 졌으면, 
+- "betUser" 를 false로 만듬
+- "coinsEnemy" 를 "coinsEnemy"에 "coinsPlayerBet" 와 "coinsEnemyBet" 를 더한 값으로 변경
+5) 내가 이겼으면, 
+- "betUser" 를 true로 만듬
+- "coinsPlayer" 를 "coinsPlayer"에 "coinsPlayerBet" 와 "coinsEnemyBet" 를 더한 값으로 변경
+
+9. getWinnerCoin로 가서
+1) 같은카드가 아니면,
+- roundResultDisplay 로 가서
+  - cardHideAnimation 로 가서
+    - cardHideAnimationComn 으로 가서
+      - "battleCardNum" 을 빈문자열로 변경
+- BettingZoneMoveComnCallRaise 로 가서
+  - getWinnerCoinNext 로 가서
+    - "coinsPlayer" 와 "coinsEnemy" 의 key가 null이 아닌지 검증
+    - "betCoin" 의 값을 빈문자열로 변경
+    - "betCoinPos" 의 값을 빈문자열로 변경
+    - "basicBettingState" 의 값을 false로 변경
+    - "betState" 를 "basicBetting" 으로 변경
+  -  goNextRound로 가서
+     -  "cardNum" 의 key가 이 null 인지 검증
+     -  indianPockerGameState.basicBet로 이동
+
+2) 같은카드면,
+- getWinnerCoinNext로 가서
+  - roundResultDisplay 로 가서
+    - cardHideAnimation로 가서
+      - cardHideAnimationComn 으로 가서 
+        - "battleCardNum" 을 빈문자열로 변경
+      - goNextRound 으로 가서
+        -  "cardNum" 의 key가 이 null 인지 검증
+        - STATE_PLAYING.drew로 이동
+          - "drewFlipCardMode" 가 true면 refreshDrawDrew로 이동
+            - refreshDrawDrew로 가서
+              - .player-card 를 클릭하면 btnCallRaiseEventBefore로 가서
+                - "drewCardReady" 가 true면 BTN_STATE.HANDLER 에 call을 보냄
+                - "drewCardReady" 가 false면 drewReadyCheck 요청을 보냄
+                  - drewReadyCheck를 받은 상대 PEER는 "drewCardReady" 를 true로 만듬
+          - "drewFlipCardMode" 가 false면
+            - "dropState" 의 값을 삭제 
+            - "drewReady" 의 값을 true로 만듬
+            - enterDrew 요청을 보냄
+              - enterDrew를 받은 PEER는
+                - _data가 있으면,
+                  - "betResulting" 이 true면
+                    - "roundEndReload" 가 true면
+                      - enterDrew 요청에 true를 담아서 보냄
+                    - "betResulting" 의 값을 삭제 
+                    - "roundEndReload" 의 값을 삭제 
+                    - "drewReady" 가 null / "" 이거나, 값이 있는데 false면
+                      - enterDrew 요청에 false 를 담아서 보냄
+                    - "drewReady" 가 true면
+                      - "betUser" 가 true면
+                        - createBattleCardNum 으로 이동
+                  - "betResulting" 이 null / "" / false 면
+                    - "drewReady" 가 null / "" 이거나, 값이 있는데 false면
+                      - enterDrew 요청에 false 를 담아서 보냄
+                    - "drewReady" 가 true면
+                      - "betUser" 가 true면
+                        - createBattleCardNum 으로 이동
+                - _data가 없으면,
+                  - enterDrew 요청에 true 를 담아서 보냄
 // --------------------------------------------------
 
 ※ call을 받은 PEER —————————————————
 1. 상대에게 받은 내 카드번호를 "playCardNum" 에 저장시킴
+
 2. receiveCallBet로 가서,
-- "extFirstBet" 를 true로 만듬
+1) "extFirstBet" 를 true로 만듬
+
 3. sessionCallBet 에서
-- "betUser" 를 true로 만듬
-- "coinsEnemy" 를 상대에게 받은 "coinsPlayer" 로 바꿈
-- "coinsEnemyBet" 를 상대에게 받은 "coinsPlayerBet" 로 바꿈
-- "coinsEnemyExtBet" 를 상대에게 받은 "coinsPlayerExtBet" 로 바꿈
+1) "betUser" 를 true로 만듬
+2) "coinsEnemy" 를 상대에게 받은 "coinsPlayer" 로 바꿈
+3) "coinsEnemyBet" 를 상대에게 받은 "coinsPlayerBet" 로 바꿈
+4) "coinsEnemyExtBet" 를 상대에게 받은 "coinsPlayerExtBet" 로 바꿈
+
 4. drawCallEnemyBet로 가서,
-- EnemyBlockMoveBattingZone로 가서,
-  - 상대에게 받은 coin _data를 기준으로 "betCoin" 의 값을 바꿈
+1) EnemyBlockMoveBattingZone로 가서,
+- "coinsEnemyBet" 과 "coinsEnemyExtBet" 를 숫자로 복호화
+- "gameState" 가 "playing" 이면 NUMS는 "coinsEnemyExtBet"
+- "gameState" 가 "playing" 이 아니면 NUMS는 "coinsEnemyBet"
+- 기본 배팅 후 .coins-enemy에 남은 코인이 있는 경우
+  - enemy가 추가배팅(coinsEnemyExtBet) 한 만큼 배팅존에 랜덤하게 옯기고 각각의 코인이 가진
+    - "betState", "host", "index", "translateX", "translateY", "offsetLeft", "tm", "th" 의 값을 "betCoin" 에 저장
+- 기본 배팅 후 .coins-enemy에 남은 코인이 없는 경우
+  - 하나 남아있던 코인을 배팅존의 랜덤한 위치로 옮기고 하나 남아있던 코인이 가진
+    - "betState", "host", "index", "translateX", "translateY", "offsetLeft", "tm", "th" 의 값을 "betCoin" 에 저장
+
 5. sessionCallCoinPos로 가서
 - "betCoin" 의 값이 있고,
 - "coinsEnemyExtBet" (상대의 추가 배팅) 가 있으면,
   - saveBetCoinSession로 가서
     - "betCoin" 에서 필요한 데이터(x, y)를 가지고, "betCoinPos" 의 값을 변경 
-6. redrawCoinsCallEnemyBet로 가서
+    - "betState" 가 "basicBetting" 이 아니면
+      - sendCoinsPlayer로 이동
+        - "betState" 가 "extraBetting" 이고 "betUser" 가 true면 betStateCheck으로 이동
+          - "betState" 가 "extraBetting" 이면 extraBettingCheck 로 이동
+
+6. redrawCoinsCallEnemy로 가서
+1) "coinsEnemy" 만큼 .coins-enemy에 코인을 그려
+
+7. redrawCoinsCallEnemyBet로 가서
 - "betCoinPos" 의 값이 있으면,
   - 상대 PEER가 추가한 만큼 배팅존에 추가 배팅 코인을 그려
-7. receiveRoundEnd로 가
+8. receiveRoundEnd로 가
 
 
 

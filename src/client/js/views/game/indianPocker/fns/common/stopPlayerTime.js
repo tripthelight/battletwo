@@ -23,7 +23,8 @@ export default (_state) => {
   // const PLAYER_COIN_LEN = window.sessionStorage.coinsPlayer;
   // if (!PLAYER_COIN_LEN || parseInt(PLAYER_COIN_LEN) < 1) return;
   const encryptKey1 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer
-  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  // const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
   if (encryptVal1 === null) return;
   const decryptVal1 = dec(encryptVal1); // coinsPlayer value number
   if (decryptVal1 < 1) return;
@@ -125,7 +126,8 @@ export default (_state) => {
   // const ENEMY_COIN_LEN = window.sessionStorage.coinsEnemy;
   // if (!ENEMY_COIN_LEN || parseInt(ENEMY_COIN_LEN) < 1) return;
   const encryptKey2 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
-  const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+  // const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+  const encryptVal2 = storageMethod("s", "GET_ITEM", encryptKey2);;
 
   if (encryptVal2 === null) return;
   // const decryptVal2 = enc(encryptVal2); // coinsEnemy value number
