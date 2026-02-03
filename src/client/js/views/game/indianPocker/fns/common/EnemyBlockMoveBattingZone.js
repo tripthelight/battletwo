@@ -187,10 +187,10 @@ export default (_case) => {
     return new Promise((resolve, reject) => {
       // const NUMS = window.sessionStorage.gameState === 'playing' ? Number(COINS_ENEMY_EXT_BET) || 0 : Number(COINS_ENEMY_BET) || 0;
       // gameState: sessionStorage.getItem('gameState'),
-      const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]);
+      const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
       const decryptVal = window.sessionStorage.getItem(encryptKey);
       // playing
-      const encryptVal = findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]);
+      const encryptVal = findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]); // playing
       // const NUMS = decryptVal === encryptVal ? Number(COINS_ENEMY_EXT_BET) || 0 : Number(COINS_ENEMY_BET) || 0;
       const NUMS = decryptVal === encryptVal ? Number(decryptVal2) || 0 : Number(decryptVal1) || 0;
       if (NUMS === 0) resolve();
@@ -213,7 +213,7 @@ export default (_case) => {
       const COINS_MAX = COINS.length - 1 - NUMS; // 0, -1 > 0보다 작을 경우가 있음
 
       if (COINS_LENGTH > 0) {
-        // 기본 배팅 후 남은 코인이 있는 경우
+        // 기본 배팅 후 .coins-enemy에 남은 코인이 있는 경우
         for (let i = COINS_LENGTH; i > COINS_MAX; i--) {
           leftEl = COINS[i].offsetLeft || COINS[i].offsetX;
           topEl = COINS[i].offsetTop || COINS[i].offsetY;
@@ -266,7 +266,7 @@ export default (_case) => {
           }, timeInterval_201);
         }
       } else {
-        // 기본 배팅 후 남은 코인이 없는 경우
+        // 기본 배팅 후 .coins-enemy에 남은 코인이 없는 경우
         const TARGET = COINS[0];
         leftEl = TARGET.offsetLeft || TARGET.offsetX;
         topEl = TARGET.offsetTop || TARGET.offsetY;

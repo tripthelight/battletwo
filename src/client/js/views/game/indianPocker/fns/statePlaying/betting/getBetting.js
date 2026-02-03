@@ -63,7 +63,7 @@ export const GET_BETTING = {
     const decryptVal1 = encryptVal1 !== null && encryptVal1 !== '' ? dec(encryptVal1) : 0; // coinsEnemyExtBet value number
 
     // const NUMS = Number(COINS_ENEMY_EXT_BET) || 0;
-    const NUMS = Number(decryptVal1);
+    const NUMS = Number(decryptVal1); // 상대가 방금 전 추가배팅한 개수
 
     const COINS_ENEMY = document.querySelector('.coins-enemy');
     if (!COINS_ENEMY) return;
@@ -80,7 +80,11 @@ export const GET_BETTING = {
     let x = 0;
     let y = 0;
     let xRes = 0;
-    for (let i = BET_COIN_LIST.length - 1; i > BET_COIN_LIST.length - 1 - NUMS; i--) {
+
+    const IMIT_I = BET_COIN_LIST.length - 1; // 배팅존에 있는 코인 개수
+    const LIMT_I = IMIT_I - NUMS; // 상대가 방금 전 추가배팅한 개수를 뺜 개수
+
+    for (let i = IMIT_I; i > LIMT_I; i--) {
       // xRes = BET_COIN_LIST[i].translateX < 0 ? BET_COIN_LIST[i].translateX + COINS_WIDTH : BET_COIN_LIST[i].translateX;
       const TX = d(BET_COIN_LIST[i][K[0]]);
       xRes = TX < 0 ? TX + COINS_WIDTH : TX;
@@ -184,6 +188,7 @@ export const GET_BETTING = {
     }
 
     if (_data.state === comnText.call) {
+      //
     } else {
       setTimeout(betUserCheck, timeInterval_1);
     }

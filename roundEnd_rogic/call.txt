@@ -9,6 +9,9 @@ CALL : ####################################
 4. 내 "battleCardNum" 을 상대 PEER에게 전달
 - 내 "coinsPlayer", "coinsPlayerBet", "coinsPlayerExtBet"를 함께 전달
 
+// --------------------------------------------------
+// call을 한 PEER, 받은 PEER 공통
+// --------------------------------------------------
 5. receiveRoundEnd로 가서,
 - "betResulting" 를 true로 만듬
 - "drewFlipCardMode" 의 값을 제거
@@ -41,25 +44,29 @@ CALL : ####################################
 - "betCoin", "betCoinPos"를 빈문자열로 만듬
 - "basicBettingState"를 false로 만듬
 - "betState"를 "basicBetting"로 만듬
+// --------------------------------------------------
 
 ※ call을 받은 PEER —————————————————
 1. 상대에게 받은 내 카드번호를 "playCardNum" 에 저장시킴
 2. receiveCallBet로 가서,
-- "extFirstBet" 를 false로 만듬
+- "extFirstBet" 를 true로 만듬
 3. sessionCallBet 에서
 - "betUser" 를 true로 만듬
 - "coinsEnemy" 를 상대에게 받은 "coinsPlayer" 로 바꿈
 - "coinsEnemyBet" 를 상대에게 받은 "coinsPlayerBet" 로 바꿈
 - "coinsEnemyExtBet" 를 상대에게 받은 "coinsPlayerExtBet" 로 바꿈
-4. sessionCallCoinPos 로 가서,
-- "betCoin"이 없으면, return
-- "betCoin"이 있으면, 
-  - "translateX", "offsetLeft", "translateY" 를 가지고
-  - saveBetCoinSession로 가서,
-  - "betCoinPos" 의 "translateX", "translateY" 를 바꿈
-  
-
-
+4. drawCallEnemyBet로 가서,
+- EnemyBlockMoveBattingZone로 가서,
+  - 상대에게 받은 coin _data를 기준으로 "betCoin" 의 값을 바꿈
+5. sessionCallCoinPos로 가서
+- "betCoin" 의 값이 있고,
+- "coinsEnemyExtBet" (상대의 추가 배팅) 가 있으면,
+  - saveBetCoinSession로 가서
+    - "betCoin" 에서 필요한 데이터(x, y)를 가지고, "betCoinPos" 의 값을 변경 
+6. redrawCoinsCallEnemyBet로 가서
+- "betCoinPos" 의 값이 있으면,
+  - 상대 PEER가 추가한 만큼 배팅존에 추가 배팅 코인을 그려
+7. receiveRoundEnd로 가
 
 
 

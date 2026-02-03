@@ -32,6 +32,7 @@ export default (_state) => {
     findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
     X.enc(decodeTF(textDE([115, 102, 112, 110]))) // "sfpn" : true
   );
+
   // 배팅된 칩의 betState: 'end'
   if (_state === comnText.fold) return;
   const encryptKey2 = findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]); // betCoin

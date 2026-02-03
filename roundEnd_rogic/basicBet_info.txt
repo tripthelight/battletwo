@@ -1,0 +1,46 @@
+77, 76, 67, 88, 79, 87, 83, 90, 89, 86
+
+
+
+basicBet로 진입할 때(새로고침 포함)
+- basicBetInit 에서
+  - sessionInit 에서
+    - "extFirstBet" 가 false 가 됨
+
+
+STATE_PLAYING.main에서
+- sessionInitPlaying 에서
+  - "extFirstBet" 가 true가 됨
+
+
+betting / call / raise / fold / allin 을 누른 PEER는
+- RULES.COMN의 btnBettingCallRaiseComn에서 -
+  - "betUser" 가 false가 됨
+  - "extFirstBet" 가 true가 됨
+
+
+상대의 첫 배팅(BETTING)을 받은 PEER,
+상대의 allin을 받은 PPER,
+상대의 raise을 받은 PPER,
+- "extFirstBet" 가 true가 됨
+
+상대의 fold을 받은 PPER,
+- "extFirstBet" 의 값이 지워짐
+
+상대의 call을 받은 PEER는
+- GET_CALL.receiveCallBet에서
+  - "extFirstBet" 가 true가 됨
+- GET_ROUND_END.receiveRoundEnd 의 cardNumCompare 의 cardCompare에서
+  - round의 결과가 같은 카드일 경우
+    - "extFirstBet" 가 false가 됨
+
+playing 결과 보고 진입
+- sessionInit 에서
+  - "extFirstBet" 가 false 가 됨
+
+
+
+
+
+
+

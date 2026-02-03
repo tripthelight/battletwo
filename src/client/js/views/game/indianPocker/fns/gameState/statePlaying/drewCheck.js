@@ -59,13 +59,15 @@ export default () => {
   if (decryptVal_1 === '')  return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 betUser 세션이 없습니다.' });
 
   // const BET_USER_FIRST_RES = BET_USER_FIRST === 'true' ? true : BET_USER_FIRST === 'false' ? false : errorManagement({ errCase: 'sessionStorageLoss', message: 'betUserFirst 세션이 true나 false가 아닙니다' });
-  const decryptVal_2 = booleanReturn([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUser - true or false or error
+  const decryptVal_2 = booleanReturn([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst - true or false or error
   if (decryptVal_2 === '') return errorManagement({ errCase: 'sessionStorageLoss', message: 'betUserFirst 세션이 true나 false가 아닙니다' });
 
   // if (BET_USER_FIRST_RES && !BET_USER_RES) return;
   // if (!BET_USER_FIRST_RES && BET_USER_RES) return;
   if (decryptVal_2 && !decryptVal_1) return;
   if (!decryptVal_2 && decryptVal_1) return;
+  // playing 상태에서 BETTING을 받으면 여기 안탐
+  // 기본배팅 이후 playing으로 넘어오면 두 PEER다 여기로 옴
 
   const compairCoins = encryptNumOfStr(GRS([_t([101]), _t([119])],parseInt(_t([52])))); // ex) "ewew" : 0
 

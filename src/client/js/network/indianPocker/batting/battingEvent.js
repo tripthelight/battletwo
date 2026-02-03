@@ -117,11 +117,11 @@ export default {
       });
       PROMISE
         .then((_data) => {
+
           storageMethod('s', 'SET_ITEM',
             findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
             X.enc(decodeTF(textDE([115, 102, 112, 97]))) // "sfpa" : true
           );
-
           GET_BETTING.sessionExtraBet(_data);
         })
         .catch((error) => {
