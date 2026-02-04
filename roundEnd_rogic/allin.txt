@@ -1,0 +1,126 @@
+ALLIN : #################################### 
+※ allin을 누른 PEER —————————————————
+1. 상대에게 받은 내 카드 숫자인 "playCardNum" 을 저장
+
+2. RULES.ALLIN 에서
+1) RULES.COMN 에서
+- btnBettingCallRaiseComn 에서
+  - "betUser" 를 false 로 만듬
+  - "extFirstBet" 를 true 로 만듬
+  - "betCoin" 의 "betState" 를 "betState : end" 로 만듬
+
+3. allInClickEvent 에서
+1) INDIANPOCKER_RULES.ALLIN 에서
+사용 DATA:
+"coinsPlayer", "coinsPlayerBet", "coinsPlayerExtBet", "coinsEnemy", "coinsEnemyBet", "coinsEnemyExtBet"
+
++-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+콜카운트             : "coinsEnemyBet" - ("coinsPlayerBet" - "coinsPlayerExtBet")
+작은 비교 숫자 1   : "coinsEnemy"
+작은 비교 숫자 2   : ("coinsPlayer" + "coinsPlayerExtBet") - 콜카운트
++-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+
+- 상대가 받는 올인 개수 :
+비교 후 작은 숫자 + 콜카운트
+
+- 배팅존에서 빼야하는 내 코인 개수 :
+("coinsPlayerExtBet" - 상대가 받는 올인 개수) 가 
+0 보다 크면 : ("coinsPlayerExtBet" - 상대가 받는 올인 개수)
+0 보다 작으면 : 0
+
+- 내가 올인 할 수 있는 개수 :
+상대가 받는 올인 개수 - ("coinsPlayerExtBet" - 배팅존에서 빼야하는 내 코인 개수)
+
+2) PlayerBlockMoveBattingZone 에서
+- 배팅존에서 빼야하는 내 코인 개수가 0이면
+  -  받은 data 그대로 resolve
+- 내가 올인 할 수 있는 개수가 0이면
+  - "coinsPlayerExtBet" 와 배팅존에서 빼야하는 내 코인 개수를 담아 resolve
+
+사용 DATA:
+"betCoin" -
+  "betState", "host", "index", "translateX", "translateY", "offsetLeft", "offsetTop" 
+  "betState : end", "host : pleyer"
+"betCoinPos" -
+  "host", "translateX", "translateY"
+  "host : pleyer"
+
+- "betCoin", "betCoinPos" 에 내가 올일 할 수 있는 개수 만큼 추가
+
+3) PlayerBlockMoveBattingZone 이 후
+- BettingZoneMoveAllin 에서
+  - 배팅존에서 빼야하는 내 코인 개수 만큼 "betCoin", "betCoinPos"에서 제거
+
+4) BettingZoneMoveAllin 이 후
+- "coinsPlayer" 의 값을 
+  - "coinsPlayer" - 내가 올일 할 수 있는 개수 - 배팅존에서 빼야하는 내 코인 개수 로 변경
+- "coinsPlayerBet" 의 값을 
+  - "coinsPlayerBet" + 내가 올일 할 수 있는 개수 - 배팅존에서 빼야하는 내 코인 개수
+- "coinsPlayerExtBett" 의 값을 
+  - 상대가 받는 올인 개수 로 변경
+
+5) 위 과정을 수행 후 "coinsPlayerBet" 와 "coinsEnemyBet" 가 같으면
+-  ENEMY 올인을 받고, 내가 올인 한 경우가 됨
+- BTN_STATE.HANDLER('call') 로 이동해서 
+  - "call" 을 담아 requestPlayerCardNum 요청을 보냄
+
+3. 이 후 단계는 call을 받는 과정과 동일
+
+
+
+
+※ allin을 받은 PEER —————————————————
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

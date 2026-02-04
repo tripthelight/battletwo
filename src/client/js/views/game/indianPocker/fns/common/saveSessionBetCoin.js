@@ -109,6 +109,18 @@ export default (data) => {
       );
     }
   };
+
+  const A = [
+    storageMethod('s', 'GET_ITEM', encryptKey2), // coinsPlayer
+    storageMethod('s', 'GET_ITEM', encryptKey3), // coinsPlayerBet
+    storageMethod('s', 'GET_ITEM', findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81])) // coinsPlayerExtBet
+  ];
+  const B = c => c ? dec(c) : 0;
+  console.log("coinsPlayer :::::::::::: ", B(A[0])); // coinsPlayer : .coins-player 에 남아있는 코인 개수
+  console.log("coinsPlayerBet ::::::::: ", B(A[1])); // coinsPlayerBet : 배팅존에 있는 내 코인 개수
+  console.log("coinsPlayerExtBet :::::: ", B(A[2])); // coinsPlayerExtBet : 배팅존에 있는 내가 방금 추가한 코인 개수
+
+
   // removeMyBetCoin({ coinsPlayer: PLAYER_NUMB, index: data.activeLi });
   removeMyBetCoin({ coinsPlayer: decryptVal2_2, index: data.activeLi });
 };

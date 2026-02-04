@@ -14,14 +14,14 @@ export default () => {
   // const COINS_ENEMY_EXT_BET = window.sessionStorage.coinsEnemyExtBet;
   // const AI_CEEB = COINS_ENEMY_EXT_BET && Number(COINS_ENEMY_EXT_BET) > 0 ? Number(COINS_ENEMY_EXT_BET) : 0;
 
-  const encryptKey4 = findCharCode([80, 73, 68, 65, 90, 69, 88, 86, 82, 67]);  // coinsEnemyExtBet
-  const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
-  const decryptVal4 = encryptVal4 !== null && encryptVal4 !== '' ? dec(encryptVal4) : 0; // coinsEnemyExtBet value number
-  const AI_CEEB = encryptVal4 !== null && encryptVal4 !== '' && Number(decryptVal4) > 0 ? Number(decryptVal4) : 0;
+  // const encryptKey4 = findCharCode([80, 73, 68, 65, 90, 69, 88, 86, 82, 67]);  // coinsEnemyExtBet
+  // const encryptVal4 = window.sessionStorage.getItem(encryptKey4);
+  // const decryptVal4 = encryptVal4 !== null && encryptVal4 !== '' ? dec(encryptVal4) : 0; // coinsEnemyExtBet value number
+  // const AI_CEEB = encryptVal4 !== null && encryptVal4 !== '' && Number(decryptVal4) > 0 ? Number(decryptVal4) : 0;
 
-  let res = INDIANPOCKER_RULES.ALLIN().RES; // 내가 올일 할 수 있는 개수
   let resSend = INDIANPOCKER_RULES.ALLIN().RES_SEND; // 상대가 받는 올인 개수
   let resDelete = INDIANPOCKER_RULES.ALLIN().RES_DELETE; // 배팅존에서 빼야하는 내 코인 개수
+  let res = INDIANPOCKER_RULES.ALLIN().RES; // 내가 올일 할 수 있는 개수
 
   PlayerBlockMoveBattingZone(res, resSend, resDelete).then((_resultCoins) => {
     // console.log("PLAYER의 올인 모션 끝 :: ", _resultCoins);

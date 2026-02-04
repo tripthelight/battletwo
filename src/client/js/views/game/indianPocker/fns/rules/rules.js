@@ -252,9 +252,9 @@ export default {
     let aiResD = AI_CPEB - aiResS > 0 ? AI_CPEB - aiResS : 0;
     let aiResA = aiResS - Number(AI_CPEB - aiResD);
     return {
-      RES: aiResA,
       RES_SEND: aiResS,
       RES_DELETE: aiResD,
+      RES: aiResA,
     };
   },
 };
