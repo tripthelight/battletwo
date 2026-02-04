@@ -1,0 +1,204 @@
+FOLD : #################################### 
+※ fold을 누른 PEER —————————————————
+1. responsePlayerCardNum 에서
+1) 상대에게 받은 내 카드 숫자를 "playCardNum" 에 저장
+
+2. RULES.FOLD 에서
+1) 상대에게 받은 내 카드 숫자인 "playCardNum" 가 있는지 검증
+2) 내 카드숫자가 "NUM_10" 인지 체크 결과(boolean) 를 foldPreCalculation 함수의 인자로 보냄
+3) foldPreCalculation 에서
+-  "foldState" 를 true로 만듬
+-  "foldUser" 를 true로 만듬
+- firstCalc 에서
+  - "coinsEnemyLocalFold" 의 값을
+    - "coinsEnemy" + ("coinsEnemyBet" + "coinsPlayerBet" - "coinsPlayerExtBet") 로 변경
+  - "coinsPlayerLocalFold" 의 값을
+    - "coinsPlayer" + "coinsPlayerExtBet" 로 변경
+4) 내가 fold 했을 때, 내 카드가 10이면
+- penaltyCalc 함수에서
+  - "coinsEnemyLocalFold" 의 값을
+    - "coinsEnemyLocalFold" + 10 로 변경
+  - "coinsPlayerLocalFold" 의 값을
+    - "coinsPlayerLocalFold" - 10 으로 변경
+5) "coinsPlayerLocalFold" 와 "coinsEnemyLocalFold" 를 담아서 enemyFold 요청을 보냄
+
+======================================
+※ enemyFold 요청을 받은 PEER ( fold를 받는 쪽 )
+1. SOCKET_EVENT.GET.FOLD_ENEMY 에서 받고
+2. GET_FOLD.sendFoldData 에서
+1) "foldState" 를 true로 만듬
+2) "foldUser" 를 false로 만듬
+3) "coinsEnemyRemoteFold" 를 상대에게 받은 coinsPlayerLocalFold로 변경
+3) "coinsPlayerRemoteFold" 를 상대에게 받은 coinsEnemyLocalFold로 변경
+======================================
+
+- foldPreCalculation 함수 종료
+
+3. RULES.COMN 에서
+1) btnBettingCallRaiseComn 함수에서
+- "betUser" 를 false로 변경
+- "extFirstBet" 를 true로 변경
+
+4. SET_FOLD.setFold 에서
+1) "betUser" 를 false 로 변경
+2) "betUserFirst" 를 false로 변경
+3) "drewState" 의 값을 제거
+4) "playCardNum" 의 값을 제거
+5) BettingZoneMoveComnFold 에서
+- BattingZoneMoveRt 에서
+  - "betCoin" 과 "betCoinPos" 의 key, length 를 검증 후
+  - "betCoin" 값 배열을 리턴
+- "translateY", "betState", " betState : end" 의 값으로 배팅존에 있는 코인을
+  - 이 전 턴에 배팅된 코인은 .coins-enemy 로 이동
+  - fold를 누르기 전에 배팅된 코인은 .coins-player로 이동
+6) BettingZoneMoveComnFold 이 후
+- "coinsEnemy" 의 값을
+  - "coinsEnemy" + ( "coinsEnemyBet" + "coinsPlayerBet" - "coinsPlayerExtBet" ) 로 변경
+- "coinsPlayer" 의 값을
+  - "coinsPlayer" + "coinsPlayerExtBet" 로 변경
+- 내가 포기한 카드가 10일 경우(_penalty === true)
+  - PlayerBlockMoveEnemyBlock 에서
+    - "coinsPlayer" 가 null 인지 검증
+    - "coinsPlayer" 가 0보다 크면
+    - "coinsEnemy" 가 null 인지 검증
+    - "coinsPlayer" 를
+      - "coinsPlayer" - 10 으로 변경
+    - "coinsEnemy" 를
+      - "coinsPlayer" + 10 으로 변경
+  - PlayerBlockMoveEnemyBlock 이 후
+-----------------------------------------------------
+foldPenaltySessionModify는 패턴티 여부 관계없이 공통
+-----------------------------------------------------
+    - SET_FOLD.foldPenaltySessionModify 에서
+      - "coinsEnemyBet", "coinsPlayerBet", "coinsEnemyExtBet", "coinsPlayerExtBet", "betCoin", "betCoinPos", "extFirstBet", "drewReady", "drewState" 의 값을 제거
+      - GET_ROUND_END.getWinnerCoinNext 에서
+        - "coinsPlayer", "coinsEnemy" key 검증
+        - "betCoin", "betCoinPos" 의 값을 제거
+        - "basicBettingState" 를 false로 만듬
+        - "betState" 를 "basicBetting" 로 만듬
+      - GET_ROUND_END.goNextRound 에서
+        - "cardNum" 검증
+        - indianPockerGameState.basicBet 로 이동
+          - sessionInit 함수 실행
+          - remoteReloadBasicBet 요청 보냄
+
+======================================
+※ remoteReloadBasicBet 요청을 받은 PEER ( fold를 받는 쪽 )
+1. 내 "playingReloadUser" 가 true면
+- "gameState" 를 "basicBet" 로 변경
+- "betState" 를 "basicBetting" 로 변경 
+- "roundEnd"  를 false 로 변경
+- sessionInit 함수 진입
+======================================
+
+      - cardHideAnimationComn 에서
+        - "battleCardNum" 의 값을 제거
+-----------------------------------------------------
+- 내가 포기한 카드가 10이 아닌 경우(_penalty === false)
+  - foldPenaltySessionModify 공통
+
+5. SOCKET_EVENT.SET.FOLD 에서
+1) "battleCardNum" 과 패널티 여부를 담아서 foldSend 요청 보냄
+
+
+
+※ fold을 받은 PEER —————————————————
+1. SOCKET_EVENT.GET.FOLD_RESULT 에서
+1) 상대에게 받은 내 카드 숫자를 "playCardNum" 에 저장
+
+2. GET_FOLD.receivefold
+1) 내 카드를 flip 시킨 후(selectedCard) "playCardNum" 값 제거
+2) BettingZoneMoveComn 에서
+- BattingZoneMoveRt 에서
+  - "betCoin" 과 "betCoinPos" 의 key, length 를 검증 후
+  - "betCoin" 값 배열을 리턴
+  - "betCoin" 의 "translateY", "betState", "betState : end"로 배팅존에 있던 코인을 삭제 후 .coins-player로 이동
+2) BettingZoneMoveComn 이 후
+- "betUser", "betUserFirst" 를 true 로 변경
+- 상대 카드가 10일 때
+  - EnemyBlockMovePlayerBlock 에서
+    - "coinsPlayer", "coinsEnemy" key 검증
+    - "coinsEnemy" 가 0이면 return nextRound로 이동
+
+    - "coinsPlayer" 의 값을
+      - "coinsPlayer" + 10 으로 변경
+    - "coinsPlayer" 의 값을
+      - "coinsEnemy" - 10 으로 변경
+  - EnemyBlockMovePlayerBlock 이 후
+    - foldSendResultComn 에서
+      - "coinsPlayer" 값 만큼 .coins-player에 코인을 그림
+-----------------------------------------------------
+GET_FOLD.nextRound는 패널티 여부 관계없이 공통
+-----------------------------------------------------
+    - GET_FOLD.nextRound 에서
+      - "coinsEnemyBet", "coinsPlayerBet", "coinsEnemyExtBet", "coinsPlayerExtBet", "betCoin", "betCoinPos", "extFirstBet", "drewReady", "drewState" 의 값을 제거
+      - cardHideAnimationComn 에서 "battleCardNum" 의 값을 제거
+      - GET_ROUND_END.getWinnerCoinNext 에서
+        - "coinsPlayer", "coinsEnemy" key 검증
+        - "betCoin", "betCoinPos" 의 값을 제거
+        - "basicBettingState" 를 false로 만듬
+        - "betState" 를 "basicBetting" 로 만듬
+      - GET_ROUND_END.goNextRound 에서
+        - "cardNum" 검증
+        - indianPockerGameState.basicBet 로 이동
+          - sessionInit 함수 실행
+          - remoteReloadBasicBet 요청 보냄
+-----------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -45,6 +45,9 @@ export const RULES = {
     SOCKET_EVENT.SET.RAISE();
   },
   FOLD: () => {
+    // fold 누름   >   fold 받은 PEER        >  fold 누른 PEER
+    // btnState   >   requestPlayerCardNum  >  responsePlayerCardNum - 여기
+    // fold 보낸 PEER가 여기로 옴
     /*
     const P_NUM_RES = playerNumRes();
     */
