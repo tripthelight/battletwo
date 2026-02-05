@@ -9,13 +9,23 @@ import { GRS } from '@/client/js/module/crypts/generateRandomString';
 import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 
+import mergePayload from '@/client/js/views/game/indianPocker/fns/common/compareCard/mergePayload';
+import buildNumber from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/buildNumber';
+import toSvgPathsN from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/fns/n/toSvgPathsN';
+import buildT from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/buildT';
+import toSvgPathsT from '@/client/js/views/game/indianPocker/fns/gameState/stateChoiceCard/selectedCard/fns/t/toSvgPathsT';
+import findRemoteCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/findRemoteCard';
+import cardCompare from '@/client/js/views/game/indianPocker/fns/common/compareCard/cardCompare';
 
-
-
-
-
-export default (_num, _clickBtn) => {
-  return new Promise((resolve, reject) => {
+/**
+ * 새로고침을 대비해서 결과보기에 필요한 데이터를 미리 정의
+ * @param {string} _num               상대에게 받은 내 카드 숫자 코드
+ * @param {string} _clickBtn          call, fold, allin 중 하나
+ * @param {string} _act               내가 눌렀으면 true, 상대에게 받은거면 false
+ * @returns {Object<{string, any}>}   결과보기에 필요한 데이터들
+ */
+export default (_num, _clickBtn, _act) => {
+  return new Promise(async (resolve, reject) => {
     try {
       // 공통 sessionStorage
       const encryptKey1 = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
@@ -60,58 +70,186 @@ export default (_num, _clickBtn) => {
       const encryptKey21 =      findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]); // basicBettingState
       const encryptKey22 =      findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
       const encryptVal23 =      findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
+      const encryptVal24 =      findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]); // battleCardNum
+
+      // const insertBet = enc(encryptNumOfStr(GRS([_t([119]), _t([119])], parseInt(_t([50]))))); // ex) "ww" : 0
+      // arr : [101, 101] -> "e", "e"
+      // arr : [119, 119] -> "w", "w"
+      // limt : 50 -> ASCII 2
+      // limt : 51 -> ASCII 3
+      // limt : 52 -> ASCII 4
+      const insertBet = (arr, limt) => encryptNumOfStr(GRS(arr.map(t => _t([t])), parseInt(_t([limt]))));
 
       if (_clickBtn === 'call' || _clickBtn === 'fold') {
         // 상대 카드번호 저장
         storageMethod('s', 'SET_ITEM', encryptKey12, _num); // playCardNum
       };
 
-      const D = Object.create(null);
+      const D = [];
 
       if (_clickBtn === 'call') {
-        D["GS"] =   storageMethod('s', 'GET_ITEM', encryptKey1);    // gameState
-        D["CP"] =   storageMethod('s', 'GET_ITEM', encryptKey16);   // coinsPlayer
-        D["BCP"] =  storageMethod('s', 'GET_ITEM', encryptKey20);   // betCoinPos
-        D["BCPH"] = storageMethod('s', 'GET_ITEM', encryptKey20_1); // betCoinPos : host
-        D["BCPX"] = storageMethod('s', 'GET_ITEM', encryptKey20_2); // betCoinPos : translateX
-        D["BCPY"] = storageMethod('s', 'GET_ITEM', encryptKey20_3); // betCoinPos : translateY
-        D["CE"] =   storageMethod('s', 'GET_ITEM', encryptKey4);    // coinsEnemy
+        if (_act) {
+          // call을 누른 PEER
+          D.push(storageMethod('s', 'GET_ITEM', encryptKey1));  // gameState @ D[0]
+          D.push(storageMethod('s', 'GET_ITEM', encryptKey16)); // coinsPlayer @ D[1]
+          D.push(storageMethod('s', 'GET_ITEM', encryptKey20)); // betCoinPos @ D[2]
+          D.push(encryptKey20_1);                               // betCoinPos : host @ D[3]
+          D.push(encryptKey20_2);                               // betCoinPos : translateX @ D[4]
+          D.push(encryptKey20_3);                               // betCoinPos : translateY @ D[5]
+          D.push(storageMethod('s', 'GET_ITEM', encryptKey4));  // coinsEnemy @ D[6]
 
-        D["BU"] = storageMethod('s', 'GET_ITEM', encryptKey3); // betUser
-        // 아직 결과를 보기 전이라 betUser 는 우선 false
+          D.push(storageMethod('s', 'GET_ITEM', encryptKey3)); // betUser @ D[7]
+          // 아직 결과를 보기 전이라 betUser 는 우선 false
+          // TODO: 다른 gameState에서 사용된 모든 betUser 를 X.enc, X.dec 방식으로 변경 필요
+          storageMethod('s', 'SET_ITEM',
+            encryptKey3, // betUser
+            X.enc(decodeTF(_t([120, 111, 98, 101, 97]))) // "xobea" : false
+          );
+
+          D.push(storageMethod('s', 'GET_ITEM', encryptKey2)); // extFirstBet @ D[8]
+          // 첫 BETTING 단계는 지났음을 표시
+          // TODO: 다른 gameState에서 사용된 모든 extFirstBet 를 X.enc, X.dec 방식으로 변경 필요
+          storageMethod('s', 'SET_ITEM',
+            encryptKey2, // extFirstBet
+            X.enc(decodeTF(_t([99, 109, 114, 117]))) // "cmru" : true
+          );
+
+          D.push(storageMethod('s', 'GET_ITEM', encryptKey19)); // betCoin @ D[9]
+          // betCoin에 있는 betState를 end 로 변경
+          storageMethod('s', 'SET_ITEM',
+            encryptKey2, // betCoin
+            JSON.stringify(
+              JSON.parse(D[9]).map(item => {
+                item[encryptKey19_1] = encryptKey19_1_1; // betCoin의 betState -> end 로 변경
+                return item;
+              })
+            )
+          );
+
+          // request "call" 로 상대 peer에게 보낼 data
+          D.push([ // @ D[10]
+            storageMethod('s', 'GET_ITEM', encryptKey16), // coinsPlayer @ D[10][0]
+            storageMethod('s', 'GET_ITEM', encryptKey17), // coinsPlayerBet @ D[10][1]
+            storageMethod('s', 'GET_ITEM', encryptKey18), // coinsPlayerExtBet @ D[10][2]
+          ]);
+
+          // call 누른 PEER 는 자신의 추가 배팅 코인을 0 으로 만듬
+          D.push(storageMethod('s', 'GET_ITEM', encryptKey18)); // coinsPlayerExtBet @ D[11]
+          // coinsPlayerExtBet 를 0 으로 변경
+          storageMethod('s', 'SET_ITEM',
+            encryptKey18, // coinsPlayerExtBet
+            enc(insertBet([119, 119], 52)) // "ww" : 난독화 된 0
+          );
+        } else {
+          // call을 받은 PEER
+        }
+
+        // #######################################################################
+        // call 누른 PEER, call 받은 PEER 공통
+        // GET_ROUND_END.receiveRoundEnd
+        // #######################################################################
+        // betResulting 을 true로 만듬
         storageMethod('s', 'SET_ITEM',
-          encryptKey3, // betUser
-          X.enc(decodeTF(_t([]))) // "xobe" : false
+          encryptKey7, // betResulting
+          X.enc(decodeTF(_t([115, 119, 104, 97]))) // "swha" : true
         );
 
-        D["EFB"] = storageMethod('s', 'GET_ITEM', encryptKey2); // extFirstBet
-        // 첫 BETTING 단계는 지났음을 표시
-        storageMethod('s', 'SET_ITEM',
-          encryptKey2, // extFirstBet
-          X.enc(decodeTF(_t([99, 109, 114, 117]))) // "cmru" : true
-        );
+        // drewFlipCardMode, drewReady, dropState 의 값을 삭제함
+        storageMethod('s', 'REMOVE_VALUE', '', '', [
+          encryptKey8, // drewFlipCardMode
+          encryptKey9, // drewReady
+          encryptKey10, // dropState
+        ]);
 
-        D["BC"] = storageMethod('s', 'GET_ITEM', encryptKey19); // betCoin
-        // betCoin에 있는 betState를 end 로 변경
-        storageMethod('s', 'SET_ITEM', encryptKey2,
-          JSON.stringify(
-            JSON.parse(D["BC"]).map(item => {
-              item[encryptKey19_1] = encryptKey19_1_1; // betCoin의 betState -> end 로 변경
-              return item;
-            })
-          )
-        );
-
-        // request "call" 로 상대 peer에게 보낼 data
-        D["callSendData"] = {
-          coinCount:  storageMethod('s', 'GET_ITEM', encryptKey16), // coinsPlayer
-          coinBet:    storageMethod('s', 'GET_ITEM', encryptKey17), // coinsPlayerBet
-          extBet:     storageMethod('s', 'GET_ITEM', encryptKey18), // coinsPlayerExtBet
+        // drewCardReady 가 true면 drewCardReady 의 값을 삭제함
+        const encryptVal11 = storageMethod('s', 'GET_ITEM', encryptKey11); // drewCardReady
+        if (encryptVal11 !== null && encryptVal11 !== "" && X.dec(encryptVal11)) {
+          storageMethod('s', 'REMOVE_VALUE', '', '', [
+            encryptVal11, // drewCardReady
+          ]);
         };
 
-        // call 누른 PEER 는 자신의 추가 배팅 코인을 0 으로 만듬
-        D["CPEB"] = storageMethod('s', 'GET_ITEM', encryptKey18); // coinsPlayerExtBet
-        storageMethod('s', 'SET_ITEM', encryptKey18, 0); // coinsPlayerExtBet 를 0 으로 변경
+        // removeBottomButtons 로 가서 drewState 가 true 면 LOADING hide 시킴
+        D.push(storageMethod('s', 'GET_ITEM', encryptKey13)); // drewState @ D[12]
+
+        // 서로의 card 비교 결과
+        const {
+          HASHES,
+          N_PAYLOADS,
+          T_SHAPE_SEED,
+          T_SHAPE_PAYLOADS,
+          T_CASE_PAYLOADS
+        } = mergePayload();
+        D.push([
+          // NUMBER PATH D
+          toSvgPathsN(buildNumber({ HASHES, N_PAYLOADS, nCode: _num })), // @ D[13][0]
+          // T PATH D
+          toSvgPathsT(buildT({ HASHES, T_SHAPE_SEED, T_SHAPE_PAYLOADS, T_CASE_PAYLOADS, nCode: _num })), // @ D[13][1]
+        ]);
+
+        // 승/패/동 결과 -> false : 이김 / true : 짐 / 2 : 비김
+        const result = await cardCompare(findRemoteCard(storageMethod('s', 'GET_ITEM', encryptVal24)), _num);
+        D.push( // @ D[14]
+          enc(encryptNumOfStr(
+            _t(
+              [
+                [101, 119, 119, 101], // ewwe : 0 : 내가 이김
+                [119, 101, 119, 98], // wewb : 1 : 내가 짐
+                [119, 119, 101, 54], // wwe6 : 2 : 비김
+              ][Number(result)]
+            )
+          ))
+        );
+
+        // 결과를 알았으므로 cardNumCompare에서 playCardNum 의 값을 제거
+        storageMethod('s', 'REMOVE_VALUE', '', '', [
+          encryptKey12, // playCardNum
+        ]);
+
+        const RR = dec(D[14]);
+        const WW = RR === 0; // 내가 이김
+        const LL = RR === 1; // 내가 짐
+        const DD = RR === 2; // 비김
+
+        if (WW || LL) {
+          // 내가 이기거나 졌으면 ———————————————
+          // cardCompare에서 ——————————————————
+          // drewState 의 값을 제거
+          storageMethod('s', 'REMOVE_VALUE', '', '', [
+            encryptKey13, // drewState
+          ]);
+
+          // savsSessionResult 로 가서 —————————
+          // coinsPlayerBet 의 값을 0으로 만듬
+          storageMethod('s', 'SET_ITEM',
+            encryptKey17, // coinsPlayerBet
+            enc(insertBet([101, 101], 50)) // "ee" : 난독화 된 0
+          );
+        } else if (DD) {
+          // 비겼으면 ——————————————————————————
+          // cardCompare에서 ———————————————————
+          // "betUser"의 값을 "betUserFirst" 의 값으로 변경
+          storageMethod('s', 'SET_ITEM',
+            encryptKey3, // betUser
+            encryptVal14 // betUserFirst
+          );
+          // drewState 를 true 로 만듬
+          storageMethod('s', 'SET_ITEM',
+            encryptKey13, // drewState
+            X.enc(decodeTF(_t([107, 109, 114, 97]))) // "kmra" : true
+          );
+          // roundEnd 를 false 로 만듬
+          storageMethod('s', 'SET_ITEM',
+            encryptVal15, // roundEnd
+            X.enc(decodeTF(_t([106, 111, 108, 116, 97]))) // "jolta" : false
+          );
+          // extFirstBet 를 false 로 만듬
+          storageMethod('s', 'SET_ITEM',
+            encryptKey2, // extFirstBet
+            X.enc(decodeTF(_t([120, 103, 98, 116, 117]))) // "xgbtu" : false
+          );
+        }
+
       };
 
       resolve(D);

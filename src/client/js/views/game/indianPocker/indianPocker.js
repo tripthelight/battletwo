@@ -109,9 +109,6 @@ async function startGame() {
       indianPockerGameState.choiceCard();
     }
 
-console.log("false :::::::: ", X.enc(decodeTF(textDE([106, 103, 108, 116, 110]))));
-console.log("true ::::::::: ", X.enc(decodeTF(textDE([115, 102, 112, 97]))));
-
     LOADING_EVENT.hide();
   } catch (error) {
     errorManager(error, false);

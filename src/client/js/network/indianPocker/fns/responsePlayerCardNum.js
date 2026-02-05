@@ -27,13 +27,15 @@ export default (data) => {
   //   );
   // };
 
-  playingEndData(num, clickBtn)
+  playingEndData(num, clickBtn, true)
     .then((_data) => {
+      console.log("콜 누른 PEER 의 DATA : ", _data);
+
       // 해당 버튼에 대응하는 RULES 메서드가 있으면 실행
-      const action = RULE_ACTIONS[clickBtn];
-      if (action) {
-        action();
-      }
+      // const action = RULE_ACTIONS[clickBtn];
+      // if (action) {
+      //   action();
+      // }
     })
     .catch((error) => {
       errorManager(error, true);

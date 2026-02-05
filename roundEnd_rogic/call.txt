@@ -53,6 +53,7 @@ CALL : ####################################
 8. savsSessionResult 로 가서
 1) round 결과가 이기거나 졌으면
 - "coinsPlayerBet" 의 값을 0으로 만듬
+-=-=-=-=-= 여기까지 함 -=-=-=-=-=
 - "coinsEnemyBet" 의 값을 0으로 만듬
 2) "coinsPlayerExtBet", "coinsEnemyExtBet" 의 값을 0으로 만듬
 3) "roundEnd" 의 값을 true로 만듬
