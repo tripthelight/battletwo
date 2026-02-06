@@ -1,12 +1,14 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import booleanReturn from '@/client/js/functions/validation/booleanReturn';
+// import booleanReturn from '@/client/js/functions/validation/booleanReturn';
 import { deobfuscateInt32 as d } from '@/client/js/module/crypts/encryptNumber';
+import X from '@/client/js/module/crypts/bool-obf';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
 import drawPlayerBlock from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/drawPlayerBlock';
 import drawPlayerBlockPlaying from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/drawPlayerBlockPlaying';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 export default () => {
   // element | seeeion 체크
@@ -22,8 +24,13 @@ export default () => {
   // const BET_USER = window.sessionStorage.betUser;
   // if (!BET_USER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'betUser not found' });
   // const BET_RES = BET_USER === 'true' ? true : false;
-  const BET_RES = booleanReturn([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser - true or false or error
-  if (BET_RES === '')  return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 betUser 세션이 없습니다.' });
+  // const BET_RES = booleanReturn([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser - true or false or error
+  // if (BET_RES === '')  return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 betUser 세션이 없습니다.' });
+
+  const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
+  const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
+  if (!encryptVal1) throw throwObj("sessionStorageLoss", "drawBettingZoneCoinsPlaying - betUser not found");
+  const BET_RES = X.dec(encryptVal1); // betUser - true or false
 
   console.log("BET_RES ------------- 2 : ", BET_RES);
 

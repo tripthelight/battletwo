@@ -1,10 +1,10 @@
-xqlia
+dobta
 
-const B = "xqlia"
+const B = "dobta"
 new TextEncoder().encode(B);
 
 
 
-const A = [120, 113, 108, 105, 97];
+const A = [100, 111, 98, 116, 97];
 new TextDecoder().decode(new Uint8Array(A));
 

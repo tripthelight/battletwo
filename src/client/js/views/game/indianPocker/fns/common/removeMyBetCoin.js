@@ -1,6 +1,8 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
-import booleanCheck from '@/client/js/functions/validation/booleanCheck';
+// import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
 import pcDraggableCheck from '@/client/js/views/game/indianPocker/fns/common/pcDraggableCheck';
 import getTranslateMH from '@/client/js/views/game/indianPocker/fns/common/getTranslateMH';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
@@ -28,7 +30,7 @@ export default (_data) => {
   if (decryptVal === null || (decryptVal !== null && decryptVal === '')) throw throwObj('sessionStorageLoss', 'removeMyBetCoin - gameState sessionStorage failed.');
   // const BET_USER = window.sessionStorage.betUser;
   // if (!BET_USER) return errorManagement({ errCase: 'errorComn', message: 'betUser not found 1' });
-  const encryptVal3 = window.sessionStorage.getItem(encryptKey3); // betUser
+  const encryptVal3 = storageMethod("s", "GET_ITEM", encryptKey3); // betUser
   // if (!encryptVal3) return errorManagement({ errCase: 'errorComn', message: 'betUser not found 1' });
   if (encryptVal3 === null || (encryptVal3 !== null && encryptVal3 === '')) throw throwObj('sessionStorageLoss', 'removeMyBetCoin - betUser sessionStorage failed.');
   // const BET_STATE = BET_USER === 'true' ? true : false;
@@ -58,6 +60,8 @@ export default (_data) => {
 
   // 배팅존에 코인 넣고 player block 코인 다시 그리기
   console.log('playing 단계에서 기본배팅 타냐 ??? ');
+  const encryptKey4 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
+  const encryptVal4 = storageMethod("s", "GET_ITEM", encryptKey4);
   let liEl = new Object();
   let minuteEl = new Object();
   let hourEl = new Object();
@@ -84,7 +88,9 @@ export default (_data) => {
       // 추가배팅일 경우 -> gameState : playing
       // if (BET_STATE) {
 
-      if (booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]) === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) { // true
+      // if (booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]) === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) { // true
+      // betUser === true
+      if (encryptVal4 !== null && encryptVal4 !== "" && X.dec(encryptVal4)) {
         // 추가 배팅이고, 내 차례면 animateClock()
         // 시, 분 animate()
         animateClock(hourEl, minuteEl, false);

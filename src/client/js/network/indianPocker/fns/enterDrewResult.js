@@ -54,10 +54,11 @@ export default (_data) => {
               if (encryptVal1 !== null && encryptVal1 !== '' && X.dec(encryptVal1)) {
                 // if (window.sessionStorage.betUser === 'true') createBattleCardNum();
                 // betUser === 'true'
-                const decryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
                 const encryptKey2 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
-                const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
-                if (encryptVal2 === decryptVal_1) createBattleCardNum(); // betUser === true
+                const encryptVal2 = storageMethod("s", "GET_ITEM", encryptKey2);
+                // if (encryptVal2 === decryptVal_1) // betUser === true
+                if (encryptVal2 !== null && encryptVal2 !== "" && X.dec(encryptVal2)) // betUser === true
+                  createBattleCardNum();
               };
             }, timeInterval_102);
           }, timeInterval_101);
@@ -68,17 +69,16 @@ export default (_data) => {
           } */
 
           const encryptKey2 = findCharCode([82, 67, 70, 69, 68, 86, 88, 74, 83, 78]); // drewReady
-          const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
+          const encryptVal2 = storageMethod('s', 'GET_ITEM', encryptKey2);
           if (
             (encryptVal2 === null || encryptVal2 === '') ||
             (encryptVal2 !== null && encryptVal2 !== '' && !X.dec(encryptVal2))
           ) request('enterDrew', false);
           if (encryptVal2 !== null && encryptVal2 !== '' && X.dec(encryptVal2)) {
             // if (window.sessionStorage.betUser === 'true') createBattleCardNum();
-            const decryptVal_2 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
             const encryptKey3 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
-            const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
-            if (encryptVal3 === decryptVal_2) createBattleCardNum();
+            const encryptVal3 = storageMethod('s', 'GET_ITEM', encryptKey3);
+            if (encryptVal3 !== null && encryptVal3 !== null && X.dec(encryptVal3)) createBattleCardNum();
           }
         }
       }, timeInterval_100);

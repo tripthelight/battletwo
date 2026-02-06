@@ -1,19 +1,9 @@
 import findCharCode from '@/client/js/functions/findCharCode';
-import X from '@/client/js/module/crypts/bool-obf';
-import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
-import _t from '@/client/js/module/crypts/textDE';
 
-/**
- * 복호화된 true or false 를 받아서 유효성 검사 결과를 리턴
- * @typedef {Exclude<any, boolean>} NotBool boolean을 제외한 모든 type
- * @param {boolean | NotBool} remote        복호화된 true or false
- * @param {boolean | NotBool} local         복호화된 true or false
- * @returns {boolean}                       true : 오류있음 / false : 통과
- */
 export default function (remote, local) {
   // findCharCode([...])는 기존 코드의 동일 util을 사용한다고 가정합니다.
-  const T = X.enc(decodeTF(_t([99, 102, 112, 97])));        // "cfpa"   - "true" 토큰
-  const F = X.enc(decodeTF(_t([100, 113, 118, 116, 110]))); // "dqvtn"  - "false" 토큰
+  const T = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // "true" 토큰
+  const F = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // "false" 토큰
   const TOK = [T, F]; // index 0 -> T, index 1 -> F
 
   // 빠른 타입 판별(난독화 겸용)

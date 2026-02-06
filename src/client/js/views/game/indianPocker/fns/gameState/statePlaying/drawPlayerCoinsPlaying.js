@@ -1,9 +1,9 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import findCharCode from '@/client/js/functions/findCharCode';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import { dec } from '@/client/js/module/crypts/obf8lower';
-import booleanReturn from '@/client/js/functions/validation/booleanReturn';
+import X from '@/client/js/module/crypts/bool-obf';
 import deviceStateStore from '@/client/store/deviceStateStore';
-import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
-// import { timeInterval_1 } from '@/client/js/functions/variable';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
 // import refreshFindEnemyCardNumber from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/refreshFindEnemyCardNumber';
@@ -18,8 +18,12 @@ export default () => {
   // const BET_USER = window.sessionStorage.betUser;
   // if (!BET_USER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'betUser not found' });
   // const BET_STATE = BET_USER === 'true' ? true : false;
-  const decryptVal1 = booleanReturn([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser - true or false or error
-  if (decryptVal1 === '')  return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 betUser 세션이 없습니다.' });
+  // const decryptVal1 = booleanReturn([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser - true or false or error
+  // if (decryptVal1 === '')  return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 betUser 세션이 없습니다.' });
+  const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
+  const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
+  if (!encryptVal1) throw throwObj("sessionStorageLoss", "drawPlayerCoinsPlaying - betUser not found");
+  const decryptVal1 = X.dec(encryptVal1); // betUser - true or false
 
   console.log("decryptVal1 ------------- 3 : ", decryptVal1);
 

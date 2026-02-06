@@ -6,7 +6,7 @@ import { GRS } from '@/client/js/module/crypts/generateRandomString';
 import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import booleanCheck from '@/client/js/functions/validation/booleanCheck';
+// import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import { timeInterval_1, timeInterval_1000, timeInterval_2000, timeInterval_202, timeInterval_3201, timeInterval_3202, timeInterval_401, timeInterval_402 } from '@/client/js/functions/variable';
 // import { request } from '@/client/js/network/indianPocker/request';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
@@ -311,9 +311,11 @@ export const GET_ROUND_END = {
             storageMethod('s', 'REMOVE_ITEM', encryptKey1); // drewState
             break;
           case 2: // 같은 카드
-            const encryptKey3 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
-            const encryptVal3 = booleanCheck([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
-            storageMethod('s', 'SET_ITEM', encryptKey3, encryptVal3);
+            const encryptKey11_1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
+            const encryptKey11_2 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
+            const encryptVal11_2 = storageMethod("s", "GET_ITEM", encryptKey11_2);
+            // betUser 의 값을 betUserFirst 의 값으로 변경
+            storageMethod('s', 'SET_ITEM', encryptKey11_1, encryptVal11_2);
             // storageMethod(
             //   's',
             //   'SET_ITEM',
@@ -354,8 +356,6 @@ export const GET_ROUND_END = {
   },
   savsSessionResult: (_result) => {
     console.log("saveBetCoinSession > round >>>>> 6 ");
-    const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
-    const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
     const encryptKey1 = findCharCode([83, 78, 86, 79, 68, 73, 71, 87, 82, 85]); // roundEnd
     const encryptKey2 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
     const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
@@ -449,14 +449,20 @@ export const GET_ROUND_END = {
     switch (_result) {
       case 0:
         // storageMethod('s', 'SET_ITEM', 'betUser', false);
-        storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal_2); // betUser, false
+        storageMethod('s', 'SET_ITEM',
+          encryptKey2, // betUser
+          X.enc(decodeTF(_t([107, 119, 104, 110]))) // "kwhn" : true
+        );
         // storageMethod('s', 'SET_ITEM', encryptKey3, enc(Number(COINS_ENEMY) + RESULT)); // coinsEnemy
         const decryptVal3 = dec(encryptVal3); // coinsEnemy value number
         storageMethod('s', 'SET_ITEM', encryptKey3, enc(Number(decryptVal3) + RESULT)); // coinsEnemy
         break;
       case 1:
         // storageMethod('s', 'SET_ITEM', 'betUser', true);
-        storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal_1); // betUser, true
+        storageMethod('s', 'SET_ITEM',
+          encryptKey2, // betUser
+          X.enc(decodeTF(_t([115, 102, 114, 117]))) // "sfru" : true
+        );
         // storageMethod('s', 'SET_ITEM', 'coinsPlayer', Number(COINS_PLAYER) + RESULT);
         const decryptVal4 = dec(encryptVal4); // coinsPlayer value number
         storageMethod('s', 'SET_ITEM', encryptKey4, enc(Number(decryptVal4) + RESULT)); // coinsPlayer

@@ -1,7 +1,7 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
-import textDE from '@/client/js/module/crypts/textDE';
+import _t from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import STATE_BASIC_BET from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/init';
 
@@ -23,8 +23,6 @@ export default (reloadState) => {
      * basicBetReady 는 false 되어야 함
      */
     if (reloadState === 'foldLocal' || reloadState === 'foldRemote') {
-      const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
-      const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
       const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
       const encryptKey2 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]);  // coinsEnemy
       const encryptKey3 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
@@ -34,15 +32,21 @@ export default (reloadState) => {
       if (reloadState === 'foldLocal') {
         const encryptVal4 = window.sessionStorage.getItem(deleteParams[0]); // coinsEnemyLocalFold value
         const encryptVal5 = window.sessionStorage.getItem(deleteParams[1]); // coinsPlayerLocalFold value
-        // FOLD를 실행한 PLAY가 새고로침
-        storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_2); // betUser, false
+        // FOLD를 실행한 PLAY가 새고로침 - betUser : false
+        storageMethod('s', 'SET_ITEM',
+          encryptKey1, // betUser
+          X.enc(decodeTF(_t([100, 103, 118, 116, 110]))) // "dgvtn" : false
+        );
         storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal4); // coinsEnemy, coinsEnemyLocalFold
         storageMethod('s', 'SET_ITEM', encryptKey3, encryptVal5); // coinsPlayer, coinsPlayerLocalFold
       } else if (reloadState === 'foldRemote') {
         const encryptVal6 = window.sessionStorage.getItem(deleteParams[2]); // coinsEnemyRemoteFold value
         const encryptVal7 = window.sessionStorage.getItem(deleteParams[3]); // coinsPlayerRemoteFold value
-        // FOLD를 받은 PLAY가 새고로침
-        storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_1); // betUser, true
+        // FOLD를 받은 PLAY가 새고로침 - betUser : true
+        storageMethod('s', 'SET_ITEM',
+          encryptKey1, // betUser
+          X.enc(decodeTF(_t([115, 119, 112, 117]))) // "swpu" : true
+        );
         storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal6); // coinsEnemy, coinsEnemyRemoteFold
         storageMethod('s', 'SET_ITEM', encryptKey3, encryptVal7); // coinsPlayer, coinsPlayerRemoteFold
       };
@@ -71,7 +75,7 @@ export default (reloadState) => {
       // storageMethod('s', 'SET_ITEM', 'basicBettingState', false);
       storageMethod('s', 'SET_ITEM',
         findCharCode([81, 69, 77, 72, 75, 67, 73, 87, 79, 74]), // basicBettingState
-        X.enc(decodeTF(textDE([106, 103, 108, 116, 110]))) // "jgltn" : false
+        X.enc(decodeTF(_t([106, 103, 108, 116, 110]))) // "jgltn" : false
       );
       // storageMethod('s', 'SET_ITEM', 'battleCardNum', []);
       storageMethod('s', 'SET_ITEM',

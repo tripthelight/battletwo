@@ -1,6 +1,6 @@
 // import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
 import X from '@/client/js/module/crypts/bool-obf';
-import booleanReturn from '@/client/js/functions/validation/booleanReturn';
+// import booleanReturn from '@/client/js/functions/validation/booleanReturn';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/network/indianPocker/request';
 import storageMethod from '@/client/js/module/storage/storageMethod';
@@ -38,12 +38,16 @@ export const CHOICE_CARD_DATA_HANDLER = {
       }
     }
 
+    const P1 = storageMethod("s", "GET_ITEM", findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88])); // betUser
+    const P2 = storageMethod("s", "GET_ITEM", findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78])); // betUserFirst
     // local, remote player 모두 선택 했을 때, betUser/betUserFirst 체크를 위해 보냄
     const params = {
       encryptVal1: selectCard.local,
       encryptVal2: selectCard.remote,
-      encryptVal3: booleanReturn([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]), // betUser
-      encryptVal4: booleanReturn([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]), // betUserFirst
+      // encryptVal3: booleanReturn([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]),
+      encryptVal3: X.dec(P1), // betUser
+      // encryptVal4: booleanReturn([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]),
+      encryptVal4: X.dec(P2), // betUserFirst
     };
 
     // 같은 카드였던 상태에서 내가 팝업 x 버튼 먼저 누르고 대기 상태 일 경우

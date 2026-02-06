@@ -1,5 +1,8 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import _t from '@/client/js/module/crypts/textDE';
 import { timeInterval_1, timeInterval_1000, timeInterval_2000, timeInterval_3201, timeInterval_5000 } from '@/client/js/functions/variable';
 import { bottomSheet } from '@/client/components/popup/bottomSheet/bottomSheet';
 import { text } from '@/client/js/functions/language';
@@ -83,14 +86,20 @@ export const SET_FOLD = {
     PROMISE
       .then((_data) => {
         const { _penalty, _num } = _data;
-        const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
-        const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
         const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
         const encryptKey2 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]);  // betUserFirst
 
         // storageMethod('s', 'SET_ITEM', 'betUser', false);
-        storageMethod('s', 'SET_ITEM', encryptKey1, encryptVal_2); // betUser, false
-        storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal_2); // betUserFirst, false
+        // betUser, false
+        storageMethod('s', 'SET_ITEM',
+          encryptKey1, // betUser
+          X.enc(decodeTF(_t([100, 103, 98, 101, 97]))) // "dgbea" : false
+        );
+        // betUserFirst, false
+        storageMethod('s', 'SET_ITEM',
+          encryptKey2, // betUserFirst
+          X.enc(decodeTF(_t([120, 113, 118, 116, 117]))) // "xqvtu" : false
+        );
         storageMethod('s', 'REMOVE_ITEM', findCharCode([67, 71, 79, 68, 76, 73, 84, 74, 80, 77])); // drewState
 
 

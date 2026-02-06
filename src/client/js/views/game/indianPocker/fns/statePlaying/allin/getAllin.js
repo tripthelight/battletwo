@@ -2,7 +2,7 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
-import textDE from '@/client/js/module/crypts/textDE';
+import _t from '@/client/js/module/crypts/textDE';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1, timeInterval_1001 } from '@/client/js/functions/variable.js';
@@ -19,11 +19,11 @@ export const GET_ALLIN = {
   receiveAllinBet: (_data) => {
     storageMethod('s', 'SET_ITEM',
       findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]), // betUser
-      findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]) // true
+      X.enc(decodeTF(_t([115, 119, 104, 117]))) // "swhu" : true
     );
     storageMethod('s', 'SET_ITEM',
       findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
-      X.enc(decodeTF(textDE([99, 119, 112, 110]))) // "cwpn" : true
+      X.enc(decodeTF(_t([99, 119, 112, 110]))) // "cwpn" : true
     );
     storageMethod('s', 'SET_ITEM',
       findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]), // coinsEnemy
@@ -39,7 +39,7 @@ export const GET_ALLIN = {
     );
     storageMethod('s', 'SET_ITEM',
       findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]), // coinsPlayerExtBet
-      enc(encryptNumOfStr(textDE([101, 101, 119, 101]))) // 'eewe' : 0000
+      enc(encryptNumOfStr(_t([101, 101, 119, 101]))) // 'eewe' : 0000
     );
     // all in text
     GET_ALLIN.roundResultDisplay();

@@ -1,13 +1,12 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import X from '@/client/js/module/crypts/bool-obf';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import _t from '@/client/js/module/crypts/textDE';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import {GRS} from '@/client/js/module/crypts/generateRandomString';
-import booleanReturn from '@/client/js/functions/validation/booleanReturn';
 import storageMethod from '@/client/js/module/storage/storageMethod';
-// import { timeInterval_1, timeInterval_2 } from '@/client/js/functions/variable.js';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import pcDraggableCheck from '@/client/js/views/game/indianPocker/fns/common/pcDraggableCheck.js';
 import disabledMoveCoins from '@/client/js/views/game/indianPocker/fns/common/disabledMoveCoins.js';
@@ -55,12 +54,20 @@ export default () => {
   // if (!BET_USER_FIRST) return errorManagement({ errCase: 'sessionStorageLoss', message: 'drew 상태에서 betUserFirst 세션이 없습니다' });
 
   // const BET_USER_RES = BET_USER === 'true' ? true : BET_USER === 'false' ? false : errorManagement({ errCase: 'sessionStorageLoss', message: 'betUser 세션이 true나 false가 아닙니다' });
-  const decryptVal_1 = booleanReturn([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser - true or false or error
-  if (decryptVal_1 === '')  return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 betUser 세션이 없습니다.' });
+  // const decryptVal_1 = booleanReturn([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser - true or false or error
+  // if (decryptVal_1 === '')  return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 betUser 세션이 없습니다.' });
+  const encryptKey5 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
+  const encryptVal5 = storageMethod("s", "GET_ITEM", encryptKey5);
+  if (!encryptVal5) throw throwObj("sessionStorageLoss", "drewCheck - betUser not found");
+  const decryptVal_1 = X.dec(encryptVal5); // betUser - true or false
 
   // const BET_USER_FIRST_RES = BET_USER_FIRST === 'true' ? true : BET_USER_FIRST === 'false' ? false : errorManagement({ errCase: 'sessionStorageLoss', message: 'betUserFirst 세션이 true나 false가 아닙니다' });
-  const decryptVal_2 = booleanReturn([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst - true or false or error
-  if (decryptVal_2 === '') return errorManagement({ errCase: 'sessionStorageLoss', message: 'betUserFirst 세션이 true나 false가 아닙니다' });
+  // const decryptVal_2 = booleanReturn([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst - true or false or error
+  // if (decryptVal_2 === '') return errorManagement({ errCase: 'sessionStorageLoss', message: 'betUserFirst 세션이 true나 false가 아닙니다' });
+  const encryptKey6 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
+  const encryptVal6 = storageMethod("s", "GET_ITEM", encryptKey6);
+  if (!encryptVal6) throw throwObj("sessionStorageLoss", "drewCheck - betUserFirst not found");
+  const decryptVal_2 = X.dec(encryptVal6); // betUserFirst - true or false
 
   // if (BET_USER_FIRST_RES && !BET_USER_RES) return;
   // if (!BET_USER_FIRST_RES && BET_USER_RES) return;

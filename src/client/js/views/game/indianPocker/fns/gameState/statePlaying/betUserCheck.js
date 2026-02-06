@@ -1,5 +1,7 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import findCharCode from '@/client/js/functions/findCharCode';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
+import X from '@/client/js/module/crypts/bool-obf';
 // import { timeInterval_1, timeInterval_2, timeInterval_3, timeInterval_4 } from '@/client/js/functions/variable';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
@@ -11,13 +13,11 @@ import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState
 import timeDraw from '@/client/js/views/game/indianPocker/fns/common/timeDraw';
 
 export default () => {
-  const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
-  const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
   // element | seeeion 체크
   // const BET_USER = window.sessionStorage.betUser;
   // if (!BET_USER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'betUser 세션이 없습니다' });
   const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
-  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
   if (encryptVal1 === null) throw throwObj('sessionStorageLoss', 'betuser session key failed.');
 
   const GAME_SCENE = document.getElementById('gameScene');
@@ -37,7 +37,8 @@ export default () => {
 
   // 명령
   // if (BET_USER === 'true') {
-  if (encryptVal1 === encryptVal_1) { // betUser === true
+  // if (encryptVal1 === encryptVal_1) { // betUser === true
+  if (X.dec(encryptVal1)) { // betUser === true
     ENEMY_CARD.classList.add('disabled');
     PLAYER_BLOCK.classList.remove('disabled');
     PLAYER_COINS.classList.remove('disabled');
@@ -54,7 +55,8 @@ export default () => {
     // setTimeout(moveCoins, timeInterval_1);
     // setTimeout(BTN_STATE.SHOW, timeInterval_2);
   // } else if (BET_USER === 'false') {
-  } else if (encryptVal1 === encryptVal_2) { // betUser === false
+  // } else if (encryptVal1 === encryptVal_2) { // betUser === false
+  } else if (!X.dec(encryptVal1)) { // betUser === false
     PLAYER_BLOCK.classList.add('disabled');
     ENEMY_CARD.classList.remove('disabled');
     ENEMY_COINS.classList.remove('disabled');

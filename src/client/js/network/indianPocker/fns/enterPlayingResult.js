@@ -1,10 +1,12 @@
 import throwObj from '@/client/js/module/errorHandler/throwObj';
-import booleanCheck from '@/client/js/functions/validation/booleanCheck';
+// import booleanCheck from '@/client/js/functions/validation/booleanCheck';
+import X from '@/client/js/module/crypts/bool-obf';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
 import { timeInterval_1000 } from '@/client/js/functions/variable';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/network/indianPocker/request';
 import createBattleCardNum from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/createBattleCardNum.js';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 
 // _data 배열이 두자리 숫자 8개의 배열인지 아닌지 확인
 const isTwoDigitArrayOf8 = (arr) =>
@@ -45,8 +47,11 @@ export default (_data) => {
             return;
           };
 
-          const decryptVal3 = booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
-          if (decryptVal3 === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) { // true
+          // const decryptVal3 = booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
+          // if (decryptVal3 === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) { // true
+          const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
+          const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
+          if (encryptVal1 !== null && encryptVal1 !== null && X.dec(encryptVal1)) { // true
             createBattleCardNum();
           };
         };

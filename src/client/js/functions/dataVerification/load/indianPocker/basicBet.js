@@ -1,7 +1,7 @@
 import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import _t from '@/client/js/module/crypts/textDE';
-import booleanReturn from '@/client/js/functions/validation/booleanReturn';
+// import booleanReturn from '@/client/js/functions/validation/booleanReturn';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/network/indianPocker/request';
 import storageMethod from '@/client/js/module/storage/storageMethod';
@@ -113,20 +113,21 @@ export const BASIC_BET_DATA_HANDLER = {
 
 
     // product mode ***********************************
-    const F = findCharCode, S = window.sessionStorage, T = throwObj, R = request, D = _t, B = booleanReturn, QE = decodeTF, ENC = X.enc, DEC = X.dec, DN = dec;
+    const F = findCharCode, S = window.sessionStorage, T = throwObj, R = request, D = _t, QE = decodeTF, ENC = X.enc, DEC = X.dec, DN = dec;
 
     // ─────────────────── 공통 게이트
     const G = (C, M) => { const k = F(C), v = S.getItem(k); if (v === null) throw T('sessionStorageLoss', M); return v };
+    const H = (C, M) => { const k = F(C), v = S.getItem(k); if (v === null) throw T('sessionStorageLoss', M); return X.dec(v); };
 
     // ─────────────────── 키/값 회수 (개별 호출 → 루프 비용 회피)
-    const v1  = G([70,77,80,88,87,86,83,89,75,65],  `basicBet - ${D([98, 101, 116, 83, 116, 97, 116, 101])} sessionStorage key failed.`);
-    const v4  = G([81,69,77,72,75,67,73,87,79,74],  `basicBet - ${D([98, 97, 115, 105, 99, 66, 101, 116, 116, 105, 110, 103, 83, 116, 97, 116, 101])} sessionStorage key failed.`);
-    const v5  = G([81,67,69,68,71,77,83,90,65,74],  `basicBet - ${D([99, 111, 105, 110, 115, 80, 108, 97, 121, 101, 114])} sessionStorage key failed.`);
-    const v6  = G([88,79,86,74,72,80,71,70,69,77],  `basicBet - ${D([99, 111, 105, 110, 115, 80, 108, 97, 121, 101, 114, 66, 101, 116])} sessionStorage key failed.`);
-    const v7  = G([70,90,79,67,88,77,69,82,84,81],  `basicBet - ${D([99, 111, 105, 110, 115, 80, 108, 97, 121, 101, 114, 69, 120, 116, 66, 101, 116])} sessionStorage key failed.`);
-    const v8  = G([83,78,84,68,66,80,71,65,67,87],  `basicBet - ${D([99, 111, 105, 110, 115, 69, 110, 101, 109, 121])} sessionStorage key failed.`);
-    const v9  = G([67,79,66,70,75,82,74,88,69,68],  `basicBet - ${D([99, 111, 105, 110, 115, 69, 110, 101, 109, 121, 66, 101, 116])} sessionStorage key failed.`);
-    const v10 = G([80,73,68,65,90,69,88,86,82,67],  `basicBet - ${D([99, 111, 105, 110, 115, 69, 110, 101, 109, 121, 69, 120, 116, 66, 101, 116])} sessionStorage key failed.`);
+    const v1  = G([70,77,80,88,87,86,83,89,75,65],  `basicBet - ${D([98, 101, 116, 83, 116, 97, 116, 101])} sessionStorage key failed.`); // betState
+    const v4  = G([81,69,77,72,75,67,73,87,79,74],  `basicBet - ${D([98, 97, 115, 105, 99, 66, 101, 116, 116, 105, 110, 103, 83, 116, 97, 116, 101])} sessionStorage key failed.`); // basicBettingState
+    const v5  = G([81,67,69,68,71,77,83,90,65,74],  `basicBet - ${D([99, 111, 105, 110, 115, 80, 108, 97, 121, 101, 114])} sessionStorage key failed.`); // coinsPlayer
+    const v6  = G([88,79,86,74,72,80,71,70,69,77],  `basicBet - ${D([99, 111, 105, 110, 115, 80, 108, 97, 121, 101, 114, 66, 101, 116])} sessionStorage key failed.`); // coinsPlayerBet
+    const v7  = G([70,90,79,67,88,77,69,82,84,81],  `basicBet - ${D([99, 111, 105, 110, 115, 80, 108, 97, 121, 101, 114, 69, 120, 116, 66, 101, 116])} sessionStorage key failed.`); // coinsPlayerExtBet
+    const v8  = G([83,78,84,68,66,80,71,65,67,87],  `basicBet - ${D([99, 111, 105, 110, 115, 69, 110, 101, 109, 121])} sessionStorage key failed.`); // coinsEnemy
+    const v9  = G([67,79,66,70,75,82,74,88,69,68],  `basicBet - ${D([99, 111, 105, 110, 115, 69, 110, 101, 109, 121, 66, 101, 116])} sessionStorage key failed.`); // coinsEnemyBet
+    const v10 = G([80,73,68,65,90,69,88,86,82,67],  `basicBet - ${D([99, 111, 105, 110, 115, 69, 110, 101, 109, 121, 69, 120, 116, 66, 101, 116])} sessionStorage key failed.`); // coinsEnemyExtBet
 
     // ─────────────────── betState 해석 (키값 매핑 → 불린 난독 해제값 암호화)
     const M = {
@@ -137,25 +138,25 @@ export const BASIC_BET_DATA_HANDLER = {
     if (tv === void 0) throw T('sessionStorageLoss', `basicBet - ${D([98, 101, 116, 83, 116, 97, 116, 101])} sessionStorage value failed.`);
 
     // ─────────────────── betUser / betUserFirst 일치성 검증
-    const bU  = B([72,70,85,67,83,68,89,82,77,88]),  // betUser
-          bUF = B([90,89,80,70,68,84,65,77,74,78]);  // betUserFirst
+    const bU  = H([72,70,85,67,83,68,89,82,77,88], `basicBet - ${D([98, 101, 116, 85, 115, 101, 114])} sessionStorage key failed.`),
+          bUF = H([90,89,80,70,68,84,65,77,74,78], `basicBet - ${D([98, 101, 116, 85, 115, 101, 114, 70, 105, 114, 115, 116])} sessionStorage key failed.`);
     if (bU !== bUF) throw T('sessionStorageLoss', `basicBet - ${D([98, 101, 116, 85, 115, 101, 114, 47, 98, 101, 116, 85, 115, 101, 114, 70, 105, 114, 115, 116])} sessionStorage value compair failed.`);
 
     // ─────────────────── 파라미터 구성 (삼항으로 분기 최소 연산)
     const P = {
-      p1: DEC(tv),
-      p2: { decryptVal2: bU, decryptVal3: bUF },
-      p3: (v4 === '') ? '' : DEC(v4),
+      p1: DEC(tv), // betState
+      p2: { decryptVal2: bU, decryptVal3: bUF }, // betUser, betUserFirst
+      p3: (v4 === '') ? '' : DEC(v4), // basicBettingState
       p4: {
         remote: {
-          c1: (v5  === '') ? '' : DN(v5),
-          c2: (v6  === '') ? '' : DN(v6),
-          c3: (v7  === '') ? '' : DN(v7)
+          c1: (v5  === '') ? '' : DN(v5), // coinsEnemy
+          c2: (v6  === '') ? '' : DN(v6), // coinsEnemyBet
+          c3: (v7  === '') ? '' : DN(v7) // coinsEnemyExtBet
         },
         local: {
-          c4: (v8  === '') ? '' : DN(v8),
-          c5: (v9  === '') ? '' : DN(v9),
-          c6: (v10 === '') ? '' : DN(v10)
+          c4: (v8  === '') ? '' : DN(v8), // coinsPlayer
+          c5: (v9  === '') ? '' : DN(v9), // coinsPlayerBet
+          c6: (v10 === '') ? '' : DN(v10) // coinsPlayerExtBet
         }
       }
     };

@@ -1,6 +1,9 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import findCharCode from '@/client/js/functions/findCharCode';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
-import booleanReturn from '@/client/js/functions/validation/booleanReturn';
+import X from '@/client/js/module/crypts/bool-obf';
+// import booleanReturn from '@/client/js/functions/validation/booleanReturn';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import animateClock from '@/client/js/views/game/indianPocker/fns/common/animateClock';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
@@ -16,11 +19,15 @@ export default () => {
   // const BET_USER = window.sessionStorage.betUser;
   // if (!BET_USER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'betUser not found' });
   // const BET_STATE = BET_USER === 'true' ? true : false;
-  const BET_STATE = booleanReturn([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser - true or false or error
-  if (BET_STATE === '')  return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 betUser 세션이 없습니다.' });
+  // const BET_STATE = booleanReturn([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser - true or false or error
+  // if (BET_STATE === '')  return errorManagement({ errCase: 'sessionStorageLoss', message: '코인 1 체크 중 betUser 세션이 없습니다.' });
+
+  const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
+  const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
+  if (!encryptVal1) throw throwObj("sessionStorageLoss", "drawEnemyCoinsPlaying - betUser not found");
+  const BET_STATE = X.dec(encryptVal1); // betUser - true or false
+
   console.log("BET_STATE ------------- 1 : ", BET_STATE);
-
-
 
   const encryptKey = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
   const encryptVal = window.sessionStorage.getItem(encryptKey);

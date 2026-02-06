@@ -6,7 +6,7 @@ import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import _t from '@/client/js/module/crypts/textDE';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import { GRS } from '@/client/js/module/crypts/generateRandomString';
-import booleanCheck from '@/client/js/functions/validation/booleanCheck';
+// import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 
 import mergePayload from '@/client/js/views/game/indianPocker/fns/common/compareCard/mergePayload';

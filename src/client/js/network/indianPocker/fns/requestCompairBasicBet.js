@@ -4,12 +4,13 @@ import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import _t from '@/client/js/module/crypts/textDE';
 import { dec } from '@/client/js/module/crypts/obf8lower';
 // import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
-import booleanCheck from '@/client/js/functions/validation/booleanCheck';
-import booleanReturn from '@/client/js/functions/validation/booleanReturn';
+// import booleanCheck from '@/client/js/functions/validation/booleanCheck';
+// import booleanReturn from '@/client/js/functions/validation/booleanReturn';
 import { request } from '@/client/js/network/indianPocker/request';
 import compairBoolStr from '@/client/js/functions/validation/compairBoolStr';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 
 export default async (_data) => {
   try {
@@ -98,8 +99,14 @@ export default async (_data) => {
     // betUser/betUserFirst 검증
     // betUser true/false 상태 - choiceCard에서 높은 카드를 선택한 peer가 true
     // betUserFirst true/false 상태 - choiceCard에서 높은 카드를 선택한 peer가 true
-    const compairBetUser = compairBoolStr(decryptVal2, booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88])); // betUser
-    const compairBetUserFirst = compairBoolStr(decryptVal3, booleanCheck([90, 89, 80, 70, 68, 84, 65, 77, 74, 78])); // betUserFirst
+    // const compairBetUser = compairBoolStr(decryptVal2, booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88])); // betUser
+    const encryptKey2 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
+    const encryptVal2 = storageMethod("s", "GET_ITEM", encryptKey2);
+    const compairBetUser = compairBoolStr(decryptVal2, X.dec(encryptVal2)); // betUser
+    // const compairBetUserFirst = compairBoolStr(decryptVal3, booleanCheck([90, 89, 80, 70, 68, 84, 65, 77, 74, 78])); // betUserFirst
+    const encryptKey3 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
+    const encryptVal3 = storageMethod("s", "GET_ITEM", encryptKey3);
+    const compairBetUserFirst = compairBoolStr(decryptVal3, X.dec(encryptVal3)); // betUserFirst
 
     if (compairBetUser || compairBetUserFirst) {
       const message = {

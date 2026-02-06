@@ -1,6 +1,10 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/network/indianPocker/request';
-import booleanCheck from '@/client/js/functions/validation/booleanCheck';
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import _t from '@/client/js/module/crypts/textDE';
+// import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 /**
@@ -18,20 +22,30 @@ export default (storageKeys, result) => {
   };
 
   // betUser, betUserFirst 검증 (tie일 경우 빈값)
-  booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
-  booleanCheck([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
+  // booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
+  // booleanCheck([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
 
   // ────────────────────────────────────────────────────────────
   // ** local Player가 betUser, betUserFirst sessionStorage 조작했는지 체크
   // ── 상수 복원(한 번만): 'true' / 'false' / 키들
-  const Vt = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]);         // "true"
-  const Vf = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]);         // "false"
+  // const Vt = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]);      // "true"
+  // const Vf = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]);      // "false"
+  const Vt = X.enc(decodeTF(_t([107, 109, 114, 117]))); // "kmru"            // "true"
+  const Vf = X.enc(decodeTF(_t([106, 111, 98, 101, 97]))); // "jobea"        // "false"
   const K1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);         // "betUser"
   const K2 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]);         // "betUserFirst"
 
-  // ── 현재 값 2개만 접근(없으면 빈문자와 동일 취급)
-  const A = window.sessionStorage.getItem(K1) ?? '';
-  const B = window.sessionStorage.getItem(K2) ?? '';
+  // betUser, betUserFirst 검증 (tie일 경우 빈값)
+  if (
+    storageMethod("s", "GET_ITEM", K1) === null || // betUser
+    storageMethod("s", "GET_ITEM", K2) === null // betUserFirst
+  ) {
+    throw throwObj('sessionStorageLoss', 'clickResultBetting - boolean sessionStorage not found.');
+  };
+
+  // ── 현재 값 2개만 접근(없으면 빈문자와 동일 취급) - 같은 카드였다면 '' 이 됨
+  const A = storageMethod("s", "GET_ITEM", K1) ?? '';
+  const B = storageMethod("s", "GET_ITEM", K2) ?? '';
 
   // ── result → 인덱스: 첫 글자 코드만으로 매핑 (s/e/t 고유)
   // 'start'(115) → 0, 'end'(101) → 1, 'tie'(116) → 2
@@ -40,7 +54,7 @@ export default (storageKeys, result) => {
 
   // ── 기대값 테이블(분기 제거)
   // 0: start → [true, true], 1: end → [false, false], 2: tie → ['', '']
-  const E0 = ix === 0 ? Vt : (ix === 1 ? Vf : '');
+  const E0 = ix === 0 ? X.dec(Vt) : (ix === 1 ? X.dec(Vf) : '');
   const E1 = E0; // 두 값 동일 패턴
 
   // ── 메시지 테이블(실패 지점에 따라 하나만 선택)
@@ -52,8 +66,8 @@ export default (storageKeys, result) => {
 
   // ── 상수시간 비교(비트 연산으로 합성, 분기 최소화)
   // c0=첫 값 일치여부, c1=두 번째 값 일치여부
-  const c0 = (A === E0) | 0;
-  const c1 = (B === E1) | 0;
+  const c0 = ((!A ? '' : X.dec(A)) === E0) | 0;
+  const c1 = ((!B ? '' : X.dec(B)) === E1) | 0;
 
   // 둘 다 맞으면 종료, 아니면 어느 쪽 실패인지에 따라 메시지 선택
   // 우선순위: betUser(A) 검증 실패가 있으면 그 메시지, 아니면 betUserFirst(B)
@@ -73,8 +87,8 @@ export default (storageKeys, result) => {
   request('requestCompairResultBetting', {
     result,
     resultStorage: {
-      valRemoteBetUser: mapped,
-      valRemoteBetUserFirst: mapped,
+      valRemoteBetUser: mapped, // true | false | ''
+      valRemoteBetUserFirst: mapped, // true | false | ''
     },
   });
 };

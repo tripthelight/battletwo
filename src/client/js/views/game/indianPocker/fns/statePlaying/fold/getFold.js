@@ -2,7 +2,7 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
-import textDE from '@/client/js/module/crypts/textDE';
+import _t from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { text } from '@/client/js/functions/language';
@@ -72,7 +72,6 @@ export const GET_FOLD = {
         GET_FOLD.roundResultDisplay();
         BattingZoneMovePlayerBlock('win').then((_state) => {
           BettingZoneMoveComn(_state).then((_stateNext) => {
-            const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
             const encryptKey1_1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
             const encryptKey1_2 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]);  // betUserFirst
 
@@ -96,8 +95,16 @@ export const GET_FOLD = {
 
             foldSendResultComn();
             // storageMethod('s', 'SET_ITEM', 'betUser', true);
-            storageMethod('s', 'SET_ITEM', encryptKey1_1, encryptVal_1); // betUser, true
-            storageMethod('s', 'SET_ITEM', encryptKey1_2, encryptVal_1); // betUserFirst, true
+            // betUser, true
+            storageMethod('s', 'SET_ITEM',
+              encryptKey1_1, // betUser
+              X.enc(decodeTF(_t([115, 119, 114, 110]))) // "swrn" : true
+            );
+            // betUserFirst, true
+            storageMethod('s', 'SET_ITEM',
+              encryptKey1_2, // betUserFirst
+              X.enc(decodeTF(_t([99, 102, 104, 117]))) // "cfhu" : true
+            );
             if (penalty) {
               // 상대 카드가 10일 때
               bottomSheet.show(text.indianpocker.benefit, timeInterval_5000);
@@ -172,13 +179,13 @@ export const GET_FOLD = {
     // storageMethod('s', 'SET_ITEM', 'foldState', true);
     storageMethod('s', 'SET_ITEM',
       findCharCode([65, 72, 66, 75, 85, 69, 87, 79, 88, 86]), // foldState
-      X.enc(decodeTF(textDE([107, 119, 104, 97]))) // "kwha" : true
+      X.enc(decodeTF(_t([107, 119, 104, 97]))) // "kwha" : true
     );
 
     // storageMethod('s', 'SET_ITEM', 'foldUser', false);
     storageMethod('s', 'SET_ITEM',
       findCharCode([66, 65, 81, 76, 84, 71, 67, 86, 82, 83]), // foldUser
-      X.enc(decodeTF(textDE([100, 111, 108, 116, 97]))) // "dolta" : false
+      X.enc(decodeTF(_t([100, 111, 108, 116, 97]))) // "dolta" : false
     );
 
     // storageMethod('s', 'SET_ITEM', 'coinsEnemyRemoteFold', _data.coinsEnemyRemoteFold);

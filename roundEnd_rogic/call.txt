@@ -89,6 +89,7 @@ CALL : ####################################
       - goNextRound 으로 가서
         -  "cardNum" 의 key가 이 null 인지 검증
         - STATE_PLAYING.drew로 이동
+          - 같은 카드였던 상태에서 새로고침 한 PEER 는 새로고침 후 여기(STATE_PLAYING.drew)로 진입
           - "drewFlipCardMode" 가 true면 refreshDrawDrew로 이동
             - refreshDrawDrew로 가서
               - .player-card 를 클릭하면 btnCallRaiseEventBefore로 가서

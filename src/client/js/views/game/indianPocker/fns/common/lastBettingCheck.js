@@ -1,13 +1,13 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import { dec } from '@/client/js/module/crypts/obf8lower';
+import X from '@/client/js/module/crypts/bool-obf';
 import deviceStateStore from '@/client/store/deviceStateStore';
 
 export default () => {
-  const encryptVal_1 = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
-  const encryptVal_2 = findCharCode([70, 74, 89, 84, 79, 75, 88, 87, 85, 78]); // false
   // const BET_USER = window.sessionStorage.betUser;
   const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
-  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
 
   // const COINS_ENEMY = window.sessionStorage.coinsEnemy;
   const encryptKey2 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
@@ -32,7 +32,8 @@ export default () => {
 
   // const STATE = BET_USER && BET_USER === 'true' && COINS_ENEMY && Number(COINS_ENEMY) === 0 && C_E_B === P_E_B;
   const STATE =
-    encryptVal1 === encryptVal_1 && // betUser === true
+    // encryptVal1 === encryptVal_1 && // betUser === true
+    X.dec(encryptVal1) && // betUser === true
     encryptVal2 &&
     dec(encryptVal2) === 0 &&
     C_E_B === P_E_B;

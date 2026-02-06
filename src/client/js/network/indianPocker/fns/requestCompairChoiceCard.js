@@ -1,7 +1,7 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import X from '@/client/js/module/crypts/bool-obf';
 import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
-import booleanCheck from '@/client/js/functions/validation/booleanCheck';
+// import booleanCheck from '@/client/js/functions/validation/booleanCheck';
 import { request } from '@/client/js/network/indianPocker/request';
 import compairBoolStr from '@/client/js/functions/validation/compairBoolStr';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
@@ -37,8 +37,14 @@ export default async (_data) => {
 
     const compairRemote = encryptVal2 !== "" && remoteStorage.encryptVal1 !== encryptVal2; // remote
     const compairLocal = encryptVal1 !== "" && remoteStorage.encryptVal2 !== encryptVal1; // local
-    const compairBetUser = compairBoolStr(remoteStorage.encryptVal3, booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88])); // betUser
-    const compairBetUserFirst = compairBoolStr(remoteStorage.encryptVal4, booleanCheck([90, 89, 80, 70, 68, 84, 65, 77, 74, 78])); // betUserFirst
+    // const compairBetUser = compairBoolStr(remoteStorage.encryptVal3, booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88])); // betUser
+    const encryptKey4 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
+    const encryptVal4 = storageMethod("s", "GET_ITEM", encryptKey4);
+    const compairBetUser = compairBoolStr(remoteStorage.encryptVal3, X.dec(encryptVal4)); // betUser
+    // const compairBetUserFirst = compairBoolStr(remoteStorage.encryptVal4, booleanCheck([90, 89, 80, 70, 68, 84, 65, 77, 74, 78])); // betUserFirst
+    const encryptKey5 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
+    const encryptVal5 = storageMethod("s", "GET_ITEM", encryptKey5);
+    const compairBetUserFirst = compairBoolStr(remoteStorage.encryptVal4, X.dec(encryptVal5)); // betUserFirst
 
     if (compairRemote || compairLocal || compairBetUser || compairBetUserFirst) {
       const message = {

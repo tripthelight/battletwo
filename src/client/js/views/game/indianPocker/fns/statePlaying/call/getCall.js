@@ -2,7 +2,7 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import { enc, dec } from '@/client/js/module/crypts/obf8lower';
 import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
-import textDE from '@/client/js/module/crypts/textDE';
+import _t from '@/client/js/module/crypts/textDE';
 import { deobfuscateInt32 as d } from '@/client/js/module/crypts/encryptNumber';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import { timeInterval_1 } from '@/client/js/functions/variable';
@@ -17,7 +17,7 @@ export const GET_CALL = {
     if (document.querySelector('.check-drew-info')) document.querySelector('.check-drew-info').remove();
     storageMethod('s', 'SET_ITEM',
       findCharCode([77, 76, 67, 88, 79, 87, 83, 90, 89, 86]), // extFirstBet
-      X.enc(decodeTF(textDE([115, 102, 104, 97]))) // "sfha" : true
+      X.enc(decodeTF(_t([115, 102, 104, 97]))) // "sfha" : true
     );
     GET_CALL.sessionCallBet(_data);
   },
@@ -29,7 +29,7 @@ export const GET_CALL = {
       .then((_data) => {
         storageMethod('s', 'SET_ITEM',
           findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]), // betUser
-          findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]) // true
+          X.enc(decodeTF(_t([99, 109, 104, 110]))) // "cmhn" : true
         );
         storageMethod('s', 'SET_ITEM',
           findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]), // coinsEnemy
