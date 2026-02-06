@@ -53,7 +53,6 @@ CALL : ####################################
 8. savsSessionResult 로 가서
 1) round 결과가 이기거나 졌으면
 - "coinsPlayerBet" 의 값을 0으로 만듬
--=-=-=-=-= 여기까지 함 -=-=-=-=-=
 - "coinsEnemyBet" 의 값을 0으로 만듬
 2) "coinsPlayerExtBet", "coinsEnemyExtBet" 의 값을 0으로 만듬
 3) "roundEnd" 의 값을 true로 만듬
@@ -96,7 +95,7 @@ CALL : ####################################
                 - "drewCardReady" 가 true면 BTN_STATE.HANDLER 에 call을 보냄
                 - "drewCardReady" 가 false면 drewReadyCheck 요청을 보냄
                   - drewReadyCheck를 받은 상대 PEER는 "drewCardReady" 를 true로 만듬
-          - "drewFlipCardMode" 가 false면
+          - "drewFlipCardMode" true가 아니면,
             - "dropState" 의 값을 삭제 
             - "drewReady" 의 값을 true로 만듬
             - enterDrew 요청을 보냄

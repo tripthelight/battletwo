@@ -27,6 +27,12 @@ export default () => {
 
   if (encryptVal1 !== null && encryptVal1 !== '' && X.dec(encryptVal1)) {
     // call / raise / allin 상태에서 새로고침
+    // call 을 눌렀던 PEER 는 betResulting 이 true가 됨
+    /**
+     * 분기점
+      - call 을 누르고 > 상대는 새로고침 안했고 > 내가 새로고침 했을 때 > 같은 카드였는가?
+        - STATE_PLAYING.drew() 로 이동
+     */
     console.log("call / raise / allin 상태에서 새로고침 ----------- ");
   } else {
     STATE_PLAYING.main();

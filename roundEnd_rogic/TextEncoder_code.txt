@@ -1,0 +1,10 @@
+xqlia
+
+const B = "xqlia"
+new TextEncoder().encode(B);
+
+
+
+const A = [120, 113, 108, 105, 97];
+new TextDecoder().decode(new Uint8Array(A));
+

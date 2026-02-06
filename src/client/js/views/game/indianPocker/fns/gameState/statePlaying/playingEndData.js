@@ -71,6 +71,7 @@ export default (_num, _clickBtn, _act) => {
       const encryptKey22 =      findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
       const encryptVal23 =      findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
       const encryptVal24 =      findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]); // battleCardNum
+      const encryptVal25 =      findCharCode([80, 76, 72, 71, 86, 73, 69, 66, 78, 81]); // cardNum
 
       // const insertBet = enc(encryptNumOfStr(GRS([_t([119]), _t([119])], parseInt(_t([50]))))); // ex) "ww" : 0
       // arr : [101, 101] -> "e", "e"
@@ -225,13 +226,107 @@ export default (_num, _clickBtn, _act) => {
             encryptKey17, // coinsPlayerBet
             enc(insertBet([101, 101], 50)) // "ee" : 난독화 된 0
           );
+          // coinsEnemyBet 의 값을 0으로 만듬
+          storageMethod('s', 'SET_ITEM',
+            encryptKey5, // coinsEnemyBet
+            enc(insertBet([101, 119], 52)) // "ew" : 난독화 된 0
+          );
+          // coinsPlayerExtBet 의 값을 0으로 만듬
+          storageMethod('s', 'SET_ITEM',
+            encryptKey18, // coinsPlayerExtBet
+            enc(insertBet([119, 101], 52)) // "we" : 난독화 된 0
+          );
+          // coinsEnemyExtBet 의 값을 0으로 만듬
+          storageMethod('s', 'SET_ITEM',
+            encryptKey6, // coinsEnemyExtBet
+            enc(insertBet([119, 119], 52)) // "ww" : 난독화 된 0
+          );
+          // roundEnd 의 값을 true로 만듬
+          storageMethod('s', 'SET_ITEM',
+            encryptVal15, // roundEnd
+            X.enc(decodeTF(_t([107, 109, 114, 110]))) // "kmrn" : true
+          );
+
+          if (LL) {
+            // 내가 짐
+            // betUser 를 false로 만듬
+            storageMethod('s', 'SET_ITEM',
+              encryptKey3, // betUser
+              X.enc(decodeTF(_t([120, 111, 98, 101, 97]))) // "dgvtu" : false
+            );
+            // "coinsEnemy" 를 "coinsEnemy"에 "coinsPlayerBet" 와 "coinsEnemyBet" 를 더한 값으로 변경
+            storageMethod('s', 'SET_ITEM',
+              encryptKey4, // coinsEnemy
+              enc( // 숫자 난독화
+                Number(dec(storageMethod('s', 'GET_ITEM', encryptKey4))) + // coinsEnemy 숫자 복호화
+                (
+                  Number(dec(storageMethod('s', 'GET_ITEM', encryptKey17))) + // coinsPlayerBet 숫자 복호화
+                  Number(dec(storageMethod('s', 'GET_ITEM', encryptKey5))) // coinsEnemyBet 숫자 복호화
+                )
+              )
+            );
+          } else if (WW) {
+            // 내가 이김
+            // betUser 를 true 로 만듬
+            storageMethod('s', 'SET_ITEM',
+              encryptKey3, // betUser
+              X.enc(decodeTF(_t([107, 102, 114, 97]))) // "kfra" : true
+            );
+            // "coinsPlayer" 를 "coinsPlayer"에 "coinsPlayerBet" 와 "coinsEnemyBet" 를 더한 값으로 변경
+            storageMethod('s', 'SET_ITEM',
+              encryptKey16, // coinsPlayer
+              enc( // 숫자 난독화
+                Number(dec(storageMethod('s', 'GET_ITEM', encryptKey16))) + // coinsPlayer 숫자 복호화
+                (
+                  Number(dec(storageMethod('s', 'GET_ITEM', encryptKey17))) + // coinsPlayerBet 숫자 복호화
+                  Number(dec(storageMethod('s', 'GET_ITEM', encryptKey5))) // coinsEnemyBet 숫자 복호화
+                )
+              )
+            );
+          };
+
+          // getWinnerCoin로 가서
+          // roundResultDisplay > cardHideAnimation > cardHideAnimationComn
+          // "battleCardNum" 을 빈문자열로 변경
+          storageMethod('s', 'REMOVE_VALUE', '', '', [
+            encryptVal24, // battleCardNum
+          ]);
+
+          // BettingZoneMoveComnCallRaise > getWinnerCoinNext
+          // "coinsPlayer" 와 "coinsEnemy" 의 key가 null이 아닌지 검증
+          // TODO: 현재 코드에서 필요한 sessionStorage가 모두 있는지 검증은 미리 할 것
+          // storageMethod('s', 'GET_ITEM', encryptKey16) // coinsPlayer
+          // storageMethod('s', 'GET_ITEM', encryptKey4) // coinsEnemy
+
+          // "betCoin" 의 값을 빈문자열로 변경
+          storageMethod('s', 'REMOVE_VALUE', '', '', [
+            encryptKey19, // betCoin
+            encryptKey20, // betCoinPos
+          ]);
+
+          // "basicBettingState" 의 값을 false로 변경
+          storageMethod('s', 'SET_ITEM',
+            encryptKey21, // basicBettingState
+            X.enc(decodeTF(_t([120, 113, 108, 105, 97]))) // "xqlia" : false
+          );
+
+          // "betState" 를 "basicBetting" 으로 변경
+          storageMethod('s', 'SET_ITEM',
+            encryptKey22, // betState
+            encryptVal23 // basicBetting
+          );
+
+          // goNextRound로 가서
+          // "cardNum" 의 key가 이 null 인지 검증
+          D.push(storageMethod('s', 'GET_ITEM', encryptVal25));  // cardNum @ D[15]
+
         } else if (DD) {
           // 비겼으면 ——————————————————————————
           // cardCompare에서 ———————————————————
           // "betUser"의 값을 "betUserFirst" 의 값으로 변경
           storageMethod('s', 'SET_ITEM',
             encryptKey3, // betUser
-            encryptVal14 // betUserFirst
+            storageMethod('s', 'GET_ITEM', encryptVal14) // betUserFirst value
           );
           // drewState 를 true 로 만듬
           storageMethod('s', 'SET_ITEM',
@@ -248,8 +343,21 @@ export default (_num, _clickBtn, _act) => {
             encryptKey2, // extFirstBet
             X.enc(decodeTF(_t([120, 103, 98, 116, 117]))) // "xgbtu" : false
           );
-        }
 
+          // getWinnerCoinNext로 가서
+          // roundResultDisplay >
+          // cardHideAnimation 으로 가서
+          // "battleCardNum" 을 빈문자열로 변경
+          storageMethod('s', 'REMOVE_VALUE', '', '', [
+            encryptVal24, // battleCardNum
+          ]);
+          // goNextRound 으로 가서
+          // "cardNum" 의 key가 이 null 인지 검증
+          D.push(storageMethod('s', 'GET_ITEM', encryptVal25));  // cardNum @ D[15]
+
+          // STATE_PLAYING.drew로 이동
+          // 현재는 drewFlipCardMode 의 값을 제거한 상태임
+        };
       };
 
       resolve(D);

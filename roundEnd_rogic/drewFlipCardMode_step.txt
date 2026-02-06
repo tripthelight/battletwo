@@ -1,0 +1,112 @@
+===========================================
+
+STATE_PLAYING.drew 에서
+  "drewFlipCardMode" 가 true면
+    refreshDrawDrew 로 이동
+    refreshDrawDrew 에서 뒤집혀서 뒷면이 보이는 .player-card를 만듬
+
+  "drewFlipCardMode" 가 false 면
+    true를 담아서 enterDrew 요청을 보냄
+
+--------------------------------------------------------------------
+
+enterDrew true 요청을 받은 PEER 는 
+enterDrewResult 에서
+
+"betResulting" 가 true면
+
+  "roundEndReload" 가 true면
+    true를 담아서 enterDrew 요청을 보냄
+    "betResulting", "roundEndReload" 의 값을 제거
+
+  "drewReady" 가 false 면
+    false를 담아서 enterDrew 요청을 보냄
+    "drewReady" 가 true 면
+      "betUser" 가 true면
+        createBattleCardNum 함수 실행
+
+"betResulting" 가 false면
+
+  "drewReady" 가 false 면
+    false를 담아서 enterDrew 요청을 보냄
+  "drewReady" 가 true 면
+    "betUser" 가 true면
+      createBattleCardNum 함수 실행
+
+
+
+
+
+
+createBattleCardNum 에서
+requestCardNumList, responseCardNumList 에서 drawEnemyCard를 import
+drawPlayerCard 에서 drawEnemyCard를 import
+drawPlayerCard 에서 drawEnemyCard를 import
+drawEnemyCard 에서 comnDrawEnemyCard를 import
+comnDrawEnemyCard 에서 betUserCheck를 import
+betUserCheck 에서 drewCheck를 import
+
+drewCheck 에서 
+"coinsEnemyExtBet", "coinsEnemy", "coinsPlayer" 가 0이면
+"drewFlipCardMode" 를 true로 만듬
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

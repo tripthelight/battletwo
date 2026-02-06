@@ -27,6 +27,7 @@ export const STATE_PLAYING = {
     // ——————————————————————————————————————————————————————
   },
   drew: () => {
+    // 카드 비교 후, 같은 카드면 진입하는 곳
     // storageMethod('s', 'REMOVE_ITEM', 'betResulting');
     // if (window.sessionStorage.drewReady && window.sessionStorage.drewReady === "true") return refreshDrawDrew(); // refresh
     // if (window.sessionStorage.drewFlipCardMode && window.sessionStorage.drewFlipCardMode === 'true') return refreshDrawDrew();
