@@ -35,6 +35,10 @@ export default (storageKeys, result) => {
   const K1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);         // "betUser"
   const K2 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]);         // "betUserFirst"
 
+  // console.log("Vt ::::::: ", Vt);
+  // console.log("Vf ::::::: ", Vf);
+
+
   // betUser, betUserFirst 검증 (tie일 경우 빈값)
   if (
     storageMethod("s", "GET_ITEM", K1) === null || // betUser
@@ -52,10 +56,16 @@ export default (storageKeys, result) => {
   const r0 = result && result.charCodeAt(0);
   const ix = (r0 === 115 ? 0 : (r0 === 101 ? 1 : 2));
 
+  // console.log("r0 ::::::: ", r0);
+  // console.log("ix ::::::: ", ix);
+
   // ── 기대값 테이블(분기 제거)
   // 0: start → [true, true], 1: end → [false, false], 2: tie → ['', '']
   const E0 = ix === 0 ? X.dec(Vt) : (ix === 1 ? X.dec(Vf) : '');
   const E1 = E0; // 두 값 동일 패턴
+
+  // console.log("E0 ::::::: ", E0);
+  // console.log("E1 ::::::: ", E1);
 
   // ── 메시지 테이블(실패 지점에 따라 하나만 선택)
   const M = [
@@ -68,6 +78,9 @@ export default (storageKeys, result) => {
   // c0=첫 값 일치여부, c1=두 번째 값 일치여부
   const c0 = ((!A ? '' : X.dec(A)) === E0) | 0;
   const c1 = ((!B ? '' : X.dec(B)) === E1) | 0;
+
+  // console.log("c0 ::::::: ", c0);
+  // console.log("c1 ::::::: ", c1);
 
   // 둘 다 맞으면 종료, 아니면 어느 쪽 실패인지에 따라 메시지 선택
   // 우선순위: betUser(A) 검증 실패가 있으면 그 메시지, 아니면 betUserFirst(B)
@@ -83,6 +96,9 @@ export default (storageKeys, result) => {
   if (![true, false, ''].includes(mapped)) {
     throw throwObj('errorComn', `choiceCard end state X button click error: ${result}`);
   };
+
+  // console.log("result ::::::: ", result);
+  // console.log("mapped ::::::: ", mapped);
 
   request('requestCompairResultBetting', {
     result,

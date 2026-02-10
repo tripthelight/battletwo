@@ -16,6 +16,10 @@ export default async (_data) => {
 
     const params = { compair: true, result };
 
+    // console.log("result :::::::::::::::::::: ", result);
+    // console.log("valRemoteBetUser :::::::::: ", valRemoteBetUser);
+    // console.log("valRemoteBetUserFirst ::::: ", valRemoteBetUserFirst);
+
     // 1) 내가 먼저 X 버튼 눌러 대기하는 특수 케이스 선처리
     // const TIE_WAIT_FLAG = booleanCheck([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
     // const TIE_WAIT_EXPECT = findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75]); // true
@@ -74,16 +78,15 @@ export default async (_data) => {
         message: '모두 카드 선택 > 상대가 알림팝업의 X 버튼 클릭 > 내가 받음 > 결과 error',
         sendMsg: '모두 카드 선택 > 내가 알림팝업의 X 버튼 클릭 > 상대가 받음 > 결과 error',
       };
-    }
+    };
 
     const PREFIX_RECV = '모두 카드 선택 > 상대가 알림팝업의 X 버튼 클릭 > 내가 받음 > ';
     const PREFIX_SEND = '모두 카드 선택 > 내가 알림팝업의 X 버튼 클릭 > 상대가 받음 > ';
 
-    const assertPair = (keyName, remote, local, expectRemote, expectLocal) => {
-      // console.log("PASS 1 -------- ", remote, expectRemote, remote === expectRemote);
-      // console.log("PASS 2 -------- ", local, expectLocal, local === expectLocal);
-      // console.log("FOUL -------- ", remote, expectRemote, remote !== expectRemote);
+    // 두 PEER가 같은 카드를 선택했다면 p는 빈문자열(EMPTY STRING)임
+    const emptyStr = p => !p ? '' : X.dec(p);
 
+    const assertPair = (keyName, remote, local, expectRemote, expectLocal) => {
       // 전부 정상이면 통과
       if (remote === expectRemote && local === expectLocal) return;
 
@@ -103,15 +106,19 @@ export default async (_data) => {
       };
     };
 
-    console.log(valRemoteBetUser);
-    console.log(ctx.remote.betUser);
-    console.log(X.dec(encryptVal1));
-    console.log(X.dec(ctx.local.betUser));
-
-
     // 4) 두 쌍 검증(순서대로 실패 지점 명확화)
-    assertPair('betUser',      valRemoteBetUser,      X.dec(encryptVal1), ctx.remote.betUser,      X.dec(ctx.local.betUser));
-    assertPair('betUserFirst', valRemoteBetUserFirst, X.dec(encryptVal2), ctx.remote.betUserFirst, X.dec(ctx.local.betUserFirst));
+    assertPair('betUser',
+      valRemoteBetUser,
+      emptyStr(encryptVal1),
+      ctx.remote.betUser,
+      emptyStr(ctx.local.betUser)
+    );
+    assertPair('betUserFirst',
+      valRemoteBetUserFirst,
+      emptyStr(encryptVal2),
+      ctx.remote.betUserFirst,
+      emptyStr(ctx.local.betUserFirst)
+    );
 
     // 5) 문제 없으면 응답 전송
     request('responseCompairResultBetting', params);

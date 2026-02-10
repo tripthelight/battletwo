@@ -21,6 +21,7 @@ export default (params) => {
       clickChoiceCard(storageKeys);
     };
     // resultBettingClick
+    // 선카드 선택(choiceCard)에서 같은 카드 였던 상태에서 먼저 X를 누른 PEER는 여기로 진입
     if (clickEvent === findCharCode([66, 72, 73, 78, 89, 65, 84, 77, 83, 86])) {
       clickResultBetting(storageKeys, clkData);
     };
