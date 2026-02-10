@@ -153,7 +153,7 @@ export default {
           // 상대가 call / fold 누름 -> 상대에게 card num 받음
           // 상대 PEER에게서 내 card num을 알아냈음
           // TODO: 여기서 sessstorage 정의
-          playingEndData(_data.playerCardNum, "call", false)
+          /* playingEndData(_data.playerCardNum, "call", false)
             .then((_data) => {
               console.log("콜 받은 PEER 의 DATA : ", _data);
 
@@ -161,17 +161,17 @@ export default {
             })
             .catch((error) => {
               errorManager(error, true);
-            });
+            }); */
 
 
-          // // 새로고침 시 상대 카드번호 필요하여 storage에 저장
-          // // 한 라운드가 끝난 후 삭제 필요
-          // storageMethod('s',
-          //   'SET_ITEM',
-          //   findCharCode([77, 87, 85, 88, 83, 80, 79, 90, 65, 66]), // playCardNum
-          //   _data.playerCardNum
-          // );
-          // GET_CALL.receiveCallBet(_data);
+          // 새로고침 시 상대 카드번호 필요하여 storage에 저장
+          // 한 라운드가 끝난 후 삭제 필요
+          storageMethod('s',
+            'SET_ITEM',
+            findCharCode([77, 87, 85, 88, 83, 80, 79, 90, 65, 66]), // playCardNum
+            _data.playerCardNum
+          );
+          GET_CALL.receiveCallBet(_data);
         })
         .catch((error) => {
           console.log('error - battingEvent.js - CALL_RESULT');

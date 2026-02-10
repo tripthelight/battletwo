@@ -451,7 +451,7 @@ export const GET_ROUND_END = {
         // storageMethod('s', 'SET_ITEM', 'betUser', false);
         storageMethod('s', 'SET_ITEM',
           encryptKey2, // betUser
-          X.enc(decodeTF(_t([107, 119, 104, 110]))) // "kwhn" : true
+          X.enc(decodeTF(_t([100, 111, 108, 101, 110]))) // "dolen" : false
         );
         // storageMethod('s', 'SET_ITEM', encryptKey3, enc(Number(COINS_ENEMY) + RESULT)); // coinsEnemy
         const decryptVal3 = dec(encryptVal3); // coinsEnemy value number

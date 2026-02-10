@@ -14,28 +14,28 @@ export default (data) => {
     allin: () => RULES.ALLIN(),
   };
 
-  // if (clickBtn === 'call' || clickBtn === 'fold') {
-  //   // 내가 call / fold 누름 -> 상대에게 내 card num 받음
-  //   // 상대 PEER에게서 card num을 알아냈음
-  //   // TODO: 여기서 sessstorage 정의
-  //   // 상대 카드번호 저장
-  //   storageMethod(
-  //     's',
-  //     'SET_ITEM',
-  //     findCharCode([77, 87, 85, 88, 83, 80, 79, 90, 65, 66]), // playCardNum
-  //     num
-  //   );
-  // };
+  if (clickBtn === 'call' || clickBtn === 'fold') {
+    // 내가 call / fold 누름 -> 상대에게 내 card num 받음
+    // 상대 PEER에게서 card num을 알아냈음
+    // TODO: 여기서 sessstorage 정의
+    // 상대 카드번호 저장
+    storageMethod(
+      's',
+      'SET_ITEM',
+      findCharCode([77, 87, 85, 88, 83, 80, 79, 90, 65, 66]), // playCardNum
+      num
+    );
+  };
 
   playingEndData(num, clickBtn, true)
     .then((_data) => {
       console.log("콜 누른 PEER 의 DATA : ", _data);
 
       // 해당 버튼에 대응하는 RULES 메서드가 있으면 실행
-      // const action = RULE_ACTIONS[clickBtn];
-      // if (action) {
-      //   action();
-      // }
+      const action = RULE_ACTIONS[clickBtn];
+      if (action) {
+        action();
+      }
     })
     .catch((error) => {
       errorManager(error, true);

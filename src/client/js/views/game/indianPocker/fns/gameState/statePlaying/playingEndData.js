@@ -81,14 +81,22 @@ export default (_num, _clickBtn, _act) => {
       // limt : 52 -> ASCII 4
       const insertBet = (arr, limt) => encryptNumOfStr(GRS(arr.map(t => _t([t])), parseInt(_t([limt]))));
 
-      if (_clickBtn === 'call' || _clickBtn === 'fold') {
-        // 상대 카드번호 저장
-        storageMethod('s', 'SET_ITEM', encryptKey12, _num); // playCardNum
-      };
-
       const D = [];
 
+      /*
+
       if (_clickBtn === 'call') {
+        // 첫 BETTING 단계는 지났음을 표시
+        storageMethod('s', 'SET_ITEM',
+          encryptKey2, // extFirstBet
+          X.enc(decodeTF(_t([99, 109, 114, 117]))) // "cmru" : true
+        );
+        // 아직 결과를 보기 전이라 betUser 는 우선 false
+        storageMethod('s', 'SET_ITEM',
+          encryptKey3, // betUser
+          X.enc(decodeTF(_t([120, 111, 98, 101, 97]))) // "xobea" : false
+        );
+
         if (_act) {
           // call을 누른 PEER
           D.push(storageMethod('s', 'GET_ITEM', encryptKey1));  // gameState @ D[0]
@@ -98,30 +106,16 @@ export default (_num, _clickBtn, _act) => {
           D.push(encryptKey20_2);                               // betCoinPos : translateX @ D[4]
           D.push(encryptKey20_3);                               // betCoinPos : translateY @ D[5]
           D.push(storageMethod('s', 'GET_ITEM', encryptKey4));  // coinsEnemy @ D[6]
-
           D.push(storageMethod('s', 'GET_ITEM', encryptKey3)); // betUser @ D[7]
-          // 아직 결과를 보기 전이라 betUser 는 우선 false
-          // TODO: 다른 gameState에서 사용된 모든 betUser 를 X.enc, X.dec 방식으로 변경 필요
-          storageMethod('s', 'SET_ITEM',
-            encryptKey3, // betUser
-            X.enc(decodeTF(_t([120, 111, 98, 101, 97]))) // "xobea" : false
-          );
-
           D.push(storageMethod('s', 'GET_ITEM', encryptKey2)); // extFirstBet @ D[8]
-          // 첫 BETTING 단계는 지났음을 표시
-          // TODO: 다른 gameState에서 사용된 모든 extFirstBet 를 X.enc, X.dec 방식으로 변경 필요
-          storageMethod('s', 'SET_ITEM',
-            encryptKey2, // extFirstBet
-            X.enc(decodeTF(_t([99, 109, 114, 117]))) // "cmru" : true
-          );
 
           D.push(storageMethod('s', 'GET_ITEM', encryptKey19)); // betCoin @ D[9]
           // betCoin에 있는 betState를 end 로 변경
           storageMethod('s', 'SET_ITEM',
-            encryptKey2, // betCoin
+            encryptKey19, // betCoin
             JSON.stringify(
               JSON.parse(D[9]).map(item => {
-                item[encryptKey19_1] = encryptKey19_1_1; // betCoin의 betState -> end 로 변경
+                item[encryptKey19_1] = encryptKey19_1_1; // betCoin 의 betState -> end 로 변경
                 return item;
               })
             )
@@ -201,11 +195,6 @@ export default (_num, _clickBtn, _act) => {
             )
           ))
         );
-
-        // 결과를 알았으므로 cardNumCompare에서 playCardNum 의 값을 제거
-        storageMethod('s', 'REMOVE_VALUE', '', '', [
-          encryptKey12, // playCardNum
-        ]);
 
         const RR = dec(D[14]);
         const WW = RR === 0; // 내가 이김
@@ -359,6 +348,8 @@ export default (_num, _clickBtn, _act) => {
           // 현재는 drewFlipCardMode 의 값을 제거한 상태임
         };
       };
+
+      */
 
       resolve(D);
     } catch (error) {
