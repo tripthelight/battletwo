@@ -60,28 +60,33 @@ export default (data) => {
       return errorManagement({ errCase: 'sessionStorageLoss', message: '내 카드 리스트(cardNum) 개수와 상대 카드 리스트 개수 다름' });
     }
 
-    storageMethod(
-      's',
-      'SET_ITEM',
-      findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]), // battleCardNum
-      bc,
-    );
+    if (bc) {
+      console.log("battleCardNum 받음 ::::::::::::::: 1 ", bc);
 
-    // STEP 2 : battleCardNum 생성
-    const arrNumbs = selectCompairNumbers();
-    if (!arrNumbs || (arrNumbs && arrNumbs.length === 0)) {
-      return errorManagement({ errCase: "cardNum", message: 'requestCardNumList battle cardNum length failed.' });
-    }
-    const battleCard = arrNumbs[Math.floor(Math.random() * arrNumbs.length)];
+      storageMethod(
+        's',
+        'SET_ITEM',
+        findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]), // battleCardNum
+        bc,
+      );
 
-    // STEP 3 : 상대에게 보냄
-    request('responseCardNumList', {
-      step: 'nextStep',
-      battleCard,
-    });
+      // STEP 2 : battleCardNum 생성
+      const arrNumbs = selectCompairNumbers();
+      if (!arrNumbs || (arrNumbs && arrNumbs.length === 0)) {
+        return errorManagement({ errCase: "cardNum", message: 'requestCardNumList battle cardNum length failed.' });
+      }
+      const battleCard = arrNumbs[Math.floor(Math.random() * arrNumbs.length)];
 
-    // STEP 4 : 다음 함수 실행
-    drawPlayerCard();
+      // STEP 3 : 상대에게 보냄
+      request('responseCardNumList', {
+        step: 'nextStep',
+        battleCard,
+      });
+
+      // STEP 4 : 다음 함수 실행
+      drawPlayerCard();
+    };
+
 
     /* const bytes = CryptoJS.AES.decrypt(list, secretKeyVal);
     const decrypted = bytes.toString(CryptoJS.enc.Utf8); */
@@ -157,14 +162,18 @@ export default (data) => {
       step: 'nextStep',
     });
 
-  //   storageMethod(
-  //     's',
-  //     'SET_ITEM',
-  //     findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]), // battleCardNum
-  //     battleCardNum,
-  //   );
+    //   storageMethod(
+    //     's',
+    //     'SET_ITEM',
+    //     findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]), // battleCardNum
+    //     battleCardNum,
+    //   );
 
-    // 다음 함수 실행
-    drawPlayerCard();
+    const encryptKey2 = findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]); // battleCardNum
+    const encryptVal2 = storageMethod("s", "GET_ITEM", encryptKey2);
+    if (encryptVal2 !== null && encryptVal2 !== "") {
+      // 다음 함수 실행
+      drawPlayerCard();
+    }
   }
 };

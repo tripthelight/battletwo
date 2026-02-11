@@ -43,7 +43,13 @@ export default (_data) => {
         X.dec(encryptVal1)
       ) {
         // storageMethod('s', 'REMOVE_ITEM', 'playingReloadUser');
-        storageMethod('s', 'REMOVE_ITEM', encryptKey1); // playingReloadUser
+        // storageMethod('s', 'REMOVE_ITEM', encryptKey1); // playingReloadUser
+        storageMethod('s', 'REMOVE_VALUE', '', '', [
+          encryptKey1, // playingReloadUser
+          findCharCode([68, 85, 72, 73, 84, 65, 90, 70, 89, 88]), // betCoin
+          findCharCode([68, 69, 75, 72, 67, 86, 90, 80, 65, 79]), // betCoinPos
+          findCharCode([65, 82, 73, 84, 83, 87, 74, 67, 89, 90]), // betResulting
+        ]);
 
         storageMethod('s', 'SET_ITEM',
           findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]), // gameState

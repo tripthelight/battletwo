@@ -11,11 +11,17 @@ import basicBetMainCheck from '@/client/js/views/game/indianPocker/fns/common/ba
 
 export default () => {
   const encodeKey = [98, 97, 115, 105, 99, 66, 101, 116]; // basicBet
-  storageMethod(
-    's',
-    'REMOVE_ITEM',
-    findCharCode([65, 72, 66, 75, 85, 69, 87, 79, 88, 86]) // 'betResulting'
-  );
+  // storageMethod(
+  //   's',
+  //   'REMOVE_ITEM',
+  //   findCharCode([65, 82, 73, 84, 83, 87, 74, 67, 89, 90]) // 'betResulting'
+  // );
+  console.log("여기를 안타냐 ?????????????? ");
+
+  storageMethod('s', 'REMOVE_VALUE', '', '', [
+    findCharCode([65, 82, 73, 84, 83, 87, 74, 67, 89, 90]) // 'betResulting'
+  ]);
+
   if (basicBetMainCheck()) {
     return gameEnd();
   } else {

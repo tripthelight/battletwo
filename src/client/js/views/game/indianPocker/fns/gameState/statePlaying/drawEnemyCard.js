@@ -29,6 +29,8 @@ export default () => {
   // const num = findCardNum(encryptVal1);
   // console.log('상대가 보낸 내 화면에서 보이는 상대 카드 : ', num);
   // comnDrawEnemyCard(num);
+  console.log("battleCardNum ------------> ", encryptVal1);
+
   comnDrawEnemyCard(encryptVal1);
 
   // const NUM_RES = arrNumbs.filter((nums) => bcrypt.compareSync(nums, BATTLE_CARD_NUM));

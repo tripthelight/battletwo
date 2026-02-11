@@ -31,7 +31,7 @@ export default () => {
     const HV = findCharCode([89, 68, 86, 69, 84, 66, 77, 87, 65, 90]); // betCoinPos : host : enemy
     enemyBet = betCoinPosArr.filter((item) =>
       item[HK] === HV // host === enemy
-  );
+    );
     enemyBetState = enemyBet.length > 0 ? true : false;
   }
 

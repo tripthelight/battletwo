@@ -101,15 +101,21 @@ export default (data) => {
   // nextStep ----------------------------------------
   if (step === 'nextStep') {
     if (battleCard) {
+      console.log("battleCardNum 받음 ::::::::::::::: 2 ", battleCard);
       storageMethod(
         's',
         'SET_ITEM',
         findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]), // battleCardNum
         battleCard,
       );
+
     }
 
-    // 다음 함수 실행
-    drawPlayerCard();
+    const encryptKey1 = findCharCode([73, 75, 72, 65, 77, 82, 85, 80, 66, 87]); // battleCardNum
+    const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
+    if (encryptVal1 !== null && encryptVal1 !== "") {
+      // 다음 함수 실행
+      drawPlayerCard();
+    }
   }
 };

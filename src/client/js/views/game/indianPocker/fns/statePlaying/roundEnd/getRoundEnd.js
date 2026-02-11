@@ -41,7 +41,7 @@ export const GET_ROUND_END = {
     storageMethod( // refresh check
       's',
       'SET_ITEM',
-      findCharCode([65, 72, 66, 75, 85, 69, 87, 79, 88, 86]), // betResulting
+      findCharCode([65, 82, 73, 84, 83, 87, 74, 67, 89, 90]), // betResulting
       X.enc(decodeTF(_t([107, 102, 114, 117]))) // "kfru" : true
     );
     // storageMethod('s', 'REMOVE_ITEM', 'drewFlipCardMode');
@@ -652,6 +652,7 @@ export const GET_ROUND_END = {
         }
       })
       .catch((err) => {
+        console.warn("err : ", err)
         // request('opponentFouls', { message: err });
         errorManagement({ errCase: 'errorComn', message: 'error - getRoundEnd.js - encryptCardNumbers :: ' + err });
         return;

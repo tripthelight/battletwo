@@ -19,7 +19,7 @@ export default (_data) => {
         // const BET_RESULTING = window.sessionStorage.betResulting;
         // if (BET_RESULTING && BET_RESULTING === 'true') {
 
-        const encryptK1 = findCharCode([65, 72, 66, 75, 85, 69, 87, 79, 88, 86]); // betResulting
+        const encryptK1 = findCharCode([65, 82, 73, 84, 83, 87, 74, 67, 89, 90]); // betResulting
         const encryptV1 = storageMethod("s", "GET_ITEM", encryptK1);
         if (encryptV1 !== null && encryptV1 !== '' && X.dec(encryptV1)) {
           // round end 화면에서 drew일 때 새로고침하면,
