@@ -20,6 +20,7 @@ export default (_host, _x, _y) => {
   ];
   const KS = [
     findCharCode([89, 68, 86, 69, 84, 66, 77, 87, 65, 90]), // betCoinPos : host : enemy
+    findCharCode([73, 87, 86, 82, 85, 84, 79, 68, 90, 66]), // betCoinPos : host : player
   ];
   /* const POS_COIN = {
     host: _host,
@@ -28,7 +29,7 @@ export default (_host, _x, _y) => {
   }; */
   const POS_COIN = betCoinsData(K,
     [
-      KS[0], // host : enemy
+      _host === 'player' ? KS[1] : KS[0], // host: _host
       o(_x), // translateX
       o(_y), // translateY
     ]

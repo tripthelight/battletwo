@@ -130,14 +130,14 @@ export default (_num, _clickBtn, _act) => {
           // call을 받은 PEER
         };
 
-        const numCoin = (_k) => dec(storageMethod("s", "GET_ITEM", _k));
+        // const numCoin = (_k) => dec(storageMethod("s", "GET_ITEM", _k));
 
-        console.log("coinsEnemy :::::::::::: ", numCoin(encryptKey4));
-        console.log("coinsEnemyBet ::::::::: ", numCoin(encryptKey5));
-        console.log("coinsEnemyExtBet :::::: ", numCoin(encryptKey6));
-        console.log("coinsPlayer :::::::::::: ", numCoin(encryptKey16));
-        console.log("coinsPlayerBet ::::::::: ", numCoin(encryptKey17));
-        console.log("coinsPlayerExtBet :::::: ", numCoin(encryptKey18));
+        // console.log("coinsEnemy :::::::::::: ", numCoin(encryptKey4));
+        // console.log("coinsEnemyBet ::::::::: ", numCoin(encryptKey5));
+        // console.log("coinsEnemyExtBet :::::: ", numCoin(encryptKey6));
+        // console.log("coinsPlayer :::::::::::: ", numCoin(encryptKey16));
+        // console.log("coinsPlayerBet ::::::::: ", numCoin(encryptKey17));
+        // console.log("coinsPlayerExtBet :::::: ", numCoin(encryptKey18));
 
       };
 

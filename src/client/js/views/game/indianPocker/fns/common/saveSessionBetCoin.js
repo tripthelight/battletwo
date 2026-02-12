@@ -83,7 +83,7 @@ export default (data) => {
     // enc(JSON.parse(encryptVal1_2).filter((coins) => coins.host === 'player').length)
     enc(JSON.parse(encryptVal1_2).filter((coins) =>
       coins[K[0]] === KS[0] // host === player
-  ).length)
+    ).length)
   );
 
   const encryptKey4 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState

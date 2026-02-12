@@ -1,10 +1,10 @@
-dobta
+xgviu
 
-const B = "dobta"
+const B = "xgviu"
 new TextEncoder().encode(B);
 
 
 
-const A = [100, 111, 98, 116, 97];
+const A = [120, 103, 118, 105, 117];
 new TextDecoder().decode(new Uint8Array(A));
 

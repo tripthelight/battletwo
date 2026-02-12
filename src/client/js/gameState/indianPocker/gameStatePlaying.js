@@ -9,17 +9,6 @@ import { STATE_PLAYING } from '@/client/js/views/game/indianPocker/fns/gameState
 // import reload from '@/client/js/module/reload';
 
 export default () => {
-  // 이전 게임에서 FOLD 한 경우 playing 새로 진입 시 모두 제거
-  // storageMethod('s', 'REMOVE_ITEM', 'coinsEnemyLocalFold');
-  storageMethod('s', 'REMOVE_ARR', '', '', [
-    findCharCode([86, 90, 81, 77, 74, 72, 88, 83, 65, 80]), // coinsEnemyLocalFold
-    findCharCode([80, 78, 65, 74, 82, 70, 66, 67, 81, 69]), // coinsPlayerLocalFold
-    findCharCode([79, 90, 74, 71, 78, 89, 69, 82, 88, 84]), // coinsEnemyRemoteFold
-    findCharCode([87, 68, 77, 88, 86, 90, 75, 79, 74, 82]), // coinsPlayerRemoteFold
-    findCharCode([66, 65, 81, 76, 84, 71, 67, 86, 82, 83]), // foldUser
-    findCharCode([65, 72, 66, 75, 85, 69, 87, 79, 88, 86])  // foldState
-  ]);
-
   LOADING_EVENT.show();
 
   const encryptKey1 = findCharCode([65, 82, 73, 84, 83, 87, 74, 67, 89, 90]); // betResulting
@@ -27,7 +16,6 @@ export default () => {
   // X.enc(decodeTF(textDE([115, 102, 104, 97]))) // "sfha" : true
 
   console.log("betResulting -------> ", encryptVal1 !== null && encryptVal1 !== '' ? X.dec(encryptVal1) : 'null');
-
 
   if (encryptVal1 !== null && encryptVal1 !== '' && X.dec(encryptVal1)) {
     // call / raise / allin 상태에서 새로고침
@@ -43,6 +31,17 @@ export default () => {
     //   [98, 97, 115, 105, 99, 66, 101, 116], // basicBet
     // );
   } else {
+    // 이전 게임에서 FOLD 한 경우 playing 새로 진입 시 모두 제거
+    // storageMethod('s', 'REMOVE_ITEM', 'coinsEnemyLocalFold');
+    storageMethod('s', 'REMOVE_ARR', '', '', [
+      findCharCode([86, 90, 81, 77, 74, 72, 88, 83, 65, 80]), // coinsEnemyLocalFold
+      findCharCode([80, 78, 65, 74, 82, 70, 66, 67, 81, 69]), // coinsPlayerLocalFold
+      findCharCode([79, 90, 74, 71, 78, 89, 69, 82, 88, 84]), // coinsEnemyRemoteFold
+      findCharCode([87, 68, 77, 88, 86, 90, 75, 79, 74, 82]), // coinsPlayerRemoteFold
+      findCharCode([66, 65, 81, 76, 84, 71, 67, 86, 82, 83]), // foldUser
+      findCharCode([65, 72, 66, 75, 85, 69, 87, 79, 88, 86])  // foldState
+    ]);
+
     STATE_PLAYING.main();
   }
 

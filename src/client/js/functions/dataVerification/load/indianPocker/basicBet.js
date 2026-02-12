@@ -13,6 +13,8 @@ import storageKeyDeleteCheck from '@/client/js/functions/dataVerification/load/s
 export const BASIC_BET_DATA_HANDLER = {
   // gameState : basicBet에서 reload 한 경우
   handleReload(storageKeys) {
+    console.log("storageKeys :::::::::::::::::: ", storageKeys);
+
     if (storageKeyDeleteCheck(storageKeys)) {
       throw throwObj('sessionStorageLoss', 'basicBet delete sessionStorage.');
     };

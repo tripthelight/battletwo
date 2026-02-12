@@ -5,11 +5,14 @@
  */
 export default function (storageKeys) {
   let result = false;
+  let idx = 0;
   for (const key of storageKeys) {
     if (window.sessionStorage.getItem(key) === null) {
+      console.log('key :::: ' + idx + ' :::: 없음');
       result = true;
       break;
     };
+    idx++;
   };
   return result;
 };

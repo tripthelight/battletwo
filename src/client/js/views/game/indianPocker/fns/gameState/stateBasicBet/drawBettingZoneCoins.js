@@ -1,5 +1,6 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
+import { deobfuscateInt32 as d } from '@/client/js/module/crypts/encryptNumber';
 import drawPlayerBlock from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/drawPlayerBlock';
 import posClock from '@/client/js/views/game/indianPocker/fns/common/posClock';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
@@ -52,8 +53,7 @@ export default () => {
     // if (BET_COIN_ARR[i].host === 'enemy') liEl.classList.add('e');
     if (BET_COIN_ARR[i][K[0]] === KS[0]) // host === enemy
       liEl.classList.add('e');
-    // liEl.style.transform = 'translate(' + BET_COIN_ARR[i].translateX + 'px, ' + BET_COIN_ARR[i].translateY + 'px)';
-    liEl.style.transform = 'translate(' + BET_COIN_ARR[i][K[1]] + 'px, ' + BET_COIN_ARR[i][K[2]] + 'px)';
+    liEl.style.transform = 'translate(' + d(BET_COIN_ARR[i][K[1]]) + 'px, ' + d(BET_COIN_ARR[i][K[2]]) + 'px)';
     elem.appendChild(liEl);
   }
   BETTING_ZONE.appendChild(elem);

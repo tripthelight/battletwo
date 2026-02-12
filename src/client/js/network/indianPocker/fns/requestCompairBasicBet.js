@@ -107,7 +107,6 @@ export default async (_data) => {
     const encryptKey3 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
     const encryptVal3 = storageMethod("s", "GET_ITEM", encryptKey3);
     const compairBetUserFirst = compairBoolStr(decryptVal3, X.dec(encryptVal3)); // betUserFirst
-
     if (compairBetUser || compairBetUserFirst) {
       const message = {
         bat: {

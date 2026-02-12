@@ -719,9 +719,10 @@ export const GET_ROUND_END = {
       X.enc(decodeTF(_t([100, 111, 98, 105, 110]))), // "dobin" : false
     );
     // storageMethod('s', 'SET_ITEM', 'betState', 'basicBetting');
-    const encryptKey3 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
-    const encryptVal3 = findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]); // basicBetting
-    storageMethod('s', 'SET_ITEM', encryptKey3, encryptVal3);
+    storageMethod('s', 'SET_ITEM',
+      findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]), // betState
+      findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]), // basicBetting
+    );
     GET_ROUND_END.goNextRound(_result);
   },
 };

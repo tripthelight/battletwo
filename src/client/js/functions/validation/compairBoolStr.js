@@ -14,7 +14,7 @@ export default function (remote, local) {
   // findCharCode([...])는 기존 코드의 동일 util을 사용한다고 가정합니다.
   const T = X.enc(decodeTF(_t([99, 102, 112, 97])));        // "cfpa"   - "true" 토큰
   const F = X.enc(decodeTF(_t([100, 113, 118, 116, 110]))); // "dqvtn"  - "false" 토큰
-  const TOK = [T, F]; // index 0 -> T, index 1 -> F
+  const TOK = [X.dec(T), X.dec(F)]; // index 0 -> T, index 1 -> F
 
   // 빠른 타입 판별(난독화 겸용)
   const isStr = (v) => (typeof v === 'string');
