@@ -5,7 +5,9 @@ import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import _t from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
+import { getRL } from '@/client/js/module/webRTC/connectSignaling';
 import sessionInit from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/sessionInit';
+
 
 // _data 배열이 두자리 숫자 8개의 배열인지 아닌지 확인
 const isTwoDigitArrayOf8 = (arr) =>
@@ -40,7 +42,8 @@ export default (_data) => {
       if (
         encryptVal1 !== null &&
         encryptVal1 !== '' &&
-        X.dec(encryptVal1)
+        X.dec(encryptVal1) &&
+        getRL(true) // ** 필수코드 : 새로고침을 false로 해놔야 CHOICE_CARD_DATA_HANDLER.handleReload로 안감
       ) {
         // storageMethod('s', 'REMOVE_ITEM', 'playingReloadUser');
         // storageMethod('s', 'REMOVE_ITEM', encryptKey1); // playingReloadUser
