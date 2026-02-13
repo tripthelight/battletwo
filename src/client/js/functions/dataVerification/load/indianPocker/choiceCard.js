@@ -23,7 +23,7 @@ export const CHOICE_CARD_DATA_HANDLER = {
     const encryptKey1 = storageKeys.find((item) => item === findCharCode([77, 68, 73, 90, 74, 72, 86, 71, 85, 87])); // playerFirstNumber
     if (encryptKey1) {
       const encryptVal = window.sessionStorage.getItem(encryptKey1);
-      if (encryptVal !== '') {
+      if (encryptVal !== null && encryptVal !== '') {
         // selectCard.local = cardNumDecryption(encryptVal);
         selectCard.local = encryptVal;
       }
@@ -32,7 +32,7 @@ export const CHOICE_CARD_DATA_HANDLER = {
     const encryptKey2 = storageKeys.find((item) => item === findCharCode([81, 67, 82, 74, 87, 76, 89, 79, 83, 85])); // enemyFirstNumber
     if (encryptKey2) {
       const encryptVal = window.sessionStorage.getItem(encryptKey2);
-      if (encryptVal !== '') {
+      if (encryptVal !== null && encryptVal !== '') {
         // selectCard.remote = cardNumDecryption(encryptVal);
         selectCard.remote = encryptVal;
       }
@@ -40,20 +40,21 @@ export const CHOICE_CARD_DATA_HANDLER = {
 
     const P1 = storageMethod("s", "GET_ITEM", findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88])); // betUser
     const P2 = storageMethod("s", "GET_ITEM", findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78])); // betUserFirst
+
     // local, remote player 모두 선택 했을 때, betUser/betUserFirst 체크를 위해 보냄
     const params = {
       encryptVal1: selectCard.local,
       encryptVal2: selectCard.remote,
       // encryptVal3: booleanReturn([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]),
-      encryptVal3: X.dec(P1), // betUser
+      encryptVal3: !P1 ? '' : X.dec(P1), // betUser
       // encryptVal4: booleanReturn([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]),
-      encryptVal4: X.dec(P2), // betUserFirst
+      encryptVal4: !P2 ? '' : X.dec(P2), // betUserFirst
     };
 
     // 같은 카드였던 상태에서 내가 팝업 x 버튼 먼저 누르고 대기 상태 일 경우
     const encryptKey3 = findCharCode([79, 88, 77, 84, 87, 86, 83, 69, 89, 73]); // tieWait
     const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
-    if (encryptVal3 !== '' && X.dec(encryptVal3)) {
+    if (encryptVal3 !== null && encryptVal3 !== '' && X.dec(encryptVal3)) {
       // tieWait === true
       request('requestCompairChoiceCard', { remoteStorage: params, tieWait: true });
       return;

@@ -1,4 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import X from '@/client/js/module/crypts/bool-obf';
 import cardNumDecryption from '@/client/js/functions/bcrypt/cardNumDecryption';
 // import booleanCheck from '@/client/js/functions/validation/booleanCheck';
@@ -40,11 +41,11 @@ export default async (_data) => {
     // const compairBetUser = compairBoolStr(remoteStorage.encryptVal3, booleanCheck([72, 70, 85, 67, 83, 68, 89, 82, 77, 88])); // betUser
     const encryptKey4 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
     const encryptVal4 = storageMethod("s", "GET_ITEM", encryptKey4);
-    const compairBetUser = compairBoolStr(remoteStorage.encryptVal3, X.dec(encryptVal4)); // betUser
+    const compairBetUser = compairBoolStr(remoteStorage.encryptVal3, !encryptVal4 ? '' : X.dec(encryptVal4)); // betUser
     // const compairBetUserFirst = compairBoolStr(remoteStorage.encryptVal4, booleanCheck([90, 89, 80, 70, 68, 84, 65, 77, 74, 78])); // betUserFirst
     const encryptKey5 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]); // betUserFirst
     const encryptVal5 = storageMethod("s", "GET_ITEM", encryptKey5);
-    const compairBetUserFirst = compairBoolStr(remoteStorage.encryptVal4, X.dec(encryptVal5)); // betUserFirst
+    const compairBetUserFirst = compairBoolStr(remoteStorage.encryptVal4, !encryptVal5 ? '' : X.dec(encryptVal5)); // betUserFirst
 
     if (compairRemote || compairLocal || compairBetUser || compairBetUserFirst) {
       const message = {
