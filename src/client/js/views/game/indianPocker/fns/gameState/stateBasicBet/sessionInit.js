@@ -6,8 +6,14 @@ import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import textDE from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import removeElement from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/removeElement';
+import { getRL } from '@/client/js/module/webRTC/connectSignaling';
 
-export default () => {
+export default (_reloadReset) => {
+  if (_reloadReset) {
+    // round 결과 animation 중 두 PEER 모두 새로고침 상태에서 진입하면 reload 를 reset 시켜야함
+    getRL(true);
+  }
+
   const encryptKey1 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer
   const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
   const encryptKey2 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
@@ -52,6 +58,7 @@ export default () => {
 
   // 나의 기본배팅 여부(coinsPlayerBet) : true / false
   if (
+    encryptVal5 !== null &&
     encryptVal5 !== '' &&
     dec(encryptVal5) === encryptNumOfStr(textDE([119, 101, 101, 114])) // weer : 0001
   ) {

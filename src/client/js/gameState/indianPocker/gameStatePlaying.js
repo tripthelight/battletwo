@@ -26,10 +26,10 @@ export default () => {
         - STATE_PLAYING.drew() 로 이동
      */
     console.log("call / raise / allin 상태에서 새로고침 ----------- ");
-    // request(
-    //   'remoteReloadBasicBet',
-    //   [98, 97, 115, 105, 99, 66, 101, 116], // basicBet
-    // );
+    request(
+      'requestDoubleReload',
+      [98, 97, 115, 105, 99, 66, 101, 116], // basicBet
+    );
   } else {
     // 이전 게임에서 FOLD 한 경우 playing 새로 진입 시 모두 제거
     // storageMethod('s', 'REMOVE_ITEM', 'coinsEnemyLocalFold');

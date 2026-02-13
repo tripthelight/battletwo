@@ -10,6 +10,8 @@ import receiveEnemyCard from '@/client/js/views/game/indianPocker/fns/gameState/
 import enterDrewResult from '@/client/js/network/indianPocker/fns/enterDrewResult';
 import enterPlayingResult from '@/client/js/network/indianPocker/fns/enterPlayingResult';
 import remoteReloadBasicBetResult from '@/client/js/network/indianPocker/fns/remoteReloadBasicBetResult';
+import requestDoubleReload from '@/client/js/network/indianPocker/fns/requestDoubleReload';
+import responseDoubleReload from '@/client/js/network/indianPocker/fns/responseDoubleReload';
 import enterBasicBetResult from '@/client/js/network/indianPocker/fns/enterBasicBetResult';
 import basicBettingResult from '@/client/js/network/indianPocker/fns/basicBettingResult';
 import basicBettingCompleted from '@/client/js/network/indianPocker/fns/basicBettingCompleted';
@@ -55,6 +57,8 @@ export const RESPONSE_HANDLERS = {
   enemyCardNum: (msg) => receiveEnemyCard(msg.cardNum),
   enterDrew: (msg) => enterDrewResult(msg.gameState),
   remoteReloadBasicBet: (msg) => remoteReloadBasicBetResult(msg.gameState),
+  requestDoubleReload: (msg) => requestDoubleReload(msg.gameState),
+  responseDoubleReload: (msg) => responseDoubleReload(msg.gameState),
   enterBasicBet: (msg) => enterBasicBetResult(msg.gameState),
   drewRefresh: (msg) => drewRefreshResult(msg.value),
   drewRefreshReturn: (msg) => drewRefreshReturnResult(msg.value),
