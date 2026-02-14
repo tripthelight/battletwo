@@ -20,6 +20,7 @@ const isTwoDigitArrayOf8 = (arr) =>
  * playing 결과 animation 중 새로고침 한 peer > 상대도 역시 새로고침
  * 여기를 왔다는 건, 내가 새로고침 했는데, 상대도 새로고침 해서 상대 역시 대기중임
  * 마지막 새로고침 당한 PEER가 받아서, 다음 단계로 진행시킴
+ * 상대의 새로고침을 받았을 때, 나는
  * @param {Array<number>} _data basicBet storage key
  * @returns null
  */
@@ -41,7 +42,6 @@ export default (_data) => {
         encryptVal1 !== null
         && encryptVal1 !== ''
         && X.dec(encryptVal1)
-        // && getRL(true) // ** 필수코드 : 새로고침을 false로 해놔야 CHOICE_CARD_DATA_HANDLER.handleReload로 안감
       ) {
         request(
           'responseDoubleReload',

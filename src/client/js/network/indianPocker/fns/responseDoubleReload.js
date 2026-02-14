@@ -40,7 +40,6 @@ export default (_data) => {
         encryptVal1 !== null
         && encryptVal1 !== ''
         && X.dec(encryptVal1)
-        // && getRL(true) // ** 필수코드 : 새로고침을 false로 해놔야 CHOICE_CARD_DATA_HANDLER.handleReload로 안감
       ) {
         reloadBasicBetComn();
         sessionInit(true);

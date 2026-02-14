@@ -5,6 +5,7 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 import X from '@/client/js/module/crypts/bool-obf';
 import { request } from '@/client/js/network/indianPocker/request';
 import { STATE_PLAYING } from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/init';
+import { getRL } from '@/client/js/module/webRTC/connectSignaling';
 // import REFRESH_STATE_PLAYING from '@/client/js/refresh/indianpoker/refreshPlaying/refreshInit';
 // import reload from '@/client/js/module/reload';
 
@@ -41,6 +42,11 @@ export default () => {
       findCharCode([66, 65, 81, 76, 84, 71, 67, 86, 82, 83]), // foldUser
       findCharCode([65, 72, 66, 75, 85, 69, 87, 79, 88, 86])  // foldState
     ]);
+
+    // 새로고침 관련 ------------------------------------------------------
+    storageMethod('s', 'EMPTY_VALUE', findCharCode([75, 81, 83, 80, 89, 88, 86, 72, 82, 77])); // playingReloadUser
+    getRL(true); // ** 필수코드 : 새로고침을 false로 해놔야 CHOICE_CARD_DATA_HANDLER.handleReload로 안감
+    // ------------------------------------------------------------------
 
     STATE_PLAYING.main();
   }
