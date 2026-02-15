@@ -435,6 +435,10 @@ export const obfuscationList = {
   blackAndWhite1: () => {
     return {
       /*
+      GAME_NAME: {
+        k: 'OKHPUWZYVA', // [79, 75, 72, 80, 85, 87, 90, 89, 86, 65]
+        v: 'EBMVIZGNYO', // blackAndWhite1 -> [69, 66, 77, 86, 73, 90, 71, 78, 89, 79]
+      },
       GAME_STATE: {
         k: 'YOEGRSWKVU', // [89, 79, 69, 71, 82, 83, 87, 75, 86, 85]
         v: {
@@ -445,6 +449,9 @@ export const obfuscationList = {
           playing: 'KDCGRWJIBN', // [75, 68, 67, 71, 82, 87, 74, 73, 66, 78]
           gameOver: 'CDHEZMPQKU', // [67, 68, 72, 69, 90, 77, 80, 81, 75, 85]
         },
+      },
+      GAME_STATE_ALL_KEYS: {
+        k: 'IFACVBSYZP', // [73, 70, 65, 67, 86, 66, 83, 89, 90, 80]
       },
       */
     };

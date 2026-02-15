@@ -26,7 +26,7 @@ async function startGame() {
 
     // 새로 고침 후 재연결인 경우
     if (getRL(false)) {
-      const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
+      const encryptKey = findCharCode([89, 79, 69, 71, 82, 83, 87, 75, 86, 85]); // gameState
       const decryptVal = storageMethod("s", "GET_ITEM", encryptKey);
 
       switch (decryptVal) {
