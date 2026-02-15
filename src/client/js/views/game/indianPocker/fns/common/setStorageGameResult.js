@@ -11,7 +11,7 @@ export default (_gameName, _result) => {
   let data = new Object();
 
   // 완전 처음 data
-  if (_gameName === 'blackandwhite1') {
+  if (_gameName === 'blackAndWhite1') {
     // drew 가 있는 게임일 경우
     let drewCaseResultW = 0;
     let drewCaseResultD = 0;
@@ -43,9 +43,9 @@ export default (_gameName, _result) => {
     if (_gameName === 'taptap') {
       data = { taptap: firstData };
     }
-    // 내가 지금 한 게임이 blackandwhite1 일 때
-    if (_gameName === 'blackandwhite1') {
-      data = { blackandwhite1: firstData };
+    // 내가 지금 한 게임이 blackAndWhite1 일 때
+    if (_gameName === 'blackAndWhite1') {
+      data = { blackAndWhite1: firstData };
     }
     // 내가 지금 한 게임이 indianpoker 일 때
     if (_gameName === 'indianpoker') {
@@ -83,13 +83,13 @@ export default (_gameName, _result) => {
       }
     }
 
-    // 내가 지금 한 게임이 blackandwhite1 일 때
-    if (_gameName === 'blackandwhite1') {
-      if (gameResultArr.blackandwhite1) {
-        // blackandwhite1도 있음
-        w = gameResultArr.blackandwhite1.win;
-        d = gameResultArr.blackandwhite1.drew;
-        l = gameResultArr.blackandwhite1.lose;
+    // 내가 지금 한 게임이 blackAndWhite1 일 때
+    if (_gameName === 'blackAndWhite1') {
+      if (gameResultArr.blackAndWhite1) {
+        // blackAndWhite1도 있음
+        w = gameResultArr.blackAndWhite1.win;
+        d = gameResultArr.blackAndWhite1.drew;
+        l = gameResultArr.blackAndWhite1.lose;
         if (_result === 'win') {
           w += 1;
         }
@@ -104,11 +104,11 @@ export default (_gameName, _result) => {
           drew: d,
           lose: l,
         };
-        gameResultArr.blackandwhite1 = data;
+        gameResultArr.blackAndWhite1 = data;
       } else {
-        // blackandwhite1은 없음
+        // blackAndWhite1은 없음
         gameResultArr = {
-          blackandwhite1: firstData,
+          blackAndWhite1: firstData,
           ...gameResultArr,
         };
       }

@@ -432,6 +432,11 @@ export const obfuscationList = {
       */
     };
   },
+  blackAndWhite1: () => {
+    return {
+      //
+    };
+  },
 };
 
 /**

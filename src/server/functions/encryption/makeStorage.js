@@ -40,9 +40,16 @@ export const MAKE_STORAGE = {
       // oldpair: objkeypair.oldPair,
     };
   },
+  blackAndWhite1: async (_keypair, _role) => {
+    const storageData = convertStructure(transformWithCRC32(obfuscationList.blackAndWhite1(), _keypair, _role));
+    return {
+      storageData: storageData,
+    };
+  },
   functions: () => {
     return {
       indianPocker: MAKE_STORAGE.indianPocker,
+      blackAndWhite1: MAKE_STORAGE.blackAndWhite1,
     };
   },
   findGame: async (_gameName, _gameCode, _role) => {

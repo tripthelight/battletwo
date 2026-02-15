@@ -1,39 +1,45 @@
 import '@/client/assets/scss/game/blackAndWhite1/common';
 import '@/client/js/common/common';
-// import rtcPeer from '@/client/js/webRTC/rtcPeer';
-// import reload from '@/client/js/module/reload';
-// import storageMethod from '@/client/js/module/storage/storageMethod';
-// import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
-// import { request } from '@/client/js/network/blackAndWhite1/request';
+import { LOADING_EVENT } from '@/client/components/popup/full/loading';
+import errorManager from '@/client/js/module/errorHandler/errorManager';
+import initNickName from '@/client/js/functions/initNickName';
+import findNickname from '@/client/js/functions/findNickname';
+import waitPeer from '@/client/js/functions/waitPeer';
+import { connectSignaling, getRL } from '@/client/js/module/webRTC/connectSignaling';
+import deliverToGame from '@/client/js/module/webRTC/reliable/indianPoker/deliverToGame';
+import handleEnvelope from '@/client/js/module/webRTC/reliable/indianPoker/handleEnvelope';
+import findCharCode from '@/client/js/functions/findCharCode';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 
-// onMounted
-/* document.onreadystatechange = async () => {
-  const state = document.readyState;
-  if (state === 'interactive') {
-  } else if (state === 'complete') {
-    try {
-      console.log('blackAndWhite1 init');
-      console.log('reload >>> ', reload);
+LOADING_EVENT.show();
+const GAME_NAME = 'blackAndWhite1';
 
-      // gameName을 sessionStorage에 저장
-      const GAME_NAME = window.sessionStorage.getItem('gameName');
-      if (!GAME_NAME || GAME_NAME !== 'blackAndWhite1') {
-        storageMethod('s', 'SET_ITEM', 'gameName', 'blackAndWhite1');
-      }
+// —————————————————————————————————————————————
+// START GAME ——————————————————————————————————
+// —————————————————————————————————————————————
+async function startGame() {
+  try {
+    waitPeer(2);
 
-      // webRTC 공통
-      await rtcPeer('blackAndWhite1');
-
-      if (reload) {
-        // 새로 고침 후 재연결인 경우
-      } else {
-        //
-      }
-      document.body.onclick = () => {
-        request('bodyClick');
-      };
-    } catch (error) {
-      errorManagement(error);
-    }
+    LOADING_EVENT.hide();
+  } catch (error) {
+    errorManager(error, false);
   }
-}; */
+};
+
+// —————————————————————————————————————————————
+// INIT ————————————————————————————————————————
+// —————————————————————————————————————————————
+async function init() {
+  await initNickName();
+  waitPeer(1, findNickname('localPlayer'));
+  connectSignaling(false, { deliverToGame, handleEnvelope, startGame, gameName: GAME_NAME });
+};
+
+// —————————————————————————————————————————————
+// PAGE SHOW ———————————————————————————————————
+// —————————————————————————————————————————————
+window.addEventListener('pageshow', async () => {
+  await init();
+});
