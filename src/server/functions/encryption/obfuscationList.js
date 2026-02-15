@@ -434,7 +434,19 @@ export const obfuscationList = {
   },
   blackAndWhite1: () => {
     return {
-      //
+      /*
+      GAME_STATE: {
+        k: 'YOEGRSWKVU', // [89, 79, 69, 71, 82, 83, 87, 75, 86, 85]
+        v: {
+          waitEnemy: 'BQNXJPFAZG', // [66, 81, 78, 88, 74, 80, 70, 65, 90, 71]
+          ready: 'HLJSOMTIEA', // [72, 76, 74, 83, 79, 77, 84, 73, 69, 65]
+          waitEnemyShuffle: 'CVPELBMIHG', // [67, 86, 80, 69, 76, 66, 77, 73, 72, 71]
+          setOrder: 'AGQHUKNJVI', // [65, 71, 81, 72, 85, 75, 78, 74, 86, 73]
+          playing: 'KDCGRWJIBN', // [75, 68, 67, 71, 82, 87, 74, 73, 66, 78]
+          gameOver: 'CDHEZMPQKU', // [67, 68, 72, 69, 90, 77, 80, 81, 75, 85]
+        },
+      },
+      */
     };
   },
 };

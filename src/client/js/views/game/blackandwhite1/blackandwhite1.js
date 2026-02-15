@@ -12,6 +12,8 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 
+import blackAndWhite1GameState from '@/client/js/gameState/blackAndWhite1';
+
 LOADING_EVENT.show();
 const GAME_NAME = 'blackAndWhite1';
 
@@ -21,6 +23,50 @@ const GAME_NAME = 'blackAndWhite1';
 async function startGame() {
   try {
     waitPeer(2);
+
+    // 새로 고침 후 재연결인 경우
+    if (getRL(false)) {
+      const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
+      const decryptVal = storageMethod("s", "GET_ITEM", encryptKey);
+
+      switch (decryptVal) {
+        // case 'waitEnemy':
+        case findCharCode([66, 81, 78, 88, 74, 80, 70, 65, 90, 71]):
+          console.log("새로고침 후 : waitEnemy");
+          break;
+        // case 'ready':
+        case findCharCode([72, 76, 74, 83, 79, 77, 84, 73, 69, 65]):
+          console.log("새로고침 후 : ready");
+          blackAndWhite1GameState.ready();
+          break;
+        // case 'waitEnemyShuffle':
+        case findCharCode([67, 86, 80, 69, 76, 66, 77, 73, 72, 71]):
+          console.log("새로고침 후 : waitEnemyShuffle");
+          blackAndWhite1GameState.waitEnemyShuffle();
+          break;
+        // case 'setOrder':
+        case findCharCode([65, 71, 81, 72, 85, 75, 78, 74, 86, 73]):
+          console.log("새로고침 후 : setOrder");
+          blackAndWhite1GameState.setOrder();
+          break;
+        // case 'playing':
+        case findCharCode([75, 68, 67, 71, 82, 87, 74, 73, 66, 78]):
+          console.log("새로고침 후 : playing");
+          blackAndWhite1GameState.playing();
+          break;
+        // case 'gameOver':
+        case findCharCode([67, 68, 72, 69, 90, 77, 80, 81, 75, 85]):
+          console.log("새로고침 후 : gameOver");
+          blackAndWhite1GameState.gameOver();
+          break;
+
+        default:
+          throw throwObj('errorComn', 'refresh gameState failed.');
+      };
+    } else {
+      //
+      blackAndWhite1GameState.ready();
+    }
 
     LOADING_EVENT.hide();
   } catch (error) {
