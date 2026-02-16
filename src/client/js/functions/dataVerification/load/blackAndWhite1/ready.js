@@ -6,6 +6,8 @@ import storageKeyDeleteCheck from '@/client/js/functions/dataVerification/load/s
 
 import cubeReady from '@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/cubeReady';
 import infoShuffle from '@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/infoShuffle';
+import shuffleCube from '@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/shuffleCube';
+import createStartBtn from '@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/createStartBtn';
 
 export const READY_HANDLER = {
   // gameState : ready 에서 reload 한 경우
@@ -13,8 +15,6 @@ export const READY_HANDLER = {
     if (storageKeyDeleteCheck(storageKeys)) {
       throw throwObj('sessionStorageLoss', 'delete sessionStorage.');
     };
-
-    console.log("새로 고침 후 ready 진입 ---------------------------- ");
   },
   // gameState : ready 에 처음 입장
   handleInitialLoad(storageKeys) {
@@ -30,8 +30,9 @@ export const READY_HANDLER = {
     }
 
     // ready 단계에서 필요한 data insert 후 다음 단계 진행
-    console.log("PEER 매칭 후 첫 ready 진입 ---------------------------- ");
     cubeReady();
     infoShuffle();
+    shuffleCube();
+    createStartBtn();
   },
 };

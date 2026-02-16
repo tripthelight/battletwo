@@ -453,6 +453,31 @@ export const obfuscationList = {
       GAME_STATE_ALL_KEYS: {
         k: 'IFACVBSYZP', // [73, 70, 65, 67, 86, 66, 83, 89, 90, 80]
       },
+
+      /**
+       * ready
+       */
+      /*
+      // s: sessionStorage keys
+      MY_SHUFFLE_STATE: {
+        k: 'PHIJYVSBEW' // [80, 72, 73, 74, 89, 86, 83, 66, 69, 87]
+      },
+      ENEMY_SHUFFLE_STATE: {
+        k: 'BOSAYQJDWF' // [66, 79, 83, 65, 89, 81, 74, 68, 87, 70]
+      },
+      ROUND: {
+        k: 'MTSXEURWZO' // [77, 84, 83, 88, 69, 85, 82, 87, 90, 79]
+      },
+      NUM_ARR: {
+        k: 'OMEXDYAFCN' // [79, 77, 69, 88, 68, 89, 65, 70, 67, 78]
+      },
+      PLAYER_NUM_ORDER: {
+        k: 'UVDJEMYPBK' // [85, 86, 68, 74, 69, 77, 89, 80, 66, 75]
+      },
+      ENEMY_CUBE: {
+        k: 'VRXYZHGTJU' // [86, 82, 88, 89, 90, 72, 71, 84, 74, 85]
+      },
+      // e: sessionStorage keys
       */
     };
   },

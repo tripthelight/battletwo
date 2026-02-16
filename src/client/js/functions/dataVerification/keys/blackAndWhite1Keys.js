@@ -16,7 +16,11 @@ export default (gameState) => {
   // gameState: ready
   if (gameState === findCharCode([72, 76, 74, 83, 79, 77, 84, 73, 69, 65])) {
     return [
-
+      findCharCode([80, 72, 73, 74, 89, 86, 83, 66, 69, 87]), // myShuffleState
+      findCharCode([66, 79, 83, 65, 89, 81, 74, 68, 87, 70]), // enemyShuffleState
+      findCharCode([77, 84, 83, 88, 69, 85, 82, 87, 90, 79]), // round
+      findCharCode([79, 77, 69, 88, 68, 89, 65, 70, 67, 78]), // numArr
+      findCharCode([85, 86, 68, 74, 69, 77, 89, 80, 66, 75]), // playerNumOrder
     ];
   };
   // gameState: waitEnemyShuffle

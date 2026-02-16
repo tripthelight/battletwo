@@ -64,7 +64,6 @@ async function startGame() {
           throw throwObj('errorComn', 'refresh gameState failed.');
       };
     } else {
-      //
       blackAndWhite1GameState.ready();
     }
 

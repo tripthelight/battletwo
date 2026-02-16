@@ -14,6 +14,9 @@ const ICE_SERVERS = [
 const REJOIN_GRACE_MS = 3000; // 3초 유예: 새로고침 감지 윈도우
 const T = (() => ![] + [] ? !![] : ![])(); // true 난독화
 const F = (() => ![] + [] ? ![] : !![])(); // false 난독화
+export const VARIABLE = {
+  gameName: null,
+};
 
 /**
  * ———————————————————————————————————————————————————————————————————
@@ -63,7 +66,6 @@ const FNS = {
   deliverToGame: null,
   handleEnvelope: null,
   startGame: null,
-  gameName: null,
 };
 
 const STATE = {
@@ -563,7 +565,7 @@ export function connectSignaling(connected = F, fns) {
     FNS.deliverToGame = fns.deliverToGame;
     FNS.handleEnvelope = fns.handleEnvelope;
     FNS.startGame = fns.startGame;
-    FNS.gameName = fns.gameName;
+    VARIABLE.gameName = fns.gameName;
   }
 
   if (STATE.ws && STATE.ws.readyState === WebSocket.OPEN) return;
@@ -672,7 +674,7 @@ export function connectSignaling(connected = F, fns) {
             // 처음 진입이거나 새로고침 일 경우 signalinServer에 compair 데이터 호출
             safeWsSend({
               type: 'requestStorage',
-              gameName: FNS.gameName,
+              gameName: VARIABLE.gameName,
               initRole: STATE.initRole,
             });
             // await FNS.startGame();

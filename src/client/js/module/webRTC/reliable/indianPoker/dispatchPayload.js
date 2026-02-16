@@ -1,5 +1,6 @@
-import { setReady, maybeResolveReady } from '@/client/js/module/webRTC/connectSignaling';
-import { RESPONSE_HANDLERS } from '@/client/js/network/indianPocker/responseHandlers';
+import { VARIABLE, setReady, maybeResolveReady } from '@/client/js/module/webRTC/connectSignaling';
+import { RESPONSE_HANDLERS as RH_IP } from '@/client/js/network/indianPocker/responseHandlers';
+import { RESPONSE_HANDLERS as RH_BW1 } from '@/client/js/network/blackAndWhite1/responseHandlers';
 
 // -------------------- [핵심] 게임 이벤트 라우터 --------------------
 // 컨벤션: payload = { type: '네임스페이스/이벤트', ... } 형태 권장
@@ -94,8 +95,17 @@ export function dispatchPayload(payload, meta) {
     console.warn('Unknown payload (no type):', payload, meta);
     return;
   }
+
+  let PAYLOAD_TYPE = null;
+  switch (VARIABLE.gameName) {
+    case "indianPocker": PAYLOAD_TYPE = RH_IP; break;
+    case "blackAndWhite1": PAYLOAD_TYPE = RH_BW1; break;
+    default: break;
+  };
+
   // const handler = Handlers[payload.type];
-  const handler = payload.type === 'ROUND/START' ? Handlers[payload.type] : RESPONSE_HANDLERS[payload.type];
+  // const handler = payload.type === 'ROUND/START' ? Handlers[payload.type] : RESPONSE_HANDLERS[payload.type];
+  const handler = payload.type === 'ROUND/START' ? Handlers[payload.type] : PAYLOAD_TYPE[payload.type];
   if (!handler) {
     console.warn('No handler for type:', payload.type, payload, meta);
     return;
