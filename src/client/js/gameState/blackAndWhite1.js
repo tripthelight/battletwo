@@ -12,6 +12,8 @@ export default {
     storageMethod('s', 'SET_ITEM', encryptKey, findCharCode([66, 81, 78, 88, 74, 80, 70, 65, 90, 71])); // waitEnemy
   },
   ready: () => {
+    // waitEnemyShuffle를 갔든 PEER가
+    // 새로고침 당하면 왜 여기로 오지?
     const encryptKey = findCharCode([89, 79, 69, 71, 82, 83, 87, 75, 86, 85]); // gameState
     storageMethod('s', 'SET_ITEM', encryptKey, findCharCode([72, 76, 74, 83, 79, 77, 84, 73, 69, 65])); // ready
     gameStateReady();
@@ -19,6 +21,9 @@ export default {
   waitEnemyShuffle: () => {
     const encryptKey = findCharCode([89, 79, 69, 71, 82, 83, 87, 75, 86, 85]); // gameState
     storageMethod('s', 'SET_ITEM', encryptKey, findCharCode([67, 86, 80, 69, 76, 66, 77, 73, 72, 71])); // waitEnemyShuffle
+
+    console.log("waitEnemyShuffle 로 바뀜 ---------- 2 ");
+
     gameStateWaitEnemyShuffle();
   },
   setOrder: () => {

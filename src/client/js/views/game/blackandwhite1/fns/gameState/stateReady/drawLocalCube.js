@@ -29,7 +29,6 @@ export default () => {
   PLAYER_CUBE_LIST_EL.classList.add("cube");
   for (let i = 0; i < 9; i++) {
     const PLAYER_CUBES_EL = document.createElement("li");
-    PLAYER_CUBES_EL.classList.add();
     if (encryptVal1 !== null && encryptVal1 !== "") {
       const nums = encryptVal1.split(",").map(Number);
       PLAYER_CUBES_EL.innerHTML = nums[i];

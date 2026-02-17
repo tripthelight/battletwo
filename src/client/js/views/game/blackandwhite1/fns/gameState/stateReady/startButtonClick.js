@@ -30,6 +30,8 @@ export default (btnStart) => {
     } else {
       // enemyShuffleState === false
       request('startCheck', { rdy: false });
+      console.log("waitEnemyShuffle 로 바뀜 ---------- 1 ");
+
       gameState.waitEnemyShuffle();
     };
 
