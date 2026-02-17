@@ -1,4 +1,6 @@
 import { text } from '@/client/js/functions/language';
+import shuffleCube from '@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/shuffleCube';
+import createStartBtn from '@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/createStartBtn';
 
 export default () => {
   const INFO_SHUFFLE_EL = document.querySelector(".info-shuffle");
@@ -16,5 +18,9 @@ export default () => {
         isElem.style.top = TOP_STYLE_EL.clientHeight - isElem.clientHeight + "px";
       }
     }
-  }
+  };
+
+  // 다음 단계
+  shuffleCube();
+  createStartBtn();
 };

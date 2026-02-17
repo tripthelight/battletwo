@@ -5,7 +5,7 @@ import gameState from '@/client/js/gameState/blackAndWhite1';
 import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import _t from '@/client/js/module/crypts/textDE';
-import { enc, dec } from '@/client/js/module/crypts/obf8lower';
+import { enc } from '@/client/js/module/crypts/obf8lower';
 import textDE from '@/client/js/module/crypts/textDE';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import cubeNumCheck from "@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/cubeNumCheck";

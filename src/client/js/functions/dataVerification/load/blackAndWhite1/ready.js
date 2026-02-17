@@ -1,13 +1,8 @@
-import findCharCode from '@/client/js/functions/findCharCode';
-import { request } from '@/client/js/network/indianPocker/request';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import storageKeyDeleteCheck from '@/client/js/functions/dataVerification/load/storageKeyDeleteCheck';
 
-import cubeReady from '@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/cubeReady';
-import infoShuffle from '@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/infoShuffle';
-import shuffleCube from '@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/shuffleCube';
-import createStartBtn from '@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/createStartBtn';
+import drawLocalCube from '@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/drawLocalCube';
 
 export const READY_HANDLER = {
   // gameState : ready 에서 reload 한 경우
@@ -15,6 +10,8 @@ export const READY_HANDLER = {
     if (storageKeyDeleteCheck(storageKeys)) {
       throw throwObj('sessionStorageLoss', 'delete sessionStorage.');
     };
+
+    drawLocalCube();
   },
   // gameState : ready 에 처음 입장
   handleInitialLoad(storageKeys) {
@@ -30,9 +27,6 @@ export const READY_HANDLER = {
     }
 
     // ready 단계에서 필요한 data insert 후 다음 단계 진행
-    cubeReady();
-    infoShuffle();
-    shuffleCube();
-    createStartBtn();
+    drawLocalCube();
   },
 };
