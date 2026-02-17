@@ -7,7 +7,7 @@ import cubeReady from '@/client/js/views/game/blackAndWhite1/fns/gameState/state
 
 export default () => {
   const GAME_SCENE = document.getElementById("gameScene");
-  if (!GAME_SCENE) throw throwObj('sessionStorageLoss', 'sessionStorage key failed from choiceCardClick event.');
+  if (!GAME_SCENE) throw throwObj('elementLoss', 'drawLocalCube.js - gameScene failed.');
   const ENEMY_BLOCK = GAME_SCENE.querySelector(".enemy-block");
   const PLAYER_BLOCK = GAME_SCENE.querySelector(".player-block");
 
