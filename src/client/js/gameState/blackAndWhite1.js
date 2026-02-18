@@ -21,9 +21,6 @@ export default {
   waitEnemyShuffle: () => {
     const encryptKey = findCharCode([89, 79, 69, 71, 82, 83, 87, 75, 86, 85]); // gameState
     storageMethod('s', 'SET_ITEM', encryptKey, findCharCode([67, 86, 80, 69, 76, 66, 77, 73, 72, 71])); // waitEnemyShuffle
-
-    console.log("waitEnemyShuffle 로 바뀜 ---------- 2 ");
-
     gameStateWaitEnemyShuffle();
   },
   setOrder: () => {

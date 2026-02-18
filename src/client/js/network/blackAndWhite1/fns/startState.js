@@ -20,7 +20,7 @@ export default (_data) => {
             X.enc(decodeTF(_t([99, 109, 112, 97]))) // "cmpa" : true
           );
           break;
-        case "allReady":
+          case "allReady":
           // enemyShuffleState : true
           storageMethod("s", "SET_ITEM",
             findCharCode([66, 79, 83, 65, 89, 81, 74, 68, 87, 70]), // enemyShuffleState

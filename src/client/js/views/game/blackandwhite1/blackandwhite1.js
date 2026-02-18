@@ -24,11 +24,11 @@ async function startGame() {
   try {
     waitPeer(2);
 
+    const encryptKey = findCharCode([89, 79, 69, 71, 82, 83, 87, 75, 86, 85]); // gameState
+    const decryptVal = storageMethod("s", "GET_ITEM", encryptKey);
+
     // 새로 고침 후 재연결인 경우
     if (getRL(false)) {
-      const encryptKey = findCharCode([89, 79, 69, 71, 82, 83, 87, 75, 86, 85]); // gameState
-      const decryptVal = storageMethod("s", "GET_ITEM", encryptKey);
-
       switch (decryptVal) {
         // case 'waitEnemy':
         case findCharCode([66, 81, 78, 88, 74, 80, 70, 65, 90, 71]):
@@ -64,9 +64,21 @@ async function startGame() {
           throw throwObj('errorComn', 'refresh gameState failed.');
       };
     } else {
-      blackAndWhite1GameState.ready();
-    }
-
+      // 흑과백은 처음 큐브를 섞을 때, 먼저 섞은 PEER가 생기고,
+      // 두 PEER의 상태가 달라지는 경우가 있음
+      if (decryptVal !== null && decryptVal !== "") {
+        switch (decryptVal) {
+          case findCharCode([72, 76, 74, 83, 79, 77, 84, 73, 69, 65]): blackAndWhite1GameState.ready(); break;
+          case findCharCode([67, 86, 80, 69, 76, 66, 77, 73, 72, 71]): blackAndWhite1GameState.waitEnemyShuffle(); break;
+          case findCharCode([65, 71, 81, 72, 85, 75, 78, 74, 86, 73]): blackAndWhite1GameState.setOrder(); break;
+          case findCharCode([75, 68, 67, 71, 82, 87, 74, 73, 66, 78]): blackAndWhite1GameState.playing(); break;
+          case findCharCode([67, 68, 72, 69, 90, 77, 80, 81, 75, 85]): blackAndWhite1GameState.gameOver(); break;
+          default: throw throwObj('errorComn', 'init gameState failed.');
+        };
+      } else {
+        blackAndWhite1GameState.ready();
+      }
+    };
     LOADING_EVENT.hide();
   } catch (error) {
     errorManager(error, false);

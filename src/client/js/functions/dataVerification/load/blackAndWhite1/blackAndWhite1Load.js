@@ -1,7 +1,7 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import { getRL } from '@/client/js/module/webRTC/connectSignaling';
 import { READY_HANDLER } from '@/client/js/functions/dataVerification/load/blackAndWhite1/ready';
 import { WAIT_ENEMY_SHUFFLE_HANDLER } from '@/client/js/functions/dataVerification/load/blackAndWhite1/waitEnemyShuffle';
-import { getRL } from '@/client/js/module/webRTC/connectSignaling';
 
 /**
  * blackAndWhite1
