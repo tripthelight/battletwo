@@ -2,6 +2,7 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import { getRL } from '@/client/js/module/webRTC/connectSignaling';
 import { READY_HANDLER } from '@/client/js/functions/dataVerification/load/blackAndWhite1/ready';
 import { WAIT_ENEMY_SHUFFLE_HANDLER } from '@/client/js/functions/dataVerification/load/blackAndWhite1/waitEnemyShuffle';
+import { SET_ORDER_HANDLER } from '@/client/js/functions/dataVerification/load/blackAndWhite1/setOrder';
 
 /**
  * blackAndWhite1
@@ -28,6 +29,17 @@ export default (gameState, storageKeys) => {
       WAIT_ENEMY_SHUFFLE_HANDLER.handleReload(storageKeys);
     } else {
       WAIT_ENEMY_SHUFFLE_HANDLER.handleInitialLoad(storageKeys);
+    };
+  };
+
+  // ────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  // gameState: setOrder
+  // ────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  if (gameState === findCharCode([65, 71, 81, 72, 85, 75, 78, 74, 86, 73])) {
+    if (getRL(true)) { // 조건 검사 시 true일 경우, 즉시 false로 변경됨
+      SET_ORDER_HANDLER.handleReload(storageKeys);
+    } else {
+      SET_ORDER_HANDLER.handleInitialLoad(storageKeys);
     };
   };
 };

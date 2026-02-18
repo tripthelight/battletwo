@@ -61,7 +61,7 @@ async function startGame() {
           break;
 
         default:
-          throw throwObj('errorComn', 'refresh gameState failed.');
+          throw throwObj('sessionStorageLoss', 'refresh gameState failed.');
       };
     } else {
       // 흑과백은 처음 큐브를 섞을 때, 먼저 섞은 PEER가 생기고,
@@ -73,7 +73,7 @@ async function startGame() {
           case findCharCode([65, 71, 81, 72, 85, 75, 78, 74, 86, 73]): blackAndWhite1GameState.setOrder(); break;
           case findCharCode([75, 68, 67, 71, 82, 87, 74, 73, 66, 78]): blackAndWhite1GameState.playing(); break;
           case findCharCode([67, 68, 72, 69, 90, 77, 80, 81, 75, 85]): blackAndWhite1GameState.gameOver(); break;
-          default: throw throwObj('errorComn', 'blackAndWhite1.js - Enter game init gameState failed.');
+          default: throw throwObj('sessionStorageLoss', 'blackAndWhite1.js - Enter game init gameState failed.');
         };
       } else {
         blackAndWhite1GameState.ready();

@@ -13,10 +13,10 @@ export default () => {
 
   const encryptKey1 = findCharCode([85, 86, 68, 74, 69, 77, 89, 80, 66, 75]); // playerNumOrder
   const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
-  if (!encryptVal1) return throwObj('sessionStorageLoss', 'drawLocalCube.js - playerNumOrder key failed.');
+  if (!encryptVal1) throw throwObj('sessionStorageLoss', 'drawLocalCube.js - playerNumOrder key failed.');
 
   const cubeNums = encryptVal1.split(",").map(Number);
-  if (cubeNums.length !== 9) return throwObj('sessionStorageLoss', 'drawLocalCube.js - playerNumOrder value failed.');
+  if (cubeNums.length !== 9) throw throwObj('sessionStorageLoss', 'drawLocalCube.js - playerNumOrder value failed.');
 
   const ENEMY_BLOCK_EL = document.createElement("div");
   const PLAYER_BLOCK_EL = document.createElement("div");
