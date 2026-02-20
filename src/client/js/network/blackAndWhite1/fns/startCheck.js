@@ -1,5 +1,11 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
+import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import _t from '@/client/js/module/crypts/textDE';
 import { request } from '@/client/js/network/blackAndWhite1/request';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
+import startState from '@/client/js/network/blackAndWhite1/fns/startState';
 
 export default (_data) => {
   const PROMISE = new Promise((resolve, reject) => {
@@ -8,9 +14,20 @@ export default (_data) => {
   PROMISE
     .then((_data) => {
       if (_data.rdy) {
-        request("startState", { stat: "allReady" });
+        // request("startState", { stat: "allReady" });
+        storageMethod("s", "SET_ITEM",
+          findCharCode([66, 79, 83, 65, 89, 81, 74, 68, 87, 70]), // enemyShuffleState
+          X.enc(decodeTF(_t([115, 102, 112, 117]))) // "sfpu" : true
+        );
+
+        const encryptKey1 = findCharCode([80, 72, 73, 74, 89, 86, 83, 66, 69, 87]); // myShuffleState
+        const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
+        if (encryptVal1 !== null && encryptVal1 !== "" && X.dec(encryptVal1)) {
+          // request("startState", { stat: "allReady" });
+          // startState("startState");
+        };
       } else {
-        request("startState", { stat: "enemyReadyEnd" });
+        // request("startState", { stat: "enemyReadyEnd" });
       };
     })
     .catch((error) => {

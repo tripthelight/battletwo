@@ -13,6 +13,7 @@ export const timeInterval_7 = 7;
 export const timeInterval_8 = 8;
 export const timeInterval_9 = 9;
 export const timeInterval_10 = 10;
+export const timeInterval_30 = 30;
 export const timeInterval_100 = 100;
 export const timeInterval_101 = 101;
 export const timeInterval_102 = 101;

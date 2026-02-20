@@ -1,3 +1,4 @@
+import { timeInterval_30 } from '@/client/js/functions/variable';
 import { getStyle } from '@/client/js/functions/comnExport';
 
 export default () => {
@@ -17,6 +18,6 @@ export default () => {
           CUBE_EL.style.transform = `translateY(${RESULT}px)`;
         }
       }
-    }, 30);
+    }, timeInterval_30);
   }
 };

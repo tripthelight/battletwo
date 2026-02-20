@@ -1,16 +1,17 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { request } from '@/client/js/network/blackAndWhite1/request';
-import gameState from '@/client/js/gameState/blackAndWhite1';
 import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import _t from '@/client/js/module/crypts/textDE';
 import { enc } from '@/client/js/module/crypts/obf8lower';
 import textDE from '@/client/js/module/crypts/textDE';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
+import gameState from '@/client/js/gameState/blackAndWhite1';
 import cubeNumCheck from "@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/cubeNumCheck";
 import cubeReadyEnd from "@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/cubeReadyEnd";
 import saveSessionStorage from "@/client/js/views/game/blackAndWhite1/fns/common/saveSessionStorage";
+import startState from '@/client/js/network/blackAndWhite1/fns/startState';
 
 export default (btnStart) => {
   btnStart.onclick = () => {
@@ -24,14 +25,25 @@ export default (btnStart) => {
     const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
 
     if (encryptVal1 !== null && encryptVal1 !== "" && X.dec(encryptVal1)) {
-      // enemyShuffleState === true
-      request('startCheck', { rdy: true });
-      gameState.setOrder();
+      // startState("allReady");
+      // request("startState", { stat: "allReady" });
     } else {
-      // enemyShuffleState === false
-      request('startCheck', { rdy: false });
-      gameState.waitEnemyShuffle();
+      //
     };
+
+    // request('startCheck', { rdy: true });
+
+    // if (encryptVal1 !== null && encryptVal1 !== "" && X.dec(encryptVal1)) {
+    //   // enemyShuffleState === true
+    //   request('startCheck', { rdy: true });
+    //   gameState.setOrder();
+    // } else {
+    //   // enemyShuffleState === false
+    //   request('startCheck', { rdy: false });
+    //   gameState.waitEnemyShuffle();
+    // };
+
+    // request('startCheck', { rdy: true });
 
     // round : 1
     storageMethod("s", "SET_ITEM",
