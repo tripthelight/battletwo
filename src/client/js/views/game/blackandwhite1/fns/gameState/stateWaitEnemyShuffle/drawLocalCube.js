@@ -15,7 +15,9 @@ export default () => {
   const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
   if (!encryptVal1) throw throwObj('sessionStorageLoss', 'drawLocalCube.js - playerNumOrder key failed.');
 
-  const cubeNums = encryptVal1.split(",").map(Number);
+  // const cubeNums = encryptVal1.split(",").map(Number);
+  const cubeNums = JSON.parse(encryptVal1);
+
   if (cubeNums.length !== 9) throw throwObj('sessionStorageLoss', 'drawLocalCube.js - playerNumOrder value failed.');
 
   const ENEMY_BLOCK_EL = document.createElement("div");

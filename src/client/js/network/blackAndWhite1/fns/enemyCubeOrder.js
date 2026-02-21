@@ -1,7 +1,5 @@
-import storageMethod from '@/client/js/module/storage/storageMethod';
-import findCharCode from '@/client/js/functions/findCharCode';
-import { request } from '@/client/js/network/blackAndWhite1/request';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
+import saveEnemyCube from '@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/saveEnemyCube';
 
 export default (_data) => {
   const PROMISE = new Promise((resolve, reject) => {
@@ -9,12 +7,7 @@ export default (_data) => {
   });
   PROMISE
     .then((_data) => {
-      request("enemyOrder", {
-        order:
-          storageMethod("s", "GET_ITEM",
-            findCharCode([79, 77, 69, 88, 68, 89, 65, 70, 67, 78])
-          ) // numArr
-      });
+      saveEnemyCube(_data.order);
     })
     .catch((error) => {
       errorManager(error, true);

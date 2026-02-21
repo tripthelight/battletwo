@@ -21,29 +21,23 @@ export default (btnStart) => {
       X.enc(decodeTF(_t([115, 119, 112, 117]))) // "swpu" : true
     );
 
+    // 나의 shuffle이 끝났다고 상대에게 알림
+    request('startCheck', { rdy: true });
+
     const encryptKey1 = findCharCode([66, 79, 83, 65, 89, 81, 74, 68, 87, 70]); // enemyShuffleState
     const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
 
+    // 내가 shuffle 완료 했을 때,
     if (encryptVal1 !== null && encryptVal1 !== "" && X.dec(encryptVal1)) {
-      // startState("allReady");
-      // request("startState", { stat: "allReady" });
+      // 상대도 shuffle 완료된 상태임
+      // enemyShuffleState === true
+      request("startState", { stat: "allReady" });
+      gameState.setOrder();
     } else {
-      //
+      // 상대는 shuffle 중
+      // enemyShuffleState === false
+      gameState.waitEnemyShuffle();
     };
-
-    // request('startCheck', { rdy: true });
-
-    // if (encryptVal1 !== null && encryptVal1 !== "" && X.dec(encryptVal1)) {
-    //   // enemyShuffleState === true
-    //   request('startCheck', { rdy: true });
-    //   gameState.setOrder();
-    // } else {
-    //   // enemyShuffleState === false
-    //   request('startCheck', { rdy: false });
-    //   gameState.waitEnemyShuffle();
-    // };
-
-    // request('startCheck', { rdy: true });
 
     // round : 1
     storageMethod("s", "SET_ITEM",

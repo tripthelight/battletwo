@@ -30,7 +30,8 @@ export default () => {
   for (let i = 0; i < 9; i++) {
     const PLAYER_CUBES_EL = document.createElement("li");
     if (encryptVal1 !== null && encryptVal1 !== "") {
-      const nums = encryptVal1.split(",").map(Number);
+      // const nums = encryptVal1.split(",").map(Number);
+      const nums = JSON.parse(encryptVal1);
       PLAYER_CUBES_EL.innerHTML = nums[i];
     } else {
       PLAYER_CUBES_EL.innerHTML = i;

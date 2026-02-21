@@ -13,7 +13,7 @@ export const WAIT_ENEMY_SHUFFLE_HANDLER = {
     };
 
     drawLocalCube();
-    waitEnemyInfo();
+    waitEnemyInfo(); // 여기서 바뀜
   },
   // gameState : waitEnemyShuffle 에 처음 입장
   handleInitialLoad(storageKeys) {

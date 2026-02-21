@@ -12,7 +12,7 @@ export default () => {
 
     storageMethod("s", "SET_ITEM",
       findCharCode([85, 86, 68, 74, 69, 77, 89, 80, 66, 75]), // playerNumOrder
-      playerNumOrder
+      JSON.stringify(playerNumOrder)
     );
   }
 };

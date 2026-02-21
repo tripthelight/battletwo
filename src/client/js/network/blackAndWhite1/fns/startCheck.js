@@ -14,18 +14,18 @@ export default (_data) => {
   PROMISE
     .then((_data) => {
       if (_data.rdy) {
-        // request("startState", { stat: "allReady" });
         storageMethod("s", "SET_ITEM",
           findCharCode([66, 79, 83, 65, 89, 81, 74, 68, 87, 70]), // enemyShuffleState
           X.enc(decodeTF(_t([115, 102, 112, 117]))) // "sfpu" : true
         );
 
-        const encryptKey1 = findCharCode([80, 72, 73, 74, 89, 86, 83, 66, 69, 87]); // myShuffleState
-        const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
-        if (encryptVal1 !== null && encryptVal1 !== "" && X.dec(encryptVal1)) {
-          // request("startState", { stat: "allReady" });
-          // startState("startState");
-        };
+        // request("startState", { stat: "allReady" });
+        // const encryptKey1 = findCharCode([80, 72, 73, 74, 89, 86, 83, 66, 69, 87]); // myShuffleState
+        // const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
+        // if (encryptVal1 !== null && encryptVal1 !== "" && X.dec(encryptVal1)) {
+        //   // request("startState", { stat: "allReady" });
+        //   // startState("startState");
+        // };
       } else {
         // request("startState", { stat: "enemyReadyEnd" });
       };
