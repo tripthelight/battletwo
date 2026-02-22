@@ -1,3 +1,7 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
+import findNickname from '@/client/js/functions/findNickname';
+import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
 import { timeInterval_4200, timeInterval_5200 } from "@/client/js/functions/variable";
 import gameState from '@/client/js/gameState/blackAndWhite1';
 import motionStyle from "@/client/js/views/game/blackAndWhite1/fns/common/motionStyle";
@@ -5,32 +9,40 @@ import motionStyle from "@/client/js/views/game/blackAndWhite1/fns/common/motion
 export default () => {
   if (!document.querySelector(".order-motion")) {
     let aniState = false;
-    let elem = document.createElement("div");
-    let playerDl = document.createElement("dl");
-    let playerDt = document.createElement("dt");
-    let playerDd = document.createElement("dd");
-    let playerFront = document.createElement("span");
-    let playerBack = document.createElement("span");
-    let enemyDl = document.createElement("dl");
-    let enemyDt = document.createElement("dt");
-    let enemyDd = document.createElement("dd");
-    let enemyFront = document.createElement("span");
-    let enemyBack = document.createElement("span");
+    const elem = document.createElement("div");
+    const playerDl = document.createElement("dl");
+    const playerDt = document.createElement("dt");
+    const playerDd = document.createElement("dd");
+    const playerFront = document.createElement("span");
+    const playerBack = document.createElement("span");
+    const enemyDl = document.createElement("dl");
+    const enemyDt = document.createElement("dt");
+    const enemyDd = document.createElement("dd");
+    const enemyFront = document.createElement("span");
+    const enemyBack = document.createElement("span");
     playerFront.classList.add("fornt");
     playerBack.classList.add("back");
     enemyFront.classList.add("fornt");
     enemyBack.classList.add("back");
     elem.classList.add("order-motion");
-    if (window.sessionStorage.firstUser == window.localStorage.uid) {
-      playerFront.innerText = window.localStorage.nickname;
-      enemyFront.innerText = window.localStorage.nickname;
-      playerBack.innerText = window.sessionStorage.enemyNick;
-      enemyBack.innerText = window.sessionStorage.enemyNick;
+
+    const LOCAL_PEER = findNickname('localPlayer');
+    const REMOTE_PEER = findNickname('remotePlayer');
+    const encryptKey1 = findCharCode([73, 81, 90, 83, 68, 86, 69, 89, 78, 70]); // firstUser
+    const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
+
+    if (encryptVal1 !== null && encryptVal1 !== "" && X.dec(encryptVal1)) {
+      // 내가 firstUser
+      playerFront.innerText = LOCAL_PEER;
+      enemyFront.innerText = LOCAL_PEER;
+      playerBack.innerText = REMOTE_PEER;
+      enemyBack.innerText = REMOTE_PEER;
     } else {
-      playerFront.innerText = window.sessionStorage.enemyNick;
-      enemyFront.innerText = window.sessionStorage.enemyNick;
-      playerBack.innerText = window.localStorage.nickname;
-      enemyBack.innerText = window.localStorage.nickname;
+      // 상대가 firstUser
+      playerFront.innerText = REMOTE_PEER;
+      enemyFront.innerText = REMOTE_PEER;
+      playerBack.innerText = LOCAL_PEER;
+      enemyBack.innerText = LOCAL_PEER;
     }
     playerDd.appendChild(playerFront);
     playerDd.appendChild(playerBack);
@@ -47,7 +59,7 @@ export default () => {
       ENOTAINER_EL.appendChild(elem);
       aniState = true;
     }
-    let aniInterval = setInterval(() => {
+    const aniInterval = setInterval(() => {
       if (aniState === true) {
         clearInterval(aniInterval);
         motionStyle(elem);

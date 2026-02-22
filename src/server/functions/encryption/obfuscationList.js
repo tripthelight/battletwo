@@ -479,6 +479,20 @@ export const obfuscationList = {
       },
       // e: sessionStorage keys
       */
+
+      /**
+       * setOrder
+       */
+      /*
+      // s: sessionStorage keys
+      FIRST_USER: {
+        k: 'IQZSDVEYNF' // [73, 81, 90, 83, 68, 86, 69, 89, 78, 70]
+      },
+      ENEMY_NICK: {
+        k: 'MJCHADPUTZ' // [77, 74, 67, 72, 65, 68, 80, 85, 84, 90]
+      },
+      // e: sessionStorage keys
+      */
     };
   },
 };
