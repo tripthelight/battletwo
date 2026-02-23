@@ -11,7 +11,6 @@ import gameState from '@/client/js/gameState/blackAndWhite1';
 import cubeNumCheck from "@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/cubeNumCheck";
 import cubeReadyEnd from "@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/cubeReadyEnd";
 import saveSessionStorage from "@/client/js/views/game/blackAndWhite1/fns/common/saveSessionStorage";
-import startState from '@/client/js/network/blackAndWhite1/fns/startState';
 
 export default (btnStart) => {
   btnStart.onclick = () => {
@@ -22,7 +21,10 @@ export default (btnStart) => {
     );
 
     // 나의 shuffle이 끝났다고 상대에게 알림
-    request('startCheck', { rdy: true });
+    request('startCheck', {
+      rdy: true,
+      nick: storageMethod("l", "GET_ITEM", "localPlayer")
+    });
 
     const encryptKey1 = findCharCode([66, 79, 83, 65, 89, 81, 74, 68, 87, 70]); // enemyShuffleState
     const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
@@ -31,7 +33,22 @@ export default (btnStart) => {
     if (encryptVal1 !== null && encryptVal1 !== "" && X.dec(encryptVal1)) {
       // 상대도 shuffle 완료된 상태임
       // enemyShuffleState === true
-      request("startState", { stat: "allReady" });
+
+      const TF = [
+        X.enc(decodeTF(_t([99, 102, 112, 110]))), // "cfpn" : true
+        X.enc(decodeTF(_t([100, 103, 118, 116, 97]))), // "dgvta" : false
+      ];
+
+      const FIRST_USER = TF[Math.floor(Math.random() * TF.length)];
+      storageMethod("s", "SET_ITEM",
+        findCharCode([73, 81, 90, 83, 68, 86, 69, 89, 78, 70]), // firstUser
+        FIRST_USER
+      );
+
+      request("startState", {
+        stat: "allReady",
+        firstUser: X.dec(TF.find(v => v !== FIRST_USER))
+      });
       gameState.setOrder();
     } else {
       // 상대는 shuffle 중
