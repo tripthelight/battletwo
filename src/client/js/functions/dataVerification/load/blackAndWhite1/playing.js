@@ -2,6 +2,11 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import storageKeyDeleteCheck from '@/client/js/functions/dataVerification/load/storageKeyDeleteCheck';
 
+import cubeReady from '@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/cubeReady';
+import cubePlaying from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/cubePlaying";
+import showEnemyCube from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/showEnemyCube";
+import shuffleCubeStop from '@/client/js/views/game/blackAndWhite1/fns/gameState/stateWaitEnemyShuffle/shuffleCubeStop';
+import drawInnerSquare from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/drawInnerSquare";
 
 export const PLAYING_HANDLER = {
   // gameState : playing 에서 reload 한 경우
@@ -9,6 +14,12 @@ export const PLAYING_HANDLER = {
     if (storageKeyDeleteCheck(storageKeys)) {
       throw throwObj('sessionStorageLoss', 'delete sessionStorage.');
     };
+
+    cubeReady();
+    cubePlaying();
+    showEnemyCube();
+    shuffleCubeStop();
+    drawInnerSquare();
 
   },
   // gameState : playing 에 처음 입장
@@ -25,7 +36,11 @@ export const PLAYING_HANDLER = {
     }
 
     // playing 단계에서 필요한 data insert 후 다음 단계 진행
-    console.log("playing 진입 >>>>>>>>>>>>>>>>> ");
 
+    cubeReady();
+    cubePlaying();
+    showEnemyCube();
+    shuffleCubeStop();
+    drawInnerSquare();
   },
 };
