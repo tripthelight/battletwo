@@ -1,14 +1,15 @@
-import { deviceState } from "../../../js/common/deviceCheck.js";
+import deviceStateStore from '@/client/store/deviceStateStore';
 import selectDrop from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/selectDrop";
-import selectDragover from "./selectDragover.js";
-import selectDragleave from "./selectDragleave.js";
-import selectDragStart from "./selectDragStart.js";
-import selectDragEnd from "./selectDragEnd.js";
-import selectTouchStart from "./selectTouchStart.js";
-import selectTouchMove from "./selectTouchMove.js";
-import selectTouchEnd from "./selectTouchEnd.js";
+import selectDragover from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/selectDragover";
+import selectDragleave from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/selectDragleave";
+import selectDragStart from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/selectDragStart";
+import selectDragEnd from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/selectDragEnd";
+import selectTouchStart from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/selectTouchStart.js";
+import selectTouchMove from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/selectTouchMove";
+import selectTouchEnd from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/selectTouchEnd";
 
 export default (el) => {
+  const deviceState = deviceStateStore.getState().deviceStateState.deviceState;
   switch (deviceState) {
     case "pc":
       // add ondrop, ondragover

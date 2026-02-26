@@ -5,7 +5,7 @@ import { timeInterval_201, timeInterval_203 } from '@/client/js/functions/variab
 
 import drawBlackSquare from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/drawBlackSquare";
 import activeUserCheck from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/activeUserCheck";
-import turnReminderBlink from "./turnReminderBlink.js";
+import turnReminderBlink from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/turnReminderBlink";
 
 
 import { reactiveState } from "@/client/js/views/game/blackAndWhite1/fns/common/variable";

@@ -11,4 +11,9 @@ export const REQUEST_HANDLERS = {
   startState: (v) => ({ type: 'startState', ...v }),
   enemyCubeOrder: (v) => ({ type: 'enemyCubeOrder', ...v }),
   enemyOrder: (v) => ({ type: 'enemyOrder', ...v }),
+
+  // gameState : playing
+  beforePlayerNumber: (v) => ({ type: 'beforePlayerNumber', ...v }),
+  afterPlayerNumber: (v) => ({ type: 'afterPlayerNumber', ...v }),
+  resultRound: (v) => ({ type: 'resultRound', ...v }),
 };

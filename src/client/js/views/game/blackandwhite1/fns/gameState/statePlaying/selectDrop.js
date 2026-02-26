@@ -1,5 +1,5 @@
 import disabledSelectInit from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/disabledSelectInit";
-import comnPcEnd from "./comnPcEnd.js";
+import comnPcEnd from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/comnPcEnd";
 
 export default (event) => {
   event.preventDefault();

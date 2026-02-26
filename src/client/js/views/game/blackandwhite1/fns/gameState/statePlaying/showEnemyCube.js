@@ -1,3 +1,5 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
+import findCharCode from '@/client/js/functions/findCharCode';
 import cubesStyle from "@/client/js/views/game/blackAndWhite1/fns/common/cubesStyle";
 import drawEnemyBlackSquare from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/drawEnemyBlackSquare";
 
@@ -6,7 +8,10 @@ export default () => {
   if (!ENEMY_BLOCK_LIST) {
     let enemyCubeList = document.createElement("ul");
     enemyCubeList.classList.add("enemy-block-list");
-    let cubeArr = JSON.parse(window.sessionStorage.getItem("emenyCube"));
+    // let cubeArr = JSON.parse(window.sessionStorage.getItem("emenyCube"));
+    const encryptKey1 = findCharCode([86, 82, 88, 89, 90, 72, 71, 84, 74, 85]); // emenyCube
+    const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
+    let cubeArr = JSON.parse(encryptVal1);
     let w = cubesStyle().w;
     let h = cubesStyle().h;
     for (let i = 0; i < cubeArr.length; i++) {

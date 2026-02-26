@@ -1,8 +1,8 @@
 import selectCube from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/selectCube";
-import disabledSelectInit from "./disabledSelectInit.js";
-import setGameOrder from "./setGameOrder.js";
-import firstCheck from "./firstCheck.js";
-import findActiveUser from "./findActiveUser.js";
+import disabledSelectInit from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/disabledSelectInit";
+import setGameOrder from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/setGameOrder";
+import firstCheck from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/firstCheck";
+import findActiveUser from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/findActiveUser";
 
 export default () => {
   let activeUser = "";

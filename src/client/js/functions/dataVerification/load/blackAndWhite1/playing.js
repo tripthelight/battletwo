@@ -7,6 +7,8 @@ import cubePlaying from "@/client/js/views/game/blackAndWhite1/fns/gameState/sta
 import showEnemyCube from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/showEnemyCube";
 import shuffleCubeStop from '@/client/js/views/game/blackAndWhite1/fns/gameState/stateWaitEnemyShuffle/shuffleCubeStop';
 import drawInnerSquare from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/drawInnerSquare";
+import btnStartChange from '@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/btnStartChange';
+import selectCube from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/selectCube";
 
 export const PLAYING_HANDLER = {
   // gameState : playing 에서 reload 한 경우
@@ -20,6 +22,8 @@ export const PLAYING_HANDLER = {
     showEnemyCube();
     shuffleCubeStop();
     drawInnerSquare();
+    btnStartChange();
+    selectCube();
 
   },
   // gameState : playing 에 처음 입장
@@ -42,5 +46,7 @@ export const PLAYING_HANDLER = {
     showEnemyCube();
     shuffleCubeStop();
     drawInnerSquare();
+    btnStartChange();
+    selectCube();
   },
 };
