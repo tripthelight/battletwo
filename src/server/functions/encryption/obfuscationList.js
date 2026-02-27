@@ -491,6 +491,9 @@ export const obfuscationList = {
       ENEMY_NICK: {
         k: 'MJCHADPUTZ' // [77, 74, 67, 72, 65, 68, 80, 85, 84, 90]
       },
+      ACTIVE_USER: {
+        k: 'IGAPMKTBUR' // [73, 71, 65, 80, 77, 75, 84, 66, 85, 82]
+      },
       // e: sessionStorage keys
       */
     };
