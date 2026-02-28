@@ -23,6 +23,7 @@ export default () => {
       } else {
         changeUser = encryptVal1;
       }
+
       storageMethod("s", "SET_ITEM", encryptKey2, changeUser);
       changeActiveBlackSquare(changeUser, encryptVal1);
       changeDisabledCube(changeUser, encryptVal1);

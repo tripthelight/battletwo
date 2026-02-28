@@ -4,7 +4,6 @@ import selectCube from "@/client/js/views/game/blackAndWhite1/fns/gameState/stat
 import disabledSelectInit from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/disabledSelectInit";
 import setGameOrder from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/setGameOrder";
 import firstCheck from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/firstCheck";
-import findActivePeer from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/findActivePeer";
 
 export default () => {
   let activeUser = "";
@@ -15,13 +14,16 @@ export default () => {
   if (!encryptVal1) {
     if (firstCheck()) { // firstUser === true
       selectCube();
-      activeUser = storageMethod("l", "GET_ITEM", "localPlayer");
+      // activeUser = storageMethod("l", "GET_ITEM", "localPlayer");
     } else {
       disabledSelectInit();
       // find active user
-      activeUser = findActivePeer();
+      // activeUser = findActivePeer(false);
     }
+
     // window.sessionStorage.setItem("activeUser", activeUser);
+    const activeUser = storageMethod("s", "GET_ITEM", findCharCode([73, 81, 90, 83, 68, 86, 69, 89, 78, 70])) // firstUser -> activeUser
+    console.log("activeUser 심을 때 : ", activeUser);
     storageMethod("s", "SET_ITEM", encryptKey1, activeUser);
     setGameOrder();
   } else {

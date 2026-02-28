@@ -26,6 +26,7 @@ export default () => {
   let orderArr = [];
   // if (ROUND < 9) {
   if (dec(encryptVal1) < 9) { // round < 9
+    console.log("activeUser 검사할 때 : ", encryptVal2);
     console.log("activeUser :::::::::::::::::::::: ", encryptVal2);
     console.log("localPlayer ::::::::::::::::::::: ", encryptVal3);
     console.log("activeUser == localPlayer ::::::: ", encryptVal2 == encryptVal3);
