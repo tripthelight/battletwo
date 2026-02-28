@@ -8,18 +8,20 @@ import { dec } from '@/client/js/module/crypts/obf8lower';
  */
 export default () => {
   // const ROUND = window.sessionStorage.getItem("round");
-  const USERS = window.sessionStorage.getItem("users");
+  // const USERS = window.sessionStorage.getItem("users");
 
   const encryptKey1 = findCharCode([77, 84, 83, 88, 69, 85, 82, 87, 90, 79]); // round
   const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
 
-  const USER_LIST = USERS?.split(",") ?? [];
+  // const USER_LIST = USERS?.split(",") ?? [];
   // const ACTIVE_USER = window.sessionStorage.getItem("activeUser");
   // const MY_UID = window.localStorage.getItem("uid");
 
   const encryptKey2 = findCharCode([73, 71, 65, 80, 77, 75, 84, 66, 85, 82]); // activeUser
   const encryptVal2 = storageMethod("s", "GET_ITEM", encryptKey2);
   const encryptVal3 = storageMethod("l", "GET_ITEM", "localPlayer");
+  const encryptKey4 = findCharCode([77, 74, 67, 72, 65, 68, 80, 85, 84, 90]); // enemyNick
+  const encryptVal4 = storageMethod("s", "GET_ITEM", encryptKey4); // enemyNick code
 
   let fUser = "";
   let sUser = "";
@@ -33,19 +35,21 @@ export default () => {
 
     // 1 ~ 8 ROUND
     if (encryptVal2 == encryptVal3) {
-      fUser = encryptVal3;
-      for (let i = 0; i < USER_LIST.length; i++) {
-        if (USER_LIST[i] !== encryptVal3) {
-          sUser = USER_LIST[i];
-        }
-      }
+      fUser = encryptVal3; // localPlayer
+      sUser = encryptVal4; // enemyNick
+      // for (let i = 0; i < USER_LIST.length; i++) {
+      //   if (USER_LIST[i] !== encryptVal3) {
+      //     sUser = USER_LIST[i];
+      //   }
+      // }
     } else {
-      sUser = encryptVal3;
-      for (let i = 0; i < USER_LIST.length; i++) {
-        if (USER_LIST[i] !== encryptVal3) {
-          fUser = USER_LIST[i];
-        }
-      }
+      sUser = encryptVal3; // localPlayer
+      fUser = encryptVal4; // enemyNick
+      // for (let i = 0; i < USER_LIST.length; i++) {
+      //   if (USER_LIST[i] !== encryptVal3) {
+      //     fUser = USER_LIST[i];
+      //   }
+      // }
     }
   // } else if (ROUND == 9) {
   } else if (dec(encryptVal1) == 9) { // round == 9

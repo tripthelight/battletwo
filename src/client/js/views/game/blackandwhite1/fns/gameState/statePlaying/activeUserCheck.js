@@ -6,8 +6,6 @@ import setGameOrder from "@/client/js/views/game/blackAndWhite1/fns/gameState/st
 import firstCheck from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/firstCheck";
 
 export default () => {
-  let activeUser = "";
-
   const encryptKey1 = findCharCode([73, 71, 65, 80, 77, 75, 84, 66, 85, 82]); // activeUser
   const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
 
@@ -20,20 +18,17 @@ export default () => {
       // find active user
       // activeUser = findActivePeer(false);
     }
-
     // window.sessionStorage.setItem("activeUser", activeUser);
-    const activeUser = storageMethod("s", "GET_ITEM", findCharCode([73, 81, 90, 83, 68, 86, 69, 89, 78, 70])) // firstUser -> activeUser
-    console.log("activeUser 심을 때 : ", activeUser);
-    storageMethod("s", "SET_ITEM", encryptKey1, activeUser);
+    // firstUser -> activeUser
+    storageMethod("s", "SET_ITEM",
+      encryptKey1,
+      storageMethod("s", "GET_ITEM", findCharCode([73, 81, 90, 83, 68, 86, 69, 89, 78, 70]))
+    );
     setGameOrder();
   } else {
     // refresh
-    const USERS = window.sessionStorage.getItem("userOrder");
-    const USER_LIST = USERS.split(",");
-
     // change session activeUser
-    activeUser = encryptVal1;
-    if (activeUser == storageMethod("l", "GET_ITEM", "localPlayer")) {
+    if (encryptVal1 == storageMethod("l", "GET_ITEM", "localPlayer")) {
       selectCube();
     } else {
       disabledSelectInit();

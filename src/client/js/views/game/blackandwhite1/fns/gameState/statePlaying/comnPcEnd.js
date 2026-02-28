@@ -5,6 +5,9 @@ import cubeListStyle from "@/client/js/views/game/blackAndWhite1/fns/gameState/s
 import hideInnerSquare from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/hideInnerSquare";
 
 export default (cube, num) => {
+  console.log("큐브 옮김 >>>>>>>> ", cube);
+  console.log("큐브 옮김 >>>>>>>> ", num);
+
   setTimeout(() => {
     sedPcCard(cube, num);
   }, timeInterval_1);
