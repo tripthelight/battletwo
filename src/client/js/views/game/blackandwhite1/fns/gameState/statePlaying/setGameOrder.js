@@ -3,6 +3,9 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 import findCharCode from '@/client/js/functions/findCharCode';
 import { dec } from '@/client/js/module/crypts/obf8lower';
 
+/**
+ * gameState playing 진입 순간 여기로 진입됨
+ */
 export default () => {
   // const ROUND = window.sessionStorage.getItem("round");
   const USERS = window.sessionStorage.getItem("users");
@@ -23,6 +26,10 @@ export default () => {
   let orderArr = [];
   // if (ROUND < 9) {
   if (dec(encryptVal1) < 9) { // round < 9
+    console.log("activeUser :::::::::::::::::::::: ", encryptVal2);
+    console.log("localPlayer ::::::::::::::::::::: ", encryptVal3);
+    console.log("activeUser == localPlayer ::::::: ", encryptVal2 == encryptVal3);
+
     // 1 ~ 8 ROUND
     if (encryptVal2 == encryptVal3) {
       fUser = encryptVal3;

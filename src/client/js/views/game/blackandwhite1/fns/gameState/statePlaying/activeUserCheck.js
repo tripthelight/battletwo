@@ -4,7 +4,7 @@ import selectCube from "@/client/js/views/game/blackAndWhite1/fns/gameState/stat
 import disabledSelectInit from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/disabledSelectInit";
 import setGameOrder from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/setGameOrder";
 import firstCheck from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/firstCheck";
-import findActiveUser from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/findActiveUser";
+import findActivePeer from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/findActivePeer";
 
 export default () => {
   let activeUser = "";
@@ -13,15 +13,16 @@ export default () => {
   const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
 
   if (!encryptVal1) {
-    if (firstCheck()) {
+    if (firstCheck()) { // firstUser === true
       selectCube();
       activeUser = storageMethod("l", "GET_ITEM", "localPlayer");
     } else {
       disabledSelectInit();
       // find active user
-      activeUser = findActiveUser();
+      activeUser = findActivePeer();
     }
-    window.sessionStorage.setItem("activeUser", activeUser);
+    // window.sessionStorage.setItem("activeUser", activeUser);
+    storageMethod("s", "SET_ITEM", encryptKey1, activeUser);
     setGameOrder();
   } else {
     // refresh
@@ -30,7 +31,7 @@ export default () => {
 
     // change session activeUser
     activeUser = encryptVal1;
-    if (activeUser == storageMethod("s", "GET_ITEM", "localPlayer")) {
+    if (activeUser == storageMethod("l", "GET_ITEM", "localPlayer")) {
       selectCube();
     } else {
       disabledSelectInit();

@@ -35,9 +35,7 @@ export default (_data) => {
           // firstUser : 상대가 보낸 firstUser
           storageMethod("s", "SET_ITEM",
             findCharCode([73, 81, 90, 83, 68, 86, 69, 89, 78, 70]), // firstUser
-            _data.firstUser ?
-              X.enc(decodeTF(_t([99, 102, 112, 110]))) : // "cfpn" : true
-              X.enc(decodeTF(_t([100, 103, 118, 116, 97]))) // "dgvta" : false
+            _data.firstUser
           );
 
           gameState.setOrder();

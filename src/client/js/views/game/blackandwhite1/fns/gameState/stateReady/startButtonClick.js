@@ -12,6 +12,9 @@ import cubeNumCheck from "@/client/js/views/game/blackAndWhite1/fns/gameState/st
 import cubeReadyEnd from "@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/cubeReadyEnd";
 import saveSessionStorage from "@/client/js/views/game/blackAndWhite1/fns/common/saveSessionStorage";
 
+import findNickname from '@/client/js/functions/findNickname';
+import fromUnicodePoints from '@/client/js/module/unicode/fromUnicodePoints';
+
 export default (btnStart) => {
   btnStart.onclick = () => {
     // myShuffleState : true
@@ -34,12 +37,30 @@ export default (btnStart) => {
       // 상대도 shuffle 완료된 상태임
       // enemyShuffleState === true
 
+      // const LOCAL_PEER = findNickname('localPlayer'); // my nick name
+      // const REMOTE_PEER = fromUnicodePoints(
+      //     storageMethod("s", "GET_ITEM", findCharCode([77, 74, 67, 72, 65, 68, 80, 85, 84, 90])) // enemyNick
+      //       .replace(/"/g, '')
+      //       .split(',')
+      //       .map((s) => s.trim()),
+      //   );
+
+      // console.log("LOCAL_PEER_CODE :::::::: ", storageMethod("l", "GET_ITEM", "localPlayer"));
+      // console.log("REMOTE_PEER_CODE ::::::: ", storageMethod("s", "GET_ITEM", findCharCode([77, 74, 67, 72, 65, 68, 80, 85, 84, 90])));
+      // console.log("LOCAL_PEER ::::::::::::: ", LOCAL_PEER);
+      // console.log("REMOTE_PEER :::::::::::: ", REMOTE_PEER);
+
+      const NICK_LIST = [
+        storageMethod("l", "GET_ITEM", "localPlayer"), // local peer nick name
+        storageMethod("s", "GET_ITEM", findCharCode([77, 74, 67, 72, 65, 68, 80, 85, 84, 90])) // local peer nick name
+      ];
       const TF = [
         X.enc(decodeTF(_t([99, 102, 112, 110]))), // "cfpn" : true
         X.enc(decodeTF(_t([100, 103, 118, 116, 97]))), // "dgvta" : false
       ];
 
-      const FIRST_USER = TF[Math.floor(Math.random() * TF.length)];
+      const FIRST_USER = NICK_LIST[Math.floor(Math.random() * TF.length)]; // true or false
+
       storageMethod("s", "SET_ITEM",
         findCharCode([73, 81, 90, 83, 68, 86, 69, 89, 78, 70]), // firstUser
         FIRST_USER
@@ -47,7 +68,7 @@ export default (btnStart) => {
 
       request("startState", {
         stat: "allReady",
-        firstUser: X.dec(TF.find(v => v !== FIRST_USER))
+        firstUser: FIRST_USER
       });
       gameState.setOrder();
     } else {

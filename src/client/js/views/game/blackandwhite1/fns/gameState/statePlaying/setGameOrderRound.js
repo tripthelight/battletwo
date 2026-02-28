@@ -59,6 +59,7 @@ export default (res) => {
       break;
   }
   orderArr = [fUser, sUser];
+
   window.sessionStorage.setItem("userOrder", orderArr);
   activeUserCheckRound();
   setGameOrderRoundCheck();

@@ -37,7 +37,13 @@ export default () => {
     const encryptKey1 = findCharCode([73, 81, 90, 83, 68, 86, 69, 89, 78, 70]); // firstUser
     const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
 
-    if (encryptVal1 !== null && encryptVal1 !== "" && X.dec(encryptVal1)) {
+    if (!encryptVal1) {
+      // TODO: 에러처리 필요
+      console.warn("firstUser 없음");
+      return;
+    };
+
+    if (encryptVal1 === storageMethod("l", "GET_ITEM", "localPlayer")) {
       // 내가 firstUser
       playerFront.innerText = LOCAL_PEER;
       enemyFront.innerText = LOCAL_PEER;
