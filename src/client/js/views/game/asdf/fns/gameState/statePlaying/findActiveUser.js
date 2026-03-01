@@ -1,9 +1,9 @@
 // import waitEnemy from "../common/waitEnemy.js";
 import storageMethod from '@/client/js/module/storage/storageMethod';
+import USERS from '@/client/js/views/game/blackAndWhite1/fns/common/users';
 
 export default () => {
-  const USERS = window.sessionStorage.getItem("users");
-  const USER_LIST = USERS?.split(",") ?? [];
+  const USER_LIST = USERS();
 
   if (USER_LIST.length > 0) {
     for (let i = 0; i < USER_LIST.length; i++) {

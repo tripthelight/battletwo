@@ -5,6 +5,8 @@ export default (idx) => {
   const ENEMY_CUBES = document.querySelectorAll(".enemy-block ul li");
   const ENEMY_BLACK = document.querySelector(".enemy-black-square");
   if (ENEMY_CUBES.length > 0 && ENEMY_BLACK) {
+    console.log("타냐 >?>?>?>?>?>?>?>?>?>?>?>?>? ");
+
     let l = ENEMY_BLACK.offsetLeft - ENEMY_CUBES[idx].offsetLeft;
     let t = ENEMY_BLACK.offsetTop - ENEMY_CUBES[idx].offsetTop;
     ENEMY_CUBES[idx].style.zIndex = 1000;

@@ -9,6 +9,9 @@ export default (_num) => {
           numArr.push(CUBE_LIST[i].innerHTML);
         }
       }
+
+      console.log("changeCubeSession.js cube >>>>>>>>>>>>>>> ", numArr);
+
       window.sessionStorage.setItem("playerNumOrder", numArr);
 
       const BLOCK_SQUARE = document.querySelector(".black-square");

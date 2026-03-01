@@ -60,5 +60,8 @@ export default () => {
     // waitEnemy("error");
   }
   orderArr = [fUser, sUser];
-  window.sessionStorage.setItem("userOrder", orderArr);
+  storageMethod("s", "SET_ITEM",
+    findCharCode([74, 65, 88, 72, 66, 84, 83, 67, 69, 85]), // userOrder
+    JSON.stringify(orderArr)
+  );
 };

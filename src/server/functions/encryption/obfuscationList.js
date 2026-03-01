@@ -496,6 +496,17 @@ export const obfuscationList = {
       },
       // e: sessionStorage keys
       */
+
+      /**
+       * playing
+       */
+      /*
+      // s: sessionStorage keys
+      USER_ORDER: {
+        k: 'JAXHBTSCEU' // [74, 65, 88, 72, 66, 84, 83, 67, 69, 85]
+      },
+      // e: sessionStorage keys
+      */
     };
   },
 };

@@ -16,6 +16,7 @@ export default () => {
         for (let i = 0; i < NUMS_ARR.length; i++) {
           numArr.push(NUMS_ARR[i]);
         };
+        console.log("cubeOrderSession.js cube >>>>>>>>>>>>>>> ", numArr);
         storageMethod("s", "SET_ITEM", encryptKey1, JSON.stringify(numArr));
       }
     } else {

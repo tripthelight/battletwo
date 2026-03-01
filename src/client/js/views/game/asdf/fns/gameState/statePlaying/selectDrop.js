@@ -10,7 +10,8 @@ export default (event) => {
   }
 
   const data = event.dataTransfer.getData("Text");
-  const NUM_DATA = Number(data);
+  const NUM_DATA = Number(data); // 내가 선택해서 옮긴 큐브의 번호
+
   if (NUM_DATA % 2 === 0) {
     BLACK_SQUARE.classList.remove("odd");
     BLACK_SQUARE.classList.add("even");

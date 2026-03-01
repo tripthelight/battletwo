@@ -1,3 +1,4 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import findCharCode from '@/client/js/functions/findCharCode';
 import activeUserCheckRound from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/activeUserCheckRound";
 import setGameOrderRoundCheck from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/setGameOrderRoundCheck";
@@ -5,13 +6,13 @@ import setBlink from "@/client/js/views/game/blackAndWhite1/fns/gameState/stateP
 
 export default (res) => {
   const encryptKey1 = findCharCode([73, 71, 65, 80, 77, 75, 84, 66, 85, 82]); // activeUser
-
-  const USERS = window.sessionStorage.getItem("userOrder");
-  const USER_LIST = USERS.split(",");
-
   const encryptVal3 = storageMethod("l", "GET_ITEM", "localPlayer");
 
-  let orderArr = [];
+  const encryptKey2 = findCharCode([74, 65, 88, 72, 66, 84, 83, 67, 69, 85]); // userOrder
+  const encryptVal2 = storageMethod("s", "GET_ITEM", encryptKey2);
+  const USER_ORDER = JSON.parse(encryptVal2);
+  const USER_LIST = USER_ORDER.map(s => s.split(",")); // [["", "", "", ""], ["", "", "", ""]] 형태
+
   let fUser = "";
   let sUser = "";
   switch (res) {
@@ -19,8 +20,9 @@ export default (res) => {
       storageMethod("s", "SET_ITEM", encryptKey1, encryptVal3);
       fUser = encryptVal3;
       for (let i = 0; i < USER_LIST.length; i++) {
-        if (USER_LIST[i] !== encryptVal3) {
-          sUser = USER_LIST[i];
+        const str = USER_LIST[i].join(",").replace(/\s+/g, "");
+        if (str !== encryptVal3) {
+          sUser = str;
           break;
         }
       }
@@ -28,9 +30,10 @@ export default (res) => {
     case "die":
       sUser = encryptVal3;
       for (let i = 0; i < USER_LIST.length; i++) {
-        if (USER_LIST[i] !== encryptVal3) {
-          fUser = USER_LIST[i];
-          storageMethod("s", "SET_ITEM", encryptKey1, USER_LIST[i]);
+        const str = USER_LIST[i].join(",").replace(/\s+/g, "");
+        if (str !== encryptVal3) {
+          fUser = str;
+          storageMethod("s", "SET_ITEM", encryptKey1, str);
           break;
         }
       }
@@ -57,10 +60,12 @@ export default (res) => {
       break;
     default:
       break;
-  }
-  orderArr = [fUser, sUser];
+  };
 
-  window.sessionStorage.setItem("userOrder", orderArr);
+  storageMethod("s", "SET_ITEM",
+    encryptKey2, // userOrder
+    JSON.stringify([fUser, sUser])
+  );
   activeUserCheckRound();
   setGameOrderRoundCheck();
   setBlink();
