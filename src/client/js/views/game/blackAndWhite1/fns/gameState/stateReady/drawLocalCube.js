@@ -39,6 +39,13 @@ export default () => {
     evenOdd(PLAYER_CUBES_EL);
     if (deviceState === "pc") PLAYER_CUBES_EL.setAttribute("draggable", true);
     PLAYER_CUBE_LIST_EL.appendChild(PLAYER_CUBES_EL);
+
+
+    if (i === 8) {
+      PLAYER_CUBES_EL.classList.add("last-cube")
+    }
+
+
   };
   PLAYER_BLOCK_EL.appendChild(PLAYER_CUBE_LIST_EL);
   GAME_SCENE.appendChild(ENEMY_BLOCK_EL);
