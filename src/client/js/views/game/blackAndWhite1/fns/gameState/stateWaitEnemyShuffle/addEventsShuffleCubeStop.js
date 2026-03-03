@@ -1,3 +1,4 @@
+import { timeInterval_1 } from '@/client/js/functions/variable.js';
 import deviceStateStore from '@/client/store/deviceStateStore';
 import shuffleStart from "@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/shuffleStart";
 import shuffleEnter from "@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/shuffleEnter";

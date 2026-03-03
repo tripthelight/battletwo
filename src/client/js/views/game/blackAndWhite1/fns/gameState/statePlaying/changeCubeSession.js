@@ -1,3 +1,7 @@
+
+/**
+ * @param {number} _num 내가 선택에서 버린 큐브의 번호
+ */
 export default (_num) => {
   const CUBE = document.querySelector(".cube.ready");
   if (CUBE) {

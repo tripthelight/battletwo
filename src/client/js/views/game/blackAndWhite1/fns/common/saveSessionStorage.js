@@ -3,52 +3,90 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import CryptoJS from "crypto-js";
 import { KEY } from '@/client/js/module/webRTC/connectSignaling';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
+import { reactiveState } from "@/client/js/views/game/blackAndWhite1/fns/common/variable";
+import { dec, enc } from '@/client/js/module/crypts/obf8lower';
+import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
+import _t from '@/client/js/module/crypts/textDE';
 
 export default () => {
   try {
-    // TODO: 처음 진입인지 처음 진입 후 한 번 이상 옯겼는지 분기점 필요
-    // 저음 진입이면 012345678 기본 순서이므로 이 순서에서 옮기는 큐브의 index를 기점으로 012345678 수정 필요
-    // 큐브의 innerHTML로 숫자를 지정하면 사용자가 html 수정 할 수 있어서 안됨
+    const PVK = KEY?.prk ?? null; // private key
+    if (!PVK) {
+      throw throwObj('errorComn', 'saveSessionStorage - order decrypt key failed.');
+    };
+
+    // 8진수 영문을 받아서 10진수 정수 반환
+    const cryptoOrder = (arr) => dec(enc(encryptNumOfStr(_t(arr))));
+
+    let playerNumOrder = [];
+
     const encryptKey1 = findCharCode([85, 86, 68, 74, 69, 77, 89, 80, 66, 75]); // playerNumOrder
     const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
+    const encryptKey2 = findCharCode([77, 84, 83, 88, 69, 85, 82, 87, 90, 79]); // round
+    const encryptVal2 = storageMethod("s", "GET_ITEM", encryptKey2);
 
-
-    const CUBE = document.querySelector(".cube");
-    if (CUBE) {
-      const CUBE_LIST = CUBE.querySelectorAll("li");
-      const playerNumOrder = [];
-      // START 버튼을 누르는 순간 큐브에 있는 숫자들의 순서로 배열 생성
-      for (let i = 0; i < CUBE_LIST.length; i++) {
-        playerNumOrder.push(CUBE_LIST[i].innerHTML);
-      };
-
-      // console.log("saveSessionStorage.js cube >>>>>>>>>>>>>>> ", JSON.stringify(playerNumOrder));
-
-      // ["0", "1", "2", "3", "4", "5", "6", "7", "8"] 배열을 "012345678" 로 변경
-      // ["0", "1", "2", "3", "4", "5", "6", "7", "8"]는 예시
-      const orderStr = playerNumOrder.join("");
-      const PVK = KEY?.prk ?? null; // private key
-      if (!PVK) {
-        throw throwObj('errorComn', 'saveSessionStorage - order decrypt key failed.');
-      };
-      // "012345678"를 AES 양방향 대칭키 암호화
-      // "012345678" 는 예시
-      const hash = CryptoJS.AES.encrypt(orderStr, PVK).toString();
-
-      console.log("encrypted hash >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ", hash);
-
-      // 암호화된 playerNumOrder - "012345678" - 를 복호화
-      // "012345678" 은 예시
-      const bytes = CryptoJS.AES.decrypt(hash, PVK);
+    // round value가 "" 이고
+    // playerNumOrder value가 "" 이면
+    // 최초 진입
+    if (
+      (!encryptVal1 && !encryptVal2) || // playerNumOrder 도 없고, round도 없다
+      (
+        !encryptVal1 &&
+        (
+          encryptVal2 && dec(encryptVal2) === 1
+        )
+      ) // playerNumOrder 없고, round 있는데, 1 round다.
+    ) {
+      // 최초 진입
+      playerNumOrder = [
+        cryptoOrder([101,119,119,119,101,101,101,101]), // "ewwweeee" : 0
+        cryptoOrder([101,119,101,119,101,119,119,114]), // "ewewewwr" : 1
+        cryptoOrder([119,119,119,119,101,101,101,112]), // "wwwweeep" : 2
+        cryptoOrder([119,101,101,119,101,119,101,122]), // "weewewez" : 3
+        cryptoOrder([101,119,119,119,119,101,101,111]), // "ewwwweeo" : 4
+        cryptoOrder([101,119,119,101,101,119,119,107]), // "ewweewwk" : 5
+        cryptoOrder([101,119,101,119,119,101,119,100]), // "ewewwewd" : 6
+        cryptoOrder([119,101,101,101,101,101,119,117]), // "weeeeewu" : 7
+        cryptoOrder([101,119,119,119,101,119,119,53]), // "ewwweww5" : 8
+      ]; // [0,1,2,3,4,5,6,7,8] 의 난독화
+    } else {
+      // 최초 진입 후 1번 이상 큐브 위치를 변경
+      const bytes = CryptoJS.AES.decrypt(encryptVal1, PVK);
       const decrypted = bytes.toString(CryptoJS.enc.Utf8);
 
-      console.log("decrypted hash >>>>>>>>>>>>>>>>>>>>>>>>>> ", decrypted);
+      // decrypted 가 빈 문자열이면 사용자가 storage value 조작함
+      if (decrypted === "") {
+        throw throwObj('sessionStorageLoss', 'saveSessionStorage - order decrypt value failed.');
+      };
 
-      storageMethod("s", "SET_ITEM",
-        findCharCode([85, 86, 68, 74, 69, 77, 89, 80, 66, 75]), // playerNumOrder
-        JSON.stringify(playerNumOrder)
-      );
+      playerNumOrder = [...decrypted].map(Number);
     }
+
+    function arrChangeIndex(startIdx, endIdx) {
+      if (!Number.isInteger(startIdx) || !Number.isInteger(endIdx)) return;
+      if (startIdx === endIdx) return;
+      if (startIdx < 0 || endIdx < 0) return;
+      if (startIdx >= playerNumOrder.length || endIdx >= playerNumOrder.length) return;
+
+      [playerNumOrder[startIdx], playerNumOrder[endIdx]] = [playerNumOrder[endIdx], playerNumOrder[startIdx]];
+    };
+
+    if (reactiveState.idxS !== null && reactiveState.idxE !== null) {
+      arrChangeIndex(reactiveState.idxS, reactiveState.idxE);
+      reactiveState.idxS = null;
+      reactiveState.idxE = null;
+    };
+
+    // 옯긴 큐브 순서
+    console.log("옯긴 큐브 순서 >>>>>>>> ", playerNumOrder);
+
+    const orderStr = playerNumOrder.join("");
+    const hash = CryptoJS.AES.encrypt(orderStr, PVK).toString();
+
+    storageMethod("s", "SET_ITEM",
+      findCharCode([85, 86, 68, 74, 69, 77, 89, 80, 66, 75]), // playerNumOrder
+      hash // 옮긴 큐브 순서를 AES 암호화한 문자열
+    );
   } catch (error) {
     throw throwObj(
       error?.errCase ?? 'errorComn',

@@ -17,6 +17,8 @@ const state = {
   dragSrcEl: null,
   InnerSquareW: window.innerWidth - 40,
   InnerSquareH: window.innerHeight / 2,
+  idxS: null,
+  idxE: null,
 };
 
 export const reactiveState = new Proxy(state, {

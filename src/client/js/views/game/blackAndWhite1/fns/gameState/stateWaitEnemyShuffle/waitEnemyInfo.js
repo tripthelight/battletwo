@@ -12,7 +12,7 @@ export default () => {
     BTN_EL.setAttribute("disabled", true);
     BTN_EL.setAttribute("aria-label", "Your opponent is shuffling their cards.");
     BTN_EL.querySelector("span").innerText = "wait opponent";
-    cubeOrderSession();
+    // cubeOrderSession(); // shuffleEnd에서 sessionStorage playerNumOrder에 저장하므로 제거
     /// //////////////////////
   };
 
