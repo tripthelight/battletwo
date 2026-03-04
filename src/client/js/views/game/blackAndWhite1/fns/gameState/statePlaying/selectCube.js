@@ -8,7 +8,7 @@ export default () => {
     pcCubeDisabled(true);
     let selectCubes = document.querySelectorAll("ul.cube li");
     [].forEach.call(selectCubes, function (item) {
-      addEventsSelectCube(item);
+      addEventsSelectCube(item, true);
     });
   }
 };

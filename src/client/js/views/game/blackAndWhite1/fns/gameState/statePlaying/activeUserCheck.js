@@ -24,7 +24,7 @@ export default () => {
       encryptKey1,
       storageMethod("s", "GET_ITEM", findCharCode([73, 81, 90, 83, 68, 86, 69, 89, 78, 70]))
     );
-    setGameOrder();
+    // setGameOrder();
   } else {
     // refresh
     // change session activeUser

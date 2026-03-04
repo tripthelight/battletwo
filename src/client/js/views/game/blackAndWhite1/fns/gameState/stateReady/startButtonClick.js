@@ -83,8 +83,8 @@ export default (btnStart) => {
       enc(encryptNumOfStr(textDE([101, 119, 119, 114]))), // 'ewwr' : 1
     );
 
-    cubeNumCheck();
     cubeReadyEnd();
     saveSessionStorage();
+    cubeNumCheck();
   };
 };

@@ -1,10 +1,10 @@
 import pcCubeDisabled from "@/client/js/views/game/blackAndWhite1/fns/common/pcCubeDisabled";
-import disabledSelect from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/disabledSelect";
+import addEventsSelectCube from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/addEventsSelectCube";
 
 export default () => {
   pcCubeDisabled(true);
-  let disabledselectCubes = document.querySelectorAll("ul.cube li");
+  const disabledselectCubes = document.querySelectorAll("ul.cube li");
   [].forEach.call(disabledselectCubes, (item) => {
-    disabledSelect(item);
+    addEventsSelectCube(item, false);
   });
 };

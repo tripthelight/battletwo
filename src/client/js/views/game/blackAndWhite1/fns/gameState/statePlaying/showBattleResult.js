@@ -5,7 +5,7 @@ import resetCard from "@/client/js/views/game/blackAndWhite1/fns/gameState/state
 import setGameOrderRound from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/setGameOrderRound";
 
 export default (res) => {
-  let elem = document.createElement("div");
+  const elem = document.createElement("div");
   elem.classList.add("show-battle-result");
   elem.classList.add(res);
   const CONTAINER_EL = document.getElementById("container");

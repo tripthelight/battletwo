@@ -4,15 +4,15 @@ import clearSelectedCard from "@/client/js/views/game/blackAndWhite1/fns/gameSta
 import cubeListStyle from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/cubeListStyle";
 import hideInnerSquare from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/hideInnerSquare";
 
-export default (cube, num) => {
+export default (playerNumOrder, selectCubeNum) => {
   setTimeout(() => {
-    sedPcCard(cube, num);
+    sedPcCard(playerNumOrder, selectCubeNum);
   }, timeInterval_1);
   setTimeout(() => {
-    clearSelectedCard(cube, num);
+    clearSelectedCard(playerNumOrder, selectCubeNum);
   }, timeInterval_2);
   setTimeout(() => {
-    cubeListStyle(cube);
+    cubeListStyle();
   }, timeInterval_3);
   setTimeout(() => {
     hideInnerSquare();

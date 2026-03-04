@@ -41,34 +41,24 @@ export default (e) => {
   // 내가 선택해서 옮긴 큐브의 번호
   console.log("내가 선택해서 옮긴 큐브의 번호 >>>> ", selectCubeNum);
 
-  reactiveState.idxS = null;
-  /*
-  event.preventDefault();
-  const CUBE = document.querySelector(".cube.ready.start");
-  const BLACK_SQUARE = document.querySelector(".black-square");
-  if (BLACK_SQUARE.classList.contains("over")) {
-    BLACK_SQUARE.classList.remove("over");
-  }
-
-  const data = event.dataTransfer.getData("Text");
-  const NUM_DATA = Number(data); // 내가 선택해서 옮긴 큐브의 번호
-
-  if (NUM_DATA % 2 === 0) {
+  if (selectCubeNum % 2 === 0) {
     BLACK_SQUARE.classList.remove("odd");
     BLACK_SQUARE.classList.add("even");
   } else {
     BLACK_SQUARE.classList.remove("even");
     BLACK_SQUARE.classList.add("odd");
-  }
+  };
+
   const NUM_EL = document.createElement("span");
-  NUM_EL.innerHTML = NUM_DATA;
+  NUM_EL.innerHTML = selectCubeNum;
   const SPAN_EL = BLACK_SQUARE.querySelectorAll("span");
   if (SPAN_EL.length === 0) {
     BLACK_SQUARE.appendChild(NUM_EL);
     // disabled select
     disabledSelectInit();
-    comnPcEnd(CUBE, NUM_DATA);
+    comnPcEnd(playerNumOrder, selectCubeNum);
   };
+
   // 새로고침 후 진입 시
   if (SPAN_EL.length > 0) {
     for (let i = 0; i < SPAN_EL.length; i++) {
@@ -77,8 +67,8 @@ export default (e) => {
     BLACK_SQUARE.appendChild(NUM_EL);
     // disabled select
     disabledSelectInit();
-    comnPcEnd(CUBE, NUM_DATA);
-  }
-  // event.target.appendChild(document.getElementById(data));
-  */
+    comnPcEnd(playerNumOrder, selectCubeNum);
+  };
+
+  reactiveState.idxS = null;
 };

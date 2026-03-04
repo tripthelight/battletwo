@@ -1,7 +1,9 @@
 // import waitEnemy from "../common/waitEnemy.js";
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import findCharCode from '@/client/js/functions/findCharCode';
-import { dec } from '@/client/js/module/crypts/obf8lower';
+import { enc, dec } from '@/client/js/module/crypts/obf8lower';
+import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
+import _t from '@/client/js/module/crypts/textDE';
 
 /**
  * gameState playing 진입 순간 여기로 진입됨
@@ -26,13 +28,11 @@ export default () => {
   let fUser = "";
   let sUser = "";
   let orderArr = [];
-  // if (ROUND < 9) {
-  if (dec(encryptVal1) < 9) { // round < 9
-    console.log("activeUser 검사할 때 : ", encryptVal2);
-    console.log("activeUser :::::::::::::::::::::: ", encryptVal2);
-    console.log("localPlayer ::::::::::::::::::::: ", encryptVal3);
-    console.log("activeUser == localPlayer ::::::: ", encryptVal2 == encryptVal3);
-
+  // round < 9
+  if (
+    dec(encryptVal1) <
+    dec(enc(encryptNumOfStr(_t([101, 119, 101, 119, 101, 119, 101, 102])))) // 'ewewewef' : 9
+  ) {
     // 1 ~ 8 ROUND
     if (encryptVal2 == encryptVal3) {
       fUser = encryptVal3; // localPlayer

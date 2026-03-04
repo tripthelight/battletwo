@@ -50,21 +50,27 @@ const onTouchEnd = withGuard(handleTouchEnd);
 // 바인딩 중복 제거 유틸
 const DEFAULT_OPTS = false;
 
-const bindEvents = (bindings, opts = DEFAULT_OPTS) => {
+const bindEvents = (bindState, bindings, opts = DEFAULT_OPTS) => {
   bindings.forEach(([target, type, handler]) => {
     if (!target) return;
     target.removeEventListener(type, handler, opts);
-    target.addEventListener(type, handler, opts);
+    if (bindState) {
+      target.addEventListener(type, handler, opts);
+    }
   });
 };
 
-export default (el) => {
+/**
+ * @param {HTMLElement} el 큐브 li
+ * @param {boolean} bindState true : bind | false : unbind
+ */
+export default (el, bindState) => {
   if (!el) return;
   const deviceState = deviceStateStore.getState().deviceStateState.deviceState;
 
   // PC
   if (deviceState === 'pc') {
-    bindEvents([
+    bindEvents(bindState, [
       [el, 'dragstart', onDragStart],
       [el, 'dragenter', onDragEnter],
       [el, 'dragover', onDragOver],
@@ -77,7 +83,7 @@ export default (el) => {
 
   // MOBILE
   if (deviceState === 'mobile') {
-    bindEvents([
+    bindEvents(bindState, [
       [el, 'touchstart', onTouchStart],
       [el, 'touchmove', onTouchMove],
       [el, 'touchend', onTouchEnd],

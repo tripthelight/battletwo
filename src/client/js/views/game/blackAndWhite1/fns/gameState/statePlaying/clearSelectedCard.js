@@ -1,10 +1,10 @@
-export default (cube, num) => {
-  const CUBE_LIST = cube.querySelectorAll("li");
-  if (CUBE_LIST.length > 0) {
-    for (let i = 0; i < CUBE_LIST.length; i++) {
-      if (Number(CUBE_LIST[i].innerHTML) === num) {
-        console.log("여기서 다 지우는 구만 ????? ");
-        CUBE_LIST[i].remove();
+export default (playerNumOrder, selectCubeNum) => {
+  const CUBE_UL = document.querySelector(".cube");
+  const CUBE_LI = CUBE_UL.querySelectorAll("li");
+  if (CUBE_LI.length > 0) {
+    for (let i = 0; i < playerNumOrder.length; i++) {
+      if (playerNumOrder[i] === selectCubeNum) {
+        CUBE_LI[i].remove();
       }
     }
   }
