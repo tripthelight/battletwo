@@ -4,6 +4,7 @@ import { text } from '@/client/js/functions/language';
 import getUnicodePoints from '@/client/js/module/unicode/getUnicodePoints';
 import errorNameEvent from '@/client/js/functions/errorNameEvent';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
+import { makePayloadFromHex } from '@/client/js/module/crypts/obf_u32_xor_prng_b64';
 
 /**
  * 닉네임 입력 팝업
@@ -69,7 +70,8 @@ export default function initNickName(afterPopup, afterStr) {
         } else {
           // Unicode 배열 형식으로 변환
           const RESULT = getUnicodePoints(IPT_EL.value.replace(/\s+/g, ''));
-          storageMethod('l', 'SET_ITEM', 'localPlayer', RESULT);
+          const ENC_RESULT = makePayloadFromHex(RESULT); // 닉네임 난독화
+          storageMethod('l', 'SET_ITEM', 'localPlayer', ENC_RESULT);
           MODAL_POP_WRAP.remove();
 
           // 닉네임 입력 팝업 닫은 후 띄울 팝업 체크

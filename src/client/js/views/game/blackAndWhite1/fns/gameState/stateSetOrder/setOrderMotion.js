@@ -4,6 +4,7 @@ import findNickname from '@/client/js/functions/findNickname';
 import findCharCode from '@/client/js/functions/findCharCode';
 import X from '@/client/js/module/crypts/bool-obf';
 import { timeInterval_4200, timeInterval_5200 } from "@/client/js/functions/variable";
+import { parsePayloadToHex } from '@/client/js/module/crypts/obf_u32_xor_prng_b64';
 import gameState from '@/client/js/gameState/blackAndWhite1';
 import motionStyle from "@/client/js/views/game/blackAndWhite1/fns/common/motionStyle";
 
@@ -28,12 +29,17 @@ export default () => {
     elem.classList.add("order-motion");
 
     const LOCAL_PEER = findNickname('localPlayer'); // my nick name
+    // const REMOTE_PEER = fromUnicodePoints(
+    //     storageMethod("s", "GET_ITEM", findCharCode([77, 74, 67, 72, 65, 68, 80, 85, 84, 90])) // enemyNick
+    //       .replace(/"/g, '')
+    //       .split(',')
+    //       .map((s) => s.trim()),
+    //   );
     const REMOTE_PEER = fromUnicodePoints(
-        storageMethod("s", "GET_ITEM", findCharCode([77, 74, 67, 72, 65, 68, 80, 85, 84, 90])) // enemyNick
-          .replace(/"/g, '')
-          .split(',')
-          .map((s) => s.trim()),
-      );
+      parsePayloadToHex(
+        storageMethod("s", "GET_ITEM", findCharCode([77, 74, 67, 72, 65, 68, 80, 85, 84, 90]))  // enemyNick
+      )
+    );
     const encryptKey1 = findCharCode([73, 81, 90, 83, 68, 86, 69, 89, 78, 70]); // firstUser
     const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
 

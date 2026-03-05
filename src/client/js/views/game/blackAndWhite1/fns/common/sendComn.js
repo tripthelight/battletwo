@@ -1,5 +1,6 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import findCharCode from '@/client/js/functions/findCharCode';
+import { parsePayloadToHex } from '@/client/js/module/crypts/obf_u32_xor_prng_b64';
 import beforePlayerNum from "@/client/js/views/game/blackAndWhite1/fns/common/beforePlayerNum";
 import changeActiveUser from '@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/changeActiveUser';
 import afterPlayerNum from "@/client/js/views/game/blackAndWhite1/fns/common/afterPlayerNum";
@@ -14,6 +15,10 @@ export default (num, index) => {
   const encryptKey1 = findCharCode([73, 81, 90, 83, 68, 86, 69, 89, 78, 70]); // firstUser
   const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
   const encryptVal2 = storageMethod("l", "GET_ITEM", "localPlayer"); // local peer nick code
+  // console.log("encryptVal2 >>>>>>>>>>> ", encryptVal2);
+  // const decryptVal2 = parsePayloadToHex(encryptVal2);
+  // console.log("decryptVal2 >>>>>>>>>>> ", decryptVal2);
+
 
   // firstUser 의 nick code가 내 local storage nick code와 같으면 내가 선 / 다르면 내가 후
   // firstUser === local peer nick

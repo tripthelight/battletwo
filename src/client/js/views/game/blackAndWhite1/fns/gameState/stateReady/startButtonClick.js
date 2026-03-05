@@ -12,8 +12,7 @@ import cubeNumCheck from "@/client/js/views/game/blackAndWhite1/fns/gameState/st
 import cubeReadyEnd from "@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/cubeReadyEnd";
 import saveSessionStorage from "@/client/js/views/game/blackAndWhite1/fns/common/saveSessionStorage";
 
-import findNickname from '@/client/js/functions/findNickname';
-import fromUnicodePoints from '@/client/js/module/unicode/fromUnicodePoints';
+import { parsePayloadToHex } from '@/client/js/module/crypts/obf_u32_xor_prng_b64';
 
 export default (btnStart) => {
   btnStart.onclick = () => {
@@ -22,6 +21,15 @@ export default (btnStart) => {
       findCharCode([80, 72, 73, 74, 89, 86, 83, 66, 69, 87]), // myShuffleState
       X.enc(decodeTF(_t([115, 119, 112, 117]))) // "swpu" : true
     );
+
+    /*
+    const nickPlain = storageMethod("l", "GET_ITEM", "localPlayer");
+    console.log("암호화 nick name >>>>>>>>>> ", nickPlain);
+    const decLocalNick = parsePayloadToHex(nickPlain);
+    console.log("복호화 nick name >>>>>>>>>> ", decLocalNick);
+    const localNickStr = decLocalNick.join(",");
+    console.log("닉네임 str >>>>>>>>>>>>>>>> ", localNickStr);
+    */
 
     // 나의 shuffle이 끝났다고 상대에게 알림
     request('startCheck', {
@@ -52,7 +60,7 @@ export default (btnStart) => {
 
       const NICK_LIST = [
         storageMethod("l", "GET_ITEM", "localPlayer"), // local peer nick name
-        storageMethod("s", "GET_ITEM", findCharCode([77, 74, 67, 72, 65, 68, 80, 85, 84, 90])) // local peer nick name
+        storageMethod("s", "GET_ITEM", findCharCode([77, 74, 67, 72, 65, 68, 80, 85, 84, 90])) // enemyNick
       ];
       const TF = [
         X.enc(decodeTF(_t([99, 102, 112, 110]))), // "cfpn" : true

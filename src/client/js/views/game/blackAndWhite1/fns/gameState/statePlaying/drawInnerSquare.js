@@ -14,6 +14,7 @@ import turnReminderBlink from "@/client/js/views/game/blackAndWhite1/fns/gameSta
 import { reactiveState } from "@/client/js/views/game/blackAndWhite1/fns/common/variable";
 
 import fromUnicodePoints from '@/client/js/module/unicode/fromUnicodePoints';
+import { parsePayloadToHex } from '@/client/js/module/crypts/obf_u32_xor_prng_b64';
 
 export default () => {
   if (!document.querySelector(".inner-square")) {
@@ -41,12 +42,17 @@ export default () => {
       } else {
         elem.classList.add("after");
         // innerFirst.innerText = window.sessionStorage.enemyNick;
+        // innerFirst.innerText = fromUnicodePoints(
+        //     storageMethod("s", "GET_ITEM", findCharCode([77, 74, 67, 72, 65, 68, 80, 85, 84, 90])) // enemyNick
+        //       .replace(/"/g, '')
+        //       .split(',')
+        //       .map((s) => s.trim()),
+        //   );
         innerFirst.innerText = fromUnicodePoints(
+          parsePayloadToHex(
             storageMethod("s", "GET_ITEM", findCharCode([77, 74, 67, 72, 65, 68, 80, 85, 84, 90])) // enemyNick
-              .replace(/"/g, '')
-              .split(',')
-              .map((s) => s.trim()),
-          );
+          )
+        );
         innerInfo1.innerText = text.balckandwhite1.order;
         innerInfo2.innerText = text.balckandwhite1.wait;
       };
