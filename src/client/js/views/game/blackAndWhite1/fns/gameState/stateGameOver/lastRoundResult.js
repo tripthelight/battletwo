@@ -2,8 +2,9 @@ import lastRoundState from "@/client/js/views/game/blackAndWhite1/fns/gameState/
 import lastRoundShow from "@/client/js/views/game/blackAndWhite1/fns/gameState/stateGameOver/lastRoundShow";
 
 export default () => {
-  const RESULT = window.sessionStorage.getItem("result");
-  const RESULT_ARR = JSON.parse(RESULT);
+  // [260309]
+  const RESULT_VALUE = window.sessionStorage.getItem("result");
+  const RESULT_ARR = JSON.parse(RESULT_VALUE);
   let win = 0;
   let die = 0;
   let drew = 0;
@@ -16,6 +17,6 @@ export default () => {
       drew += 1;
     }
   }
-  let result = lastRoundState(win, die, drew);
+  const result = lastRoundState(win, die, drew);
   lastRoundShow(result);
 };

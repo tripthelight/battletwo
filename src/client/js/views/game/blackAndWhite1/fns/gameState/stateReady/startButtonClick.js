@@ -5,7 +5,6 @@ import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import _t from '@/client/js/module/crypts/textDE';
 import { enc } from '@/client/js/module/crypts/obf8lower';
-import textDE from '@/client/js/module/crypts/textDE';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import gameState from '@/client/js/gameState/blackAndWhite1';
 import cubeNumCheck from "@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/cubeNumCheck";
@@ -88,7 +87,7 @@ export default (btnStart) => {
     // round : 1
     storageMethod("s", "SET_ITEM",
       findCharCode([77, 84, 83, 88, 69, 85, 82, 87, 90, 79]), // round
-      enc(encryptNumOfStr(textDE([101, 119, 119, 114]))), // 'ewwr' : 1
+      enc(encryptNumOfStr(_t([101, 119, 119, 114]))), // 'ewwr' : 1
     );
 
     cubeReadyEnd();

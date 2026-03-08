@@ -3,12 +3,12 @@ import lastRoundBtn from "@/client/js/views/game/blackAndWhite1/fns/gameState/st
 import setStorageGameResult from "@/client/js/views/game/blackAndWhite1/fns/gameState/stateGameOver/setStorageGameResult";
 
 export default (result) => {
-  let res = gameOverRes(result);
+  const res = gameOverRes(result);
   const RESULT_INFO = document.querySelector(".last-round-info");
   if (!RESULT_INFO) {
-    let elem = document.createElement("div");
-    let tit = document.createElement("span");
-    let list = document.createElement("div");
+    const elem = document.createElement("div");
+    const tit = document.createElement("span");
+    const list = document.createElement("div");
     let listUl;
     let innerList;
     elem.classList.add("last-round-info");

@@ -528,6 +528,9 @@ export const obfuscationList = {
       USER_ORDER: {
         k: 'JAXHBTSCEU' // [74, 65, 88, 72, 66, 84, 83, 67, 69, 85]
       },
+      RESULT: {
+        k: 'GIEMSNYXRB' // [71, 73, 69, 77, 83, 78, 89, 88, 82, 66]
+      },
       // e: sessionStorage keys
       */
     };
