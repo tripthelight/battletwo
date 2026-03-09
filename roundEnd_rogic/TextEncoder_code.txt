@@ -1,10 +1,15 @@
 xgviu
 
-const B = "xgviu"
+const B = "eweewwww"
 new TextEncoder().encode(B);
 
 
 
-const A = [120, 103, 118, 105, 117];
+const A = [101, 119, 101, 101, 119, 119, 119, 119];
 new TextDecoder().decode(new Uint8Array(A));
 
+
+
+function encodeText(str) {
+  return Array.from(new TextEncoder().encode(str));
+}
