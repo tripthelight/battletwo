@@ -1,10 +1,8 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import findCharCode from '@/client/js/functions/findCharCode';
-import { KEY } from '@/client/js/module/webRTC/connectSignaling';
-import CryptoJS from "crypto-js";
 import { request } from '@/client/js/network/blackAndWhite1/request';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
-import cubeToNum from '@/client/js/views/game/blackAndWhite1/fns/common/cubeToNum';
+import NumToCube from '@/client/js/views/game/blackAndWhite1/fns/common/NumToCube';
 
 export default (num, index) => {
   try {
@@ -19,7 +17,37 @@ export default (num, index) => {
     // const playerNumOrder = [...decrypted].map(Number);
     // console.log("playerNumOrder >>>>>>>> ", playerNumOrder);
 
-    window.sessionStorage.setItem("beforePlayerNum", num);
+    // const N_ENC = [
+    //   NumToCube(0),
+    //   NumToCube(1),
+    //   NumToCube(2),
+    //   NumToCube(3),
+    //   NumToCube(4),
+    //   NumToCube(5),
+    //   NumToCube(6),
+    //   NumToCube(7),
+    //   NumToCube(8),
+    // ];
+    // const N_DEC = [
+    //   cubeToNum(N_ENC[0]),
+    //   cubeToNum(N_ENC[1]),
+    //   cubeToNum(N_ENC[2]),
+    //   cubeToNum(N_ENC[3]),
+    //   cubeToNum(N_ENC[4]),
+    //   cubeToNum(N_ENC[5]),
+    //   cubeToNum(N_ENC[6]),
+    //   cubeToNum(N_ENC[7]),
+    //   cubeToNum(N_ENC[8]),
+    // ];
+    // console.log("암호화된 숫자 0~8 >>>>>>>> ", N_ENC);
+    // console.log("복호화된 숫자 0~8 >>>>>>>> ", N_DEC);
+    // console.log("내가 선택한 큐브 숫자 >>>>> ", num);
+
+    // window.sessionStorage.setItem("beforePlayerNum", num);
+    storageMethod("s", "SET_ITEM",
+      findCharCode([65, 69, 68, 79, 82, 85, 78, 80, 90, 75]), // beforePlayerNum
+      NumToCube(num) // 0 ~ 8 난독화 숫자 코드
+    );
     request("beforePlayerNumber", { index })
   } catch (error) {
     throw throwObj(
