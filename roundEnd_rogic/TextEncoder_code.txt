@@ -12,4 +12,12 @@ new TextDecoder().decode(new Uint8Array(A));
 function encodeText(str) {
   return Array.from(new TextEncoder().encode(str));
 };
-console.log(encodeText("wweeweep"));
+console.log(encodeText("wwweeeep"));
+
+
+
+const encoder = new TextEncoder();
+console.log(encoder.encode("drew"));
+
+const uint8Array = new Uint8Array([100, 114, 101, 119]);
+console.log( new TextDecoder().decode(uint8Array) ); // Hello

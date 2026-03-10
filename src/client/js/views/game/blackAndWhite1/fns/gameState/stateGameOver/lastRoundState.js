@@ -1,5 +1,15 @@
 export default (win, die, drew) => {
   if (win > die) {
+    return 'win';
+  }
+
+  if (die > win) {
+    return 'lose';
+  }
+
+  return 'drew';
+
+  /* if (win > die) {
     return "win";
     // console.log('내가 이김');
   }
@@ -22,5 +32,5 @@ export default (win, die, drew) => {
   if (win == 0 && die == 0) {
     return "drew";
     // console.log('비김');
-  }
+  } */
 };

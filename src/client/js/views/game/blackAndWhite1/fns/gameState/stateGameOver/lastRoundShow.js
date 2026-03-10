@@ -3,7 +3,10 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 import { KEY } from '@/client/js/module/webRTC/connectSignaling';
 import CryptoJS from 'crypto-js';
 import { dec, enc } from '@/client/js/module/crypts/obf8lower';
+import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
+import _t from '@/client/js/module/crypts/textDE';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
+import returnResult from '@/client/js/views/game/blackAndWhite1/fns/common/returnResult';
 import gameOverRes from "@/client/js/views/game/blackAndWhite1/fns/gameState/stateGameOver/gameOverRes";
 import lastRoundBtn from "@/client/js/views/game/blackAndWhite1/fns/gameState/stateGameOver/lastRoundBtn";
 import setStorageGameResult from "@/client/js/views/game/blackAndWhite1/fns/gameState/stateGameOver/setStorageGameResult";
@@ -45,9 +48,7 @@ export default (result) => {
         innerList.innerHTML = resultObj[i].round;
         listUl.appendChild(innerList);
         innerList = document.createElement("li");
-        // innerList.innerHTML = resultObj[i].result == "die" ? "lose" : resultObj[i].result;
-        const r = dec(resultObj[i].result);
-        innerList.innerHTML = r === 0 ? "lose" : r === 1 ? "win" : r === 2 ? "drew" : "";
+        innerList.innerHTML = returnResult(dec(resultObj[i].result));
         listUl.appendChild(innerList);
         list.appendChild(listUl);
       }

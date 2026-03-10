@@ -34,6 +34,8 @@ export default () => {
 
     for (let i = 0; i < resultObj.length; i++) {
       const r = dec(resultObj[i].result);
+      console.log("결과 ::::::::: ", r);
+
       if (r === 1) { // win
         resultCase.win += 1;
       } else if (r === 0) { // die
