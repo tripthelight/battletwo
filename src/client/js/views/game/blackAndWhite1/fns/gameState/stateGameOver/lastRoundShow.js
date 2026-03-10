@@ -45,7 +45,9 @@ export default (result) => {
         innerList.innerHTML = resultObj[i].round;
         listUl.appendChild(innerList);
         innerList = document.createElement("li");
-        innerList.innerHTML = resultObj[i].result == "die" ? "lose" : resultObj[i].result;
+        // innerList.innerHTML = resultObj[i].result == "die" ? "lose" : resultObj[i].result;
+        const r = dec(resultObj[i].result);
+        innerList.innerHTML = r === 0 ? "lose" : r === 1 ? "win" : r === 2 ? "drew" : "";
         listUl.appendChild(innerList);
         list.appendChild(listUl);
       }

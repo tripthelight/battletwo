@@ -33,11 +33,12 @@ export default () => {
     };
 
     for (let i = 0; i < resultObj.length; i++) {
-      if (resultObj[i].result === "win") {
+      const r = dec(resultObj[i].result);
+      if (r === 1) { // win
         resultCase.win += 1;
-      } else if (resultObj[i].result === "die") {
+      } else if (r === 0) { // die
         resultCase.die += 1;
-      } else if (resultObj[i].result === "drew") {
+      } else if (r === 2) { // drew
         resultCase.drew += 1;
       }
     };

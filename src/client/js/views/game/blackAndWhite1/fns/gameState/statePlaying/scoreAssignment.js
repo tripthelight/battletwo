@@ -6,6 +6,9 @@ import { dec, enc } from '@/client/js/module/crypts/obf8lower';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import passScore from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/passScore";
 
+/**
+ * @param {string} result 난독화된 라운드 결과 "win" | "die" | "drew"
+ */
 export default (result) => {
   try {
     const PVK = KEY?.prk ?? null; // private key
@@ -32,12 +35,10 @@ export default (result) => {
       resArr = JSON.parse(jsonStr);
     };
 
-    let newObj = {
+    resArr.push({
       round: dec(encryptVal1),
       result: result,
-    };
-
-    resArr.push(newObj);
+    });
     const orderStr = JSON.stringify(resArr).replace(/"([^"]+)":/g, '$1:').replace(/"/g, "'");
     const hash = CryptoJS.AES.encrypt(orderStr, PVK).toString();
 

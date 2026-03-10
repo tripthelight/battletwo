@@ -4,6 +4,9 @@ import countRound from "@/client/js/views/game/blackAndWhite1/fns/gameState/stat
 import resetCard from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/resetCard";
 import setGameOrderRound from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/setGameOrderRound";
 
+/**
+ * @param {string} res 난독화된 라운드 결과 "win" | "die" | "drew"
+ */
 export default (res) => {
   const elem = document.createElement("div");
   elem.classList.add("show-battle-result");

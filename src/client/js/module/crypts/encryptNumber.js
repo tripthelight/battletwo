@@ -50,6 +50,8 @@ export function encrypt32ToHex8(n, rounds = 8) {
   if (!KEY.keypair) {
     throw throwObj('errorComn', 'decrypt number key error.');
   }
+  console.log("KEY 찾냐 ? >>>>>>>>> encrypt32ToHex8 ");
+
   // const ks = keyWordsFromSecret(encrypt.keypair);
   const ks = keyWordsFromSecret(KEY.keypair);
 
@@ -72,6 +74,7 @@ export function decryptHex8To32(hex8, rounds = 8) {
   if (!KEY.keypair) {
     throw throwObj('errorComn', 'decrypt number key error.');
   }
+  console.log("KEY 찾냐 ? >>>>>>>>> decryptHex8To32 ");
   // const ks = keyWordsFromSecret(encrypt.keypair);
   const ks = keyWordsFromSecret(KEY.keypair);
 

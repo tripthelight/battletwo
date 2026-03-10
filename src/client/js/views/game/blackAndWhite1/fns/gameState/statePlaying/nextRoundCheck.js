@@ -6,6 +6,6 @@ export default () => {
   // window.sessionStorage.removeItem("beforePlayerNum");
   storageMethod("s", "EMPTY_VALUE",
     findCharCode([65, 69, 68, 79, 82, 85, 78, 80, 90, 75]) // beforePlayerNum
-  )
+  );
   turnReminderBlinkNull();
 };
