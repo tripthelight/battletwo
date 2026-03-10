@@ -1,4 +1,5 @@
 export default (win, die, drew) => {
+  // [260311]
   if (win > die) {
     return 'win';
   }
