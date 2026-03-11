@@ -26,6 +26,9 @@ export default () => {
     const resultStr = jsonStr.replace(/'([^']*)'/g, '"$1"');
     const resultObj = JSON.parse(resultStr);
 
+    console.log("전체결과 ::::::::: ", resultObj);
+
+
     const resultCase = {
       win: 0,
       die: 0,
@@ -34,15 +37,13 @@ export default () => {
 
     for (let i = 0; i < resultObj.length; i++) {
       const r = dec(resultObj[i].result);
-      console.log("결과 ::::::::: ", r);
-
       if (r === 1) { // win
         resultCase.win += 1;
       } else if (r === 0) { // die
         resultCase.die += 1;
       } else if (r === 2) { // drew
         resultCase.drew += 1;
-      }
+      };
     };
 
     const result = lastRoundState(resultCase.win, resultCase.die, resultCase.drew);

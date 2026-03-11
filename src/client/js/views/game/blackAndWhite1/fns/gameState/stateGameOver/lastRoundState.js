@@ -1,14 +1,13 @@
 export default (win, die, drew) => {
-  // [260311]
   if (win > die) {
-    return 'win';
+    return new TextDecoder().decode(new Uint8Array([119, 105, 110])); // "win"
   }
 
   if (die > win) {
-    return 'lose';
+    return new TextDecoder().decode(new Uint8Array([108, 111, 115, 101])); // "lose"
   }
 
-  return 'drew';
+  return new TextDecoder().decode(new Uint8Array([100, 114, 101, 119])); // "drew"
 
   /* if (win > die) {
     return "win";

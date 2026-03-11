@@ -1,8 +1,8 @@
 export default () => {
   const CUBES = document.querySelectorAll(".cube.ready li");
   if (CUBES.length > 0) {
-    console.log("CUBES[0].clientWidth :: ", CUBES[0].clientWidth);
-    console.log("CUBES[0].clientHeight :: ", CUBES[0].clientHeight);
+    // console.log("CUBES[0].clientWidth :: ", CUBES[0].clientWidth);
+    // console.log("CUBES[0].clientHeight :: ", CUBES[0].clientHeight);
     return {
       w: Math.floor(CUBES[0].clientWidth / 2),
       h: Math.floor(CUBES[0].clientHeight / 2),

@@ -42,6 +42,9 @@ export default (result) => {
       const resultStr = jsonStr.replace(/'([^']*)'/g, '"$1"');
       const resultObj = JSON.parse(resultStr);
 
+      console.log("이게 문제 ? ", resultObj);
+
+
       for (let i = 0; i < resultObj.length; i++) {
         listUl = document.createElement("ul");
         innerList = document.createElement("li");
