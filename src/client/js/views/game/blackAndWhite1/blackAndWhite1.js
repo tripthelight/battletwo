@@ -79,7 +79,7 @@ async function startGame() {
         blackAndWhite1GameState.ready();
       }
     };
-    LOADING_EVENT.hide();
+    // LOADING_EVENT.hide();
   } catch (error) {
     errorManager(error, false);
   }

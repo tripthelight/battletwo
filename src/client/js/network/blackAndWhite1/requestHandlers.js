@@ -13,6 +13,8 @@ export const REQUEST_HANDLERS = {
   enemyOrder: (v) => ({ type: 'enemyOrder', ...v }),
 
   // gameState : playing
+  enterPlayingSend: (v) => ({ type: 'enterPlayingSend', ...v }),
+  enterPlayingRecv: (v) => ({ type: 'enterPlayingRecv', ...v }),
   beforePlayerNumber: (v) => ({ type: 'beforePlayerNumber', ...v }),
   afterPlayerNumber: (v) => ({ type: 'afterPlayerNumber', ...v }),
   resultRound: (v) => ({ type: 'resultRound', ...v }),

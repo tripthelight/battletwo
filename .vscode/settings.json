@@ -74,5 +74,17 @@
       "backgroundColor": "#ff859b",
       "overviewRulerColor": "#ff6984"
     }
-  ]
+  ],
+  // Copilot 기능 제안 끄기 (추천)
+  "github.copilot.editor.enableAutoCompletions": false,
+  // 일반 코드 호버 툴팁 끄기
+  "editor.hover.enabled": false,
+  // 자동 제안(Tooltip) 끄기
+  "editor.quickSuggestions": {
+      "other": false,
+      "comments": false,
+      "strings": false
+  },
+  // 매개변수 힌트 끄기
+  "editor.parameterHints.enabled": false
 }

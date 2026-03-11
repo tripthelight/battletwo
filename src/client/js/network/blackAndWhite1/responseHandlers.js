@@ -8,6 +8,8 @@ import enemyCubeOrder from '@/client/js/network/blackAndWhite1/fns/enemyCubeOrde
 import enemyOrder from '@/client/js/network/blackAndWhite1/fns/enemyOrder';
 
 // gameState : playing
+import enterPlayingSend from '@/client/js/network/blackAndWhite1/fns/enterPlayingSend';
+import enterPlayingRecv from '@/client/js/network/blackAndWhite1/fns/enterPlayingRecv';
 import beforePlayerNumber from '@/client/js/network/blackAndWhite1/fns/beforePlayerNumber';
 import afterPlayerNumber from '@/client/js/network/blackAndWhite1/fns/afterPlayerNumber';
 import resultRound from '@/client/js/network/blackAndWhite1/fns/resultRound';
@@ -24,6 +26,8 @@ export const RESPONSE_HANDLERS = {
   enemyOrder: (msg) => enemyOrder(msg),
 
   // gameState : playing
+  enterPlayingSend: (msg) => enterPlayingSend(msg),
+  enterPlayingRecv: (msg) => enterPlayingRecv(msg),
   beforePlayerNumber: (msg) => beforePlayerNumber(msg),
   afterPlayerNumber: (msg) => afterPlayerNumber(msg),
   resultRound: (msg) => resultRound(msg),
