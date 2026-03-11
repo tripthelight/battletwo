@@ -21,6 +21,8 @@ export default (_data) => {
         // 나도, 상대도 gameState playing 임
         enterPlaying();
         LOADING_EVENT.hide();
+      } else {
+        // 상대 peer가 새로고침 후 waitEnemyShuffle에서 대기중
       }
     })
     .catch((error) => {
