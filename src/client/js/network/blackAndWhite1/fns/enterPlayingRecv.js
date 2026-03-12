@@ -1,6 +1,9 @@
+import findCharCode from '@/client/js/functions/findCharCode';
+import storageMethod from '@/client/js/module/storage/storageMethod';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
 import enterPlaying from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/enterPlaying";
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
+import { request } from '@/client/js/network/blackAndWhite1/request';
 
 /** @typedef {{ enter: boolean }} EnterPlayingSendInterface */
 /**

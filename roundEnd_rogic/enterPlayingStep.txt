@@ -1,0 +1,54 @@
+gameState가 playing으로 바뀜
+enterPlayingSend 에 enter true를 담아서 보냄
+
+상대의 gameState playing enter true를 받음
+내 gameState가 playing이면 
+- enterPlaying() 함수 실행해서 기본 함수 진행
+- 상대에게 ok 보냄
+
+ok를 받은 상대는
+- 자신의 gameState는 이미 playing이므로
+- enterPlaying() 함수 실행해서 기본 함수 진행
+
+
+
+내 gameState가 playing이 아니면
+- 내 gameState가 playing이 되었을 때 enterPlayingSend 에 enter true를 담아서 보냄
+
+
+-------------------------------------------------------------
+
+나는 gameState playing인데 상대는 아직 아닐 수 있음
+상대는 gameState playing인데 나는 아직 아닐 수 있음
+
+-------------------------------------------------------------
+
+먼저 playing으로 진입 한 peer가 상대에게 너도 playing인지 물어봄
+물음을 받은 peer가 playing이면 함께 playing 진입
+
+물음을 받은 peer가 playing이 아니면, 
+물음을 받은 peer가 playing 진입 후 상대에게 너도 playing인지 물어봄
+- 이 때 상대는 playing임
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

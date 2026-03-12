@@ -1,6 +1,6 @@
 import findCharCode from '@/client/js/functions/findCharCode';
-import throwObj from '@/client/js/module/errorHandler/throwObj';
 import storageMethod from '@/client/js/module/storage/storageMethod';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
 import { request } from '@/client/js/network/blackAndWhite1/request';
 
