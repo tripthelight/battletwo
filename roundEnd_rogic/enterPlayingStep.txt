@@ -72,17 +72,25 @@ remote peer - gameState playing
 - 내 질문에 대한 회신이 왔다는 건, 내 gameState는 playing임
 - 상대의 gameState는 playing일 수 도 / 아닐 수도 있음
 - 상대의 gameState가 playing 이면
-  ✅ 나와 상대 모두 playing 충족
+  ✅ 나와 상대 모두 playing 충족 - OK CASE 1
 - 상대의 gameState가 playing 아니면
   - 상대는 나에게 아직 질문 안보냄
   - 상대의 질문 대기 중
-  ✅ 상대로부터 질문이 오면 나와 상대 모두 playing 충족
+  ✅ 상대로부터 질문이 오면 나와 상대 모두 playing 충족 - OK CASE 2
 상대가 보낸 질문
 - 질문을 받았다는건 상대 gameState는 playing임
 - 이 때 내 gameState는 playing일 수 도 / 아닐 수도 있음
 - 내 gameState가 playing 이면
-  ✅ 나와 상대 모두 playing 충족
+  ✅ 나와 상대 모두 playing 충족 - OK CASE 3
 - 내 gameState가 playing 아니면
   - 나는 상대에게 아직 질문 안보냄
   - 상대는 나의 질문 대기 중
-  ✅ 내가 playing이 되서 질문 보내면 나와 상대 모두 playing 충족
+  ✅ 내가 playing이 되서 질문 보내면 나와 상대 모두 playing 충족 - OK CASE 4
+
+
+OK CASE 단게에서는
+- 나는 playing으로 진입하고
+- 상대에게도 playing 진입하라고 request 보냄
+- 위 request 받은 상대는, 받은 즉시 playing 진입
+4개의 OK CASE 중 1개는 반드시 걸리게 되어 있음
+그래서 연속적으로 주고받는 playing이냐는 질문(taskQuere) 없어도, 동시에 playing 진입 가능
