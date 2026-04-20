@@ -117,6 +117,7 @@ function createRoom() {
   ROOMS[id] = {
     id,
     clients: new Map(),
+    roles: new Map(),
     keypair: keypairCode(id),
   };
   return ROOMS[id];
@@ -125,6 +126,7 @@ function createRoomWithId(roomId) {
   ROOMS[roomId] = {
     id: roomId,
     clients: new Map(),
+    roles: new Map(),
     keypair: keypairCode(roomId),
     paired: true,
     lockAfterLeave: true,
@@ -137,14 +139,59 @@ function broadcast(room, obj) {
   }
 }
 
+function isValidRole(role) {
+  return role === 'impolite' || role === 'polite';
+}
+
+function findPeerIdByRole(room, role) {
+  if (!room?.roles) return null;
+
+  for (const [peerId, peerRole] of room.roles) {
+    if (peerRole === role) return peerId;
+  }
+
+  return null;
+}
+
+function resolveAttachRole(room, requestedRole) {
+  if (isValidRole(requestedRole)) return requestedRole;
+  if (!findPeerIdByRole(room, 'impolite')) return 'impolite';
+  return 'polite';
+}
+
+function replaceStalePeerInRole(room, role) {
+  const stalePeerId = findPeerIdByRole(room, role);
+  if (!stalePeerId) return;
+
+  const staleWs = room.clients.get(stalePeerId);
+  room.clients.delete(stalePeerId);
+  room.roles.delete(stalePeerId);
+
+  if (staleWs) {
+    const staleMeta = PEERS.get(staleWs);
+    if (staleMeta) {
+      staleMeta.replaced = true;
+      staleMeta.roomId = null;
+    }
+
+    try {
+      staleWs.close(4001, 'replaced_by_reload');
+    } catch {}
+  }
+}
+
 // function attachToRoom(ws, meta, room, pairedDataChannel) {
 function attachToRoom(params) {
-  const { ws, meta, room, pairedDataChannel } = params;
+  const { ws, meta, room, pairedDataChannel, initRole } = params;
+  const role = resolveAttachRole(room, initRole);
+
+  replaceStalePeerInRole(room, role);
   room.clients.set(meta.peerId, ws);
+  room.roles.set(meta.peerId, role);
   meta.roomId = room.id;
+  meta.role = role;
 
   // 역할 부여
-  const role = room.clients.size === 1 ? 'impolite' : 'polite';
   safeSend(ws, {
     type: 'room-assigned',
     roomId: room.id,
@@ -158,8 +205,9 @@ function attachToRoom(params) {
   });
 
   if (room.clients.size === 2) {
-    const peers = Array.from(room.clients.keys());
-    const [impolitePeerId, politePeerId] = peers; // 먼저 들어온 순
+    const impolitePeerId = findPeerIdByRole(room, 'impolite');
+    const politePeerId = findPeerIdByRole(room, 'polite');
+    if (!impolitePeerId || !politePeerId) return;
     for (const [id, sock] of room.clients) {
       const partnerId = id === impolitePeerId ? politePeerId : impolitePeerId;
       const role = id === impolitePeerId ? 'impolite' : 'polite';
@@ -180,6 +228,7 @@ function attachToRoom(params) {
 function handleJoin(ws, meta, msg) {
   // msg: { type:'join', roomHint?: string }
   const requested = typeof msg.roomHint === 'string' ? msg.roomHint : null;
+  const initRole = isValidRole(msg.initRole) ? msg.initRole : null;
 
   const params = {
     requested: typeof msg.roomHint === 'string' ? msg.roomHint : null,
@@ -187,6 +236,7 @@ function handleJoin(ws, meta, msg) {
     meta: meta,
     room: null,
     pairedDataChannel: null,
+    initRole,
   };
 
   // - 한 peer가 처음 진입 후 새로고침 - requested 있음
@@ -196,9 +246,17 @@ function handleJoin(ws, meta, msg) {
 
   // 1) roomHint가 있고, 그 방이 현재 살아있다면 그 방으로
   // 두 peer가 나가지 않은 상태에서 한 peer가 새로고침하면 새로고침 한 peer는 여기를 탐
-  if (params.requested && ROOMS[params.requested] && ROOMS[params.requested].clients.size < 2) {
+  if (
+    params.requested &&
+    ROOMS[params.requested] &&
+    (
+      ROOMS[params.requested].clients.size < 2 ||
+      findPeerIdByRole(ROOMS[params.requested], initRole)
+    )
+  ) {
     // attachToRoom(ws, meta, ROOMS[requested]);
     params.room = ROOMS[params.requested];
+    params.pairedDataChannel = Boolean(params.room.paired);
     attachToRoom(params);
     return;
   }
@@ -293,13 +351,18 @@ function cbConnection(ws, req) {
   ws.on('close', () => {
     const meta = PEERS.get(ws);
     if (!meta) return;
+    if (meta.replaced) {
+      PEERS.delete(ws);
+      return;
+    }
     const { peerId, roomId } = meta;
     const room = ROOMS[roomId];
 
-    if (room) {
+    if (room && room.clients.has(peerId)) {
       if (room.clients.size === 2) {
         // 두 peer 모두 있음
         room.clients.delete(peerId);
+        room.roles?.delete(peerId);
         broadcast(room, { type: 'partner-left', roomId, peerId });
         room.lockAfterLeave = true;
       } else if (room.clients.size === 1) {
@@ -312,6 +375,7 @@ function cbConnection(ws, req) {
           // 내가 처음 진입하고 아직 상대 peer 없음
         }
         room.clients.delete(peerId);
+        room.roles?.delete(peerId);
         delete ROOMS[roomId];
       }
     }

@@ -1,0 +1,164 @@
+# 프로젝트 설명 :
+현재 battletwo 프로젝트는 webRTC 기술을 이용한 2인용 웹게임들의 모음이다.
+현재 `TAP! TAP!`과 `INDIAN POKER` 두 종류의 게임만 완성되어 있고, `BLACK AND WHITE 1`,과 `FIND THE SAME PICTURE` 는 작업 예정이다. `INDIAN POKER`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다. 
+
+## 문제 상활 설명 :
+`INDIAN POKER`를 만들고 보완해야될 부분을 알려줄테니 수정 보완해라.
+1. 게임 플레이는 다 만들었는데, 브라우저에서 새로고침 할 경우, 버그가 존재한다.
+- 두 peer가 webRTC로 매칭 완료됨 > 배팅의 선, 후를 결정(gameState: choiceCard) > 기본 배팅 후, `gameState` `playing` 진입 > call, allin, fold 시 결과를 알려주는 animation 진행됨 > 이 때, 브라우저 새로고침 시, 새로고침 한 peer는 빈화면 노출됨 > 상대 peer는 이 후 단계 진행되지만, 새로고침 한 peer는 빈 화면에서 멈춰있는 상태
+
+※ 요구사항 :
+1. 새로고침을 한 peer는 그 즉시, 로딩화면이 노출되어야 한다.
+2. 상대 peer 가 이번 라운드의 결과를 알려주는 animation이 끝나고, 다음 단계로 진입하면, 새로고침 한 peer도 같은 단계로 진입되어야 한다.
+3. 결과를 알려주는 animation 단계에서 두 peer가 모두 새로고침했다면, 두 peer 모두 즉시 다음 단계로 매칭되어야 한다. 
+4. ***중요: 두 peer의 단계가 같다는 것이 증명되어야만 서로 다음 단계로 진입해야 한다.
+
+현재의 코드 전체 상태를 완벽히 이해하고, 오류없이, 에러없이 나의 지시시항을 수행해라.
+
+
+———————————————————————————————
+
+FOLD 후 새로고침 한 peer는 `errorManagement.js:132 ERROR :  remote peer : basicBet - betState compair failed.` 라는 에러가 나면서, `상대방이 방을 나갔습니다.` 팝업이 뜬다. 
+새로고침을 당한 peer는 `errorManagement.js:132 ERROR :  local peer : basicBet - betState compair failed.` 라는 warning 메시지가 뜨면서 `상대방이 방을 나갔습니다.` 팝업이 뜬다.
+
+현재의 코드 전체 상태를 완벽히 이해하고, 오류없이, 에러없이 이 오류를 수정해라.
+
+———————————————————————————————
+
+결과가 "drew" 이고, 라운드 결과 animation이 진행되고 있을 때, 두 peer 모두 새로고침 하면 두 peer 모드 loading 화면에서 멈춰있다.
+현재의 코드 전체 상태를 완벽히 이해하고, 오류없이, 에러없이 이 오류를 수정해라.
+
+———————————————————————————————
+
+결과가 "drew" 이고, 라운드 결과 animation이 진행되고 있을 때, 한 peer 가 새로고침 하면, 새로고침 한 peer는 loading 화면에서 멈춰있고, 새로고침 당한 peer는 다음단계로 넘어갔지만, loading이 떠있는 상태이다.
+현재의 코드 전체 상태를 완벽히 이해하고, 오류없이, 에러없이 이 오류를 수정해라.
+
+———————————————————————————————
+
+------------------------------------
+errorManagement.js:132 ERROR :  game over 상태에서 result 세션이 없습니다
+i	@	errorManagement.js:132
+u	@	sessionInitGameover.js:15
+setTimeout		
+main	@	init.js:8
+(anonymous)	@	gameStateGameOver.js:12
+setTimeout		
+c	@	gameStateGameOver.js:10
+enterNextStep	@	gameStatePlaying.js:52
+S	@	roundResultReloadSync.js:73
+w	@	roundResultReloadSync.js:127
+responseRoundResultReloadSync	@	responseHandlers.js:69
+l	@	dispatchPayload.js:114
+o	@	deliverToGame.js:6
+Z	@	connectSignaling.js:299
+a	@	handleEnvelope.js:15
+e.onmessage	@	connectSignaling.js:421
+------------------------------------
+
+한 peer가 ALL IN하고, 상대 peer도 ALL IN 하고, 결과 animation이 나타날 때, 두 peer 모두, 새로고침 하면, 위와같은 warning 에러가 나면서 "잘못된 접근입니다." 팝업이 뜬다.
+
+———————————————————————————————
+
+--------------------------------------
+
+ERROR :  local peer : 상대 betUserFirst와 내 betUserFirst 검증 실패
+i	@	errorManagement.js:132
+a	@	eventHanlerErrorComn.js:14
+c	@	errorManager.js:16
+(anonymous)	@	requestCompairBasicBet.js:286
+f	@	requestCompairBasicBet.js:2
+(anonymous)	@	requestCompairBasicBet.js:2
+(anonymous)	@	requestCompairBasicBet.js:2
+g	@	requestCompairBasicBet.js:2
+i	@	requestCompairBasicBet.js:2
+(anonymous)	@	requestCompairBasicBet.js:2
+(anonymous)	@	requestCompairBasicBet.js:2
+(anonymous)	@	requestCompairBasicBet.js:288
+requestCompairBasicBet	@	responseHandlers.js:101
+l	@	dispatchPayload.js:114
+o	@	deliverToGame.js:6
+Z	@	connectSignaling.js:299
+a	@	handleEnvelope.js:15
+e.onmessage	@	connectSignaling.js:421
+
+--------------------------------------
+
+한 peer가 ALL IN하고, 상대 peer도 ALL IN 하고, 결과 animation이 나타날 때, 두 peer 모두, 새로고침 하면, 위와 같은 에러가 나면서 "상대방이 방을 나갔습니다." 팝업이 뜬다.
+현재의 코드 전체 상태를 완벽히 이해하고, 오류없이, 에러없이 이 오류를 수정해라.
+
+———————————————————————————————
+———————————————————————————————
+———————————————————————————————
+———————————————————————————————
+———————————————————————————————
+———————————————————————————————
+———————————————————————————————
+
+
+STEP 1: 상대방 화면에 있는 내카드가 10이다.
+STEP 2: 상대가 raise해서 나는 fold 했다. 내가 fold 했으니 나에게 패널티가 적용될 것이다.
+STEP 3: 이 때, fold한 peer가 새로고침 했다.
+
+새로고침한 peer:
+------------------------------
+ERROR :  remote peer : 상대 betUserFirst와 내 betUserFirst 검증 실패
+(anonymous)	@	errorManagement.js:132
+(anonymous)	@	eventHanlerErrorComn.js:14
+(anonymous)	@	opponentFouls.js:5
+opponentFouls	@	responseHandlers.js:48
+(anonymous)	@	dispatchPayload.js:114
+(anonymous)	@	deliverToGame.js:6
+handleReliableReceive	@	connectSignaling.js:299
+(anonymous)	@	handleEnvelope.js:15
+(anonymous)	@	connectSignaling.js:426
+------------------------------
+
+새로고침 당한 peer: 
+error :
+dispatchPayload.js:116 Handler error for responseRoundResultReloadSync 
+{errCase: 'sessionStorageLoss', message: 'local peer : basicBet - betUser/betUserFirst sessionStorage value compair failed.', sendMsg: 'remote peer : basicBet - betUser/betUserFirst sessionStorage value compair failed.'}
+c	@	dispatchPayload.js:116
+o	@	deliverToGame.js:6
+Z	@	connectSignaling.js:299
+a	@	handleEnvelope.js:15
+e.onmessage	@	connectSignaling.js:426
+
+warning :
+errorManagement.js:132 ERROR :  local peer : 상대 betUserFirst와 내 betUserFirst 검증 실패
+i	@	errorManagement.js:132
+a	@	eventHanlerErrorComn.js:14
+c	@	errorManager.js:16
+(anonymous)	@	requestCompairBasicBet.js:286
+f	@	requestCompairBasicBet.js:2
+(anonymous)	@	requestCompairBasicBet.js:2
+(anonymous)	@	requestCompairBasicBet.js:2
+g	@	requestCompairBasicBet.js:2
+i	@	requestCompairBasicBet.js:2
+(anonymous)	@	requestCompairBasicBet.js:2
+(anonymous)	@	requestCompairBasicBet.js:2
+(anonymous)	@	requestCompairBasicBet.js:288
+requestCompairBasicBet	@	responseHandlers.js:101
+c	@	dispatchPayload.js:114
+o	@	deliverToGame.js:6
+Z	@	connectSignaling.js:299
+a	@	handleEnvelope.js:15
+e.onmessage	@	connectSignaling.js:426
+--------------------------------------
+
+두 peer 각각 위와 같은 에러 메시지가 뜨면서 "상대방이 방을 나갔습니다." 팝업이 뜬다.
+
+
+———————————————————————————————
+———————————————————————————————
+———————————————————————————————
+———————————————————————————————
+———————————————————————————————
+———————————————————————————————
+———————————————————————————————
+———————————————————————————————
+———————————————————————————————
+———————————————————————————————
+———————————————————————————————
+———————————————————————————————
+———————————————————————————————
+———————————————————————————————

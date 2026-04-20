@@ -33,6 +33,12 @@ import responseCompairResultBetting from '@/client/js/network/indianPocker/fns/r
 
 import requestCompairBasicBet from '@/client/js/network/indianPocker/fns/requestCompairBasicBet';
 import responseCompairBasicBet from '@/client/js/network/indianPocker/fns/responseCompairBasicBet';
+import {
+  handleRoundResultReloadRequest,
+  handleRoundResultReloadResponse,
+  handleRoundResultStepAck,
+  handleRoundResultStepReady,
+} from '@/client/js/network/indianPocker/fns/roundResultReloadSync';
 
 import SOCKET_EVENT from '@/client/js/network/indianPocker/batting/battingEvent';
 
@@ -59,6 +65,10 @@ export const RESPONSE_HANDLERS = {
   remoteReloadBasicBet: (msg) => remoteReloadBasicBetResult(msg.gameState),
   requestDoubleReload: (msg) => requestDoubleReload(msg.gameState),
   responseDoubleReload: (msg) => responseDoubleReload(msg.gameState),
+  requestRoundResultReloadSync: (msg) => handleRoundResultReloadRequest(msg),
+  responseRoundResultReloadSync: (msg) => handleRoundResultReloadResponse(msg),
+  roundResultStepReady: (msg) => handleRoundResultStepReady(msg),
+  roundResultStepAck: (msg) => handleRoundResultStepAck(msg),
   enterBasicBet: (msg) => enterBasicBetResult(msg.gameState),
   drewRefresh: (msg) => drewRefreshResult(msg.value),
   drewRefreshReturn: (msg) => drewRefreshReturnResult(msg.value),

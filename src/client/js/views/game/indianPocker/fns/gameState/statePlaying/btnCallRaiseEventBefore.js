@@ -4,6 +4,7 @@ import { BTN_STATE } from '@/client/js/views/game/indianPocker/fns/rule/btnState
 import { request } from '@/client/js/network/indianPocker/request';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import X from '@/client/js/module/crypts/bool-obf';
+import findCharCode from '@/client/js/functions/findCharCode';
 
 export default () => {
   const CHECH_DREW_INFO = document.querySelector('.check-drew-info');

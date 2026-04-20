@@ -17,6 +17,10 @@ import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import textDE from '@/client/js/module/crypts/textDE';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import storageMethod from '@/client/js/module/storage/storageMethod';
+import {
+  beginRoundResultReloadWait,
+  ROUND_RESULT_STEP,
+} from '@/client/js/network/indianPocker/fns/roundResultReloadSync';
 
 
 
@@ -31,6 +35,7 @@ async function startGame() {
   try {
     waitPeer(2);
     await makeCard();
+    let keepLoading = false;
     makePayload(); // 카드 선택 시 보여지는 카드의 svg > path의 number/T payload
 
     if (getRL(false)) {
@@ -82,16 +87,50 @@ async function startGame() {
                   console.log("foldUser :::::::::: true");
 
                   // FOLD를 실행한 PLAY가 새고로침
-                  indianPockerGameState.basicBet('foldLocal');
+                  keepLoading = true;
+                  beginRoundResultReloadWait({
+                    reloadState: 'foldLocal',
+                    enterNextStep: ({ step }) => {
+                      if (step === ROUND_RESULT_STEP.GAME_OVER) {
+                        indianPockerGameState.gameOver();
+                        return;
+                      }
+
+                      if (step === ROUND_RESULT_STEP.BASIC_BET) {
+                        indianPockerGameState.basicBet('foldLocal');
+                      }
+                    },
+                  });
                 } else { // foldUser : false
                   console.log("foldUser :::::::::: false");
 
                   // FOLD를 받은 PLAY가 새고로침
-                  indianPockerGameState.basicBet('foldRemote');
+                  keepLoading = true;
+                  beginRoundResultReloadWait({
+                    reloadState: 'foldRemote',
+                    enterNextStep: ({ step }) => {
+                      if (step === ROUND_RESULT_STEP.GAME_OVER) {
+                        indianPockerGameState.gameOver();
+                        return;
+                      }
+
+                      if (step === ROUND_RESULT_STEP.BASIC_BET) {
+                        indianPockerGameState.basicBet('foldRemote');
+                      }
+                    },
+                  });
                 }
               }
+            } else {
+              const encryptKey3 = findCharCode([65, 82, 73, 84, 83, 87, 74, 67, 89, 90]); // betResulting
+              const encryptVal3 = storageMethod('s', 'GET_ITEM', encryptKey3);
+              if (encryptVal3 !== null && encryptVal3 !== '' && X.dec(encryptVal3)) keepLoading = true;
+              indianPockerGameState.playing();
             }
           } else {
+            const encryptKey3 = findCharCode([65, 82, 73, 84, 83, 87, 74, 67, 89, 90]); // betResulting
+            const encryptVal3 = storageMethod('s', 'GET_ITEM', encryptKey3);
+            if (encryptVal3 !== null && encryptVal3 !== '' && X.dec(encryptVal3)) keepLoading = true;
             indianPockerGameState.playing();
           }
           break;
@@ -109,7 +148,7 @@ async function startGame() {
       indianPockerGameState.choiceCard();
     }
 
-    LOADING_EVENT.hide();
+    if (!keepLoading) LOADING_EVENT.hide();
   } catch (error) {
     errorManager(error, false);
   }

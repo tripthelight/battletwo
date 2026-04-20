@@ -3,9 +3,15 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import X from '@/client/js/module/crypts/bool-obf';
-import { request } from '@/client/js/network/indianPocker/request';
 import { STATE_PLAYING } from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/init';
 import { getRL } from '@/client/js/module/webRTC/connectSignaling';
+import sessionInit from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/sessionInit';
+import reloadBasicBetComn from '@/client/js/network/indianPocker/fns/reloadBasicBetComn';
+import gameEnd from '@/client/js/views/game/indianPocker/fns/common/gameEnd';
+import {
+  beginRoundResultReloadWait,
+  ROUND_RESULT_STEP,
+} from '@/client/js/network/indianPocker/fns/roundResultReloadSync';
 // import REFRESH_STATE_PLAYING from '@/client/js/refresh/indianpoker/refreshPlaying/refreshInit';
 // import reload from '@/client/js/module/reload';
 
@@ -27,10 +33,24 @@ export default () => {
         - STATE_PLAYING.drew() 로 이동
      */
     console.log("call / raise / allin 상태에서 새로고침 ----------- ");
-    request(
-      'requestDoubleReload',
-      [98, 97, 115, 105, 99, 66, 101, 116], // basicBet
-    );
+    beginRoundResultReloadWait({
+      enterNextStep: ({ step }) => {
+        getRL(true);
+
+        if (step === ROUND_RESULT_STEP.DREW) {
+          STATE_PLAYING.drew({ roundResultReload: true });
+          return;
+        }
+
+        if (step === ROUND_RESULT_STEP.GAME_OVER) {
+          gameEnd();
+          return;
+        }
+
+        reloadBasicBetComn();
+        sessionInit();
+      },
+    });
   } else {
     // 이전 게임에서 FOLD 한 경우 playing 새로 진입 시 모두 제거
     // storageMethod('s', 'REMOVE_ITEM', 'coinsEnemyLocalFold');

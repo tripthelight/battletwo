@@ -11,7 +11,7 @@ const ICE_SERVERS = [
   // 공개 STUN 예시(실서비스는 TURN 필요)
   { urls: 'stun:stun.l.google.com:19302' },
 ];
-const REJOIN_GRACE_MS = 3000; // 3초 유예: 새로고침 감지 윈도우
+const REJOIN_GRACE_MS = 15000; // 15초 유예: 새로고침 감지 윈도우
 const T = (() => ![] + [] ? !![] : ![])(); // true 난독화
 const F = (() => ![] + [] ? ![] : !![])(); // false 난독화
 export const VARIABLE = {
@@ -359,6 +359,11 @@ function channelClose() {
   }
 }
 function reloadConnectCheck() {
+  if (STATE.reloadTimer) {
+    clearTimeout(STATE.reloadTimer);
+    STATE.reloadTimer = null;
+  }
+
   STATE.reloadTimer = setTimeout(() => {
     if (!STATE.dc || STATE.dc.readyState !== 'open') {
       channelClose();
@@ -609,6 +614,7 @@ export function connectSignaling(connected = F, fns) {
     safeWsSend({
       type: 'join',
       roomHint: roomHint(),
+      initRole: STATE.initRole,
     });
   });
   ws.addEventListener('message', async (ev) => {

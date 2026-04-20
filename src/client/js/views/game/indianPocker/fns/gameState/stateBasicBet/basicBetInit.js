@@ -8,6 +8,10 @@ import { request } from '@/client/js/network/indianPocker/request';
 import gameEnd from '@/client/js/views/game/indianPocker/fns/common/gameEnd';
 import sessionInit from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/sessionInit';
 import basicBetMainCheck from '@/client/js/views/game/indianPocker/fns/common/basicBetMainCheck';
+import {
+  announceRoundResultStepReady,
+  ROUND_RESULT_STEP,
+} from '@/client/js/network/indianPocker/fns/roundResultReloadSync';
 
 export default () => {
   const encodeKey = [98, 97, 115, 105, 99, 66, 101, 116]; // basicBet
@@ -38,6 +42,7 @@ export default () => {
 
       // playing 결과 animation 화면에서, 나는 새로고침 안했고, 상대는 새로고침해서 대기중일 경우,
       // 상대를 기본배팅 시키기 위해 request 보내야 됨
+      announceRoundResultStepReady(ROUND_RESULT_STEP.BASIC_BET);
       request('remoteReloadBasicBet', encodeKey);
 
     } else {

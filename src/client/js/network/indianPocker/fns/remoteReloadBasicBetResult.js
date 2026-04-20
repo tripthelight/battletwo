@@ -8,6 +8,10 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 import { getRL } from '@/client/js/module/webRTC/connectSignaling';
 import sessionInit from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/sessionInit';
 import reloadBasicBetComn from '@/client/js/network/indianPocker/fns/reloadBasicBetComn';
+import {
+  handleRoundResultStepReady,
+  ROUND_RESULT_STEP,
+} from '@/client/js/network/indianPocker/fns/roundResultReloadSync';
 
 
 // _data 배열이 두자리 숫자 8개의 배열인지 아닌지 확인
@@ -33,6 +37,8 @@ export default (_data) => {
   PROMISE.then((_data) => {
     // basicBet
     if (JSON.stringify(_data) === JSON.stringify([98, 97, 115, 105, 99, 66, 101, 116])) {
+      if (handleRoundResultStepReady({ step: ROUND_RESULT_STEP.BASIC_BET })) return;
+
       // basicBet
       // const reloadUser = window.sessionStorage.playingReloadUser;
       const encryptKey1 = findCharCode([75, 81, 83, 80, 89, 88, 86, 72, 82, 77]); // playingReloadUser

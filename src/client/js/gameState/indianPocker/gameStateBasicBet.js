@@ -26,9 +26,18 @@ export default (reloadState) => {
       const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
       const encryptKey2 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]);  // coinsEnemy
       const encryptKey3 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
+      const encryptKey4 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]);  // betState
+      const encryptKey5 = findCharCode([72, 81, 73, 79, 83, 70, 78, 80, 75, 88]);  // basicBetReady
 
-      // storageMethod('s', 'SET_ITEM', 'betState', 'basicBetting');
-      // storageMethod('s', 'SET_ITEM', 'basicBetReady', false);
+      storageMethod('s', 'SET_ITEM',
+        encryptKey4, // betState
+        findCharCode([70, 84, 75, 87, 74, 67, 73, 77, 80, 65]) // basicBetting
+      );
+      storageMethod('s', 'SET_ITEM',
+        encryptKey5, // basicBetReady
+        X.enc(decodeTF(_t([106, 103, 108, 116, 110]))) // "jgltn" : false
+      );
+
       if (reloadState === 'foldLocal') {
         const encryptVal4 = window.sessionStorage.getItem(deleteParams[0]); // coinsEnemyLocalFold value
         const encryptVal5 = window.sessionStorage.getItem(deleteParams[1]); // coinsPlayerLocalFold value

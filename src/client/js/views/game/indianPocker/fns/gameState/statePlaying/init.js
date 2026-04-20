@@ -9,6 +9,11 @@ import sessionInitPlaying from '@/client/js/views/game/indianPocker/fns/gameStat
 import refreshDrawDrew from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/refreshDrawDrew';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import dataHandler from '@/client/js/functions/dataVerification/load/dataHandler';
+import createBattleCardNum from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/createBattleCardNum';
+import {
+  announceRoundResultStepReady,
+  ROUND_RESULT_STEP,
+} from '@/client/js/network/indianPocker/fns/roundResultReloadSync';
 
 export const STATE_PLAYING = {
   main: () => {
@@ -26,7 +31,7 @@ export const STATE_PLAYING = {
     sessionInitPlaying();
     // ——————————————————————————————————————————————————————
   },
-  drew: () => {
+  drew: (options = {}) => {
     // 카드 비교 후, 같은 카드면 진입하는 곳
     // storageMethod('s', 'REMOVE_ITEM', 'betResulting');
     // if (window.sessionStorage.drewReady && window.sessionStorage.drewReady === "true") return refreshDrawDrew(); // refresh
@@ -45,6 +50,16 @@ export const STATE_PLAYING = {
       X.enc(decodeTF(textDE([115, 109, 112, 117]))) // "smpu" : true
     );
     request('enterDrew', true);
+    announceRoundResultStepReady(ROUND_RESULT_STEP.DREW);
+
+    if (options.roundResultReload) {
+      storageMethod('s', 'REMOVE_ITEM', findCharCode([65, 82, 73, 84, 83, 87, 74, 67, 89, 90])); // betResulting
+      storageMethod('s', 'REMOVE_ITEM', 'roundEndReload');
+
+      const encryptKey2 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
+      const encryptVal2 = storageMethod('s', 'GET_ITEM', encryptKey2);
+      if (encryptVal2 !== null && encryptVal2 !== '' && X.dec(encryptVal2)) createBattleCardNum();
+    }
   },
   nextStep: () => {
     indianPockerGameState.gameOver();

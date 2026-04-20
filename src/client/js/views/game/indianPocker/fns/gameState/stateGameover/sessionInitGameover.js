@@ -5,13 +5,18 @@ import { errorManagement } from '@/client/js/module/errorHandler/errorManagement
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import drawResult from '@/client/js/views/game/indianPocker/fns/gameState/stateGameover/drawResult';
 import setStorageGameResult from '@/client/js/views/game/indianPocker/fns/common/setStorageGameResult';
+import setGameoverResult from '@/client/js/views/game/indianPocker/fns/common/setGameoverResult';
 
 export default () => {
   // element | seeeion 체크
   // const RESULT = window.sessionStorage.result;
   // if (!RESULT) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 result 세션이 없습니다' });
   const encryptKey1 = findCharCode([79, 85, 77, 74, 71, 78, 80, 67, 81, 72]); // result
-  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  let encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  if (encryptVal1 === null || (encryptVal1 !== null && encryptVal1 === '')) {
+    setGameoverResult();
+    encryptVal1 = window.sessionStorage.getItem(encryptKey1);
+  }
   if (encryptVal1 === null || (encryptVal1 !== null && encryptVal1 === '')) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 result 세션이 없습니다' });
 
   // 명령

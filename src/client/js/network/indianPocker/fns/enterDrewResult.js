@@ -6,6 +6,10 @@ import { errorManagement } from '@/client/js/module/errorHandler/errorManagement
 import { request } from '@/client/js/network/indianPocker/request';
 // import { RF_END_DREW } from '@/client/js/refresh/indianpoker/refreshPlaying/refreshRoundEndDrew/refreshDrewInit';
 import createBattleCardNum from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/createBattleCardNum';
+import {
+  handleRoundResultStepReady,
+  ROUND_RESULT_STEP,
+} from '@/client/js/network/indianPocker/fns/roundResultReloadSync';
 
 export default (_data) => {
   const PROMISE = new Promise((resolve, reject) => {
@@ -15,6 +19,8 @@ export default (_data) => {
     console.log('_data >>>>>>>> ', _data);
 
     if (_data) {
+      if (handleRoundResultStepReady({ step: ROUND_RESULT_STEP.DREW })) return;
+
       setTimeout(() => {
         // const BET_RESULTING = window.sessionStorage.betResulting;
         // if (BET_RESULTING && BET_RESULTING === 'true') {
