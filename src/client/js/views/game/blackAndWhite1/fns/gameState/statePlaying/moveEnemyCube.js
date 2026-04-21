@@ -5,6 +5,8 @@ export default (idx) => {
   const ENEMY_CUBES = document.querySelectorAll(".enemy-block ul li");
   const ENEMY_BLACK = document.querySelector(".enemy-black-square");
   if (ENEMY_CUBES.length > 0 && ENEMY_BLACK) {
+    if (!ENEMY_CUBES[idx]) return;
+    emenyCubeReset(idx);
 
     let l = ENEMY_BLACK.offsetLeft - ENEMY_CUBES[idx].offsetLeft;
     let t = ENEMY_BLACK.offsetTop - ENEMY_CUBES[idx].offsetTop;
@@ -18,7 +20,6 @@ export default (idx) => {
     }, timeInterval_1);
     setTimeout(() => {
       ENEMY_CUBES[idx].remove();
-      emenyCubeReset(idx);
     }, timeInterval_202);
   }
 };

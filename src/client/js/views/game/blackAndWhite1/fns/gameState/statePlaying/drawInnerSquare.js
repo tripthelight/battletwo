@@ -9,6 +9,7 @@ import { timeInterval_201, timeInterval_203 } from '@/client/js/functions/variab
 import drawBlackSquare from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/drawBlackSquare";
 import activeUserCheck from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/activeUserCheck";
 import turnReminderBlink from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/turnReminderBlink";
+import { ensureActiveUser, getTurnState } from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/turnState";
 
 
 import { reactiveState } from "@/client/js/views/game/blackAndWhite1/fns/common/variable";
@@ -28,15 +29,18 @@ export default () => {
     elem.appendChild(innerInfo1);
     elem.appendChild(innerInfo2);
 
-    const encryptKey1 = findCharCode([73, 81, 90, 83, 68, 86, 69, 89, 78, 70]); // firstUser
-    const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
+    const turnState = getTurnState();
+    const activeUserBeforeSync = turnState.activeUser;
+    const activeUser = ensureActiveUser();
+    const turnUser = activeUser || turnState.firstUser;
+    const isRestoredTurn = activeUserBeforeSync || turnState.hasBeforePlayerNum || turnState.hasEnemyBeforeCube;
 
-    if (!encryptVal1) {
+    if (!turnState.firstUser) {
       // TODO: error 처리 필요
     } else {
-      if (encryptVal1 === storageMethod("l", "GET_ITEM", "localPlayer")) {
+      if (turnUser === storageMethod("l", "GET_ITEM", "localPlayer")) {
         elem.classList.add("before");
-        innerFirst.innerText = text.balckandwhite1.start;
+        innerFirst.innerText = isRestoredTurn ? text.balckandwhite1.yourTurn : text.balckandwhite1.start;
         innerInfo1.innerText = "";
         innerInfo2.innerText = text.balckandwhite1.moveNum;
       } else {

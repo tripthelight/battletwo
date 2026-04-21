@@ -4,7 +4,9 @@ import showEnemyCube from "@/client/js/views/game/blackAndWhite1/fns/gameState/s
 import shuffleCubeStop from '@/client/js/views/game/blackAndWhite1/fns/gameState/stateWaitEnemyShuffle/shuffleCubeStop';
 import drawInnerSquare from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/drawInnerSquare";
 import btnStartChange from '@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/btnStartChange';
-import selectCube from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/selectCube";
+import activeUserCheck from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/activeUserCheck";
+import turnReminderBlink from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/turnReminderBlink";
+import { timeInterval_203 } from '@/client/js/functions/variable';
 
 export default function () {
   cubeReady();
@@ -13,5 +15,8 @@ export default function () {
   shuffleCubeStop();
   drawInnerSquare();
   btnStartChange();
-  selectCube();
+  setTimeout(() => {
+    activeUserCheck();
+    turnReminderBlink();
+  }, timeInterval_203);
 }

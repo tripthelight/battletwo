@@ -38,7 +38,10 @@ export default (gameState) => {
   // gameState: playing
   if (gameState === findCharCode([75, 68, 67, 71, 82, 87, 74, 73, 66, 78])) {
     return [
-
+      findCharCode([77, 84, 83, 88, 69, 85, 82, 87, 90, 79]), // round
+      findCharCode([85, 86, 68, 74, 69, 77, 89, 80, 66, 75]), // playerNumOrder
+      findCharCode([86, 82, 88, 89, 90, 72, 71, 84, 74, 85]), // emenyCube
+      findCharCode([73, 81, 90, 83, 68, 86, 69, 89, 78, 70]), // firstUser
     ];
   };
   // gameState: gameOver

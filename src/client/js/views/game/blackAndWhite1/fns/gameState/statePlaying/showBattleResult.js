@@ -4,6 +4,7 @@ import returnResult from '@/client/js/views/game/blackAndWhite1/fns/common/retur
 import scoreAssignment from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/scoreAssignment";
 import countRound from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/countRound";
 import resetCard from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/resetCard";
+import nextRoundCheck from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/nextRoundCheck";
 import setGameOrderRound from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/setGameOrderRound";
 
 /**
@@ -21,6 +22,7 @@ export default (res) => {
       scoreAssignment(res);
       countRound();
       resetCard();
+      nextRoundCheck();
       setGameOrderRound(res);
     }, timeInterval_1000);
   }
