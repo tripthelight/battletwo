@@ -105,7 +105,7 @@ export function dispatchPayload(payload, meta) {
 
   // const handler = Handlers[payload.type];
   // const handler = payload.type === 'ROUND/START' ? Handlers[payload.type] : RESPONSE_HANDLERS[payload.type];
-  const handler = payload.type === 'ROUND/START' ? Handlers[payload.type] : PAYLOAD_TYPE[payload.type];
+  const handler = payload.type === 'ROUND/START' ? Handlers[payload.type] : PAYLOAD_TYPE?.[payload.type];
   if (!handler) {
     console.warn('No handler for type:', payload.type, payload, meta);
     return;

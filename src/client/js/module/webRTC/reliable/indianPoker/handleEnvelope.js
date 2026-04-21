@@ -23,14 +23,13 @@ export default function handleEnvelope(env) {
     }
     case 'PING': {
       // PING 수신 → 곧바로 PONG 회신(내 ack 포함)
-      rawSend({ v: 1, t: 'PONG', ts: Date.now() });
+      rawSend({ v: 1, t: 'PONG', ts: env.ts || Date.now() });
       break;
     }
     case 'PONG': {
       // PONG → RTT 측정
-      if (LAST_PING_TS) {
-        LAST_RTT_MS = Date.now() - LAST_PING_TS;
-        log(`RTT ~ ${LAST_RTT_MS} ms`);
+      if (typeof env.ts === 'number') {
+        console.log(`RTT ~ ${Date.now() - env.ts} ms`);
       }
       break;
     }

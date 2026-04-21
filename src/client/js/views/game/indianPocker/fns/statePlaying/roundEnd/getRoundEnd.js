@@ -348,7 +348,7 @@ export const GET_ROUND_END = {
         GET_ROUND_END.savsSessionResult(compRes);
       })
       .catch(err => {
-        throw { errCase: err?.errCase ?? 'cardNum', message: err?.message ?? 'Compare card cardCompare failed.' };
+        errorManagement({ errCase: err?.errCase ?? 'cardNum', message: err?.message ?? 'Compare card cardCompare failed.' });
       });
 
     // GET_ROUND_END.savsSessionResult(result);
@@ -640,7 +640,7 @@ export const GET_ROUND_END = {
           return indianPockerGameState.basicBet();
         } */
 
-        if (_result === undefined || _result === null || !Number.isInteger(_result)) return resolve();
+        if (_result === undefined || _result === null || !Number.isInteger(_result)) return;
         console.log('2 ************* ', _result);
         // if (_result === 'drew') {
         if (_result === 2) {

@@ -51,7 +51,7 @@ export default (_data) => {
           // if (decryptVal3 === findCharCode([69, 67, 72, 65, 74, 68, 73, 80, 66, 75])) { // true
           const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]); // betUser
           const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
-          if (encryptVal1 !== null && encryptVal1 !== null && X.dec(encryptVal1)) { // true
+          if (encryptVal1 !== null && encryptVal1 !== '' && X.dec(encryptVal1)) { // true
             console.log("둘 중에 하나는 여기로 와야됨 -------- ");
 
             createBattleCardNum();

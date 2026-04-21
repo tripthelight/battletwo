@@ -202,7 +202,6 @@ const RELIABLE = {
 let PING_TIMER = null;
 const PING_INTERVAL = 5000;
 let LAST_PING_TS = 0;
-let LAST_RTT_MS = null;
 const RESEND_INTERVAL = 300;
 const RESEND_MAX = 10;
 
