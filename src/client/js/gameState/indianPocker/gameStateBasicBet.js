@@ -24,6 +24,7 @@ export default (reloadState) => {
      */
     if (reloadState === 'foldLocal' || reloadState === 'foldRemote') {
       const encryptKey1 = findCharCode([72, 70, 85, 67, 83, 68, 89, 82, 77, 88]);  // betUser
+      const encryptKey1_2 = findCharCode([90, 89, 80, 70, 68, 84, 65, 77, 74, 78]);  // betUserFirst
       const encryptKey2 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]);  // coinsEnemy
       const encryptKey3 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
       const encryptKey4 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]);  // betState
@@ -46,6 +47,10 @@ export default (reloadState) => {
           encryptKey1, // betUser
           X.enc(decodeTF(_t([100, 103, 118, 116, 110]))) // "dgvtn" : false
         );
+        storageMethod('s', 'SET_ITEM',
+          encryptKey1_2, // betUserFirst
+          X.enc(decodeTF(_t([100, 103, 118, 116, 110]))) // "dgvtn" : false
+        );
         storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal4); // coinsEnemy, coinsEnemyLocalFold
         storageMethod('s', 'SET_ITEM', encryptKey3, encryptVal5); // coinsPlayer, coinsPlayerLocalFold
       } else if (reloadState === 'foldRemote') {
@@ -54,6 +59,10 @@ export default (reloadState) => {
         // FOLD를 받은 PLAY가 새고로침 - betUser : true
         storageMethod('s', 'SET_ITEM',
           encryptKey1, // betUser
+          X.enc(decodeTF(_t([115, 119, 112, 117]))) // "swpu" : true
+        );
+        storageMethod('s', 'SET_ITEM',
+          encryptKey1_2, // betUserFirst
           X.enc(decodeTF(_t([115, 119, 112, 117]))) // "swpu" : true
         );
         storageMethod('s', 'SET_ITEM', encryptKey2, encryptVal6); // coinsEnemy, coinsEnemyRemoteFold
