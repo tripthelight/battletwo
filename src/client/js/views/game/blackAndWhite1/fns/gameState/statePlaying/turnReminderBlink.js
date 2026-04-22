@@ -1,6 +1,9 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import turnReminderBlinkNull from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/turnReminderBlinkNull";
-import { ensureActiveUser } from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/turnState";
+import {
+  ensureActiveUser,
+  getTurnState
+} from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/turnState";
 
 export default () => {
   turnReminderBlinkNull();
@@ -8,8 +11,10 @@ export default () => {
   const ENEMY_BLACK = document.querySelector(".enemy-black-square");
   if (PLAYER_BLACK && ENEMY_BLACK) {
     const activeUser = ensureActiveUser();
+    const turnState = getTurnState();
     const encryptVal2 = storageMethod("l", "GET_ITEM", "localPlayer");
     if (!activeUser || !encryptVal2) return;
+    if (turnState.hasAfterPlayerNum) return;
 
     // const FIRST_PLAYER = window.sessionStorage.getItem("firstUser");
     // const PLAYER = window.localStorage.getItem("uid");

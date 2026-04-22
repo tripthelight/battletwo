@@ -1,14 +1,16 @@
-import storageMethod from '@/client/js/module/storage/storageMethod';
 import selectCube from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/selectCube";
 import disabledSelectInit from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/disabledSelectInit";
-import { ensureActiveUser } from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/turnState";
+import {
+  ensureActiveUser,
+  isLocalTurn
+} from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/turnState";
 
 export default () => {
   const activeUser = ensureActiveUser();
 
   if (!activeUser) {
     disabledSelectInit();
-  } else if (activeUser == storageMethod("l", "GET_ITEM", "localPlayer")) {
+  } else if (isLocalTurn()) {
     selectCube();
   } else {
     disabledSelectInit();

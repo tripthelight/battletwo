@@ -4,6 +4,7 @@ import opponentFouls from '@/client/js/functions/opponentFouls';
 // gameState : ready
 import startCheck from '@/client/js/network/blackAndWhite1/fns/startCheck';
 import startState from '@/client/js/network/blackAndWhite1/fns/startState';
+import gameStateSync from '@/client/js/network/blackAndWhite1/fns/gameStateSync';
 import enemyCubeOrder from '@/client/js/network/blackAndWhite1/fns/enemyCubeOrder';
 import enemyOrder from '@/client/js/network/blackAndWhite1/fns/enemyOrder';
 
@@ -22,6 +23,7 @@ export const RESPONSE_HANDLERS = {
   // gameState : ready
   startCheck: (msg) => startCheck(msg),
   startState: (msg) => startState(msg),
+  gameStateSync: (msg) => gameStateSync(msg),
   enemyCubeOrder: (msg) => enemyCubeOrder(msg),
   enemyOrder: (msg) => enemyOrder(msg),
 

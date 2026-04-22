@@ -6,7 +6,6 @@ import { deobfuscateInt32 } from '@/client/js/module/crypts/encryptNumber';
 import _t from '@/client/js/module/crypts/textDE';
 
 import errorManager from '@/client/js/module/errorHandler/errorManager';
-import nextRoundCheck from '@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/nextRoundCheck';
 import showBattleResult from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/showBattleResult";
 
 /**
@@ -42,7 +41,6 @@ export default (_data) => {
       // showBattleResult(resultSend);
 
       showBattleResult(enc(deobfuscateInt32(resultSend)));
-      nextRoundCheck();
     })
     .catch((error) => {
       errorManager(error, true);

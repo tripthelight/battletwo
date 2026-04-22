@@ -5,7 +5,14 @@ import { dec, enc } from '@/client/js/module/crypts/obf8lower';
 import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
 import _t from '@/client/js/module/crypts/textDE';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
+import { syncGameStateEntry } from '@/client/js/views/game/blackAndWhite1/fns/common/gameStateSync';
 // import waitEnemy from "../common/waitEnemy.js";
+
+const enterGameOverWhenSynced = () => {
+  syncGameStateEntry('gameOver', () => {
+    gameState.gameOver();
+  });
+};
 
 export default () => {
   try {
@@ -28,7 +35,7 @@ export default () => {
       console.log("ROUND >>>>>>>>>>>>>>>> 10 ");
       // LAST ROUND
       // console.log('ROUND : LAST :', ROUND);
-      gameState.gameOver();
+      enterGameOverWhenSynced();
       // TODO :: last event
     } else {
       throw throwObj('sessionStorageLoss', 'round value not found.');

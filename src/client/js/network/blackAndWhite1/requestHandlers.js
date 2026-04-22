@@ -9,6 +9,7 @@ export const REQUEST_HANDLERS = {
   // gameState : ready
   startCheck: (v) => ({ type: 'startCheck', ...v }),
   startState: (v) => ({ type: 'startState', ...v }),
+  gameStateSync: (v) => ({ type: 'gameStateSync', ...v }),
   enemyCubeOrder: (v) => ({ type: 'enemyCubeOrder', ...v }),
   enemyOrder: (v) => ({ type: 'enemyOrder', ...v }),
 

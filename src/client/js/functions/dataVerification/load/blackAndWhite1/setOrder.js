@@ -3,6 +3,7 @@ import throwObj from '@/client/js/module/errorHandler/throwObj';
 import storageKeyDeleteCheck from '@/client/js/functions/dataVerification/load/storageKeyDeleteCheck';
 
 import waitSetOrder from '@/client/js/views/game/blackAndWhite1/fns/gameState/stateSetOrder/waitSetOrder';
+import { resumeSetOrderAfterReload } from '@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/startSetOrderSync';
 
 export const SET_ORDER_HANDLER = {
   // gameState : setOrder 에서 reload 한 경우
@@ -11,6 +12,7 @@ export const SET_ORDER_HANDLER = {
       throw throwObj('sessionStorageLoss', 'delete sessionStorage.');
     };
 
+    resumeSetOrderAfterReload();
     waitSetOrder();
   },
   // gameState : setOrder 에 처음 입장

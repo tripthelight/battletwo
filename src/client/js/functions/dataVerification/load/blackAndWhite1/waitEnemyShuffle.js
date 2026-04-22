@@ -4,31 +4,30 @@ import storageKeyDeleteCheck from '@/client/js/functions/dataVerification/load/s
 
 import drawLocalCube from '@/client/js/views/game/blackAndWhite1/fns/gameState/stateWaitEnemyShuffle/drawLocalCube';
 import waitEnemyInfo from '@/client/js/views/game/blackAndWhite1/fns/gameState/stateWaitEnemyShuffle/waitEnemyInfo';
+import { resumeShuffleReadyAfterReload } from '@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/startSetOrderSync';
 
 export const WAIT_ENEMY_SHUFFLE_HANDLER = {
-  // gameState : waitEnemyShuffle 에서 reload 한 경우
   handleReload(storageKeys) {
     if (storageKeyDeleteCheck(storageKeys)) {
       throw throwObj('sessionStorageLoss', 'delete sessionStorage.');
-    };
+    }
 
     drawLocalCube();
-    waitEnemyInfo(); // 여기서 바뀜
+    waitEnemyInfo();
+    resumeShuffleReadyAfterReload();
   },
-  // gameState : waitEnemyShuffle 에 처음 입장
+
   handleInitialLoad(storageKeys) {
-    // 모든 sessionStorage key를 순회하면서 필요한 data insert
     for (const key of storageKeys) {
       const val = window.sessionStorage.getItem(key);
       if (val === null) {
-        // sessionStorage에 key가 없을 경우 빈문자열 삽입
         storageMethod('s', 'SET_ITEM', key, '');
       } else {
         storageMethod('s', 'SET_ITEM', key, val);
       }
     }
 
-    // waitEnemyShuffle 단계에서 필요한 data insert 후 다음 단계 진행
     waitEnemyInfo();
+    resumeShuffleReadyAfterReload();
   },
 };

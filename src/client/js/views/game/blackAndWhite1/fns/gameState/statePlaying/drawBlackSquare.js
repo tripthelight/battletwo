@@ -3,6 +3,7 @@ import BlackSquareInit from '@/client/js/views/game/blackAndWhite1/fns/common/Bl
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import findCharCode from '@/client/js/functions/findCharCode';
 import cubeToNum from '@/client/js/views/game/blackAndWhite1/fns/common/cubeToNum';
+import { positionInnerSquare } from '@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/innerSquareTurnView';
 
 export default () => {
   if (!document.querySelector(".black-square")) {
@@ -31,9 +32,7 @@ export default () => {
       setTimeout(() => {
         const INFO_BOARD = document.querySelector(".inner-square");
         if (INFO_BOARD) {
-          if (INFO_BOARD.classList.contains("before")) {
-            INFO_BOARD.style.top = PLAY_BLOCK.offsetTop - INFO_BOARD.clientHeight - 20 + "px";
-          }
+          positionInnerSquare(INFO_BOARD);
         }
       }, timeInterval_202);
     }

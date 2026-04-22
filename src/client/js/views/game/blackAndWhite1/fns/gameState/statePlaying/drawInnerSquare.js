@@ -1,89 +1,53 @@
-import storageMethod from '@/client/js/module/storage/storageMethod';
-import findCharCode from '@/client/js/functions/findCharCode';
-
-import { text } from '@/client/js/functions/language';
-import { findContainer, getStyle } from '@/client/js/functions/comnExport';
+import { findContainer } from '@/client/js/functions/comnExport';
 import { timeInterval_201, timeInterval_203 } from '@/client/js/functions/variable';
-
 
 import drawBlackSquare from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/drawBlackSquare";
 import activeUserCheck from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/activeUserCheck";
 import turnReminderBlink from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/turnReminderBlink";
-import { ensureActiveUser, getTurnState } from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/turnState";
-
+import {
+  applyInnerSquareTurnView,
+  positionInnerSquare,
+  shouldHideInnerSquare
+} from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/innerSquareTurnView";
 
 import { reactiveState } from "@/client/js/views/game/blackAndWhite1/fns/common/variable";
 
-import fromUnicodePoints from '@/client/js/module/unicode/fromUnicodePoints';
-import { parsePayloadToHex } from '@/client/js/module/crypts/obf_u32_xor_prng_b64';
-
 export default () => {
-  if (!document.querySelector(".inner-square")) {
-    let elem = document.createElement("div");
-    let innerFirst = document.createElement("span");
-    let innerInfo1 = document.createElement("span");
-    let innerInfo2 = document.createElement("span");
+  const innerSquare = document.querySelector(".inner-square");
+  if (innerSquare) {
+    applyInnerSquareTurnView(innerSquare);
+    positionInnerSquare(innerSquare);
+    return;
+  }
 
-    elem.classList.add("inner-square");
-    elem.appendChild(innerFirst);
-    elem.appendChild(innerInfo1);
-    elem.appendChild(innerInfo2);
+  if (shouldHideInnerSquare()) {
+    drawBlackSquare();
+    return;
+  }
 
-    const turnState = getTurnState();
-    const activeUserBeforeSync = turnState.activeUser;
-    const activeUser = ensureActiveUser();
-    const turnUser = activeUser || turnState.firstUser;
-    const isRestoredTurn = activeUserBeforeSync || turnState.hasBeforePlayerNum || turnState.hasEnemyBeforeCube;
+  let elem = document.createElement("div");
+  let innerFirst = document.createElement("span");
+  let innerInfo1 = document.createElement("span");
+  let innerInfo2 = document.createElement("span");
 
-    if (!turnState.firstUser) {
-      // TODO: error 처리 필요
-    } else {
-      if (turnUser === storageMethod("l", "GET_ITEM", "localPlayer")) {
-        elem.classList.add("before");
-        innerFirst.innerText = isRestoredTurn ? text.balckandwhite1.yourTurn : text.balckandwhite1.start;
-        innerInfo1.innerText = "";
-        innerInfo2.innerText = text.balckandwhite1.moveNum;
-      } else {
-        elem.classList.add("after");
-        // innerFirst.innerText = window.sessionStorage.enemyNick;
-        // innerFirst.innerText = fromUnicodePoints(
-        //     storageMethod("s", "GET_ITEM", findCharCode([77, 74, 67, 72, 65, 68, 80, 85, 84, 90])) // enemyNick
-        //       .replace(/"/g, '')
-        //       .split(',')
-        //       .map((s) => s.trim()),
-        //   );
-        innerFirst.innerText = fromUnicodePoints(
-          parsePayloadToHex(
-            storageMethod("s", "GET_ITEM", findCharCode([77, 74, 67, 72, 65, 68, 80, 85, 84, 90])) // enemyNick
-          )
-        );
-        innerInfo1.innerText = text.balckandwhite1.order;
-        innerInfo2.innerText = text.balckandwhite1.wait;
-      };
-    }
+  elem.classList.add("inner-square");
+  elem.appendChild(innerFirst);
+  elem.appendChild(innerInfo1);
+  elem.appendChild(innerInfo2);
+  applyInnerSquareTurnView(elem, { preferStart: true });
 
-    elem.style.width = reactiveState.InnerSquareW + "px";
-    if (findContainer()) {
-      findContainer().appendChild(elem);
-      setTimeout(() => {
-        // const INNER_SQUARE = document.querySelector(".inner-square");
-        // const PBT = getStyle(INNER_SQUARE, "padding-top") + getStyle(INNER_SQUARE, "padding-bottom");
-        // console.log("PBT 1 :: ", PBT);
-        elem.style.width = window.innerWidth - 80 + "px";
-        if (elem.classList.contains("before")) {
-          // elem.style.height = "44px";
-          // INNER_SQUARE.style.height = `${PBT + 44}px`;
-        } else {
-          // elem.style.height = "69px";
-          // INNER_SQUARE.style.height = `${PBT + 69}px`;
-        }
-        elem.classList.add("active");
-        drawBlackSquare();
-        activeUserCheck();
-      }, timeInterval_201);
-      setTimeout(() => {
-        turnReminderBlink();
-      }, timeInterval_203);
-    }
+  elem.style.width = reactiveState.InnerSquareW + "px";
+  if (findContainer()) {
+    findContainer().appendChild(elem);
+    setTimeout(() => {
+      elem.style.width = window.innerWidth - 80 + "px";
+      elem.classList.add("active");
+      drawBlackSquare();
+      positionInnerSquare(elem);
+      activeUserCheck();
+    }, timeInterval_201);
+    setTimeout(() => {
+      turnReminderBlink();
+    }, timeInterval_203);
   }
 };

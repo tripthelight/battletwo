@@ -32,7 +32,8 @@ export default (gameState) => {
   // gameState: setOrder
   if (gameState === findCharCode([65, 71, 81, 72, 85, 75, 78, 74, 86, 73])) {
     return [
-
+      findCharCode([73, 81, 90, 83, 68, 86, 69, 89, 78, 70]), // firstUser
+      findCharCode([77, 74, 67, 72, 65, 68, 80, 85, 84, 90]), // enemyNick
     ];
   };
   // gameState: playing
@@ -42,6 +43,7 @@ export default (gameState) => {
       findCharCode([85, 86, 68, 74, 69, 77, 89, 80, 66, 75]), // playerNumOrder
       findCharCode([86, 82, 88, 89, 90, 72, 71, 84, 74, 85]), // emenyCube
       findCharCode([73, 81, 90, 83, 68, 86, 69, 89, 78, 70]), // firstUser
+      findCharCode([77, 74, 67, 72, 65, 68, 80, 85, 84, 90]), // enemyNick
     ];
   };
   // gameState: gameOver

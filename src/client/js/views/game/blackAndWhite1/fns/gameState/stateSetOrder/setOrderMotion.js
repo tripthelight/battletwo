@@ -7,6 +7,7 @@ import { timeInterval_4200, timeInterval_5200 } from "@/client/js/functions/vari
 import { parsePayloadToHex } from '@/client/js/module/crypts/obf_u32_xor_prng_b64';
 import gameState from '@/client/js/gameState/blackAndWhite1';
 import motionStyle from "@/client/js/views/game/blackAndWhite1/fns/common/motionStyle";
+import { syncGameStateEntry } from '@/client/js/views/game/blackAndWhite1/fns/common/gameStateSync';
 
 export default () => {
   if (!document.querySelector(".order-motion")) {
@@ -89,7 +90,9 @@ export default () => {
     }, timeInterval_4200);
     setTimeout(() => {
       elem.classList.remove("active");
-      gameState.playing();
+      syncGameStateEntry('playing', () => {
+        gameState.playing();
+      });
     }, timeInterval_4200);
     setTimeout(() => {
       elem.remove();
