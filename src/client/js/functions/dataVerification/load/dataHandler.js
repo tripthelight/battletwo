@@ -1,6 +1,7 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import indianPockerLoad from '@/client/js/functions/dataVerification/load/indianPocker/indianPockerLoad';
 import blackAndWhite1Load from '@/client/js/functions/dataVerification/load/blackAndWhite1/blackAndWhite1Load';
+import findTheSamePictureLoad from '@/client/js/functions/dataVerification/load/findTheSamePicture/findTheSamePictureLoad';
 import storageKeys from '@/client/js/functions/dataVerification/storageKeys';
 
 /**
@@ -25,5 +26,12 @@ export default (params) => {
   // ────────────────────────────────────────────────────────────────────────────────────────────────────────────
   if (p1 === findCharCode([69, 66, 77, 86, 73, 90, 71, 78, 89, 79])) {
     blackAndWhite1Load(p2, storageKeys({ p1, p2 }));
+  };
+
+  // ────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  // gameName: findTheSamePicture
+  // ────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  if (p1 === findCharCode([76, 87, 77, 88, 82, 81, 66, 71, 65, 86])) {
+    findTheSamePictureLoad(p2, storageKeys({ p1, p2 }));
   };
 };

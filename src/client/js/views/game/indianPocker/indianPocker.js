@@ -168,5 +168,5 @@ async function init() {
 // —————————————————————————————————————————————
 window.addEventListener('pageshow', async () => {
   // *** 이 파일은 분석하지 말것
-  await init();
+  // await init();
 });

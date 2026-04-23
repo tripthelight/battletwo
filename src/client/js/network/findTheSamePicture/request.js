@@ -1,19 +1,23 @@
-import { connObj } from '@/client/js/webRTC/rtcConn';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
+import { sendGame } from '@/client/js/module/webRTC/connectSignaling';
+import {
+  REQUEST_COMMON_HANDLERS,
+  REQUEST_HANDLERS
+} from '@/client/js/network/findTheSamePicture/requestHandlers';
 
 export function request(k, v) {
-  const dataChannel = connObj.dataChannel;
+  const ALL_TEMPLATES = {
+    ...REQUEST_COMMON_HANDLERS,
+    ...REQUEST_HANDLERS,
+  };
 
-  if (!dataChannel || (dataChannel && dataChannel.readyState !== 'open')) return;
-  switch (k) {
-    case 'bodyClick':
-      dataChannel.send(
-        JSON.stringify({
-          type: 'enemyBodyClick',
-          count: v,
-        }),
-      );
-      break;
-    default:
-      break;
+  const templateFn = ALL_TEMPLATES[k];
+
+  if (templateFn) {
+    const message = templateFn(v);
+    // onDataChannel.send(JSON.stringify(message));
+    sendGame({ ...message });
+  } else {
+    throw throwObj('errorComn', `${k} : Undefined message type`);
   }
 }

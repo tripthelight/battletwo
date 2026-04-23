@@ -1,6 +1,7 @@
 import { VARIABLE, setReady, maybeResolveReady } from '@/client/js/module/webRTC/connectSignaling';
 import { RESPONSE_HANDLERS as RH_IP } from '@/client/js/network/indianPocker/responseHandlers';
 import { RESPONSE_HANDLERS as RH_BW1 } from '@/client/js/network/blackAndWhite1/responseHandlers';
+import { RESPONSE_HANDLERS as RH_FSP } from '@/client/js/network/findTheSamePicture/responseHandlers';
 import {
   deferGamePayload,
   registerPayloadReplay,
@@ -110,6 +111,7 @@ export function dispatchPayload(payload, meta) {
   switch (VARIABLE.gameName) {
     case "indianPocker": PAYLOAD_TYPE = RH_IP; break;
     case "blackAndWhite1": PAYLOAD_TYPE = RH_BW1; break;
+    case "findTheSamePicture": PAYLOAD_TYPE = RH_FSP; break;
     default: break;
   };
 

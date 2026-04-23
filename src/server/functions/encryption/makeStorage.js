@@ -46,10 +46,17 @@ export const MAKE_STORAGE = {
       storageData: storageData,
     };
   },
+  findTheSamePicture: async (_keypair, _role) => {
+    const storageData = convertStructure(transformWithCRC32(obfuscationList.findTheSamePicture(), _keypair, _role));
+    return {
+      storageData: storageData,
+    };
+  },
   functions: () => {
     return {
       indianPocker: MAKE_STORAGE.indianPocker,
       blackAndWhite1: MAKE_STORAGE.blackAndWhite1,
+      findTheSamePicture: MAKE_STORAGE.findTheSamePicture,
     };
   },
   findGame: async (_gameName, _gameCode, _role) => {

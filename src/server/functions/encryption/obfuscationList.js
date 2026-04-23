@@ -600,6 +600,29 @@ export const obfuscationList = {
       */
     };
   },
+  findTheSamePicture: () => {
+    return {
+      /*
+      GAME_NAME: {
+        k: 'VTUOYRXQLF', // [86, 84, 85, 79, 89, 82, 88, 81, 76, 70]
+        v: 'LWMXRQBGAV', // findTheSamePicture -> [76, 87, 77, 88, 82, 81, 66, 71, 65, 86]
+      },
+      GAME_STATE: {
+        k: 'WCLRHJDBEI', // [87, 67, 76, 82, 72, 74, 68, 66, 69, 73]
+        v: {
+          waitEnemy: 'YIJECUATQM', // [89, 73, 74, 69, 67, 85, 65, 84, 81, 77]
+          choiceFirstPlayer: 'VORBAIXDMK', // [86, 79, 82, 66, 65, 73, 88, 68, 77, 75]
+          firstUserAni : 'OGMUAJZSPY', // [79, 71, 77, 85, 65, 74, 90, 83, 80, 89]
+          playing : 'MZDLESUJFO', // [77, 90, 68, 76, 69, 83, 85, 74, 70, 79]
+          gameOver : 'BUMRFJCQLW', // [66, 85, 77, 82, 70, 74, 67, 81, 76, 87]
+        },
+      },
+      GAME_STATE_ALL_KEYS: {
+        k: 'OYEVABRZID', // [79, 89, 69, 86, 65, 66, 82, 90, 73, 68]
+      },
+      */
+    };
+  },
 };
 
 /**
