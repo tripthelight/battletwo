@@ -1,30 +1,18 @@
-import findCharCode from '@/client/js/functions/findCharCode';
-import storageMethod from '@/client/js/module/storage/storageMethod';
-import { KEY } from '@/client/js/module/webRTC/connectSignaling';
-import CryptoJS from 'crypto-js';
-import { dec, enc } from '@/client/js/module/crypts/obf8lower';
+import { dec } from '@/client/js/module/crypts/obf8lower';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import lastRoundState from "@/client/js/views/game/blackAndWhite1/fns/gameState/stateGameOver/lastRoundState";
 import lastRoundShow from "@/client/js/views/game/blackAndWhite1/fns/gameState/stateGameOver/lastRoundShow";
+import {
+  loadRoundResults,
+  RESULT_NUM
+} from '@/client/js/views/game/blackAndWhite1/fns/common/roundResultStorage';
 
 export default () => {
   try {
-    const PVK = KEY?.prk ?? null; // private key
-    if (!PVK) throw throwObj('errorComn', 'lastRoundResult - order decrypt key failed.');
-
-    const encryptKey1 = findCharCode([71, 73, 69, 77, 83, 78, 89, 88, 82, 66]); // result
-    const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
-
-    const bytes = CryptoJS.AES.decrypt(encryptVal1, PVK);
-    const decrypted = bytes.toString(CryptoJS.enc.Utf8);
-    // decrypted 가 빈 문자열이면 사용자가 storage value 조작함
-    if (decrypted === "") throw throwObj('sessionStorageLoss', 'lastRoundResult - order decrypt value failed.');
-
-    // 1. 객체 키를 큰따옴표로 감싸기
-    const jsonStr = decrypted.replace(/(\w+)\s*:/g, '"$1":');
-    // 2. 문자열 값도 작은따옴표 → 큰따옴표
-    const resultStr = jsonStr.replace(/'([^']*)'/g, '"$1"');
-    const resultObj = JSON.parse(resultStr);
+    const resultObj = loadRoundResults();
+    if (resultObj.length === 0) {
+      throw throwObj('sessionStorageLoss', 'lastRoundResult - result value failed.');
+    }
 
     console.log("전체결과 ::::::::: ", resultObj);
 
@@ -37,11 +25,11 @@ export default () => {
 
     for (let i = 0; i < resultObj.length; i++) {
       const r = dec(resultObj[i].result);
-      if (r === 1) { // win
+      if (r === RESULT_NUM.win()) {
         resultCase.win += 1;
-      } else if (r === 0) { // die
+      } else if (r === RESULT_NUM.lose()) {
         resultCase.die += 1;
-      } else if (r === 2) { // drew
+      } else if (r === RESULT_NUM.drew()) {
         resultCase.drew += 1;
       };
     };

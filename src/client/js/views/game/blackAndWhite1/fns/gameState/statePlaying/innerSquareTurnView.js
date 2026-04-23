@@ -40,16 +40,12 @@ const getTurnView = (preferStart) => {
     turnState.firstUser !== turnState.localPlayer &&
     turnState.hasEnemyBeforeCube;
 
-  const isLocalFirstWaiting =
-    turnState.hasBeforePlayerNum &&
-    turnState.firstUser === turnState.localPlayer;
-
   return {
     activeUser,
     isLocalActive,
     isFollowUpTurn,
     isRoundLocked: turnState.hasAfterPlayerNum,
-    shouldHide: turnState.hasAfterPlayerNum || isLocalFirstWaiting,
+    shouldHide: turnState.hasAfterPlayerNum,
     showStart: Boolean(preferStart && isOpeningTurn && !turnState.activeUser),
   };
 };

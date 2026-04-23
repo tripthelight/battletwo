@@ -6,11 +6,13 @@ import countRound from "@/client/js/views/game/blackAndWhite1/fns/gameState/stat
 import resetCard from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/resetCard";
 import nextRoundCheck from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/nextRoundCheck";
 import setGameOrderRound from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/setGameOrderRound";
+import { getCurrentRound } from '@/client/js/views/game/blackAndWhite1/fns/common/roundResultStorage';
 
 /**
  * @param {string} res 난독화된 라운드 결과 "win" | "die" | "drew"
+ * @param {number=} roundNumber 결과가 발생한 round 번호
  */
-export default (res) => {
+export default (res, roundNumber = getCurrentRound()) => {
   const elem = document.createElement("div");
   elem.classList.add("show-battle-result");
   elem.classList.add(returnResult(dec(res)));
@@ -19,7 +21,9 @@ export default (res) => {
     CONTAINER_EL.appendChild(elem);
     setTimeout(() => {
       elem.remove();
-      scoreAssignment(res);
+      const didRecord = scoreAssignment(res, roundNumber);
+      if (!didRecord || getCurrentRound() !== roundNumber) return;
+
       countRound();
       resetCard();
       nextRoundCheck();

@@ -1,3 +1,4 @@
+// *** 이 파일은 분석하지 말것
 // import scss
 import '@/client/assets/scss/game/taptap/common';
 // import common js

@@ -1,17 +1,19 @@
 import cluster from 'cluster';
-import os from 'os';
 import Redis from 'ioredis';
 
-const numCPUs = os.cpus().length; // 시스템에서 사용할 수 있는 CPU 코어 수 - 6개
+const workerTypes = ['signalingServer', 'jwt'];
+const workerTypeById = new Map();
+
+function forkWorker(workerType) {
+  const worker = cluster.fork({ WORKER_TYPE: workerType });
+  workerTypeById.set(worker.id, workerType);
+}
 
 if (cluster.isPrimary) {
-  console.log(`Primary process is running. Forking ${numCPUs} workers...`);
+  console.log(`Primary process is running. Forking ${workerTypes.length} workers...`);
 
-  // numCPUs 만큼 워커를 생성합니다.
-  for (let i = 0; i < numCPUs; i++) {
-    // const workerType = i % 2 === 0 ? 'webrtc' : 'websocket'; // 짝수는 WebRTC, 홀수는 WebSocket
-    const workerType = i % 2 === 0 ? 'signalingServer' : 'jwt'; // 짝수는 WebRTC, 홀수는 Signaling Server
-    cluster.fork({ WORKER_TYPE: workerType });
+  for (let i = 0; i < workerTypes.length; i++) {
+    forkWorker(workerTypes[i]);
   }
 
   // 워커 간 통신을 위한 메시지 핸들링
@@ -35,7 +37,9 @@ if (cluster.isPrimary) {
   // 워커 종료 이벤트 처리
   cluster.on('exit', (worker, code, signal) => {
     console.log(`Worker ${worker.process.pid} died. Restarting...`);
-    cluster.fork(worker.env); // 워커 환경을 유지하면서 재시작
+    const workerType = workerTypeById.get(worker.id);
+    workerTypeById.delete(worker.id);
+    if (workerType) forkWorker(workerType);
   });
 } else {
   // 각 워커 프로세스가 수행할 작업 결정

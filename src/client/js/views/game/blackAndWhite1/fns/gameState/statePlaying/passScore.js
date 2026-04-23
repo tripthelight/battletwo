@@ -1,6 +1,5 @@
-import { dec, enc } from '@/client/js/module/crypts/obf8lower';
-import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
-import _t from '@/client/js/module/crypts/textDE';
+import { dec } from '@/client/js/module/crypts/obf8lower';
+import { RESULT_NUM } from '@/client/js/views/game/blackAndWhite1/fns/common/roundResultStorage';
 
 /** @typedef {{ round: number, result: string }} ResultInterface */
 /**
@@ -17,15 +16,9 @@ export default (res) => {
       let eScore = 0;
       for (let i = 0; i < res.length; i++) {
         const r = dec(res[i].result);
-        if (
-          r ===
-          dec(enc(encryptNumOfStr(_t([119, 119, 119, 101, 101, 101, 119, 114])))) // "wwweeewr" : 1 : win
-        ) {
+        if (r === RESULT_NUM.win()) {
           pScore += 1;
-        } else if (
-          r ===
-          dec(enc(encryptNumOfStr(_t([101, 101, 101, 119, 119, 119, 101, 119])))) // "eeewwwew" : 0 : die
-        ) {
+        } else if (r === RESULT_NUM.lose()) {
           eScore += 1;
         }
       }

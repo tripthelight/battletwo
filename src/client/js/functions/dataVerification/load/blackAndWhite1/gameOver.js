@@ -9,6 +9,8 @@ export const GAMEOVER_HANDLER = {
     if (storageKeyDeleteCheck(storageKeys)) {
       throw throwObj('sessionStorageLoss', 'delete sessionStorage.');
     };
+
+    lastRoundResult();
   },
   // gameState : gameOver 에 처음 입장
   handleInitialLoad(storageKeys) {

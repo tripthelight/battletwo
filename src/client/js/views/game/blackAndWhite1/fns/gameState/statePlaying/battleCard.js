@@ -7,6 +7,7 @@ import { encryptNumOfStr, obfuscateInt32 } from '@/client/js/module/crypts/encry
 import _t from '@/client/js/module/crypts/textDE';
 import showBattleResult from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/showBattleResult";
 import { request } from '@/client/js/network/blackAndWhite1/request';
+import { getCurrentRound } from '@/client/js/views/game/blackAndWhite1/fns/common/roundResultStorage';
 
 export default (remoteCardNum) => {
   try {
@@ -51,9 +52,13 @@ export default (remoteCardNum) => {
       // error
       throw throwObj('sessionStorageLoss', 'battleCard - remote cube number faild.');
     }
-    showBattleResult(R.result);
+    const roundNumber = getCurrentRound();
+    showBattleResult(R.result, roundNumber);
 
-    request("resultRound", { resultSend: obfuscateInt32(dec(R.resultSend)) });
+    request("resultRound", {
+      resultSend: obfuscateInt32(dec(R.resultSend)),
+      roundCode: obfuscateInt32(roundNumber),
+    });
 
   } catch (error) {
     throw throwObj(

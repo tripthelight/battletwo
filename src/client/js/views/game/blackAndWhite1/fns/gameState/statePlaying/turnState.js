@@ -29,9 +29,25 @@ export const getTurnState = () => {
   };
 };
 
+const isKnownUser = (user, state) => (
+  user &&
+  (user === state.localPlayer || user === state.enemyNick)
+);
+
+const isRoundOpening = (state) => (
+  !state.hasBeforePlayerNum &&
+  !state.hasEnemyBeforeCube &&
+  !state.hasAfterPlayerNum
+);
+
 export const inferActiveUser = () => {
   const state = getTurnState();
   if (!state.firstUser) return null;
+  if (!isKnownUser(state.firstUser, state)) return null;
+
+  if (isRoundOpening(state)) {
+    return state.firstUser;
+  }
 
   if (state.hasBeforePlayerNum && state.firstUser === state.localPlayer && state.enemyNick) {
     return state.enemyNick;
@@ -41,11 +57,7 @@ export const inferActiveUser = () => {
     return state.localPlayer;
   }
 
-  const activeUserKnown =
-    state.activeUser &&
-    (state.activeUser === state.localPlayer || state.activeUser === state.enemyNick);
-
-  if (activeUserKnown) {
+  if (isKnownUser(state.activeUser, state)) {
     return state.activeUser;
   }
 

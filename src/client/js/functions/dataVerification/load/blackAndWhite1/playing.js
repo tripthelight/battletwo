@@ -4,6 +4,7 @@ import storageKeyDeleteCheck from '@/client/js/functions/dataVerification/load/s
 import sendEnterPlaying from '@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/sendEnterPlaying';
 import enterPlaying from '@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/enterPlaying';
 import drawLocalCube from '@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/drawLocalCube';
+import recoverPendingRoundResult from '@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/recoverPendingRoundResult';
 
 function restorePlayingScene() {
   const GAME_SCENE = document.getElementById('gameScene');
@@ -20,6 +21,7 @@ function restorePlayingScene() {
   }
 
   enterPlaying();
+  recoverPendingRoundResult();
 }
 
 export const PLAYING_HANDLER = {

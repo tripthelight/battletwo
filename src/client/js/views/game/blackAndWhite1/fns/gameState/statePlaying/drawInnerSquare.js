@@ -14,7 +14,9 @@ import { reactiveState } from "@/client/js/views/game/blackAndWhite1/fns/common/
 
 export default () => {
   const innerSquare = document.querySelector(".inner-square");
-  if (innerSquare) {
+  if (innerSquare?.classList.contains("hide")) {
+    innerSquare.remove();
+  } else if (innerSquare) {
     applyInnerSquareTurnView(innerSquare);
     positionInnerSquare(innerSquare);
     return;

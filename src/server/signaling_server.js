@@ -316,10 +316,13 @@ function cbConnection(ws, req) {
       return;
     }
 
-    if (msg?.type === 'requestStorage' && msg?.gameName && msg?.initRole) {
+    if (msg?.type === 'requestStorage' && msg?.gameName) {
       const room = ROOMS[meta.roomId];
       if (!room) return;
       const localPeer = room.clients.get(meta.peerId);
+      const storageRole = isValidRole(meta.role) ? meta.role : msg.initRole;
+
+      if (!isValidRole(storageRole)) return;
 
       if (localPeer) {
         const keypairCode = transformRoomId(room.keypair);
@@ -331,13 +334,13 @@ function cbConnection(ws, req) {
           },
         };
         // 각 게임에 필요한 암호화된 sessionStorage key 생성
-        const STORAGE_DATA = await MAKE_STORAGE.findGame(msg.gameName, keypair, msg.initRole);
+        const STORAGE_DATA = await MAKE_STORAGE.findGame(msg.gameName, keypair, storageRole);
         safeSend(localPeer, {
           type: 'responseStorage',
           storageData: STORAGE_DATA,
           keypair: {
             puk: keypair.public,
-            prk: msg.initRole === 'impolite' ? keypair.private.impolite : keypair.private.polite,
+            prk: storageRole === 'impolite' ? keypair.private.impolite : keypair.private.polite,
           },
           // keypair: keypair
           //   .replace(/\s+/g, '') // 1. 띄어쓰기 제거

@@ -7,6 +7,7 @@ import _t from '@/client/js/module/crypts/textDE';
 import activeUserCheckRound from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/activeUserCheckRound";
 import setGameOrderRoundCheck from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/setGameOrderRoundCheck";
 import setBlink from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/setBlink";
+import drawInnerSquare from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/drawInnerSquare";
 
 /**
  * 한 라운드 종료 후 진입
@@ -23,10 +24,15 @@ export default (res) => {
     // const USER_LIST = USER_ORDER.map(s => s.split(",")); // [["", "", "", ""], ["", "", "", ""]] 형태
 
     const encryptKey2 = findCharCode([73, 81, 90, 83, 68, 86, 69, 89, 78, 70]); // firstUser
-    // const encryptVal2 = storageMethod("s", "GET_ITEM", encryptKey2);
+    const encryptVal2 = storageMethod("s", "GET_ITEM", encryptKey2);
 
     const encryptKey4 = findCharCode([77, 74, 67, 72, 65, 68, 80, 85, 84, 90]); // enemyNick
     const encryptVal4 = storageMethod("s", "GET_ITEM", encryptKey4);
+    const isKnownUser = (user) => user && (user === encryptVal3 || user === encryptVal4);
+
+    if (!encryptVal3 || !encryptVal4) {
+      throw throwObj('sessionStorageLoss', 'setGameOrderRound - player value failed.');
+    }
 
     // let fUser = "";
     // let sUser = "";
@@ -37,9 +43,17 @@ export default (res) => {
         break;
       case dec(enc(encryptNumOfStr(_t([119, 119, 101, 119, 119, 119, 119, 101])))): // "wwewwwwe" : 0 : die
         storageMethod("s", "SET_ITEM", encryptKey1, encryptVal4); // activeUser -> enemyNick
-        storageMethod("s", "SET_ITEM", encryptKey2, encryptVal4); // firstUser -> local Nick
+        storageMethod("s", "SET_ITEM", encryptKey2, encryptVal4); // firstUser -> enemyNick
         break;
       case dec(enc(encryptNumOfStr(_t([119, 119, 119, 119, 101, 119, 119, 112])))): // "wwwwewwp" : 2 : drew
+        if (!encryptVal2) {
+          throw throwObj('sessionStorageLoss', 'setGameOrderRound - firstUser value failed.');
+        }
+        if (!isKnownUser(encryptVal2)) {
+          throw throwObj('dataManipulation', 'setGameOrderRound - firstUser data failed.');
+        }
+        storageMethod("s", "SET_ITEM", encryptKey1, encryptVal2); // activeUser -> same first user
+        storageMethod("s", "SET_ITEM", encryptKey2, encryptVal2); // firstUser -> keep same first user
         // storageMethod("s", "SET_ITEM", encryptKey1, fUser);
 
         // if (encryptVal3 == USER_LIST[0]) {
@@ -68,8 +82,10 @@ export default (res) => {
     //   encryptKey2, // userOrder
     //   JSON.stringify([fUser, sUser])
     // );
+    if (!setGameOrderRoundCheck()) return;
+
     activeUserCheckRound();
-    setGameOrderRoundCheck();
+    drawInnerSquare();
     setBlink();
   } catch (error) {
     throw throwObj(

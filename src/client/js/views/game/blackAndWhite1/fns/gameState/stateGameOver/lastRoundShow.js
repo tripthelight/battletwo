@@ -1,25 +1,39 @@
-import findCharCode from '@/client/js/functions/findCharCode';
-import storageMethod from '@/client/js/module/storage/storageMethod';
-import { KEY } from '@/client/js/module/webRTC/connectSignaling';
-import CryptoJS from 'crypto-js';
-import { dec, enc } from '@/client/js/module/crypts/obf8lower';
-import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
-import _t from '@/client/js/module/crypts/textDE';
+import { dec } from '@/client/js/module/crypts/obf8lower';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
+import storageMethod from '@/client/js/module/storage/storageMethod';
+import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import _t from '@/client/js/module/crypts/textDE';
 import returnResult from '@/client/js/views/game/blackAndWhite1/fns/common/returnResult';
 import gameOverRes from "@/client/js/views/game/blackAndWhite1/fns/gameState/stateGameOver/gameOverRes";
 import lastRoundBtn from "@/client/js/views/game/blackAndWhite1/fns/gameState/stateGameOver/lastRoundBtn";
 import setStorageGameResult from "@/client/js/views/game/blackAndWhite1/fns/gameState/stateGameOver/setStorageGameResult";
+import { loadRoundResults } from '@/client/js/views/game/blackAndWhite1/fns/common/roundResultStorage';
+
+const gameResultSavedKey = () => findCharCode([76, 81, 82, 83, 86, 87, 80, 88, 84, 65]);
+const encryptedTrue = () => X.enc(decodeTF(_t([107, 119, 112, 117]))); // "kwpu" : true
+
+const isGameResultSaved = () => {
+  const value = storageMethod('s', 'GET_ITEM', gameResultSavedKey());
+  if (!value) return false;
+
+  try {
+    return X.dec(value);
+  } catch {
+    return false;
+  }
+};
+
+const saveGameResultOnce = (result) => {
+  if (isGameResultSaved()) return;
+
+  setStorageGameResult("blackandwhite1", result);
+  storageMethod('s', 'SET_ITEM', gameResultSavedKey(), encryptedTrue());
+};
 
 export default (result) => {
   try {
-    const PVK = KEY?.prk ?? null; // private key
-    if (!PVK) throw throwObj('errorComn', 'lastRoundShow - order decrypt key failed.');
-
-    const encryptKey1 = findCharCode([71, 73, 69, 77, 83, 78, 89, 88, 82, 66]); // result
-    const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
-    if (!encryptVal1) throw throwObj('sessionStorageLoss', 'lastRoundShow - result value failed.');
-
     const res = gameOverRes(result);
     const RESULT_INFO = document.querySelector(".last-round-info");
     if (!RESULT_INFO) {
@@ -32,15 +46,7 @@ export default (result) => {
       list.classList.add("list");
       tit.innerHTML = res;
 
-      const bytes = CryptoJS.AES.decrypt(encryptVal1, PVK);
-      const decrypted = bytes.toString(CryptoJS.enc.Utf8);
-      // decrypted 가 빈 문자열이면 사용자가 storage value 조작함
-      if (decrypted === "") throw throwObj('sessionStorageLoss', 'lastRoundShow - order decrypt value failed.');
-      // 1. 객체 키를 큰따옴표로 감싸기
-      const jsonStr = decrypted.replace(/(\w+)\s*:/g, '"$1":');
-      // 2. 문자열 값도 작은따옴표 → 큰따옴표
-      const resultStr = jsonStr.replace(/'([^']*)'/g, '"$1"');
-      const resultObj = JSON.parse(resultStr);
+      const resultObj = loadRoundResults();
 
       console.log("이게 문제 ? ", resultObj);
 
@@ -66,7 +72,7 @@ export default (result) => {
     }
 
     // win | lose | drew
-    setStorageGameResult("blackandwhite1", result);
+    saveGameResultOnce(result);
   } catch (error) {
     throw throwObj(
       error?.errCase ?? 'errorComn',

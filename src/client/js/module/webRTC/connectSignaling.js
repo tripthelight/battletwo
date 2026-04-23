@@ -2,6 +2,7 @@ import { getDeviceType } from '@/client/js/module/isPC';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import insertStorageDate from '@/client/js/functions/insertStorageDate';
 import encryptionStore from '@/client/store/encryptionStore';
+import { markGamePayloadReady } from '@/client/js/module/webRTC/gamePayloadBootstrap';
 
 /**
  * ———————————————————————————————————————————————————————————————————
@@ -680,7 +681,7 @@ export function connectSignaling(connected = F, fns) {
             safeWsSend({
               type: 'requestStorage',
               gameName: VARIABLE.gameName,
-              initRole: STATE.initRole,
+              initRole: STATE.initRole || STATE.role,
             });
             // await FNS.startGame();
           });
@@ -710,6 +711,7 @@ export function connectSignaling(connected = F, fns) {
 
           await insertStorageDate(msg.storageData);
           await FNS.startGame();
+          markGamePayloadReady();
         }
         break;
       }

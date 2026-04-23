@@ -1,9 +1,11 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import findCharCode from '@/client/js/functions/findCharCode';
+import { timeInterval_205 } from '@/client/js/functions/variable';
 import beforePlayerNum from '@/client/js/views/game/blackAndWhite1/fns/common/beforePlayerNum';
 import afterPlayerNum from '@/client/js/views/game/blackAndWhite1/fns/common/afterPlayerNum';
 import changeCubeSession from '@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/changeCubeSession';
 import changeActiveUser from '@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/changeActiveUser';
+import drawInnerSquare from '@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/drawInnerSquare';
 import {
   getTurnState,
   isLocalTurn
@@ -33,6 +35,9 @@ export default (num, index) => {
   if (localIsFirst) {
     beforePlayerNum(num, index);
     changeActiveUser();
+    setTimeout(() => {
+      drawInnerSquare();
+    }, timeInterval_205);
   } else {
     afterPlayerNum(num, index);
   }

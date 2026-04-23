@@ -418,61 +418,175 @@ e.onmessage	@	connectSignaling.js:425
 
 # 프로젝트 설명 :
 현재 battletwo 프로젝트는 webRTC 기술을 이용한 2인용 웹게임들의 모음이다.
-현재 `TAP! TAP!`과 `INDIAN POKER`와 `BLACK AND WHITE 1` 세 종류의 게임만 완성되어 있고, `FIND THE SAME PICTURE` 는 작업 예정이다. `BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다. 
+현재 `TAP! TAP!`, `INDIAN POKER`, `FIND THE SAME PICTURE` 는 작업 예정이다. 
+`BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다. 
 
 ## 문제 상활 설명 :
 `BLACK AND WHITE 1`에서 보완해야될 부분을 알려줄테니 수정 보완해라.
 1. 게임 플레이는 다 만들었는데, 브라우저에서 새로고침 할 경우, 버그가 존재한다.
   1) 두 peer가 webRTC로 매칭 완료됨
-  2) 두 peer는 서로의 cube를 섞음
+  2) 두 peer는 서로의 cube를 섞음(`gameState: waitEnemyShuffle`)
   3) 두 peer 모두 `START` 버튼을 클릭
-  4) 선/후 플레이어 지정 후 다음 step으로 넘어감
+  4) 선/후 플레이어 지정(`gameState: setOrder`)
   5) `gameState` `playing` 상태에서, 서로의 cube를 옮기며, 게임을 진행함.
-  6) 이 때, 한 peer가 브라우저 새로고침 하면, 새로고침 한 peer의 화면에 Round(`div.round-circle`)는 1이 되고, Score 영역의 점수(`div.score-board dl.player dt dd`, `div.score-board dl.enemy dt dd`)는 모두 0이 된다.
+  6) 게임을 진행하면, Round(`div.round-circle`)가 한 단계씩 올라가고, Score 영역의 점수(`div.score-board dl.player dt dd`, `div.score-board dl.enemy dt dd`)가 누적됨
+  7) 이 때, 한 peer가 브라우저 새로고침 하면, 새로고침 한 peer의 화면에 Round(`div.round-circle`)는 1이 되고, Score 영역의 점수(`div.score-board dl.player dt dd`, `div.score-board dl.enemy dt dd`)는 모두 0이 된다.
 
 ※ 요구사항 :
-1. 어느 시점, 어떤 상황, 어떤 화면에서 브라우저 새로고침을 하더라도 두 peer의 화면에서 보여지는 data는 정확해야 한다.
-2. 어느 시점, 어떤 상황, 어떤 화면에서 브라우저 새로고침을 하더라도 안내 팝업(div.inner-square)의 문구와 위치가 정확해야 한다.
+1. 어느 시점, 어떤 상황, 어떤 화면에서 브라우저 새로고침을 하더라도, 두 peer의 화면에서 보여지는 data는 정확해야 한다.
+2. 어느 시점, 어떤 상황, 어떤 화면에서 브라우저 새로고침을 하더라도 안내 팝업(div.inner-square)의 문구와 위치는 정확해야 한다.
 3. ***중요: `BLACK AND WHITE 1`의 모든 data는 플레이어가 알아챌 수 없도록 암호화 되어있다. 암호화 로직이 어떻게 구현되어 있는지 정확히 분석하고 이해한 후, 수정해라.
-4. 전체 코드를 정확히 분석해서, 게임 진행에 문제가 되는 로직이 있다면 네가 알아서 수정 보완해라.
+4. 전체 코드를 정확히 분석해서, 게임 진행에 문제가 되는 로직이 있다면 네가 알아서 수정, 보완, 리펙토링 해라.
 
 현재의 코드 전체 상태를 완벽히 이해하고, 오류없이, 에러없이 나의 지시시항을 수행해라.
 
 
 ———————————————————————————————
-———————————————————————————————
-———————————————————————————————
-———————————————————————————————
-———————————————————————————————
-———————————————————————————————
-———————————————————————————————
-———————————————————————————————
-———————————————————————————————
-———————————————————————————————
-
 
 # 프로젝트 설명 :
 현재 battletwo 프로젝트는 webRTC 기술을 이용한 2인용 웹게임들의 모음이다.
-현재 `TAP! TAP!`과 `INDIAN POKER`와 `BLACK AND WHITE 1` 세 종류의 게임만 완성되어 있고, `FIND THE SAME PICTURE` 는 작업 예정이다. `BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다. 
+현재 `TAP! TAP!`, `INDIAN POKER`, `FIND THE SAME PICTURE` 는 작업 예정이다. 
+`BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다. 
 
 ## 문제 상활 설명 :
 `BLACK AND WHITE 1`에서 보완해야될 부분을 알려줄테니 수정 보완해라.
-1. 게임 플레이는 다 만들었는데, 브라우저에서 새로고침 할 경우, 버그가 존재한다.
+1. 게임 플레이는 다 만들었는데, 브라우저에서 새로고침을 난타할 경우, 버그가 존재한다.
   1) 두 peer가 webRTC로 매칭 완료됨
-  2) 두 peer는 서로의 cube를 섞음
-  3) 두 peer 모두 `START` 버튼을 클릭
-  4) 선/후 플레이어 지정 후 다음 step으로 넘어감
-  5) `gameState` `playing` 상태에서, 서로의 cube를 옮기며, 게임을 진행함.
-  6) 게임 진행 중 한 peer가 브라우저 새로고침 해버림
-    * 새로고침 한 peer :
-      -------------------------------------------
-      -------------------------------------------
-    * 새로고침 당한 peer :
-      -------------------------------------------
-      -------------------------------------------
+  2) 두 peer는 서로의 cube를 섞음(`gameState: waitEnemyShuffle`)
+  3) 브라우저 새로고침
+  4) 두 peer 모두 `START` 버튼을 클릭
+  5) 선/후 플레이어 지정(`gameState: setOrder`)
+  6) `gameState` `playing` 진입
+  7) 브라우저 새로고침하면 에러남
+
+※ 새로고침 한 peer의 error 내용 : 
+----------------------------------------------
+errorManagement.js:132 ERROR :  local peer : keypair failed.
+i	@	errorManagement.js:132
+a	@	eventHanlerErrorComn.js:14
+s	@	errorManager.js:39
+(anonymous)	@	enterPlayingSend.js:32
+Promise.catch		
+i	@	enterPlayingSend.js:30
+enterPlayingSend	@	responseHandlers.js:31
+c	@	dispatchPayload.js:114
+o	@	deliverToGame.js:6
+Z	@	connectSignaling.js:298
+a	@	handleEnvelope.js:15
+e.onmessage	@	connectSignaling.js:425
+errorManagement.js:68 data manipulation error :  undefined -> local peer : keypair failed.
+connectSignaling.js:708 PUBLIC KEY ::::  42t777f5w3h9z8u495k6
+connectSignaling.js:709 PRIVATE KEY :::  d8p5e4e2u1
+insertStorageDate.js:6 storageData :  
+{}
+errorManagement.js:132 ERROR :  local peer : refresh gameState failed.
+i	@	errorManagement.js:132
+s	@	errorManager.js:41
+(anonymous)	@	blackAndWhite1.js:84
+f	@	blackAndWhite1.js:2
+(anonymous)	@	blackAndWhite1.js:2
+(anonymous)	@	blackAndWhite1.js:2
+_	@	blackAndWhite1.js:2
+i	@	blackAndWhite1.js:2
+(anonymous)	@	blackAndWhite1.js:2
+(anonymous)	@	blackAndWhite1.js:2
+b	@	blackAndWhite1.js:86
+g	@	blackAndWhite1.js:23
+(anonymous)	@	connectSignaling.js:712
+p	@	connectSignaling.js:2
+(anonymous)	@	connectSignaling.js:2
+(anonymous)	@	connectSignaling.js:2
+d	@	connectSignaling.js:2
+i	@	connectSignaling.js:2
+Promise.then		
+d	@	connectSignaling.js:2
+i	@	connectSignaling.js:2
+(anonymous)	@	connectSignaling.js:2
+(anonymous)	@	connectSignaling.js:2
+(anonymous)	@	connectSignaling.js:720
+----------------------------------------------
+
+※ 새로고침 당한 peer의 error 내용 : 
+----------------------------------------------
+errorManagement.js:132 ERROR :  remote peer : keypair failed.
+(anonymous)	@	errorManagement.js:132
+(anonymous)	@	eventHanlerErrorComn.js:14
+(anonymous)	@	opponentFouls.js:5
+opponentFouls	@	responseHandlers.js:21
+(anonymous)	@	dispatchPayload.js:114
+(anonymous)	@	deliverToGame.js:6
+handleReliableReceive	@	connectSignaling.js:298
+(anonymous)	@	handleEnvelope.js:15
+(anonymous)	@	connectSignaling.js:425
+errorManagement.js:132 ERROR :  remote peer : refresh gameState failed.
+(anonymous)	@	errorManagement.js:132
+(anonymous)	@	eventHanlerErrorComn.js:14
+(anonymous)	@	opponentFouls.js:5
+opponentFouls	@	responseHandlers.js:21
+(anonymous)	@	dispatchPayload.js:114
+(anonymous)	@	deliverToGame.js:6
+handleReliableReceive	@	connectSignaling.js:298
+(anonymous)	@	handleEnvelope.js:15
+(anonymous)	@	connectSignaling.js:425
+----------------------------------------------
+
+※ 요구사항 :
+1. 어느 시점, 어떤 상황, 어떤 화면에서 브라우저 새로고침을 난타하더라도, 두 peer의 게임 진행에 에러는 없어야 한다.
+2. ***중요: `BLACK AND WHITE 1`의 모든 data는 플레이어가 알아챌 수 없도록 암호화 되어있다. 암호화 로직이 어떻게 구현되어 있는지 정확히 분석하고 이해한 후, 수정해라.
+3. 전체 코드를 정확히 분석해서, 게임 진행에 문제가 되는 로직이 있다면 네가 알아서 수정, 보완, 리펙토링 해라.
+
+현재의 코드 전체 상태를 완벽히 이해하고, 오류없이, 에러없이 나의 지시시항을 수행해라.
 
 ———————————————————————————————
+
+# 프로젝트 설명 :
+현재 battletwo 프로젝트는 webRTC 기술을 이용한 2인용 웹게임들의 모음이다.
+현재 `TAP! TAP!`, `INDIAN POKER`, `FIND THE SAME PICTURE` 는 작업 예정이다. 
+`BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다. 
+
+## 문제 상활 설명 :
+`BLACK AND WHITE 1`에서 보완해야될 부분을 알려줄테니 수정 보완해라.
+1. 게임 플레이는 다 만들었는데, 게임 진행 중 알 수 없는 에러가 발생한다.
+  1) 두 peer가 webRTC로 매칭 완료됨
+  2) 두 peer는 서로의 cube를 섞음(`gameState: waitEnemyShuffle`)
+  4) 두 peer 모두 `START` 버튼을 클릭
+  5) 선/후 플레이어 지정(`gameState: setOrder`)
+  6) `gameState` `playing` 진입 후 Round를 진행
+  7) 이 전 Round의 결과가 동(同)점 일 경우 : 
+    - 현재 턴의 peer가 `.black-square` 영역으로 cube를 옮겨도, 상대 peer에게 턴이 안넘어간다.
+
+※ 요구사항 :
+1. 어느 시점, 어떤 상황, 어떤 화면에서도 두 peer의 턴은 정확해야 한다.
+2. ***중요: `BLACK AND WHITE 1`의 모든 data는 플레이어가 알아챌 수 없도록 암호화 되어있다. 암호화 로직이 어떻게 구현되어 있는지 정확히 분석하고 이해한 후, 수정해라.
+3. 전체 코드를 정확히 분석해서, 게임 진행에 문제가 되는 로직이 있다면 네가 알아서 수정, 보완, 리펙토링 해라.
+
+현재의 코드 전체 상태를 완벽히 이해하고, 오류없이, 에러없이 나의 지시시항을 수행해라.
+
 ———————————————————————————————
+
+# 프로젝트 설명 :
+현재 battletwo 프로젝트는 webRTC 기술을 이용한 2인용 웹게임들의 모음이다.
+현재 `TAP! TAP!`, `INDIAN POKER`, `FIND THE SAME PICTURE` 는 작업 예정이다. 
+`BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다. 
+
+## 문제 상활 설명 :
+`BLACK AND WHITE 1`에서 보완해야될 부분을 알려줄테니 수정 보완해라.
+1. 게임 플레이는 다 만들었는데, 게임 진행 중 알 수 없는 에러가 발생한다.
+  1) 두 peer가 webRTC로 매칭 완료됨
+  2) 두 peer는 서로의 cube를 섞음(`gameState: waitEnemyShuffle`)
+  4) 두 peer 모두 `START` 버튼을 클릭
+  5) 선/후 플레이어 지정(`gameState: setOrder`)
+  6) `gameState` `playing` 진입 후 Round를 진행
+  7) 첫 Round가 끝나고, 다음 Round로 진입하면 `당신 차례입니다. 숫자를 여기로 옮겨주세요.`, `${getEnemyDisplayName()} 차례입니다. 기다려 주세요` 팝업이 노출되지 않는다. 둘 중 한 peer중 한 peer가 새로고침 하면, 각각 팝업이 노출된다.
+
+※ 요구사항 :
+1. 매 Round마다, 새로고침과 관계없이, 내 턴이라면 `당신 차례입니다. 숫자를 여기로 옮겨주세요.` 팝업이 노출되어야 한다.
+2. 매 Round마다, 새로고침과 관계없이, 상대 턴이라면 `${getEnemyDisplayName()} 차례입니다. 기다려 주세요` 팝업이 노출되어야 한다.
+2. ***중요: `BLACK AND WHITE 1`의 모든 data는 플레이어가 알아챌 수 없도록 암호화 되어있다. 암호화 로직이 어떻게 구현되어 있는지 정확히 분석하고 이해한 후, 수정해라.
+3. 전체 코드를 정확히 분석해서, 게임 진행에 문제가 되는 로직이 있다면 네가 알아서 수정, 보완, 리펙토링 해라.
+
+현재의 코드 전체 상태를 완벽히 이해하고, 오류없이, 에러없이 나의 지시시항을 수행해라.
+
 ———————————————————————————————
 ———————————————————————————————
 ———————————————————————————————

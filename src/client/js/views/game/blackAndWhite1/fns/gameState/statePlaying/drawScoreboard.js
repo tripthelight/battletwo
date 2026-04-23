@@ -1,7 +1,32 @@
 import drawRoundCircle from "./drawRoundCircle.js";
+import {
+  getDisplayNames,
+  loadRoundResults,
+  scoreFromResults
+} from '@/client/js/views/game/blackAndWhite1/fns/common/roundResultStorage';
+
+const applyScoreboardData = (scoreBoardEl) => {
+  const names = getDisplayNames();
+  const score = scoreFromResults(loadRoundResults());
+
+  const playerName = scoreBoardEl.querySelector('dl.player dt span:nth-child(2)');
+  const enemyName = scoreBoardEl.querySelector('dl.enemy dt span:nth-child(2)');
+  const playerScore = scoreBoardEl.querySelector('dl.player dd');
+  const enemyScore = scoreBoardEl.querySelector('dl.enemy dd');
+
+  if (playerName) playerName.innerText = names.player;
+  if (enemyName) enemyName.innerText = names.enemy;
+  if (playerScore) playerScore.innerText = score.player;
+  if (enemyScore) enemyScore.innerText = score.enemy;
+};
 
 export default () => {
   const SCORE_BOARD_EL = document.querySelector(".score-board");
+  if (SCORE_BOARD_EL) {
+    applyScoreboardData(SCORE_BOARD_EL);
+    return;
+  }
+
   if (!SCORE_BOARD_EL) {
     let sbEl = document.createElement("div");
     let dlElPlayer = document.createElement("dl");
@@ -16,8 +41,6 @@ export default () => {
     let ddElEnemy = document.createElement("dd");
     dtElPlayerSpan1.innerText = "PLAYER";
     dtElEnemySpan1.innerText = "OPPONENT";
-    dtElPlayerSpan2.innerText = window.localStorage.getItem("nickname");
-    dtElEnemySpan2.innerText = window.sessionStorage.getItem("enemyNick");
     dtElPlayer.appendChild(dtElPlayerSpan1);
     dtElPlayer.appendChild(dtElPlayerSpan2);
     dtElEnemy.appendChild(dtElEnemySpan1);
@@ -30,12 +53,11 @@ export default () => {
     sbEl.appendChild(dlElEnemy);
     dlElPlayer.classList.add("player");
     dlElEnemy.classList.add("enemy");
-    ddElPlayer.innerText = 0;
-    ddElEnemy.innerText = 0;
     sbEl.classList.add("score-board");
     const CONTAINER_EL = document.getElementById("container");
     if (CONTAINER_EL) {
       CONTAINER_EL.appendChild(sbEl);
+      applyScoreboardData(sbEl);
       drawRoundCircle(sbEl);
     }
   }

@@ -28,6 +28,7 @@ export default () => {
       console.log("ROUND >>>>>>>>>>>>>>>> 10 미만");
       // 1 ~ 8 ROUND
       // console.log('ROUND :::::::: ', ROUND);
+      return true;
     } else if (
       decryptVal1 ===
       dec(enc(encryptNumOfStr(_t([101, 119, 119, 119, 101, 119, 101, 110])))) // "ewwwewen" : 10
@@ -37,6 +38,7 @@ export default () => {
       // console.log('ROUND : LAST :', ROUND);
       enterGameOverWhenSynced();
       // TODO :: last event
+      return false;
     } else {
       throw throwObj('sessionStorageLoss', 'round value not found.');
     };
