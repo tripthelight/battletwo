@@ -84,6 +84,11 @@ const STATE = {
   ignoreOffer: F,
   isSettingRemoteAnswerPending: F,
 };
+
+export function getInitRole() {
+  return STATE.initRole;
+};
+
 function safeWsSend(obj) {
   if (STATE.ws && STATE.ws.readyState === WebSocket.OPEN) {
     STATE.ws.send(JSON.stringify(obj));

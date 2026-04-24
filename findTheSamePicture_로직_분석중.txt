@@ -1,0 +1,66 @@
+---------------------------------------------------------------
+waitEnemy ---------------------------------------------------
+---------------------------------------------------------------
+
+createdRoom을 한, 첫 입장자의 window.sessionStorage.firstEnter : true
+
+---------------------------------------------------------------
+choiceFirstPlayer ---------------------------------------------
+---------------------------------------------------------------
+joinRoom을 한 두번째 입장자는 choiceFirstPlayer로 진입
+window.sessionStorage의 nicknameList가 있거나, clickUser가 있으면 firstUserAni로 진입
+아니면
+window.sessionStorage의 firstEnter가 없으면
+pnenCheck ARR을 만들어서 window.sessionStorage의 pn에 저장시킴
+나의 nickname과 방금 만든 pnenCheck ARR을 상대에게 전송
+
+상대는 sendNicknameRes로 받음
+받은 상대가
+window.sessionStorage의 nicknameList나, clickUser가 없으면
+나와 상대의 Nickname을 섞어서 랜덤하게 둘 중의 하나를 FIRST_USER로 정함
+FIRST_USER_STATE 상수로 내가 firstUser인지 체크함
+- alpabetList를 만들고
+- CARD IMGS makeRandomNum을 만들고
+- RANDOM RUMS makeRandomNum을 만들고 
+- 상대에게 받은 pnenCheck를 이용해서 ARR을 만들어서 window.sessionStorage의 pn에 저장
+
+- window.sessionStorage에 nicknameList 저장
+- window.sessionStorage에 clickUser 저장 -> firstUser
+- window.sessionStorage에 en 저장 -> 상대에게 받은 arr
+- window.sessionStorage에 rns 에 6개의 6자리랜덤string 저장
+- window.sessionStorage에 첫번째 랜덤 string을 key로 alpabetList 저장
+- window.sessionStorage에 두번째 랜덤 string을 key로 cardImgs 저장
+- 상대에게 받은 randomNums를 순회하면서, bcrypt로 암호화 한 문자를 window.sessionStorage에 두번째 랜덤 string을 key로 저장 
+nicknameList, firstUser(true/false), alpabetList, cardImgs, randomNums, arr을 상대에게 전송(firstuserData)
+window.sessionStorage의 gameStateNext를 false로 만듬
+window.sessionStorage의 firstEnter가 true면 gameState firstUserAni로 이동
+
+
+firstuserDataRes를 받은 상대는
+window.sessionStorage에 받은 data를 저장 후,
+gameState firstUserAni로 이동
+
+---------------------------------------------------------------
+firstUserAni --------------------------------------------------
+---------------------------------------------------------------
+두 peer 모두 firstUserAni 진입 후
+window.sessionStorage에 picTxt이 있으면
+  window.sessionStorage gameStateNext : false
+  window.sessionStorage gameStateGetAll : false
+  window.sessionStorage gameState : playing
+  window.sessionStorage refresh : true
+  gameState playing 으로 진입
+없으면
+drawDrawingBoard 함수 실행
+
+
+
+
+
+
+
+
+
+
+
+

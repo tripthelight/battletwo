@@ -7,4 +7,6 @@ export const REQUEST_COMMON_HANDLERS = {
 // 일반 메시지
 export const REQUEST_HANDLERS = {
   // gameState : choiceFirstPlayer
+  sendNickname: (v) => ({ type: 'sendNickname', ...v }),
+  firstUserData: (v) => ({ type: 'firstUserData', ...v }),
 };

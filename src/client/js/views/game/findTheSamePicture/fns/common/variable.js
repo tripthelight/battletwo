@@ -60,3 +60,14 @@ export const CARD_LIST = [
   card27,
   card28
 ];
+
+export const WW = window.innerWidth;
+export const WH = window.innerHeight;
+
+export let selectX = 0;
+export let selectY = 0;
+export let pcOffsetLeft = 0;
+export let pcOffsetTop = 0;
+export let pcMoveX = 0;
+export let pcMoveY = 0;
+export let pcActiveEl;

@@ -1,11 +1,7 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import storageKeyDeleteCheck from '@/client/js/functions/dataVerification/load/storageKeyDeleteCheck';
-
-import pnenCheck from '@/client/js/views/game/findTheSamePicture/fns/common/pnenCheck';
-import makeAlpabet from '@/client/js/views/game/findTheSamePicture/fns/common/makeAlpabet';
-import makeRandomNum from '@/client/js/views/game/findTheSamePicture/fns/common/makeRandomNum';
-import drawDrawingBoard from '@/client/js/views/game/findTheSamePicture/fns/gameState/stateFirstUserAni/drawDrawingBoard'
+import sendMakeNicknameList from '@/client/js/views/game/findTheSamePicture/fns/gameState/stateChoiceFirstPlayer/sendMakeNicknameList'
 
 export const CHOICE_FIRST_PLAYER_HANDLER = {
   // gameState : choiceFirstPlayer 에서 reload 한 경우
@@ -14,8 +10,7 @@ export const CHOICE_FIRST_PLAYER_HANDLER = {
       throw throwObj('sessionStorageLoss', 'delete sessionStorage.');
     };
 
-    // TODO: 이건 stateFirstUserAni 에서 실행하는 함수인데...
-    drawDrawingBoard();
+    sendMakeNicknameList();
   },
   // gameState : choiceFirstPlayer 에 처음 입장
   handleInitialLoad(storageKeys) {
@@ -30,8 +25,7 @@ export const CHOICE_FIRST_PLAYER_HANDLER = {
       }
     };
 
-    // choiceFirstPlayer 단계에서 필요한 data insert 후 다음 단계 진행
-    // TODO: 이건 stateFirstUserAni 에서 실행하는 함수인데...
-    drawDrawingBoard();
+    // choiceFirstPlayer 단계에서 필요한 data insert 후 다음
+    sendMakeNicknameList();
   },
 };

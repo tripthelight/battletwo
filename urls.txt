@@ -1,0 +1,33 @@
+import throwObj from '@/client/js/module/errorHandler/throwObj';
+throw throwObj(error?.errCase ?? 'cardNum', error?.message ?? 'card number not found');
+
+import errorManager from '@/client/js/module/errorHandler/errorManager';
+errorManager(error, true);
+
+elementLoss
+sessionStorageLoss
+
+
+@/client/js/views/game/findTheSamePicture/fns/common/
+
+
+@/client/js/views/game/findTheSamePicture/fns/gameState/stateFirstUserAni/
+@/client/js/views/game/findTheSamePicture/fns/gameState/stateFirstUserAni/
+
+import { timeInterval_400 } from "@/client/js/functions/variable";
+import loopPromise from "@/client/js/module/loopPromise";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
