@@ -621,6 +621,7 @@ export const obfuscationList = {
         k: 'OYEVABRZID', // [79, 89, 69, 86, 65, 66, 82, 90, 73, 68]
       },
       */
+
       // —————————————————————————————————————————————————————————————————————
       /**
        * choiceFirstPlayer
@@ -644,6 +645,19 @@ export const obfuscationList = {
       },
       GAME_STATE_NEXT: {
         k: 'CQRXOUBNYE' // [67, 81, 82, 88, 79, 85, 66, 78, 89, 69]
+      },
+      // e: sessionStorage keys
+      */
+      // —————————————————————————————————————————————————————————————————————
+
+      // —————————————————————————————————————————————————————————————————————
+      /**
+       * firstUserAni
+       */
+      /*
+      // s: sessionStorage keys
+      PIC_TXt: {
+        k: 'QMDFJRECKP' // [81, 77, 68, 70, 74, 82, 69, 67, 75, 80]
       },
       // e: sessionStorage keys
       */

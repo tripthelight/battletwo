@@ -39,20 +39,18 @@ export default async (_data) => {
     cardImgs: CARD_IMGS,
     randomNums: RANDOM_NUMS,
   };
-  const DATA_LOCAL = {
+
+  firstSessionInit({
     ...DATA,
     firstUser: FIRST_USER_STATE,
     arr: _data.arr,
-  };
-  const DATA_REMOTE = {
+  });
+
+  request('firstUserData', {
     ...DATA,
     firstUser: FIRST_USER_STATE ? false : true,
     arr: ARR,
-  };
-
-  firstSessionInit(DATA_LOCAL);
-
-  request('firstUserData', DATA_REMOTE);
+  });
 
   const encryptKey4 = findCharCode([67, 81, 82, 88, 79, 85, 66, 78, 89, 69]); // gameStateNext
   storageMethod('s', 'SET_ITEM', encryptKey4, false);

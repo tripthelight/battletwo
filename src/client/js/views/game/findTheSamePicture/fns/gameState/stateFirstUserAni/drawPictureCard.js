@@ -20,14 +20,8 @@ import flipAnimation from "@/client/js/views/game/findTheSamePicture/fns/gameSta
 
 export default async (_elem) => {
   try {
-    // const FIRST_USER = await findFirstUser();
-    // const NICK_CHAR_LIST = await userNickCharList();
-
-    const FIRST_USER = "BRAVE";
-    const NICKNAME_LIST = '["BRAVE", "CHROME"]';
-    const NICKNAME_ARR = JSON.parse(NICKNAME_LIST);
-    const NICKNAME_JOIN = NICKNAME_ARR.join("");
-    const NICK_CHAR_LIST = NICKNAME_JOIN.split("");
+    const FIRST_USER = await findFirstUser();
+    const NICK_CHAR_LIST = await userNickCharList();
 
     let pictureCard = new Object();
     let picFront = new Object();
