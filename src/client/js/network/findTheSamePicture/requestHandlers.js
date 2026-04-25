@@ -9,4 +9,7 @@ export const REQUEST_HANDLERS = {
   // gameState : choiceFirstPlayer
   sendNickname: (v) => ({ type: 'sendNickname', ...v }),
   firstUserData: (v) => ({ type: 'firstUserData', ...v }),
+
+  // gameState : playing
+  clickData: (v) => ({ type: 'clickData', ...v }),
 };

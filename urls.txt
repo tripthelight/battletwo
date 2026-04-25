@@ -17,17 +17,4 @@ sessionStorageLoss
 import { timeInterval_400 } from "@/client/js/functions/variable";
 import loopPromise from "@/client/js/module/loopPromise";
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+import { text } from '@/client/js/functions/language';
