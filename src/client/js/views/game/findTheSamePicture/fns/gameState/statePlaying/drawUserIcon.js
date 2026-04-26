@@ -11,6 +11,8 @@ import infoPlayPop from "@/client/js/views/game/findTheSamePicture/fns/gameState
 import playerCardAcitveClass from "@/client/js/views/game/findTheSamePicture/fns/common/playerCardAcitveClass";
 import findTheSamePictureGameState from '@/client/js/gameState/findTheSamePicture';
 
+import saveResult from "@/client/js/views/game/findTheSamePicture/fns/gameState/stateGameOver/saveResult";
+
 export default () => {
   const PLAYER_ICON = document.querySelector(".player-icon");
   if (PLAYER_ICON) return;
@@ -113,7 +115,10 @@ export default () => {
     const encryptKey2 = findCharCode([67, 72, 86, 68, 83, 77, 74, 65, 88, 78]); // result
     const encryptVal2 = storageMethod('s', 'GET_ITEM', encryptKey2);
     if (!encryptVal2) throw throwObj('sessionStorageLoss', "drawUserIcon.js - result failed.");
-    findTheSamePictureGameState.gameOver(encryptVal2 === "true" ? true : false);
+
+    // 게임 결과 저장
+    saveResult(encryptVal2 === "true" ? true : false);
+    findTheSamePictureGameState.gameOver();
   } else {
     setTimeout(touchUserIcon, timeInterval_1);
     // 안내 팝업

@@ -7,6 +7,8 @@ import findTheSamePictureGameState from '@/client/js/gameState/findTheSamePictur
 import boardActive from "@/client/js/views/game/findTheSamePicture/fns/common/boardActive";
 import findCharCode from '@/client/js/functions/findCharCode';
 
+import saveResult from "@/client/js/views/game/findTheSamePicture/fns/gameState/stateGameOver/saveResult";
+
 export default (_num, _state, _orderNum, _clickBoardNum) => {
   const playerActiveNum = Number(_num);
 
@@ -33,10 +35,13 @@ export default (_num, _state, _orderNum, _clickBoardNum) => {
       setTimeout(playerCardAcitveClass, timeInterval_1, "reDraw");
       const encryptKey1 = findCharCode([75, 77, 88, 72, 80, 73, 86, 71, 67, 78]); // clickUser
       if (playerActiveNum === 0) {
-        console.log("?닿? >>>>> ");
         storageMethod('s', 'SET_ITEM', encryptKey1, false);
         boardActive(false);
-        findTheSamePictureGameState.gameOver(true);
+
+        // 게임 결과 저장
+        saveResult(true);
+        // findTheSamePictureGameState.gameOver(true);
+        findTheSamePictureGameState.gameOver();
       } else {
         storageMethod('s', 'SET_ITEM', encryptKey1, true);
         boardActive(true);

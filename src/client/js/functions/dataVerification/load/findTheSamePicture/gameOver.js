@@ -2,7 +2,7 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import storageKeyDeleteCheck from '@/client/js/functions/dataVerification/load/storageKeyDeleteCheck';
 
-// import drawLocalCube from '@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/drawLocalCube';
+import drawResult from "@/client/js/views/game/findTheSamePicture/fns/gameState/stateGameOver/drawResult"
 
 export const GAME_OVER_HANDLER = {
   // gameState : gameOver 에서 reload 한 경우
@@ -11,8 +11,7 @@ export const GAME_OVER_HANDLER = {
       throw throwObj('sessionStorageLoss', 'delete sessionStorage.');
     };
 
-    // drawLocalCube();
-    console.log("findTheSamePicture gameOver refresh >>>>>>>>>>>> ");
+    drawResult()
   },
   // gameState : gameOver 에 처음 입장
   handleInitialLoad(storageKeys) {
@@ -28,8 +27,6 @@ export const GAME_OVER_HANDLER = {
     };
 
     // gameOver 단계에서 필요한 data insert 후 다음 단계 진행
-    // drawLocalCube();
-
-    console.log("findTheSamePicture gameOver >>>>>>>>>>>> ");
+    drawResult()
   },
 };

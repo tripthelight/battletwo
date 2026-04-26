@@ -1,6 +1,9 @@
+import { USER_LEN } from "@/client/js/views/game/findTheSamePicture/fns/common/variable";
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import { timeInterval_1000 } from "@/client/js/functions/variable";
 import findTheSamePictureGameState from '@/client/js/gameState/findTheSamePicture';
+
+import saveResult from "@/client/js/views/game/findTheSamePicture/fns/gameState/stateGameOver/saveResult";
 
 export default (_data, _state) => {
   const enemyActive = Number(_data.enemyActive);
@@ -9,8 +12,10 @@ export default (_data, _state) => {
     throw throwObj('dataManipulation', "moveEnemyIcon.js - enemyActive value failed.");
   }
 
-  if (enemyActive === 20) {
-    findTheSamePictureGameState.gameOver(true);
+  if (enemyActive === USER_LEN) {
+    // 게임 결과 저장
+    saveResult(true);
+    findTheSamePictureGameState.gameOver();
     return;
   }
 
@@ -30,7 +35,9 @@ export default (_data, _state) => {
       ENEMY_ICON.classList.remove("move");
 
       if (enemyActive === 0) {
-        findTheSamePictureGameState.gameOver(false);
+        // 게임 결과 저장
+        saveResult(false);
+        findTheSamePictureGameState.gameOver();
       }
     }, timeInterval_1000);
   }

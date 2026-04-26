@@ -9,6 +9,8 @@ import findTheSamePictureGameState from '@/client/js/gameState/findTheSamePictur
 import findCharCode from '@/client/js/functions/findCharCode';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
 
+import saveResult from "@/client/js/views/game/findTheSamePicture/fns/gameState/stateGameOver/saveResult";
+
 export default async (_num, _card1Num, _orderNum, _clickBoardNum) => {
   try {
     // .player-icon 이 마지막 칸에 있으면 endState: true
@@ -112,7 +114,10 @@ export default async (_num, _card1Num, _orderNum, _clickBoardNum) => {
               // .player-icon이 마지막 칸에 있다가 사라졌을 경우
               // StateGameEnd로 이동
               // alert("졌다!!!!");
-              findTheSamePictureGameState.gameOver(false);
+
+              // 게임 결과 저장
+              saveResult(false);
+              findTheSamePictureGameState.gameOver();
             }
             /**
              * 내 상태를 보내기 -------------------------
