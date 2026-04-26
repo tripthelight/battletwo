@@ -1,3 +1,4 @@
+import { timeInterval_1000 } from "@/client/js/functions/variable";
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import findIconActive from "@/client/js/views/game/findTheSamePicture/fns/common/findIconActive";
@@ -48,7 +49,7 @@ export default (_reDraw) => {
         setTimeout(() => {
           PLAYER_CARDS[i].classList.remove("card-active");
           PLAYER_CARDS[i].classList.add("card-active-loop");
-        }, 1000);
+        }, timeInterval_1000);
         break;
       }
     }

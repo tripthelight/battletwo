@@ -1,8 +1,13 @@
+import storageMethod from '@/client/js/module/storage/storageMethod';
+import findCharCode from '@/client/js/functions/findCharCode';
+
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import findTheSamePictureGameState from '@/client/js/gameState/findTheSamePicture';
 import { WW, WH } from "@/client/js/views/game/findTheSamePicture/fns/common/variable";
 import { IS_DARKMODE } from "@/client/js/module/darkMode";
+
+import { getInitRole } from '@/client/js/module/webRTC/connectSignaling';
 
 export default (_border) => {
   const W = _border.clientWidth + Number(getComputedStyle(_border).borderLeftWidth.replace("px", "")) + Number(getComputedStyle(_border).borderRightWidth.replace("px", ""));
@@ -60,10 +65,16 @@ export default (_border) => {
         BOARD_BORDER.remove();
         LOADING_EVENT.show();
         // s : --- 이 --- 줄에서 --- 다음 --- STEP --- 실행
-        window.sessionStorage.setItem("gameStateGetAll", false);
-        window.sessionStorage.setItem("refresh", false);
-        const FIRST_ENTER = window.sessionStorage.firstEnter;
-        if (FIRST_ENTER && FIRST_ENTER === "true") window.sessionStorage.setItem("gameStateNext", false);
+        // window.sessionStorage.setItem("gameStateGetAll", false);
+        storageMethod('s', 'SET_ITEM',
+          findCharCode([79, 85, 89, 77, 72, 87, 81, 78, 65, 66]), // gameStateGetAll
+          false
+        );
+        // window.sessionStorage.setItem("refresh", false);
+        storageMethod('s', 'SET_ITEM',
+          findCharCode([67, 69, 85, 83, 66, 82, 88, 86, 70, 75]), // refresh
+          false
+        );
 
         // if (window.localStorage.nickname === "EDGE") {
         //   setTimeout(() => {
@@ -73,8 +84,18 @@ export default (_border) => {
         // } else {
         //   findTheSamePictureGameState.playing();
         // }
+        // if (FIRST_ENTER && FIRST_ENTER === "true") window.sessionStorage.setItem("gameStateNext", false);
 
-        if (FIRST_ENTER && FIRST_ENTER === "true") window.sessionStorage.setItem("gameStateNext", false);
+        // const FIRST_ENTER = window.sessionStorage.firstEnter;
+        const ROLE = getInitRole();
+        const FIRST_ENTER = ROLE === "impolite" ? true : ROLE === "polite" ? false : null;
+        if (FIRST_ENTER === null) throw throwObj('dataManipulation', 'gameBorderAnimation.js - role failed.');
+        if (FIRST_ENTER) {
+          storageMethod('s', 'SET_ITEM',
+            findCharCode([67, 81, 82, 88, 79, 85, 66, 78, 89, 69]), // gameStateNext
+            false
+          );
+        }
         findTheSamePictureGameState.playing();
         // e : --- 이 --- 줄에서 --- 다음 --- STEP --- 실행
       }, 401);

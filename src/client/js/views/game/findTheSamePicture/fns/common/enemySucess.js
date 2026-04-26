@@ -3,7 +3,7 @@ import findCharCode from '@/client/js/functions/findCharCode';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 
 import { timeInterval_1 } from "@/client/js/functions/variable";
-"@/client/js/views/game/findTheSamePicture/fns/common/findRandomName";
+import findRandomName from "@/client/js/views/game/findTheSamePicture/fns/common/findRandomName";
 import moveEnemyIcon from "@/client/js/views/game/findTheSamePicture/fns/gameState/statePlaying/moveEnemyIcon";
 
 export default (_data) => {

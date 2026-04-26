@@ -1,13 +1,19 @@
 import { getStyle } from "@/client/js/functions/comnExport";
+import storageMethod from '@/client/js/module/storage/storageMethod';
+import findCharCode from '@/client/js/functions/findCharCode';
 
 export default () => {
   const TXT_BLOCK = document.querySelector(".result-txt");
   if (!TXT_BLOCK) return;
 
-  const RESULT_STORAGE = window.sessionStorage.result;
-  if (!RESULT_STORAGE) return;
+  // const RESULT_STORAGE = window.sessionStorage.result;
+  // if (!RESULT_STORAGE) return;
 
-  const RESULT = Boolean(RESULT_STORAGE === "true");
+  const encryptKey1 = findCharCode([67, 72, 86, 68, 83, 77, 74, 65, 88, 78]); // result
+  const encryptVal1 = storageMethod('s', 'GET_ITEM', encryptKey1);
+
+  // const RESULT = Boolean(RESULT_STORAGE === "true");
+  const RESULT = Boolean(encryptVal1 === "true");
 
   const BOARD_ELEM = document.querySelector(".board");
   const LIST = BOARD_ELEM.querySelectorAll("li");

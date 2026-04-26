@@ -9,14 +9,20 @@ import drawEnemyBlock from "@/client/js/views/game/findTheSamePicture/fns/gameSt
 import makeUserCard from "@/client/js/views/game/findTheSamePicture/fns/common/makeUserCard/makeUserCard";
 import compareSync from "@/client/js/views/game/findTheSamePicture/fns/common/compareSync";
 
+import storageMethod from '@/client/js/module/storage/storageMethod';
+
 export default async (_board) => {
   const MAKE_USER_CARD = await makeUserCard();
-  const ORDER_NUM = window.sessionStorage.getItem(findRandomName(1));
+  // const ORDER_NUM = window.sessionStorage.getItem(findRandomName(1));
+  const ORDER_NUM = storageMethod('s', 'GET_ITEM', findRandomName(1));
+
   const ORDER_NUM_LIST = JSON.parse(ORDER_NUM);
-  const RANDOM_NUM = window.sessionStorage.getItem(findRandomName(2));
+  // const RANDOM_NUM = window.sessionStorage.getItem(findRandomName(2));
+  const RANDOM_NUM = storageMethod('s', 'GET_ITEM', findRandomName(2));
   const RANDOM_NUM_LIST = JSON.parse(RANDOM_NUM);
 
-  const ALPABAT = window.sessionStorage.getItem(findRandomName(0));
+  // const ALPABAT = window.sessionStorage.getItem(findRandomName(0));
+  const ALPABAT = storageMethod('s', 'GET_ITEM', findRandomName(0));
   const ALPABAT_LIST = JSON.parse(ALPABAT);
 
   let card = new Object();

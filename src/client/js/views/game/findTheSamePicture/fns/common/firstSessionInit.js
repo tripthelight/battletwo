@@ -13,19 +13,26 @@ import findCharCode from '@/client/js/functions/findCharCode';
  * @param {Array<number>} arr
  */
 export default (_data) => {
-  const encryptKey1 = findCharCode([70, 80, 83, 79, 71, 87, 75, 78, 76, 84]); // nicknameList
-  const encryptKey2 = findCharCode([75, 77, 88, 72, 80, 73, 86, 71, 67, 78]); // clickUser
-  const encryptKey3 = findCharCode([80, 82, 68, 73, 86, 85, 90, 66, 87, 71]); // en
-  const encryptKey4 = findCharCode([66, 84, 88, 72, 79, 73, 82, 76, 85, 77]); // rns
-
-  storageMethod('s', 'SET_ITEM', encryptKey1, JSON.stringify(_data.nicknameList));
-  storageMethod('s', 'SET_ITEM', encryptKey2, _data.firstUser);
-  storageMethod('s', 'SET_ITEM', encryptKey3, JSON.stringify(_data.arr));
+  storageMethod('s', 'SET_ITEM',
+    findCharCode([70, 80, 83, 79, 71, 87, 75, 78, 76, 84]), // nicknameList,
+    JSON.stringify(_data.nicknameList)
+  );
+  storageMethod('s', 'SET_ITEM',
+    findCharCode([75, 77, 88, 72, 80, 73, 86, 71, 67, 78]), // clickUser
+    _data.firstUser
+  );
+  storageMethod('s', 'SET_ITEM',
+    findCharCode([80, 82, 68, 73, 86, 85, 90, 66, 87, 71]), // en
+    JSON.stringify(_data.arr)
+  );
 
   let randomKeys = [];
   for (let i = 0; i < 6; i++) {
     randomKeys.push(randomName(6));
-    storageMethod('s', 'SET_ITEM', encryptKey4, JSON.stringify(randomKeys));
+    storageMethod('s', 'SET_ITEM',
+      findCharCode([66, 84, 88, 72, 79, 73, 82, 76, 85, 77]), // rns,
+      JSON.stringify(randomKeys)
+    );
   }
   // window.sessionStorage.setItem(randomKeys[0], JSON.stringify(_data.alpabetList));
   // window.sessionStorage.setItem(randomKeys[1], JSON.stringify(_data.cardImgs));

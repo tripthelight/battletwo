@@ -1,5 +1,5 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
-import { timeInterval_1000 } from "@/client/js/functions/variable";
+import { timeInterval_1, timeInterval_1000 } from "@/client/js/functions/variable";
 import findRandomName from "@/client/js/views/game/findTheSamePicture/fns/common/findRandomName";
 import findIndex from "@/client/js/views/game/findTheSamePicture/fns/common/findIndex";
 import { CARD_LIST } from "@/client/js/views/game/findTheSamePicture/fns/common/variable";
@@ -20,7 +20,6 @@ import findCharCode from '@/client/js/functions/findCharCode';
 
 export default async () => {
   const MAKE_USER_CARD = await makeUserCard();
-
   // const SESS_ORDER_NUM = window.sessionStorage.getItem(findRandomName(1));
   const SESS_ORDER_NUM = storageMethod('s', 'GET_ITEM', findRandomName(1));
   const SESS_ORDER_NUM_LIST = JSON.parse(SESS_ORDER_NUM);
@@ -37,7 +36,8 @@ export default async () => {
   // if (CLICK_USER && CLICK_USER === "true") {
   if (encryptVal1 && encryptVal1 === "true") {
     boardActive(true);
-  }
+  };
+
   const BTN = document.querySelectorAll(".btn");
   // if (!BTN.length !== 16) errorComn("btn length not found");
   let imgEl = new Object();
@@ -48,7 +48,7 @@ export default async () => {
     }
     return false;
   };
-  const EVENt_RETURN = (_target) => {
+  const EVENT_RETURN = (_target) => {
     if (_target.classList.contains("active")) return true;
     return false;
   };
@@ -67,7 +67,7 @@ export default async () => {
       // if (gameStateChk("gameover")) return;
       if (gameStateChk(findCharCode([66, 85, 77, 82, 70, 74, 67, 81, 76, 87]))) return; // gameover
       if (LOOP_RETURN()) return;
-      if (EVENt_RETURN(e.target)) return;
+      if (EVENT_RETURN(e.target)) return;
       if (CLICK_USER_CHK()) return;
 
       /**

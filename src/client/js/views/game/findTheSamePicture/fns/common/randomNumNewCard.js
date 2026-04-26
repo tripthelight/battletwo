@@ -1,9 +1,10 @@
+import { CARD_LEN } from "@/client/js/views/game/findTheSamePicture/fns/common/variable";
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import findCharCode from '@/client/js/functions/findCharCode';
 
 export default () => {
-  let randomNum = Math.floor(Math.random() * 16);
+  let randomNum = Math.floor(Math.random() * CARD_LEN);
 
 
 
@@ -18,7 +19,7 @@ export default () => {
   // const EN_ARR = JSON.parse(EN);
 
   do {
-    randomNum = Math.floor(Math.random() * 16);
+    randomNum = Math.floor(Math.random() * CARD_LEN);
   } while (randomNum === EN_ARR[1]);
 
   return randomNum;

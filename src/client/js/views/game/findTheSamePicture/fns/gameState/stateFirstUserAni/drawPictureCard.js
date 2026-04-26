@@ -11,6 +11,9 @@
   3. 위에서 나온 랜덤한 숫자를 뺀 나머지에 닉네임리스트를 한글자씩 랜덤하게 그림판에 뿌려
  */
 
+import storageMethod from '@/client/js/module/storage/storageMethod';
+import findCharCode from '@/client/js/functions/findCharCode';
+
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import findFirstUser from "@/client/js/views/game/findTheSamePicture/fns/common/findFirstUser";
@@ -65,7 +68,11 @@ export default async (_elem) => {
       pictureCard.appendChild(picFront);
       pictureCard.appendChild(picBack);
 
-      window.sessionStorage.setItem("picTxt", JSON.stringify(picTxtArr));
+      // window.sessionStorage.setItem("picTxt", JSON.stringify(picTxtArr));
+      storageMethod('s', 'SET_ITEM',
+        findCharCode([81, 77, 68, 70, 74, 82, 69, 67, 75, 80]), // picTxt
+        JSON.stringify(picTxtArr)
+      );
       _elem.appendChild(pictureCard);
     }
 

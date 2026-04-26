@@ -28,10 +28,12 @@ export default async (_data) => {
   const ALPABAT_LIST = await alpabetList();
   const CARD_IMGS = await makeRandomNum();
   const RANDOM_NUMS = await makeRandomNum();
-  const ARR = await pnenCheck(_data.arr);
+  const ARR = await pnenCheck(_data.arr); // 내 큐브들
 
-  const encryptKey3 = findCharCode([75, 79, 83, 78, 89, 82, 68, 69, 73, 86]); // pn
-  storageMethod('s', 'SET_ITEM', encryptKey3, JSON.stringify(ARR));
+  storageMethod('s', 'SET_ITEM',
+    findCharCode([75, 79, 83, 78, 89, 82, 68, 69, 73, 86]), // pn
+    JSON.stringify(ARR)
+  );
 
   const DATA = {
     nicknameList: NICKNAME_LIST,
@@ -43,17 +45,19 @@ export default async (_data) => {
   firstSessionInit({
     ...DATA,
     firstUser: FIRST_USER_STATE,
-    arr: _data.arr,
+    arr: _data.arr, // 상대 큐브들 - en에 저장
   });
 
   request('firstUserData', {
     ...DATA,
     firstUser: FIRST_USER_STATE ? false : true,
-    arr: ARR,
+    arr: ARR, // 내 큐브들
   });
 
-  const encryptKey4 = findCharCode([67, 81, 82, 88, 79, 85, 66, 78, 89, 69]); // gameStateNext
-  storageMethod('s', 'SET_ITEM', encryptKey4, false);
+  storageMethod('s', 'SET_ITEM',
+    findCharCode([67, 81, 82, 88, 79, 85, 66, 78, 89, 69]), // gameStateNext
+    false
+  );
 
   const ROLE = getInitRole();
   const FIRST_ENTER = ROLE === "impolite" ? true : ROLE === "polite" ? false : null;

@@ -11,8 +11,11 @@ export default (_user) => {
   const encryptVal2 = storageMethod('s', 'GET_ITEM', encryptKey2);
   if (!encryptVal2) throw throwObj("sessionStorageLoss", "findIconActive.js - en not found");
 
-  const PN_ARR = JSON.parse(encryptVal1);
-  const EN_ARR = JSON.parse(encryptVal2);
+  const EN_ARR = JSON.parse(encryptVal1);
+  const PN_ARR = JSON.parse(encryptVal2);
+
+  // console.log("PN_ARR : ", PN_ARR);
+  // console.log("EN_ARR : ", EN_ARR);
 
   // const PN = window.sessionStorage.pn;
   // const EN = window.sessionStorage.en;
@@ -23,7 +26,16 @@ export default (_user) => {
   // const ACTIVE_LIST = window.sessionStorage.getItem(findRandomName(5));
   const ACTIVE_LIST = storageMethod('s', 'GET_ITEM', findRandomName(5));
   if (!ACTIVE_LIST) throw throwObj("sessionStorageLoss", "findIconActive.js - active list not found");
+
   const ACTIVE_LIST_ARR = JSON.parse(ACTIVE_LIST);
+
+  if (_user === "p") {
+    console.log("ACTIVE_LIST ::::::::::::::::::: ", ACTIVE_LIST) // 이게 이상함 ???
+    console.log("EN_ARR[1] ::::::::::::::::::::: ", EN_ARR[1])
+    console.log("ACTIVE_LIST_ARR[EN_ARR[1]] :::: ", ACTIVE_LIST_ARR[EN_ARR[1]])
+  }
+
+
 
   if (_user === "p") return ACTIVE_LIST_ARR[EN_ARR[1]];
   // enemy는 뒤에서 부터 순서를 잡음

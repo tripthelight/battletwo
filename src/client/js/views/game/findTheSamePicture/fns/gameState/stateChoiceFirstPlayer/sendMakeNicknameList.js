@@ -24,10 +24,15 @@ export default async () => {
     if (FIRST_ENTER) {
       //
     } else {
-      const ARR = await pnenCheck();
-      const encryptKey3 = findCharCode([75, 79, 83, 78, 89, 82, 68, 69, 73, 86]); // pn
-      storageMethod('s', 'SET_ITEM', encryptKey3, JSON.stringify(ARR));
-      request('sendNickname', { nickname: findNickname('localPlayer'), arr: ARR });
+      const ARR = await pnenCheck(); // 내 큐브들
+      storageMethod('s', 'SET_ITEM',
+        findCharCode([75, 79, 83, 78, 89, 82, 68, 69, 73, 86]), // pn
+        JSON.stringify(ARR)
+      );
+      request('sendNickname', {
+        nickname: findNickname('localPlayer'),
+        arr: ARR
+      });
     }
   } catch (error) {
     throw throwObj('dataManipulation', 'sendMakeNicknameList.js - make nickname send failed.');

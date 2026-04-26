@@ -30,9 +30,8 @@ export default (_state) => {
   if (!ACTIVE_SESS) throw throwObj('sessionStorageLoss', "clickAfterSess.js - active storage not found");
 
   const ACTIVE_ARR = JSON.parse(ACTIVE_SESS);
-  let playerActiveNum = findIconActive("p");
-  console.log("playerActiveNum :: ", playerActiveNum);
-  let playerChangeNum = _state ? Number(playerActiveNum - 1) : Number(playerActiveNum + 1);
+  const playerActiveNum = findIconActive("p");
+  const playerChangeNum = _state ? Number(playerActiveNum - 1) : Number(playerActiveNum + 1);
   ACTIVE_ARR[EN_ARR[1]] = playerChangeNum;
   // 섞기
   let randomNum = 0;

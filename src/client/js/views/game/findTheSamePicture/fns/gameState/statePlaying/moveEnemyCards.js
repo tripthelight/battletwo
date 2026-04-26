@@ -13,11 +13,11 @@ import playerCardAcitveClass from "@/client/js/views/game/findTheSamePicture/fns
 
 export default async (_data, _newCard) => {
   // 이 경우는 상대가 틀렸을 때만 실행됨
-  const encryptKey2 = findCharCode([80, 82, 68, 73, 86, 85, 90, 66, 87, 71]); // en
-  const encryptVal2 = storageMethod('s', 'GET_ITEM', encryptKey2);
+  const encryptKey1 = findCharCode([80, 82, 68, 73, 86, 85, 90, 66, 87, 71]); // en
+  const encryptVal1 = storageMethod('s', 'GET_ITEM', encryptKey1);
 
   // const ENEMY_LIST = await make20Enemy(JSON.parse(window.sessionStorage.en));
-  const ENEMY_LIST = await make20Enemy(JSON.parse(encryptVal2));
+  const ENEMY_LIST = await make20Enemy(JSON.parse(encryptVal1));
   const ENEMY_BLOCK_REVERSE = [...ENEMY_LIST].reverse();
   promiseMoveEnemyCard(_data, _newCard)
     .then((_data) => {
@@ -43,7 +43,11 @@ export default async (_data, _newCard) => {
             RE_ENEMY_LIST.appendChild(liEl);
           }
           setTimeout(() => {
-            window.sessionStorage.setItem("clickUser", true);
+            // window.sessionStorage.setItem("clickUser", true);
+            storageMethod('s', 'SET_ITEM',
+              findCharCode([75, 77, 88, 72, 80, 73, 86, 71, 67, 78]), // clickUser
+              true
+            );
             infoPlayPop();
             clickCard();
             setTimeout(playerCardAcitveClass, timeInterval_1);
