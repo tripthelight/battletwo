@@ -1,6 +1,6 @@
 # 프로젝트 설명 :
 현재 battletwo 프로젝트는 webRTC 기술을 이용한 2인용 웹게임들의 모음이다.
-현재 `TAP! TAP!`과 `INDIAN POKER` 두 종류의 게임만 완성되어 있고, `BLACK AND WHITE 1`,과 `FIND THE SAME PICTURE` 는 작업 예정이다. `INDIAN POKER`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다. 
+현재 `TAP! TAP!`과 `INDIAN POKER` 두 종류의 게임만 완성되어 있고, `BLACK AND WHITE 1`,과 `FIND THE SAME PICTURE` 는 작업 예정이다. `INDIAN POKER`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다.
 
 ## 문제 상활 설명 :
 `INDIAN POKER`를 만들고 보완해야될 부분을 알려줄테니 수정 보완해라.
@@ -10,7 +10,7 @@
 ※ 요구사항 :
 1. 새로고침을 한 peer는 그 즉시, 로딩화면이 노출되어야 한다.
 2. 상대 peer 가 이번 라운드의 결과를 알려주는 animation이 끝나고, 다음 단계로 진입하면, 새로고침 한 peer도 같은 단계로 진입되어야 한다.
-3. 결과를 알려주는 animation 단계에서 두 peer가 모두 새로고침했다면, 두 peer 모두 즉시 다음 단계로 매칭되어야 한다. 
+3. 결과를 알려주는 animation 단계에서 두 peer가 모두 새로고침했다면, 두 peer 모두 즉시 다음 단계로 매칭되어야 한다.
 4. ***중요: 두 peer의 단계가 같다는 것이 증명되어야만 서로 다음 단계로 진입해야 한다.
 
 현재의 코드 전체 상태를 완벽히 이해하고, 오류없이, 에러없이 나의 지시시항을 수행해라.
@@ -18,7 +18,7 @@
 
 ———————————————————————————————
 
-FOLD 후 새로고침 한 peer는 `errorManagement.js:132 ERROR :  remote peer : basicBet - betState compair failed.` 라는 에러가 나면서, `상대방이 방을 나갔습니다.` 팝업이 뜬다. 
+FOLD 후 새로고침 한 peer는 `errorManagement.js:132 ERROR :  remote peer : basicBet - betState compair failed.` 라는 에러가 나면서, `상대방이 방을 나갔습니다.` 팝업이 뜬다.
 새로고침을 당한 peer는 `errorManagement.js:132 ERROR :  local peer : basicBet - betState compair failed.` 라는 warning 메시지가 뜨면서 `상대방이 방을 나갔습니다.` 팝업이 뜬다.
 
 현재의 코드 전체 상태를 완벽히 이해하고, 오류없이, 에러없이 이 오류를 수정해라.
@@ -39,10 +39,10 @@ FOLD 후 새로고침 한 peer는 `errorManagement.js:132 ERROR :  remote peer :
 errorManagement.js:132 ERROR :  game over 상태에서 result 세션이 없습니다
 i	@	errorManagement.js:132
 u	@	sessionInitGameover.js:15
-setTimeout		
+setTimeout
 main	@	init.js:8
 (anonymous)	@	gameStateGameOver.js:12
-setTimeout		
+setTimeout
 c	@	gameStateGameOver.js:10
 enterNextStep	@	gameStatePlaying.js:52
 S	@	roundResultReloadSync.js:73
@@ -113,9 +113,9 @@ handleReliableReceive	@	connectSignaling.js:299
 (anonymous)	@	connectSignaling.js:426
 ------------------------------
 
-새로고침 당한 peer: 
+새로고침 당한 peer:
 error :
-dispatchPayload.js:116 Handler error for responseRoundResultReloadSync 
+dispatchPayload.js:116 Handler error for responseRoundResultReloadSync
 {errCase: 'sessionStorageLoss', message: 'local peer : basicBet - betUser/betUserFirst sessionStorage value compair failed.', sendMsg: 'remote peer : basicBet - betUser/betUserFirst sessionStorage value compair failed.'}
 c	@	dispatchPayload.js:116
 o	@	deliverToGame.js:6
@@ -158,7 +158,7 @@ gameState결과가 "drew" 이고, 라운드 결과 animation이 진행되고 있
 
 # 프로젝트 설명 :
 현재 battletwo 프로젝트는 webRTC 기술을 이용한 2인용 웹게임들의 모음이다.
-현재 `TAP! TAP!`과 `INDIAN POKER` 두 종류의 게임만 완성되어 있고, `BLACK AND WHITE 1`,과 `FIND THE SAME PICTURE` 는 작업 예정이다. `INDIAN POKER`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다. 
+현재 `TAP! TAP!`과 `INDIAN POKER` 두 종류의 게임만 완성되어 있고, `BLACK AND WHITE 1`,과 `FIND THE SAME PICTURE` 는 작업 예정이다. `INDIAN POKER`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다.
 
 ## 문제 상활 설명 :
 `INDIAN POKER`를 만들고 보완해야될 부분을 알려줄테니 수정 보완해라.
@@ -174,7 +174,7 @@ gameState결과가 "drew" 이고, 라운드 결과 animation이 진행되고 있
 ———————————————————————————————
 
 현재 battletwo 프로젝트는 webRTC 기술을 이용한 2인용 웹게임들의 모음이다.
-현재 `TAP! TAP!`과 `INDIAN POKER` 두 종류의 게임만 완성되어 있고, `BLACK AND WHITE 1`,과 `FIND THE SAME PICTURE` 는 작업 예정이다. `INDIAN POKER`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다. 
+현재 `TAP! TAP!`과 `INDIAN POKER` 두 종류의 게임만 완성되어 있고, `BLACK AND WHITE 1`,과 `FIND THE SAME PICTURE` 는 작업 예정이다. `INDIAN POKER`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다.
 
 너는 INDIAN POKER의 규칙을 알고 있냐?
 
@@ -185,7 +185,7 @@ gameState결과가 "drew" 이고, 라운드 결과 animation이 진행되고 있
 ———————————————————————————————
 
 현재 battletwo 프로젝트는 webRTC 기술을 이용한 2인용 웹게임들의 모음이다.
-현재 `TAP! TAP!`과 `INDIAN POKER`와 `BLACK AND WHITE 1` 세 종류의 게임만 완성되어 있고, `FIND THE SAME PICTURE` 는 작업 예정이다. `BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다. 
+현재 `TAP! TAP!`과 `INDIAN POKER`와 `BLACK AND WHITE 1` 세 종류의 게임만 완성되어 있고, `FIND THE SAME PICTURE` 는 작업 예정이다. `BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다.
 
 너는 BLACK AND WHITE 라는 게임의 규칙을 알고 있냐?
 
@@ -193,7 +193,7 @@ gameState결과가 "drew" 이고, 라운드 결과 animation이 진행되고 있
 
 # 프로젝트 설명 :
 현재 battletwo 프로젝트는 webRTC 기술을 이용한 2인용 웹게임들의 모음이다.
-현재 `TAP! TAP!`과 `INDIAN POKER`와 `BLACK AND WHITE 1` 세 종류의 게임만 완성되어 있고, `FIND THE SAME PICTURE` 는 작업 예정이다. `BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다. 
+현재 `TAP! TAP!`과 `INDIAN POKER`와 `BLACK AND WHITE 1` 세 종류의 게임만 완성되어 있고, `FIND THE SAME PICTURE` 는 작업 예정이다. `BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다.
 
 ## 문제 상활 설명 :
 `BLACK AND WHITE 1`에서 보완해야될 부분을 알려줄테니 수정 보완해라.
@@ -233,7 +233,7 @@ tryCatch	@	connectSignaling.js:2
 (anonymous)	@	connectSignaling.js:2
 asyncGeneratorStep	@	connectSignaling.js:2
 _next	@	connectSignaling.js:2
-Promise.then		
+Promise.then
 asyncGeneratorStep	@	connectSignaling.js:2
 _next	@	connectSignaling.js:2
 (anonymous)	@	connectSignaling.js:2
@@ -282,7 +282,7 @@ e.onmessage	@	connectSignaling.js:425
 
 # 프로젝트 설명 :
 현재 battletwo 프로젝트는 webRTC 기술을 이용한 2인용 웹게임들의 모음이다.
-현재 `TAP! TAP!`과 `INDIAN POKER`와 `BLACK AND WHITE 1` 세 종류의 게임만 완성되어 있고, `FIND THE SAME PICTURE` 는 작업 예정이다. `BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다. 
+현재 `TAP! TAP!`과 `INDIAN POKER`와 `BLACK AND WHITE 1` 세 종류의 게임만 완성되어 있고, `FIND THE SAME PICTURE` 는 작업 예정이다. `BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다.
 
 ## 문제 상활 설명 :
 `BLACK AND WHITE 1`에서 보완해야될 부분을 알려줄테니 수정 보완해라.
@@ -312,7 +312,7 @@ i	@	errorManagement.js:132
 a	@	eventHanlerErrorComn.js:14
 c	@	errorManager.js:16
 (anonymous)	@	afterPlayerNumber.js:17
-Promise.catch		
+Promise.catch
 a	@	afterPlayerNumber.js:15
 afterPlayerNumber	@	responseHandlers.js:32
 c	@	dispatchPayload.js:114
@@ -333,7 +333,7 @@ e.onmessage	@	connectSignaling.js:425
 
 # 프로젝트 설명 :
 현재 battletwo 프로젝트는 webRTC 기술을 이용한 2인용 웹게임들의 모음이다.
-현재 `TAP! TAP!`과 `INDIAN POKER`와 `BLACK AND WHITE 1` 세 종류의 게임만 완성되어 있고, `FIND THE SAME PICTURE` 는 작업 예정이다. `BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다. 
+현재 `TAP! TAP!`과 `INDIAN POKER`와 `BLACK AND WHITE 1` 세 종류의 게임만 완성되어 있고, `FIND THE SAME PICTURE` 는 작업 예정이다. `BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다.
 
 ## 문제 상활 설명 :
 `BLACK AND WHITE 1`에서 보완해야될 부분을 알려줄테니 수정 보완해라.
@@ -346,19 +346,19 @@ e.onmessage	@	connectSignaling.js:425
 
 ※ 요구사항 :
 1. 게임 진행 중 두 peer의 단계인 gameState를 매번 정확이 매칭시켜라!
-2. ***중요: 두 peer의 단계가 같다는 것이 증명되어야만 서로 다음 단계로 진입해야 한다. 
+2. ***중요: 두 peer의 단계가 같다는 것이 증명되어야만 서로 다음 단계로 진입해야 한다.
 2. ***중요: `BLACK AND WHITE 1`의 모든 data는 플레이어가 알아챌 수 없도록 암호화 되어있다. 암호화 로직이 어떻게 구현되어 있는지 정확히 분석하고 이해한 후, 수정해라.
 3. 전체 코드를 정확히 분석해서, 게임 진행에 문제가 되는 로직이 있다면 네가 알아서 수정 보완해라.
 
 현재의 코드 전체 상태를 완벽히 이해하고, 오류없이, 에러없이 나의 지시시항을 수행해라.
 
 
- 
+
 ———————————————————————————————
 
 # 프로젝트 설명 :
 현재 battletwo 프로젝트는 webRTC 기술을 이용한 2인용 웹게임들의 모음이다.
-현재 `TAP! TAP!`과 `INDIAN POKER`와 `BLACK AND WHITE 1` 세 종류의 게임만 완성되어 있고, `FIND THE SAME PICTURE` 는 작업 예정이다. `BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다. 
+현재 `TAP! TAP!`과 `INDIAN POKER`와 `BLACK AND WHITE 1` 세 종류의 게임만 완성되어 있고, `FIND THE SAME PICTURE` 는 작업 예정이다. `BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다.
 
 ## 문제 상활 설명 :
 `BLACK AND WHITE 1`에서 보완해야될 부분을 알려줄테니 수정 보완해라.
@@ -371,7 +371,7 @@ e.onmessage	@	connectSignaling.js:425
 
 ※ 요구사항 :
 1. 어느 시점, 어떤 상황, 어떤 화면에서 브라우저 새로고침을 하더라도 두 peer의 단계인 gameState를 매번 정확히 매칭시켜라!
-2. ***중요: 두 peer의 단계가 같다는 것이 증명되어야만 서로 다음 단계로 진입해야 한다. 
+2. ***중요: 두 peer의 단계가 같다는 것이 증명되어야만 서로 다음 단계로 진입해야 한다.
 2. ***중요: `BLACK AND WHITE 1`의 모든 data는 플레이어가 알아챌 수 없도록 암호화 되어있다. 암호화 로직이 어떻게 구현되어 있는지 정확히 분석하고 이해한 후, 수정해라.
 3. 전체 코드를 정확히 분석해서, 게임 진행에 문제가 되는 로직이 있다면 네가 알아서 수정 보완해라.
 
@@ -381,7 +381,7 @@ e.onmessage	@	connectSignaling.js:425
 
 # 프로젝트 설명 :
 현재 battletwo 프로젝트는 webRTC 기술을 이용한 2인용 웹게임들의 모음이다.
-현재 `TAP! TAP!`과 `INDIAN POKER`와 `BLACK AND WHITE 1` 세 종류의 게임만 완성되어 있고, `FIND THE SAME PICTURE` 는 작업 예정이다. `BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다. 
+현재 `TAP! TAP!`과 `INDIAN POKER`와 `BLACK AND WHITE 1` 세 종류의 게임만 완성되어 있고, `FIND THE SAME PICTURE` 는 작업 예정이다. `BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다.
 
 ## 문제 상활 설명 :
 `BLACK AND WHITE 1`에서 보완해야될 부분을 알려줄테니 수정 보완해라.
@@ -418,8 +418,8 @@ e.onmessage	@	connectSignaling.js:425
 
 # 프로젝트 설명 :
 현재 battletwo 프로젝트는 webRTC 기술을 이용한 2인용 웹게임들의 모음이다.
-현재 `TAP! TAP!`, `INDIAN POKER`, `FIND THE SAME PICTURE` 는 작업 예정이다. 
-`BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다. 
+현재 `TAP! TAP!`, `INDIAN POKER`, `FIND THE SAME PICTURE` 는 작업 예정이다.
+`BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다.
 
 ## 문제 상활 설명 :
 `BLACK AND WHITE 1`에서 보완해야될 부분을 알려줄테니 수정 보완해라.
@@ -445,8 +445,8 @@ e.onmessage	@	connectSignaling.js:425
 
 # 프로젝트 설명 :
 현재 battletwo 프로젝트는 webRTC 기술을 이용한 2인용 웹게임들의 모음이다.
-현재 `TAP! TAP!`, `INDIAN POKER`, `FIND THE SAME PICTURE` 는 작업 예정이다. 
-`BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다. 
+현재 `TAP! TAP!`, `INDIAN POKER`, `FIND THE SAME PICTURE` 는 작업 예정이다.
+`BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다.
 
 ## 문제 상활 설명 :
 `BLACK AND WHITE 1`에서 보완해야될 부분을 알려줄테니 수정 보완해라.
@@ -459,14 +459,14 @@ e.onmessage	@	connectSignaling.js:425
   6) `gameState` `playing` 진입
   7) 브라우저 새로고침하면 에러남
 
-※ 새로고침 한 peer의 error 내용 : 
+※ 새로고침 한 peer의 error 내용 :
 ----------------------------------------------
 errorManagement.js:132 ERROR :  local peer : keypair failed.
 i	@	errorManagement.js:132
 a	@	eventHanlerErrorComn.js:14
 s	@	errorManager.js:39
 (anonymous)	@	enterPlayingSend.js:32
-Promise.catch		
+Promise.catch
 i	@	enterPlayingSend.js:30
 enterPlayingSend	@	responseHandlers.js:31
 c	@	dispatchPayload.js:114
@@ -477,7 +477,7 @@ e.onmessage	@	connectSignaling.js:425
 errorManagement.js:68 data manipulation error :  undefined -> local peer : keypair failed.
 connectSignaling.js:708 PUBLIC KEY ::::  42t777f5w3h9z8u495k6
 connectSignaling.js:709 PRIVATE KEY :::  d8p5e4e2u1
-insertStorageDate.js:6 storageData :  
+insertStorageDate.js:6 storageData :
 {}
 errorManagement.js:132 ERROR :  local peer : refresh gameState failed.
 i	@	errorManagement.js:132
@@ -498,7 +498,7 @@ p	@	connectSignaling.js:2
 (anonymous)	@	connectSignaling.js:2
 d	@	connectSignaling.js:2
 i	@	connectSignaling.js:2
-Promise.then		
+Promise.then
 d	@	connectSignaling.js:2
 i	@	connectSignaling.js:2
 (anonymous)	@	connectSignaling.js:2
@@ -506,7 +506,7 @@ i	@	connectSignaling.js:2
 (anonymous)	@	connectSignaling.js:720
 ----------------------------------------------
 
-※ 새로고침 당한 peer의 error 내용 : 
+※ 새로고침 당한 peer의 error 내용 :
 ----------------------------------------------
 errorManagement.js:132 ERROR :  remote peer : keypair failed.
 (anonymous)	@	errorManagement.js:132
@@ -541,8 +541,8 @@ handleReliableReceive	@	connectSignaling.js:298
 
 # 프로젝트 설명 :
 현재 battletwo 프로젝트는 webRTC 기술을 이용한 2인용 웹게임들의 모음이다.
-현재 `TAP! TAP!`, `INDIAN POKER`, `FIND THE SAME PICTURE` 는 작업 예정이다. 
-`BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다. 
+현재 `TAP! TAP!`, `INDIAN POKER`, `FIND THE SAME PICTURE` 는 작업 예정이다.
+`BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다.
 
 ## 문제 상활 설명 :
 `BLACK AND WHITE 1`에서 보완해야될 부분을 알려줄테니 수정 보완해라.
@@ -552,7 +552,7 @@ handleReliableReceive	@	connectSignaling.js:298
   4) 두 peer 모두 `START` 버튼을 클릭
   5) 선/후 플레이어 지정(`gameState: setOrder`)
   6) `gameState` `playing` 진입 후 Round를 진행
-  7) 이 전 Round의 결과가 동(同)점 일 경우 : 
+  7) 이 전 Round의 결과가 동(同)점 일 경우 :
     - 현재 턴의 peer가 `.black-square` 영역으로 cube를 옮겨도, 상대 peer에게 턴이 안넘어간다.
 
 ※ 요구사항 :
@@ -566,8 +566,8 @@ handleReliableReceive	@	connectSignaling.js:298
 
 # 프로젝트 설명 :
 현재 battletwo 프로젝트는 webRTC 기술을 이용한 2인용 웹게임들의 모음이다.
-현재 `TAP! TAP!`, `INDIAN POKER`, `FIND THE SAME PICTURE` 는 작업 예정이다. 
-`BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다. 
+현재 `TAP! TAP!`, `INDIAN POKER`, `FIND THE SAME PICTURE` 는 작업 예정이다.
+`BLACK AND WHITE 1`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다.
 
 ## 문제 상활 설명 :
 `BLACK AND WHITE 1`에서 보완해야될 부분을 알려줄테니 수정 보완해라.
@@ -588,6 +588,28 @@ handleReliableReceive	@	connectSignaling.js:298
 현재의 코드 전체 상태를 완벽히 이해하고, 오류없이, 에러없이 나의 지시시항을 수행해라.
 
 ———————————————————————————————
+
+# 프로젝트 설명 :
+현재 battletwo 프로젝트는 webRTC 기술을 이용한 2인용 웹게임들의 모음이다.
+현재 `TAP! TAP!`과 `INDIAN POKER`, `BLACK AND WHITE 1`은 작업 예정이다. `FIND THE SAME PICTURE`를 먼저 완벽하게 만들고, 같은 환경에서 나머지 게임들을 붙여나갈 예정이다.
+
+## 문제 상활 설명 :
+`FIND THE SAME PICTURE`에서 보완해야될 부분을 알려줄테니 수정 보완해라.
+1. 게임 플레이는 다 만들었는데, 게임 진행 중 알 수 없는 에러가 발생한다.
+  1) 두 peer가 webRTC로 매칭 완료됨
+  2) 선/후 플레이어를 결정(`gameState: stateChoiceFirstPlayer`)
+  3) `gameState` `playing` 진입
+  4) 서로의 알파벳을 뒤집으면서 게임 진행
+  5) 상대 peer가 틀리거나 맞추었을 경우, 자신의 말인 `div.player-icon` 사각형 tag element가 좌/우로 한 칸씩 이동해야 하는데, 이상하게 막 몇 칸씩 이동한다. 그리고, 그 후에 알 수 없는 에러가 막 발생한다.
+
+※ 요구사항 :
+1. 자신의 말인 `div.player-icon` tag element는 뒤집은 알파벳이 맞으면 왼쪽, 틀리면 오른쪽으로 한 칸 씩 이동해야 한다.
+2. ***중요: `FIND THE SAME PICTURE`의 모든 data는 플레이어가 알아챌 수 없도록 암호화 되어있다. 암호화 로직이 어떻게 구현되어 있는지 정확히 분석하고 이해한 후, 수정해라.
+3. 전체 코드를 정확히 분석해서, 게임 진행에 문제가 되는 로직이 있다면 네가 알아서 수정, 보완, 리펙토링 해라.
+
+현재의 코드 전체 상태를 완벽히 이해하고, 오류없이, 에러없이 나의 지시시항을 수행해라.
+
+
 ———————————————————————————————
 ———————————————————————————————
 ———————————————————————————————
