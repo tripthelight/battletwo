@@ -5,11 +5,16 @@ import resultWin from "@/client/js/views/game/findTheSamePicture/fns/gameState/s
 import resultLose from "@/client/js/views/game/findTheSamePicture/fns/gameState/stateGameOver/resultLose";
 import setStorageGameResult from "@/client/js/views/game/blackAndWhite1/fns/gameState/stateGameOver/setStorageGameResult";
 
+// true / false module
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import _t from '@/client/js/module/crypts/textDE';
+
 export default (_state) => {
   // window.sessionStorage.setItem("clickUser", false);
   storageMethod('s', 'SET_ITEM',
     findCharCode([75, 77, 88, 72, 80, 73, 86, 71, 67, 78]), // clickUser
-    false
+    X.enc(decodeTF(_t([100, 111, 98, 105, 97]))) // "dobia" : false
   );
 
   // const RESULT = window.sessionStorage.result;
@@ -23,7 +28,7 @@ export default (_state) => {
   const encryptKey1 = findCharCode([67, 72, 86, 68, 83, 77, 74, 65, 88, 78]); // result
   const encryptVal1 = storageMethod('s', 'GET_ITEM', encryptKey1);
   // if (RESULT_RES === "true") {
-  if (encryptVal1 === "true") {
+  if (X.dec(encryptVal1)) {
     // 이김
     resultWin();
   } else {

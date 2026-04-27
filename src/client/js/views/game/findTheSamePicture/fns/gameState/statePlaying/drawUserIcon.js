@@ -12,6 +12,7 @@ import playerCardAcitveClass from "@/client/js/views/game/findTheSamePicture/fns
 import findTheSamePictureGameState from '@/client/js/gameState/findTheSamePicture';
 
 import saveResult from "@/client/js/views/game/findTheSamePicture/fns/gameState/stateGameOver/saveResult";
+import X from '@/client/js/module/crypts/bool-obf';
 
 export default () => {
   const PLAYER_ICON = document.querySelector(".player-icon");
@@ -117,7 +118,11 @@ export default () => {
     if (!encryptVal2) throw throwObj('sessionStorageLoss', "drawUserIcon.js - result failed.");
 
     // 게임 결과 저장
-    saveResult(encryptVal2 === "true" ? true : false);
+    saveResult(
+      X.dec(encryptVal2),
+      [115, 119, 112, 97], // "swpa" : true
+      [106, 111, 98, 101, 117] // "jobeu" : false
+    );
     findTheSamePictureGameState.gameOver();
   } else {
     setTimeout(touchUserIcon, timeInterval_1);

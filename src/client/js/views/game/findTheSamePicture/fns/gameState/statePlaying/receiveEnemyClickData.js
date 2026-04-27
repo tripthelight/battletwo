@@ -8,6 +8,8 @@ import enemyFail from "@/client/js/views/game/findTheSamePicture/fns/common/enem
 import enemySucess from "@/client/js/views/game/findTheSamePicture/fns/common/enemySucess";
 import flipEnemyChoiceCard from "@/client/js/views/game/findTheSamePicture/fns/common/flipEnemyChoiceCard";
 
+import { obfuscateInt32, deobfuscateInt32 } from '@/client/js/module/crypts/encryptNumber';
+
 export default (_enemyClickData) => {
   const DATA = {
     clickBoardNum: _enemyClickData.clickBoardNum,
@@ -46,7 +48,8 @@ export default (_enemyClickData) => {
         // window.sessionStorage.setItem("round", DATA.round);
 
         const encryptKey1 = findCharCode([81, 69, 68, 84, 89, 87, 76, 67, 72, 73]); // round
-        storageMethod('s', 'SET_ITEM', encryptKey1, DATA.round);
+        // DATA.round: number
+        storageMethod('s', 'SET_ITEM', encryptKey1, obfuscateInt32(DATA.round));
 
         const FAIL_DATA = {
           clickBoardNum: DATA.clickBoardNum,

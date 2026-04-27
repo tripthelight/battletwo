@@ -3,6 +3,7 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import findIconActive from "@/client/js/views/game/findTheSamePicture/fns/common/findIconActive";
 import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
 
 export default (_reDraw) => {
   // const CLICK_USER = window.sessionStorage.clickUser;
@@ -12,7 +13,7 @@ export default (_reDraw) => {
   const encryptKey1 = findCharCode([75, 77, 88, 72, 80, 73, 86, 71, 67, 78]); // clickUser
   const encryptVal1 = storageMethod('s', 'GET_ITEM', encryptKey1);
   if (!encryptVal1) throw throwObj('sessionStorageLoss', "playerCardAcitveClass.js - clickUser failed.");
-  if (encryptVal1 && encryptVal1 === "false") return;
+  if (encryptVal1 !== "" && !X.dec(encryptVal1)) return;
 
   const PLAYER_BLOCK = document.querySelector(".player-block");
   if (!PLAYER_BLOCK) throw throwObj('elementLoss', "playerCardAcitveClass.js - .player-block element failed.");

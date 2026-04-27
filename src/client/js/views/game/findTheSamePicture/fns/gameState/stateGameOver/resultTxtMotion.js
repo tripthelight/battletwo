@@ -5,6 +5,8 @@ import throwObj from '@/client/js/module/errorHandler/throwObj';
 import { getStyle } from "@/client/js/functions/comnExport";
 import rotateResult from "@/client/js/views/game/findTheSamePicture/fns/gameState/stateGameOver/rotateResult";
 
+import X from '@/client/js/module/crypts/bool-obf';
+
 export default () => {
   // const RESULT_STORAGE = window.sessionStorage.result;
   // if (!RESULT_STORAGE) throw throwObj('sessionStorageLoss', "resultTxtMotion.js - result failed.");
@@ -14,7 +16,7 @@ export default () => {
   if (!encryptVal1) throw throwObj('sessionStorageLoss', "resultTxtMotion.js - result failed.");
 
   // const RESULT = Boolean(RESULT_STORAGE === "true");
-  const RESULT = Boolean(encryptVal1 === "true");
+  const RESULT = X.dec(encryptVal1);
   const BOARD_ELEM = document.querySelector(".board");
   const LIST = BOARD_ELEM.querySelectorAll("li");
   const W = LIST[0].clientWidth;

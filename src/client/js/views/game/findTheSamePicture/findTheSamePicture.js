@@ -14,6 +14,17 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 
 import findTheSamePictureGameState from '@/client/js/gameState/findTheSamePicture';
 
+
+
+
+
+import _t from '@/client/js/module/crypts/textDE';
+import { dec, enc } from '@/client/js/module/crypts/obf8lower';
+import { encryptNumOfStr } from '@/client/js/module/crypts/encryptNumber';
+
+import { obfuscateInt32, deobfuscateInt32 } from '@/client/js/module/crypts/encryptNumber';
+
+
 LOADING_EVENT.show();
 const GAME_NAME = 'findTheSamePicture';
 
@@ -70,7 +81,16 @@ async function startGame() {
       } else {
         findTheSamePictureGameState.choiceFirstPlayer();
       }
-    }
+    };
+
+    // const D1 = encryptNumOfStr(_t([119, 119, 101, 101, 101, 119, 101, 98]));
+    // const D2 = enc(D1);
+    // const E1 = dec(D2);
+
+    // const t1 = obfuscateInt32(123456);
+    // const o1 = deobfuscateInt32(t1); // 123456
+    // console.log("123456 이냐?", o1)
+
   } catch (error) {
     errorManager(error, false);
   }

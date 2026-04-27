@@ -4,6 +4,11 @@ import randomName from "@/client/js/module/randomName";
 import encryption from "@/client/js/views/game/findTheSamePicture/fns/common/encryption";
 import findCharCode from '@/client/js/functions/findCharCode';
 
+// true / false module
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import _t from '@/client/js/module/crypts/textDE';
+
 /**
  * @param {Array<string>} nicknameList
  * @param {boolean} firstUser
@@ -19,7 +24,10 @@ export default (_data) => {
   );
   storageMethod('s', 'SET_ITEM',
     findCharCode([75, 77, 88, 72, 80, 73, 86, 71, 67, 78]), // clickUser
-    _data.firstUser
+    _data.firstUser ?
+      X.enc(decodeTF(_t([107, 102, 112, 117]))) // "kfpu" : true
+      :
+      X.enc(decodeTF(_t([120, 113, 98, 101, 110]))) // "xqben" : false
   );
   storageMethod('s', 'SET_ITEM',
     findCharCode([80, 82, 68, 73, 86, 85, 90, 66, 87, 71]), // en

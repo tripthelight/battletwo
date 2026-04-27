@@ -1,4 +1,3 @@
-import throwObj from '@/client/js/module/errorHandler/throwObj';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import findCharCode from '@/client/js/functions/findCharCode';
 import findNickname from '@/client/js/functions/findNickname';
@@ -7,8 +6,13 @@ import makeRandomNum from "@/client/js/views/game/findTheSamePicture/fns/common/
 import pnenCheck from '@/client/js/views/game/findTheSamePicture/fns/common/pnenCheck';
 import firstSessionInit from '@/client/js/views/game/findTheSamePicture/fns/common/firstSessionInit';
 import { request } from '@/client/js/network/findTheSamePicture/request';
-import { getInitRole } from '@/client/js/module/webRTC/connectSignaling';
 import findTheSamePictureGameState from '@/client/js/gameState/findTheSamePicture';
+import findFirstEnter from "@/client/js/views/game/findTheSamePicture/fns/common/findFirstEnter";
+
+// true / false module
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import _t from '@/client/js/module/crypts/textDE';
 
 export default async (_data) => {
   const encryptKey1 = findCharCode([70, 80, 83, 79, 71, 87, 75, 78, 76, 84]); // nicknameList
@@ -56,11 +60,10 @@ export default async (_data) => {
 
   storageMethod('s', 'SET_ITEM',
     findCharCode([67, 81, 82, 88, 79, 85, 66, 78, 89, 69]), // gameStateNext
-    false
+    X.enc(decodeTF(_t([120, 111, 98, 116, 110]))) // "xobtn" : false
   );
 
-  const ROLE = getInitRole();
-  const FIRST_ENTER = ROLE === "impolite" ? true : ROLE === "polite" ? false : null;
-  if (FIRST_ENTER === null) throw throwObj('dataManipulation', 'receiveMakeNicknameList.js - role failed.');
-  if (FIRST_ENTER) findTheSamePictureGameState.firstUserAni();
+  if (
+    findFirstEnter([99, 102, 114, 97], [120, 111, 98, 101, 110], "receiveMakeNicknameList") // "cfra" : true, "xoben" : false
+  ) findTheSamePictureGameState.firstUserAni();
 }

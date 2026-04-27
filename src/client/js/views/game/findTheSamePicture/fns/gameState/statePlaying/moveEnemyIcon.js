@@ -14,7 +14,7 @@ export default (_data, _state) => {
 
   if (enemyActive === USER_LEN) {
     // 게임 결과 저장
-    saveResult(true);
+    saveResult(true, [107, 109, 114, 117], [100, 113, 98, 105, 110]); // "kmru" : true | "dqbin" : false
     findTheSamePictureGameState.gameOver();
     return;
   }

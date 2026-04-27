@@ -116,7 +116,7 @@ export default async (_num, _card1Num, _orderNum, _clickBoardNum) => {
               // alert("졌다!!!!");
 
               // 게임 결과 저장
-              saveResult(false);
+              saveResult(false, [107, 109, 104, 97], [100, 111, 108, 105, 97]); // "kmha" : true | "dolia" : false
               findTheSamePictureGameState.gameOver();
             }
             /**

@@ -11,6 +11,11 @@ import infoPlayPop from "@/client/js/views/game/findTheSamePicture/fns/gameState
 import { timeInterval_1 } from "@/client/js/functions/variable";
 import playerCardAcitveClass from "@/client/js/views/game/findTheSamePicture/fns/common/playerCardAcitveClass";
 
+// true / false module
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import _t from '@/client/js/module/crypts/textDE';
+
 export default async (_data, _newCard) => {
   // 이 경우는 상대가 틀렸을 때만 실행됨
   const encryptKey1 = findCharCode([80, 82, 68, 73, 86, 85, 90, 66, 87, 71]); // en
@@ -46,7 +51,7 @@ export default async (_data, _newCard) => {
             // window.sessionStorage.setItem("clickUser", true);
             storageMethod('s', 'SET_ITEM',
               findCharCode([75, 77, 88, 72, 80, 73, 86, 71, 67, 78]), // clickUser
-              true
+              X.enc(decodeTF(_t([115, 102, 104, 117]))) // "sfhu" : true
             );
             infoPlayPop();
             clickCard();

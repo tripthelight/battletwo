@@ -9,6 +9,11 @@ import findCharCode from '@/client/js/functions/findCharCode';
 
 import saveResult from "@/client/js/views/game/findTheSamePicture/fns/gameState/stateGameOver/saveResult";
 
+// true / false module
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import _t from '@/client/js/module/crypts/textDE';
+
 export default (_num, _state, _orderNum, _clickBoardNum) => {
   const playerActiveNum = Number(_num);
 
@@ -35,15 +40,21 @@ export default (_num, _state, _orderNum, _clickBoardNum) => {
       setTimeout(playerCardAcitveClass, timeInterval_1, "reDraw");
       const encryptKey1 = findCharCode([75, 77, 88, 72, 80, 73, 86, 71, 67, 78]); // clickUser
       if (playerActiveNum === 0) {
-        storageMethod('s', 'SET_ITEM', encryptKey1, false);
+        storageMethod('s', 'SET_ITEM',
+          encryptKey1,
+          X.enc(decodeTF(_t([106, 113, 108, 105, 110]))) // "jqlin" : false
+        );
         boardActive(false);
 
         // 게임 결과 저장
-        saveResult(true);
+        saveResult(true, [115, 109, 114, 110], [100, 103, 118, 101, 97]); // "smrn" : true | "dgvea" : false
         // findTheSamePictureGameState.gameOver(true);
         findTheSamePictureGameState.gameOver();
       } else {
-        storageMethod('s', 'SET_ITEM', encryptKey1, true);
+        storageMethod('s', 'SET_ITEM',
+          encryptKey1,
+          X.enc(decodeTF(_t([107, 102, 112, 110]))) // "kfpn" : true
+        );
         boardActive(true);
       }
     }, timeInterval_1000);

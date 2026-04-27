@@ -656,7 +656,7 @@ export const obfuscationList = {
        */
       /*
       // s: sessionStorage keys
-      PIC_TXt: {
+      PIC_TXT: {
         k: 'QMDFJRECKP' // [81, 77, 68, 70, 74, 82, 69, 67, 75, 80]
       },
       // e: sessionStorage keys

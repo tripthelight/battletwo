@@ -1,6 +1,7 @@
 import { getStyle } from "@/client/js/functions/comnExport";
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
 
 export default () => {
   const TXT_BLOCK = document.querySelector(".result-txt");
@@ -13,7 +14,7 @@ export default () => {
   const encryptVal1 = storageMethod('s', 'GET_ITEM', encryptKey1);
 
   // const RESULT = Boolean(RESULT_STORAGE === "true");
-  const RESULT = Boolean(encryptVal1 === "true");
+  const RESULT = X.dec(encryptVal1);
 
   const BOARD_ELEM = document.querySelector(".board");
   const LIST = BOARD_ELEM.querySelectorAll("li");

@@ -18,6 +18,11 @@ import failRedEffect from "@/client/js/views/game/findTheSamePicture/fns/common/
 import gameStateChk from "@/client/js/views/game/findTheSamePicture/fns/common/gameStateChk";
 import findCharCode from '@/client/js/functions/findCharCode';
 
+// true / false module
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import _t from '@/client/js/module/crypts/textDE';
+
 export default async () => {
   const MAKE_USER_CARD = await makeUserCard();
   const SESS_ORDER_NUM = storageMethod('s', 'GET_ITEM', findRandomName(1));
@@ -27,8 +32,8 @@ export default async () => {
 
   const encryptKey1 = findCharCode([75, 77, 88, 72, 80, 73, 86, 71, 67, 78]); // clickUser
   const encryptVal1 = storageMethod('s', 'GET_ITEM', encryptKey1);
-  if (encryptVal1 && encryptVal1 === "false") return;
-  if (encryptVal1 && encryptVal1 === "true") {
+  if (encryptVal1 !== null && encryptVal1 !== "" && !X.dec(encryptVal1)) return;
+  if (encryptVal1 !== null && encryptVal1 !== "" && X.dec(encryptVal1)) {
     boardActive(true);
   }
 
@@ -48,7 +53,7 @@ export default async () => {
   const CLICK_USER_CHK = () => {
     const encryptKey1_1 = findCharCode([75, 77, 88, 72, 80, 73, 86, 71, 67, 78]); // clickUser
     const encryptVal1_1 = storageMethod('s', 'GET_ITEM', encryptKey1_1);
-    if (encryptVal1_1 && encryptVal1_1 === "false") return true;
+    if (encryptVal1_1 !== null && encryptVal1_1 !== "" && !X.dec(encryptVal1_1)) return true;
     return false;
   };
 
@@ -65,7 +70,10 @@ export default async () => {
       if (CLICK_USER_CHK()) return;
 
       playerCardAcitveClass("remove");
-      storageMethod('s', 'SET_ITEM', encryptKey1, false);
+      storageMethod('s', 'SET_ITEM',
+        encryptKey1,
+        X.enc(decodeTF(_t([106, 111, 98, 105, 117]))) // "jobiu" : false
+      );
       boardActive(false);
 
       const COMPARE_NUM = compareSync(SESS_RANDOM_NUM_LIST, findIndex(TARGET_BTN));

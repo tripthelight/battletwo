@@ -1,6 +1,7 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import findCharCode from '@/client/js/functions/findCharCode';
 import findNickname from '@/client/js/functions/findNickname';
+import X from '@/client/js/module/crypts/bool-obf';
 
 export default () => {
   return new Promise((resolve, reject) => {
@@ -14,7 +15,8 @@ export default () => {
     if (!MY_NICKNAME) reject("not found nickname");
     const NICKNAME_LIST_ARR = JSON.parse(encryptVal2);
     for (let i = 0; i < NICKNAME_LIST_ARR.length; i++) {
-      if (encryptVal1 === "true") {
+      // if (encryptVal1 === "true") {
+      if (X.dec(encryptVal1)) {
         resolve(MY_NICKNAME);
       } else {
         resolve(

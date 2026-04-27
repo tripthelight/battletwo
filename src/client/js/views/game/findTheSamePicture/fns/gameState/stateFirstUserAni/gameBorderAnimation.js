@@ -7,7 +7,12 @@ import findTheSamePictureGameState from '@/client/js/gameState/findTheSamePictur
 import { WW, WH } from "@/client/js/views/game/findTheSamePicture/fns/common/variable";
 import { IS_DARKMODE } from "@/client/js/module/darkMode";
 
-import { getInitRole } from '@/client/js/module/webRTC/connectSignaling';
+import findFirstEnter from "@/client/js/views/game/findTheSamePicture/fns/common/findFirstEnter";
+
+// true / false module
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import _t from '@/client/js/module/crypts/textDE';
 
 export default (_border) => {
   const W = _border.clientWidth + Number(getComputedStyle(_border).borderLeftWidth.replace("px", "")) + Number(getComputedStyle(_border).borderRightWidth.replace("px", ""));
@@ -68,12 +73,12 @@ export default (_border) => {
         // window.sessionStorage.setItem("gameStateGetAll", false);
         storageMethod('s', 'SET_ITEM',
           findCharCode([79, 85, 89, 77, 72, 87, 81, 78, 65, 66]), // gameStateGetAll
-          false
+          X.enc(decodeTF(_t([100, 113, 98, 116, 110]))) // "dqbtn" : false
         );
         // window.sessionStorage.setItem("refresh", false);
         storageMethod('s', 'SET_ITEM',
           findCharCode([67, 69, 85, 83, 66, 82, 88, 86, 70, 75]), // refresh
-          false
+          X.enc(decodeTF(_t([106, 103, 108, 101, 97]))) // "jglea" : false
         );
 
         // if (window.localStorage.nickname === "EDGE") {
@@ -87,13 +92,12 @@ export default (_border) => {
         // if (FIRST_ENTER && FIRST_ENTER === "true") window.sessionStorage.setItem("gameStateNext", false);
 
         // const FIRST_ENTER = window.sessionStorage.firstEnter;
-        const ROLE = getInitRole();
-        const FIRST_ENTER = ROLE === "impolite" ? true : ROLE === "polite" ? false : null;
-        if (FIRST_ENTER === null) throw throwObj('dataManipulation', 'gameBorderAnimation.js - role failed.');
-        if (FIRST_ENTER) {
+        if (
+          findFirstEnter([99, 119, 104, 110], [106, 113, 98, 116, 97], "gameBorderAnimation") // "cwhn" : true, "jqbta" : false
+        ) {
           storageMethod('s', 'SET_ITEM',
             findCharCode([67, 81, 82, 88, 79, 85, 66, 78, 89, 69]), // gameStateNext
-            false
+            X.enc(decodeTF(_t([100, 111, 108, 101, 117]))) // "doleu" : false
           );
         }
         findTheSamePictureGameState.playing();
