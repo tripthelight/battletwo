@@ -11,6 +11,10 @@ const pageMappings = {
     template: './src/client/views/selectGame.html',
     filename: 'views/selectGame.html',
   },
+  selectUser: {
+    template: './src/client/views/selectUser.html',
+    filename: 'views/selectUser.html',
+  },
   taptap: {
     template: './src/client/views/game/taptap.html',
     filename: 'views/game/taptap.html',

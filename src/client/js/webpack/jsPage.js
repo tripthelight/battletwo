@@ -8,10 +8,21 @@ const GAME_PATH = `${VIEW_PATH}game/`;
 
 // JavaScript 파일 경로 매핑 자동 생성
 const jsArr = PAGES.js.reduce((acc, name) => {
-  acc[name] =
-    name === 'index' ? `${VIEW_PATH}main/main.js` :
-    name === 'selectGame' ? `${VIEW_PATH}selectGame/selectGame.js` :
-    `${GAME_PATH}${name}/${name}.js`; // 기본적으로 게임 폴더 내 파일로 처리
+  // acc[name] =
+  //   name === 'index' ? `${VIEW_PATH}main/main.js` :
+  //   name === 'selectGame' ? `${VIEW_PATH}selectGame/selectGame.js` :
+  //   `${GAME_PATH}${name}/${name}.js`; // 기본적으로 게임 폴더 내 파일로 처리
+
+  if (name === 'index') {
+    acc[name] = `${VIEW_PATH}main/main.js`;
+  } else if (name === 'selectGame') {
+    acc[name] = `${VIEW_PATH}selectGame/selectGame.js`;
+  } else if (name === 'selectUser') {
+    acc[name] = `${VIEW_PATH}selectUser/selectUser.js`;
+  } else {
+    // 기본적으로 게임 폴더 내 파일로 처리
+    acc[name] = `${GAME_PATH}${name}/${name}.js`
+  }
   return acc;
 }, {});
 

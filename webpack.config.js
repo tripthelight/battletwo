@@ -236,6 +236,7 @@ const server = new webpackDevServer(
     historyApiFallback: {
       rewrites: [
         { from: /^\/selectGame$/, to: '/views/selectGame.html' },
+        { from: /^\/selectUser$/, to: '/views/selectUser.html' },
         { from: /^\/game\/taptap$/, to: '/views/game/taptap.html' },
         { from: /^\/game\/indianPocker$/, to: '/views/game/indianPocker.html' },
         { from: /^\/game\/blackAndWhite1$/, to: '/views/game/blackAndWhite1.html' },

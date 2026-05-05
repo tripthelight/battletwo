@@ -1,4 +1,4 @@
 {
-  "js": ["index", "selectGame"],
-  "html": ["index", "selectGame"]
+  "js": ["index", "selectGame", "selectUser"],
+  "html": ["index", "selectGame", "selectUser"]
 }
