@@ -1,0 +1,9 @@
+오라클 가상화 VirtualBox :
+https://www.oracle.com/kr/virtualization/virtualbox/
+
+Rocky Linux 8.8 리눅스 마스터 자격증 시험 버전 :
+https://dl.rockylinux.org/vault/rocky/8.8/isos/x86_64/
+
+강좌 :
+https://www.youtube.com/watch?v=OnqstZWslAg - 3-Way Hand Shake
+https://www.youtube.com/watch?v=TxOvygC0Zew - IPv4
