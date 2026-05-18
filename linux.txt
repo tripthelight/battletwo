@@ -7,3 +7,10 @@ https://dl.rockylinux.org/vault/rocky/8.8/isos/x86_64/
 강좌 :
 https://www.youtube.com/watch?v=OnqstZWslAg - 3-Way Hand Shake
 https://www.youtube.com/watch?v=TxOvygC0Zew - IPv4
+https://www.youtube.com/watch?v=Dk-9QMPC-qg - 2급 2차 문제풀이
+
+
+모르는 거 :
+게이트웨이
+파티션
+마운트
