@@ -10,6 +10,7 @@ https://www.youtube.com/watch?v=TxOvygC0Zew - IPv4
 https://www.youtube.com/watch?v=Dk-9QMPC-qg - 2급 2차 문제풀이
 https://www.youtube.com/watch?v=I3z2y4VRH5U - 파티션
 https://www.youtube.com/watch?v=hedMvDkLPNI - 파티션
+https://www.youtube.com/watch?v=eEQ5OFsmIfw&list=PLSxm-MRGlRApBk2lVn11lxqxI7N9bXwoF&index=2 - 리눅스 기본 명령어
 
 
 모르는 거 :
