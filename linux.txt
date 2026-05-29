@@ -11,6 +11,8 @@ https://www.youtube.com/watch?v=Dk-9QMPC-qg - 2급 2차 문제풀이
 https://www.youtube.com/watch?v=I3z2y4VRH5U - 파티션
 https://www.youtube.com/watch?v=hedMvDkLPNI - 파티션
 https://www.youtube.com/watch?v=3Q4RbChIgLI&list=PLSxm-MRGlRApBk2lVn11lxqxI7N9bXwoF&index=25 - 리눅스 기본 명령어
+https://www.youtube.com/watch?v=Hq1IGX4TRPg&list=PLBrGAFAIyf5pIIFQv_U1dG36L5rylTvbx - 시스템 프로그래밍
+
 
 
 모르는 거 :
