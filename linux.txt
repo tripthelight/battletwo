@@ -13,7 +13,7 @@ https://www.youtube.com/watch?v=hedMvDkLPNI - 파티션
 https://www.youtube.com/watch?v=3Q4RbChIgLI&list=PLSxm-MRGlRApBk2lVn11lxqxI7N9bXwoF&index=25 - 리눅스 기본 명령어
 https://www.youtube.com/watch?v=prcFDhhxHt8&list=PLBrGAFAIyf5pIIFQv_U1dG36L5rylTvbx&index=8 - 시스템 프로그래밍
 
-https://www.youtube.com/watch?v=e33GMBfvKxI&list=PLemnSqHJWv90Kc5lzjfJwpNoYc7Oyflja&index=9 - 리눅스마스터 2급 기출원스톱
+https://www.youtube.com/watch?v=tCvU84LytVE&list=PLemnSqHJWv90Kc5lzjfJwpNoYc7Oyflja&index=12 - 리눅스마스터 2급 기출원스톱
 
 
 
