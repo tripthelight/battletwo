@@ -1,0 +1,13 @@
+.git
+.gitignore
+
+.env
+
+node_modules
+dist
+
+certs
+**/certs
+
+npm-debug.log*
+.DS_Store
