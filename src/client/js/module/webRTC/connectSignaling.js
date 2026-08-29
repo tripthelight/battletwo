@@ -7,10 +7,18 @@ import encryptionStore from '@/client/store/encryptionStore';
  * ———————————————————————————————————————————————————————————————————
  * COMMON VARIABLE
  */
-const ICE_SERVERS = [
-  // 공개 STUN 예시(실서비스는 TURN 필요)
-  { urls: 'stun:stun.l.google.com:19302' },
-];
+const STUN_ICE_SERVER = {
+  urls: 'stun:stun.l.google.com:19302',
+};
+const TURN_CREDENTIAL_TIMEOUT_MS = 5000;
+const TURN_CREDENTIAL_REFRESH_MARGIN_SECONDS = 60;
+const TURN_CREDENTIAL_CACHE = {
+  iceServer: null,
+  expiresAt: 0,
+  pendingPromise: null,
+};
+let PEER_CONNECTION_START_PROMISE = null;
+
 const REJOIN_GRACE_MS = 3000; // 3초 유예: 새로고침 감지 윈도우
 const T = (() => ![] + [] ? !![] : ![])(); // true 난독화
 const F = (() => ![] + [] ? ![] : !![])(); // false 난독화
@@ -56,6 +64,175 @@ const createChars = (startChar) => {
   const startCode = startChar.charCodeAt(0);
   return Array.from({ length: 13 }, (_, i) => String.fromCharCode(startCode + i * 2));
 };
+
+function getSignalingUrl() {
+  return `${process.env.SOCKET_HOST}:${process.env.RTC_PORT}`;
+}
+
+function getTurnCredentialUrl() {
+  const signalingUrl = new URL(getSignalingUrl());
+
+  if (signalingUrl.protocol === 'wss:') {
+    signalingUrl.protocol = 'https:';
+  } else if (signalingUrl.protocol === 'ws:') {
+    signalingUrl.protocol = 'http:';
+  } else {
+    throw new Error(`Unsupported signaling protocol: ${signalingUrl.protocol}`);
+  }
+
+  signalingUrl.pathname = '/turn-credentials';
+  signalingUrl.search = '';
+  signalingUrl.hash = '';
+
+  return signalingUrl.toString();
+}
+
+function isValidTurnIceServer(iceServer) {
+  if (!iceServer || typeof iceServer !== 'object') return F;
+
+  const urls = Array.isArray(iceServer.urls)
+    ? iceServer.urls
+    : [iceServer.urls];
+
+  if (
+    urls.length === 0 ||
+    urls.some(
+      (url) =>
+        typeof url !== 'string' ||
+        !/^turns?:/i.test(url),
+    )
+  ) {
+    return F;
+  }
+
+  return (
+    typeof iceServer.username === 'string' &&
+    iceServer.username.length > 0 &&
+    typeof iceServer.credential === 'string' &&
+    iceServer.credential.length > 0
+  );
+}
+
+async function requestTurnIceServer() {
+  const now = Math.floor(Date.now() / 1000);
+
+  if (
+    TURN_CREDENTIAL_CACHE.iceServer &&
+    TURN_CREDENTIAL_CACHE.expiresAt >
+      now + TURN_CREDENTIAL_REFRESH_MARGIN_SECONDS
+  ) {
+    return TURN_CREDENTIAL_CACHE.iceServer;
+  }
+
+  if (TURN_CREDENTIAL_CACHE.pendingPromise) {
+    return TURN_CREDENTIAL_CACHE.pendingPromise;
+  }
+
+  const requestPromise = (async () => {
+    const controller = new AbortController();
+
+    const timeoutId = setTimeout(
+      () => {
+        controller.abort();
+      },
+      TURN_CREDENTIAL_TIMEOUT_MS,
+    );
+
+    try {
+      const response = await fetch(
+        getTurnCredentialUrl(),
+        {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+          },
+          cache: 'no-store',
+          credentials: 'omit',
+          signal: controller.signal,
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          `TURN credential HTTP ${response.status}`,
+        );
+      }
+
+      const data = await response.json();
+      const receivedAt = Math.floor(Date.now() / 1000);
+
+      if (
+        !isValidTurnIceServer(data?.iceServer) ||
+        !Number.isInteger(data?.expiresAt) ||
+        data.expiresAt <= receivedAt
+      ) {
+        throw new Error('Invalid TURN credential response');
+      }
+
+      const iceServer = {
+        urls: data.iceServer.urls,
+        username: data.iceServer.username,
+        credential: data.iceServer.credential,
+      };
+
+      TURN_CREDENTIAL_CACHE.iceServer = iceServer;
+      TURN_CREDENTIAL_CACHE.expiresAt = data.expiresAt;
+
+      return iceServer;
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  })();
+
+  TURN_CREDENTIAL_CACHE.pendingPromise = requestPromise;
+
+  try {
+    return await requestPromise;
+  } finally {
+    if (
+      TURN_CREDENTIAL_CACHE.pendingPromise === requestPromise
+    ) {
+      TURN_CREDENTIAL_CACHE.pendingPromise = null;
+    }
+  }
+}
+
+async function getIceServers() {
+  try {
+    const turnIceServer = await requestTurnIceServer();
+
+    return [
+      STUN_ICE_SERVER,
+      turnIceServer,
+    ];
+  } catch (err) {
+    const now = Math.floor(Date.now() / 1000);
+
+    if (
+      TURN_CREDENTIAL_CACHE.iceServer &&
+      TURN_CREDENTIAL_CACHE.expiresAt > now
+    ) {
+      console.warn(
+        'TURN credential refresh failed. Reusing unexpired credential.',
+        err,
+      );
+
+      return [
+        STUN_ICE_SERVER,
+        TURN_CREDENTIAL_CACHE.iceServer,
+      ];
+    }
+
+    console.warn(
+      'TURN credential fetch failed. Falling back to STUN only.',
+      err,
+    );
+
+    return [
+      STUN_ICE_SERVER,
+    ];
+  }
+}
 
 export const KEY = {
   puk: null,
@@ -462,64 +639,83 @@ function cleanupPeerConnection(logIt = T) {
 
   if (logIt) log('pc clean up');
 }
+
 async function startPeerConnection() {
-  cleanupPeerConnection(F);
-
-  const pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
-  STATE.pc = pc;
-
-  STATE.makingOffer = F;
-  STATE.ignoreOffer = F;
-  STATE.isSettingRemoteAnswerPending = F;
-
-  READY.myHelloSent = F;
-  READY.peerHelloSeen = F;
-  READY.connectedAt = 0;
-  READY.waiter = null;
-
-  if (STATE.role === 'impolite') {
-    STATE.dc = pc.createDataChannel(gameId());
-    attachDataChannelHandlers(STATE.dc, 'active-dc');
-  } else {
-    STATE.dc = null;
+  if (PEER_CONNECTION_START_PROMISE) {
+    return PEER_CONNECTION_START_PROMISE;
   }
 
-  pc.onnegotiationneeded = async () => {
-    if (STATE.role !== 'impolite') return;
-    try {
-      STATE.makingOffer = T;
-      await pc.setLocalDescription(await pc.createOffer());
-      sendSignal(STATE.partnerId, { sdp: pc.localDescription });
-    } catch (err) {
-      console.error('onnegotiationneeded error : ', err);
-    } finally {
-      STATE.makingOffer = F;
-    }
-  };
-  pc.ondatachannel = (ev) => {
-    STATE.dc = ev.channel;
-    attachDataChannelHandlers(STATE.dc, 'passive-dc');
-  };
-  pc.onicecandidate = (ev) => {
-    if (ev.candidate) {
-      sendSignal(STATE.partnerId, { candidate: ev.candidate });
-    } else {
-      sendSignal(STATE.partnerId, { candidate: null });
-    }
-  };
-  pc.onconnectionstatechange = () => {
-    log('connectionState', pc.connectionState);
-  };
-  pc.oniceconnectionstatechange = () => {
-    log('iceConnectionState', pc.iceConnectionState);
+  PEER_CONNECTION_START_PROMISE = (async () => {
+    cleanupPeerConnection(F);
 
-    if (pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'failed') {
-      if (STATE.role === 'impolite') {
-        debounceIceRestart();
-      }
+    const iceServers = await getIceServers();
+
+    const pc = new RTCPeerConnection({
+      iceServers,
+    });
+
+    STATE.pc = pc;
+
+    STATE.makingOffer = F;
+    STATE.ignoreOffer = F;
+    STATE.isSettingRemoteAnswerPending = F;
+
+    READY.myHelloSent = F;
+    READY.peerHelloSeen = F;
+    READY.connectedAt = 0;
+    READY.waiter = null;
+
+    if (STATE.role === 'impolite') {
+      STATE.dc = pc.createDataChannel(gameId());
+      attachDataChannelHandlers(STATE.dc, 'active-dc');
+    } else {
+      STATE.dc = null;
     }
-  };
+
+    pc.onnegotiationneeded = async () => {
+      if (STATE.role !== 'impolite') return;
+      try {
+        STATE.makingOffer = T;
+        await pc.setLocalDescription(await pc.createOffer());
+        sendSignal(STATE.partnerId, { sdp: pc.localDescription });
+      } catch (err) {
+        console.error('onnegotiationneeded error : ', err);
+      } finally {
+        STATE.makingOffer = F;
+      }
+    };
+    pc.ondatachannel = (ev) => {
+      STATE.dc = ev.channel;
+      attachDataChannelHandlers(STATE.dc, 'passive-dc');
+    };
+    pc.onicecandidate = (ev) => {
+      if (ev.candidate) {
+        sendSignal(STATE.partnerId, { candidate: ev.candidate });
+      } else {
+        sendSignal(STATE.partnerId, { candidate: null });
+      }
+    };
+    pc.onconnectionstatechange = () => {
+      log('connectionState', pc.connectionState);
+    };
+    pc.oniceconnectionstatechange = () => {
+      log('iceConnectionState', pc.iceConnectionState);
+
+      if (pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'failed') {
+        if (STATE.role === 'impolite') {
+          debounceIceRestart();
+        }
+      }
+    };
+  })();
+
+  try {
+    await PEER_CONNECTION_START_PROMISE;
+  } finally {
+    PEER_CONNECTION_START_PROMISE = null;
+  }
 }
+
 async function handleRemoveSignal(msg) {
   const pc = STATE.pc;
   if (!pc) return;
@@ -571,7 +767,7 @@ export function connectSignaling(connected = F, fns) {
   if (STATE.ws && STATE.ws.readyState === WebSocket.OPEN) return;
 
   // ----- WebSocket signaling -----
-  const WS_URL = `${process.env.SOCKET_HOST}:${process.env.RTC_PORT}`;
+  const WS_URL = getSignalingUrl();
   const ws = new WebSocket(WS_URL);
   STATE.ws = ws;
 
