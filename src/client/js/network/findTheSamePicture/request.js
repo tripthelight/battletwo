@@ -1,18 +1,19 @@
-import { connObj } from '@/client/js/webRTC/rtcConn';
+import { sendGame } from '@/client/js/module/webRTC/connectSignaling';
 
 export function request(k, v) {
-  const dataChannel = connObj.dataChannel;
-
-  if (!dataChannel || (dataChannel && dataChannel.readyState !== 'open')) return;
   switch (k) {
     case 'bodyClick':
-      dataChannel.send(
-        JSON.stringify({
+      sendGame(
+        {
           type: 'enemyBodyClick',
           count: v,
-        }),
+        },
+        {
+          reliable: true,
+        },
       );
       break;
+
     default:
       break;
   }

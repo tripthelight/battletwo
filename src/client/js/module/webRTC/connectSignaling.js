@@ -245,6 +245,10 @@ const FNS = {
   startGame: null,
 };
 
+const BOOTSTRAP = {
+  requiresStorage: T,
+};
+
 const STATE = {
   ws: null,
   roomId: null,
@@ -762,6 +766,7 @@ export function connectSignaling(connected = F, fns) {
     FNS.handleEnvelope = fns.handleEnvelope;
     FNS.startGame = fns.startGame;
     VARIABLE.gameName = fns.gameName;
+    BOOTSTRAP.requiresStorage = fns.requiresStorage !== F;
   }
 
   if (STATE.ws && STATE.ws.readyState === WebSocket.OPEN) return;
@@ -861,6 +866,13 @@ export function connectSignaling(connected = F, fns) {
             }
 
             console.log('최초 할당 role : ', STATE.initRole);
+
+            // storage bootstrap이 필요 없는 게임은
+            // DataChannel 연결 완료 후 바로 게임을 시작한다.
+            if (!BOOTSTRAP.requiresStorage) {
+              await FNS.startGame();
+              return;
+            }
 
             // 여기서부터 "진짜 연결 완료" 로 가정하고 게임 시작/동기화
             const compair = encryptionStore.getState().encryptionState.compair;
