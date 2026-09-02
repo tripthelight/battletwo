@@ -1,7 +1,6 @@
 import { getDeviceType } from '@/client/js/module/isPC';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import insertStorageDate from '@/client/js/functions/insertStorageDate';
-import encryptionStore from '@/client/store/encryptionStore';
 
 /**
  * ———————————————————————————————————————————————————————————————————
@@ -19,7 +18,7 @@ const TURN_CREDENTIAL_CACHE = {
 };
 let PEER_CONNECTION_START_PROMISE = null;
 
-const REJOIN_GRACE_MS = 3000; // 3초 유예: 새로고침 감지 윈도우
+const REJOIN_GRACE_MS = 12000; // 실패 판정 유예. 재연결 시도 자체는 즉시 시작한다.
 const T = (() => ![] + [] ? !![] : ![])(); // true 난독화
 const F = (() => ![] + [] ? ![] : !![])(); // false 난독화
 export const VARIABLE = {
@@ -57,13 +56,10 @@ storageMethod("s", "REMOVE_ITEM", "reload");
 function log(...args) {
   console.log('[CLIENT]', ...args);
 }
+
 function gameId() {
   return (crypto.randomUUID && crypto.randomUUID()) || Math.random().toString(36).slice(2) + Date.now().toString(36);
 }
-const createChars = (startChar) => {
-  const startCode = startChar.charCodeAt(0);
-  return Array.from({ length: 13 }, (_, i) => String.fromCharCode(startCode + i * 2));
-};
 
 function getSignalingUrl() {
   return `${process.env.SOCKET_HOST}:${process.env.RTC_PORT}`;
@@ -234,6 +230,66 @@ async function getIceServers() {
   }
 }
 
+function getImmediateIceServers() {
+  const now = Math.floor(Date.now() / 1000);
+
+  if (
+    TURN_CREDENTIAL_CACHE.iceServer &&
+    TURN_CREDENTIAL_CACHE.expiresAt > now
+  ) {
+    return [
+      STUN_ICE_SERVER,
+      TURN_CREDENTIAL_CACHE.iceServer,
+    ];
+  }
+
+  // 새로고침 복구 경로에서는 TURN credential HTTP 응답을 기다리지 않고
+  // RTCPeerConnection을 즉시 만든다. TURN은 아래 background refresh에서 추가한다.
+  return [
+    STUN_ICE_SERVER,
+  ];
+}
+
+async function refreshPeerIceServers(pc) {
+  try {
+    const iceServers = await getIceServers();
+
+    if (
+      STATE.pc !== pc ||
+      pc.signalingState === 'closed'
+    ) {
+      return;
+    }
+
+    pc.setConfiguration({
+      iceServers,
+    });
+
+    // 최초 STUN 협상이 아직 연결되지 않았다면 TURN 후보를 반영하도록
+    // 짧은 시간 뒤 즉시 ICE restart를 시도한다.
+    setTimeout(
+      () => {
+        if (
+          STATE.pc === pc &&
+          !isBrowserConnected() &&
+          STATE.role === 'impolite' &&
+          !STALE_PC_REPLACE_RUNNING &&
+          !STALE_PC_REPLACE_TIMER &&
+          pc.signalingState !== 'closed'
+        ) {
+          startFastRejoin();
+        }
+      },
+      250,
+    );
+  } catch (error) {
+    console.warn(
+      'ICE server background refresh failed.',
+      error,
+    );
+  }
+}
+
 export const KEY = {
   puk: null,
   prk: null,
@@ -247,6 +303,11 @@ const FNS = {
 
 const BOOTSTRAP = {
   requiresStorage: T,
+  storageRequested: F,
+  storageReady: F,
+  gameStarting: F,
+  gameStarted: F,
+  pendingSignals: [],
 };
 
 const STATE = {
@@ -263,6 +324,8 @@ const STATE = {
   makingOffer: F,
   ignoreOffer: F,
   isSettingRemoteAnswerPending: F,
+  resumeRejected: F,
+  peerConnectionStale: F,
 };
 function safeWsSend(obj) {
   if (STATE.ws && STATE.ws.readyState === WebSocket.OPEN) {
@@ -292,32 +355,158 @@ function isBrowserConnected() {
 function isDcOpen() {
   return STATE.dc && STATE.dc.readyState === 'open';
 }
+function isPeerReady() {
+  return (
+    isBrowserConnected() &&
+    isDcOpen() &&
+    READY.myHelloSent &&
+    READY.peerHelloSeen
+  );
+}
+
 // 연결 완료를 기다리는 Promise (타임아웃 포함)
+// 타임아웃은 진단용일 뿐 bootstrap 자체를 중단시키지 않는다.
 function waitConnected(timeoutMs = 5000) {
-  // 이미 만족했으면 즉시 resolve
-  if (isBrowserConnected() && isDcOpen() && READY.myHelloSent && READY.peerHelloSeen) {
+  if (isPeerReady()) {
     return Promise.resolve(T);
   }
+
   return new Promise((resolve) => {
-    READY.waiter = resolve;
-    // 타임아웃 안전장치
+    const waiter = (value) => {
+      resolve(value);
+    };
+
+    READY.waiter = waiter;
+
     setTimeout(() => {
-      if (READY.waiter) {
+      if (READY.waiter === waiter) {
         READY.waiter = null;
-        resolve(F);
       }
+
+      resolve(F);
     }, timeoutMs);
   });
 }
+
+async function maybeStartGameWhenReady() {
+  if (
+    BOOTSTRAP.gameStarted ||
+    BOOTSTRAP.gameStarting ||
+    !isPeerReady()
+  ) {
+    return;
+  }
+
+  if (
+    BOOTSTRAP.requiresStorage &&
+    !BOOTSTRAP.storageReady
+  ) {
+    return;
+  }
+
+  if (typeof FNS.startGame !== 'function') {
+    return;
+  }
+
+  BOOTSTRAP.gameStarting = T;
+
+  try {
+    console.log('최초 할당 role : ', STATE.initRole);
+    await FNS.startGame();
+    BOOTSTRAP.gameStarted = T;
+  } catch (error) {
+    console.error('Game bootstrap failed.', error);
+  } finally {
+    BOOTSTRAP.gameStarting = F;
+  }
+}
+
+function watchPeerReady() {
+  waitConnected(REJOIN_GRACE_MS).then((ok) => {
+    if (!ok) {
+      console.warn(
+        'Peer not fully ready in time (will keep recovering).',
+      );
+      return;
+    }
+
+    void maybeStartGameWhenReady();
+  });
+}
+
+function requestBootstrapStorage() {
+  if (
+    !BOOTSTRAP.requiresStorage ||
+    BOOTSTRAP.storageReady ||
+    BOOTSTRAP.storageRequested ||
+    !STATE.roomId ||
+    !STATE.peerId ||
+    (
+      STATE.initRole !== 'impolite' &&
+      STATE.initRole !== 'polite'
+    ) ||
+    !VARIABLE.gameName ||
+    !STATE.ws ||
+    STATE.ws.readyState !== WebSocket.OPEN
+  ) {
+    return;
+  }
+
+  BOOTSTRAP.storageRequested = T;
+
+  safeWsSend({
+    type: 'requestStorage',
+    gameName: VARIABLE.gameName,
+    initRole: STATE.initRole,
+  });
+}
+
+async function ensurePeerConnectionStarted() {
+  if (!STATE.pc) {
+    await startPeerConnection();
+  }
+
+  watchPeerReady();
+}
+
+async function flushPendingSignals() {
+  if (
+    BOOTSTRAP.requiresStorage &&
+    !BOOTSTRAP.storageReady
+  ) {
+    return;
+  }
+
+  while (BOOTSTRAP.pendingSignals.length > 0) {
+    const msg = BOOTSTRAP.pendingSignals.shift();
+
+    if (!STATE.pc) {
+      await startPeerConnection();
+    }
+
+    await handleRemoveSignal(msg);
+  }
+}
+
 export function maybeResolveReady() {
-  if (!READY.waiter) return;
-  if (isBrowserConnected() && isDcOpen() && READY.myHelloSent && READY.peerHelloSeen) {
-    READY.connectedAt = Date.now();
+  if (!isPeerReady()) return;
+
+  const firstReady =
+    READY.connectedAt === 0;
+
+  READY.connectedAt = Date.now();
+
+  if (READY.waiter) {
     const r = READY.waiter;
     READY.waiter = null;
     r(T);
+  }
+
+  if (firstReady) {
     log('✅ Peer READY: both HELLO exchanged & DC open.');
   }
+
+  void maybeStartGameWhenReady();
 }
 
 /**
@@ -343,29 +532,274 @@ function scheduleWsReconnect() {
  * ICE RESTART
  */
 let ICE_RESTART_TIMER = null;
-const ICE_RESTART_DEBOUNCE = 1200;
+let FAST_REJOIN_TIMER = null;
+let FAST_REJOIN_INDEX = 0;
+let STALE_PC_REPLACE_TIMER = null;
+let STALE_PC_REPLACE_INDEX = 0;
+let STALE_PC_REPLACE_RUNNING = F;
+
+const ICE_RESTART_DEBOUNCE = 100;
+const STALE_PC_REPLACE_DELAYS = [
+  0,
+  300,
+  700,
+  1500,
+];
+const FAST_REJOIN_DELAYS = [
+  0,
+  200,
+  500,
+  1000,
+  2000,
+];
+
+function clearFastRejoin() {
+  if (FAST_REJOIN_TIMER) {
+    clearTimeout(FAST_REJOIN_TIMER);
+    FAST_REJOIN_TIMER = null;
+  }
+
+  FAST_REJOIN_INDEX = 0;
+}
+
+function clearStalePeerReplacement() {
+  if (STALE_PC_REPLACE_TIMER) {
+    clearTimeout(STALE_PC_REPLACE_TIMER);
+    STALE_PC_REPLACE_TIMER = null;
+  }
+
+  STALE_PC_REPLACE_INDEX = 0;
+}
+
+async function runStalePeerReplacementAttempt() {
+  if (
+    STATE.role !== 'impolite' ||
+    STATE.ws?.readyState !== WebSocket.OPEN ||
+    !STATE.partnerId ||
+    isDcOpen()
+  ) {
+    clearStalePeerReplacement();
+    return;
+  }
+
+  if (STALE_PC_REPLACE_RUNNING) {
+    return;
+  }
+
+  STALE_PC_REPLACE_RUNNING = T;
+
+  try {
+    // 상대 polite Peer가 reload되면 기존 ICE/DTLS 세션을 재사용하지 않는다.
+    // old RTCPeerConnection을 통째로 버리고 새 active DataChannel을 가진
+    // 새 RTCPeerConnection으로 즉시 offer를 만든다.
+    await startPeerConnection();
+  } catch (error) {
+    console.error(
+      'Stale PeerConnection replacement failed:',
+      error,
+    );
+  } finally {
+    STALE_PC_REPLACE_RUNNING = F;
+  }
+
+  if (
+    STATE.ws?.readyState !== WebSocket.OPEN ||
+    !STATE.partnerId ||
+    isDcOpen()
+  ) {
+    clearStalePeerReplacement();
+    return;
+  }
+
+  STALE_PC_REPLACE_INDEX += 1;
+
+  if (
+    STALE_PC_REPLACE_INDEX >=
+    STALE_PC_REPLACE_DELAYS.length
+  ) {
+    STALE_PC_REPLACE_TIMER = null;
+    return;
+  }
+
+  STALE_PC_REPLACE_TIMER =
+    setTimeout(
+      () => {
+        STALE_PC_REPLACE_TIMER = null;
+        void runStalePeerReplacementAttempt();
+      },
+      STALE_PC_REPLACE_DELAYS[
+        STALE_PC_REPLACE_INDEX
+      ],
+    );
+}
+
+function startStalePeerReplacement() {
+  clearStalePeerReplacement();
+
+  if (
+    STATE.role !== 'impolite' ||
+    STATE.ws?.readyState !== WebSocket.OPEN ||
+    !STATE.partnerId ||
+    isDcOpen()
+  ) {
+    return;
+  }
+
+  STALE_PC_REPLACE_INDEX = 0;
+  void runStalePeerReplacementAttempt();
+}
+
+function ensureActiveDataChannel() {
+  const pc = STATE.pc;
+
+  if (
+    !pc ||
+    STATE.role !== 'impolite' ||
+    pc.signalingState === 'closed'
+  ) {
+    return;
+  }
+
+  if (
+    STATE.dc &&
+    STATE.dc.readyState !== 'closed'
+  ) {
+    return;
+  }
+
+  STATE.dc = pc.createDataChannel(
+    gameId(),
+  );
+
+  attachDataChannelHandlers(
+    STATE.dc,
+    'active-dc',
+  );
+}
 
 async function doIceRestart() {
   const pc = STATE.pc;
-  if (!pc) return;
-  if (STATE.role !== 'impolite') return; // 단일 오퍼 생성자 유지
+
+  if (
+    !pc ||
+    STATE.role !== 'impolite' ||
+    pc.signalingState === 'closed' ||
+    STATE.makingOffer ||
+    pc.signalingState !== 'stable'
+  ) {
+    return F;
+  }
 
   log('ICE Restart: creating new offer with iceRestart:true');
+
   try {
     STATE.makingOffer = T;
-    const offer = await pc.createOffer({ iceRestart: T });
-    await pc.setLocalDescription(offer);
-    sendSignal(STATE.partnerId, { sdp: pc.localDescription });
+
+    const offer =
+      await pc.createOffer({
+        iceRestart: T,
+      });
+
+    await pc.setLocalDescription(
+      offer,
+    );
+
+    sendSignal(
+      STATE.partnerId,
+      {
+        sdp:
+          pc.localDescription,
+      },
+    );
+
+    return T;
   } finally {
     STATE.makingOffer = F;
   }
 }
+
 function debounceIceRestart() {
-  if (ICE_RESTART_TIMER) clearTimeout(ICE_RESTART_TIMER);
-  ICE_RESTART_TIMER = setTimeout(() => {
-    ICE_RESTART_TIMER = null;
-    doIceRestart().catch((err) => console.error('ICE restart failed:', err));
-  }, ICE_RESTART_DEBOUNCE);
+  if (ICE_RESTART_TIMER) {
+    clearTimeout(
+      ICE_RESTART_TIMER,
+    );
+  }
+
+  ICE_RESTART_TIMER =
+    setTimeout(
+      () => {
+        ICE_RESTART_TIMER = null;
+
+        doIceRestart()
+          .catch(
+            (err) =>
+              console.error(
+                'ICE restart failed:',
+                err,
+              ),
+          );
+      },
+      ICE_RESTART_DEBOUNCE,
+    );
+}
+
+function runFastRejoinAttempt() {
+  if (
+    STATE.role !== 'impolite' ||
+    !STATE.pc ||
+    STATE.pc.signalingState === 'closed' ||
+    isDcOpen()
+  ) {
+    clearFastRejoin();
+    return;
+  }
+
+  ensureActiveDataChannel();
+
+  doIceRestart()
+    .catch(
+      (error) => {
+        console.error(
+          'Fast rejoin ICE restart failed:',
+          error,
+        );
+      },
+    );
+
+  FAST_REJOIN_INDEX += 1;
+
+  if (
+    FAST_REJOIN_INDEX >=
+    FAST_REJOIN_DELAYS.length
+  ) {
+    FAST_REJOIN_TIMER = null;
+    return;
+  }
+
+  FAST_REJOIN_TIMER =
+    setTimeout(
+      runFastRejoinAttempt,
+      FAST_REJOIN_DELAYS[
+        FAST_REJOIN_INDEX
+      ],
+    );
+}
+
+function startFastRejoin() {
+  clearFastRejoin();
+
+  if (
+    STATE.role !== 'impolite' ||
+    !STATE.pc ||
+    STATE.pc.signalingState === 'closed'
+  ) {
+    return;
+  }
+
+  FAST_REJOIN_INDEX = 0;
+
+  // 첫 재협상은 기다리지 않고 같은 tick에서 시작한다.
+  runFastRejoinAttempt();
 }
 
 /**
@@ -556,13 +990,10 @@ function reloadConnectCheck() {
  */
 function leavePage() {
   if (STATE.partnerId && STATE.dc) {
-    // 상대 PEER와 매칭이 되었을 떄만 새로고침 storage 저장
+    // 상대 PEER와 매칭이 되었을 때만 새로고침 상태를 저장한다.
+    // resumeToken은 room-assigned 수신 시 sessionStorage에 저장되어
+    // 브라우저 새로고침 후에도 그대로 유지된다.
     storageMethod('s', 'SET_ITEM', "reload", T);
-  }
-  if (STATE.roomId && STATE.initRole) {
-    const pool = STATE.initRole === 'impolite' ? createChars('a') : createChars('b');
-    const randomChar = pool[Math.floor(Math.random() * pool.length)];
-    storageMethod('s', 'SET_ITEM', "roomId", `${STATE.roomId}${randomChar}`);
   }
 };
 if (getDeviceType() === 'PC') {
@@ -578,6 +1009,10 @@ if (getDeviceType() === 'PC') {
 function attachDataChannelHandlers(dc, tag) {
   dc.onopen = () => {
     log(`DataChannel[${tag}] open`);
+    STATE.peerConnectionStale = F;
+    clearFastRejoin();
+    clearStalePeerReplacement();
+
     if (STATE.reloadTimer) {
       clearTimeout(STATE.reloadTimer);
       STATE.reloadTimer = null;
@@ -607,16 +1042,42 @@ function attachDataChannelHandlers(dc, tag) {
     // stopPingLoop();
     stopResendLoop();
 
-    if (STATE.role === 'impolite' && STATE.pc?.connectionState !== 'closed') {
-      debounceIceRestart();
+    if (STATE.dc === dc) {
+      STATE.dc = null;
+      STATE.peerConnectionStale = T;
+    }
+
+    if (
+      STATE.role === 'impolite' &&
+      STATE.pc?.connectionState !== 'closed'
+    ) {
+      // 상대 polite Peer가 reload된 경우 old RTCPeerConnection 자체가 stale이다.
+      // ICE restart로 old PC를 재사용하지 말고 새 PC + active DC를 즉시 만든다.
+      startStalePeerReplacement();
     }
 
     reloadConnectCheck();
   };
 }
 function cleanupPeerConnection(logIt = T) {
+  clearFastRejoin();
+
+  if (STALE_PC_REPLACE_TIMER) {
+    clearTimeout(STALE_PC_REPLACE_TIMER);
+    STALE_PC_REPLACE_TIMER = null;
+  }
+
+  if (ICE_RESTART_TIMER) {
+    clearTimeout(
+      ICE_RESTART_TIMER,
+    );
+    ICE_RESTART_TIMER = null;
+  }
+
   if (STATE.dc) {
     try {
+      // 의도적인 PC cleanup은 remote reload 감지로 취급하면 안 된다.
+      STATE.dc.onclose = null;
       STATE.dc.close();
     } catch {}
     STATE.dc = null;
@@ -652,13 +1113,19 @@ async function startPeerConnection() {
   PEER_CONNECTION_START_PROMISE = (async () => {
     cleanupPeerConnection(F);
 
-    const iceServers = await getIceServers();
-
     const pc = new RTCPeerConnection({
-      iceServers,
+      iceServers:
+        getImmediateIceServers(),
     });
 
     STATE.pc = pc;
+    STATE.peerConnectionStale = F;
+
+    // TURN credential fetch가 느려도 새로고침 재연결을 막지 않는다.
+    // STUN으로 즉시 협상을 시작하고, TURN 구성은 background로 갱신한다.
+    void refreshPeerIceServers(
+      pc,
+    );
 
     STATE.makingOffer = F;
     STATE.ignoreOffer = F;
@@ -677,7 +1144,14 @@ async function startPeerConnection() {
     }
 
     pc.onnegotiationneeded = async () => {
-      if (STATE.role !== 'impolite') return;
+      if (
+        STATE.role !== 'impolite' ||
+        STATE.makingOffer ||
+        pc.signalingState !== 'stable'
+      ) {
+        return;
+      }
+
       try {
         STATE.makingOffer = T;
         await pc.setLocalDescription(await pc.createOffer());
@@ -705,8 +1179,28 @@ async function startPeerConnection() {
     pc.oniceconnectionstatechange = () => {
       log('iceConnectionState', pc.iceConnectionState);
 
-      if (pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'failed') {
-        if (STATE.role === 'impolite') {
+      if (
+        pc.iceConnectionState ===
+          'failed'
+      ) {
+        if (
+          STATE.role ===
+            'impolite' &&
+          !STALE_PC_REPLACE_RUNNING &&
+          !STALE_PC_REPLACE_TIMER
+        ) {
+          startFastRejoin();
+        }
+      } else if (
+        pc.iceConnectionState ===
+          'disconnected'
+      ) {
+        if (
+          STATE.role ===
+            'impolite' &&
+          !STALE_PC_REPLACE_RUNNING &&
+          !STALE_PC_REPLACE_TIMER
+        ) {
           debounceIceRestart();
         }
       }
@@ -721,10 +1215,26 @@ async function startPeerConnection() {
 }
 
 async function handleRemoveSignal(msg) {
-  const pc = STATE.pc;
-  if (!pc) return;
+
   try {
     const data = msg.data;
+
+    // 상대가 새로고침되면 살아남은 polite Peer의 기존 DataChannel은
+    // 먼저 close되지만 RTCPeerConnection 자체는 브라우저 내부에 남아 있다.
+    // 그 old PC에 새 offer를 계속 적용하면 ICE/DTLS 복구가 수 초 지연될 수 있다.
+    // 한 번 정상 연결됐던 DC가 닫힌 뒤 새 offer가 들어온 경우에만
+    // old PC를 폐기하고 새 RTCPeerConnection으로 즉시 교체한다.
+    if (
+      data?.sdp?.type === 'offer' &&
+      STATE.role === 'polite' &&
+      STATE.peerConnectionStale
+    ) {
+      await startPeerConnection();
+    }
+
+    const pc = STATE.pc;
+    if (!pc) return;
+
     if (data?.sdp) {
       const desc = data.sdp;
       const offerCollision = desc.type === 'offer' && (STATE.makingOffer || STATE.isSettingRemoteAnswerPending);
@@ -752,6 +1262,7 @@ async function handleRemoveSignal(msg) {
       }
     }
   } catch (err) {
+    STATE.isSettingRemoteAnswerPending = F;
     console.error('handleRemoveSignal error : ', err);
   }
 }
@@ -784,55 +1295,22 @@ export function connectSignaling(connected = F, fns) {
       WS_RETRY.timer = null;
     }
 
-    // ★ 이전 roomId가 있으면 힌트로 보낸다.
-    const roomHint = () => {
-      const storedRoomId = window.sessionStorage.getItem('roomId');
-      if (!storedRoomId) return null;
+    const resumeToken =
+      window.sessionStorage.getItem('resumeToken');
 
-      const uuidRoomIdPattern =
-        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
-      let baseRoomId = null;
-      let roleMarker = null;
-
-      // 현재 형식: UUID(36) + 최초 role 표시 문자(1)
-      if (
-        storedRoomId.length === 37 &&
-        uuidRoomIdPattern.test(storedRoomId.slice(0, -1))
-      ) {
-        baseRoomId = storedRoomId.slice(0, -1);
-        roleMarker = storedRoomId.at(-1);
-      // 이전 형식: roomId(10) + 최초 role 표시 문자(1)
-      } else if (storedRoomId.length === 11) {
-        baseRoomId = storedRoomId.slice(0, -1);
-        roleMarker = storedRoomId.at(-1);
-      // role 표시 문자가 없던 저장값도 roomHint로는 사용할 수 있다.
-      } else if (
-        storedRoomId.length === 10 ||
-        (storedRoomId.length === 36 && uuidRoomIdPattern.test(storedRoomId))
-      ) {
-        return storedRoomId;
-      } else {
-        return null;
-      }
-
-      const offset =
-        roleMarker.toLowerCase().charCodeAt(0) -
-        'a'.charCodeAt(0);
-
-      if (offset >= 0 && offset < 26) {
-        STATE.initRole =
-          offset % 2 === 0
-            ? 'impolite'
-            : 'polite';
-      }
-
-      return baseRoomId;
-    };
+    // 현재 분산 Signaling Server의 재접속 계약은 roomHint가 아니라
+    // 서버가 발급한 resumeToken이다. 토큰이 있을 때만 해당 필드를 보낸다.
+    // fresh join에서는 resumeToken 속성 자체를 보내지 않아야 한다.
+    if (resumeToken) {
+      safeWsSend({
+        type: 'join',
+        resumeToken,
+      });
+      return;
+    }
 
     safeWsSend({
       type: 'join',
-      roomHint: roomHint(),
     });
   });
   ws.addEventListener('message', async (ev) => {
@@ -852,13 +1330,28 @@ export function connectSignaling(connected = F, fns) {
         STATE.roomId = msg.roomId;
         STATE.peerId = msg.peerId;
         STATE.role = msg.role;
-        // KEY.keypair = msg.keypair;
-        // console.log('KEY.keypair : ', KEY.keypair);
 
-        // ★ 세션에 저장(재접속시 hint로 사용)
-        // if (window.sessionStorage.getItem('roomId') === null) {
-        //   window.sessionStorage.setItem('roomId', STATE.roomId);
-        // }
+        if (STATE.role === 'impolite' || STATE.role === 'polite') {
+          // fresh join과 resume join 모두 서버가 보장한 role을 기준으로 한다.
+          STATE.initRole = STATE.role;
+        }
+
+        if (
+          typeof msg.resumeToken === 'string' &&
+          msg.resumeToken.length > 0
+        ) {
+          // resumeToken 값은 로그로 출력하지 않는다.
+          storageMethod(
+            's',
+            'SET_ITEM',
+            'resumeToken',
+            msg.resumeToken,
+          );
+        }
+
+        // 이전 roomHint 방식의 잔여 데이터는 더 이상 사용하지 않는다.
+        storageMethod('s', 'REMOVE_ITEM', 'roomId');
+
         log(`Assigned room=${STATE.roomId}, me=${STATE.peerId}, role=${STATE.role}`);
         break;
       }
@@ -868,82 +1361,101 @@ export function connectSignaling(connected = F, fns) {
           STATE.role = msg.you.role;
           STATE.partnerId = msg.partner.peerId;
 
-          // ★ 최초 role 복원에 실패했거나 최초 연결이면 현재 role로 복구한다.
+          // room-assigned에서 role을 설정하지만 메시지 순서 경합에 대비해
+          // paired에서도 한 번 더 보정한다.
           if (STATE.initRole !== 'impolite' && STATE.initRole !== 'polite') {
             STATE.initRole = STATE.role;
           }
-
-          // 현재 roomId + 최초 role 형식으로 항상 정규화해 저장한다.
-          if (STATE.initRole === 'impolite' || STATE.initRole === 'polite') {
-            const pool =
-              STATE.initRole === 'impolite'
-                ? createChars('a')
-                : createChars('b');
-            const randomChar =
-              pool[Math.floor(Math.random() * pool.length)];
-
-            window.sessionStorage.setItem(
-              'roomId',
-              `${msg.roomId}${randomChar}`,
-            );
-          }
           log(`Paired! me(${STATE.role}) <-> partner(${msg.partner.peerId}/${msg.partner.role})`);
 
-          await startPeerConnection();
+          if (BOOTSTRAP.requiresStorage) {
+            // storage/keypair를 먼저 확보한 뒤 RTCPeerConnection을 시작한다.
+            // reload 시 DataChannel이 늦게 복구되더라도 KEY.prk가 먼저 준비되어
+            // 게임 메시지가 keypair보다 앞서 도착하는 race를 막는다.
+            requestBootstrapStorage();
 
-          waitConnected(7000).then(async (ok) => {
-            if (!ok) {
-              console.warn('Peer not fully ready in time (will keep recovering).');
-              return;
+            if (BOOTSTRAP.storageReady) {
+              await ensurePeerConnectionStarted();
+              await flushPendingSignals();
             }
 
-            console.log('최초 할당 role : ', STATE.initRole);
+            break;
+          }
 
-            // storage bootstrap이 필요 없는 게임은
-            // DataChannel 연결 완료 후 바로 게임을 시작한다.
-            if (!BOOTSTRAP.requiresStorage) {
-              await FNS.startGame();
-              return;
-            }
-
-            // 여기서부터 "진짜 연결 완료" 로 가정하고 게임 시작/동기화
-            const compair = encryptionStore.getState().encryptionState.compair;
-            // 새로고침 당한 경우, compair 데이터 있으므로 requestStorage 호출 불필요
-            if (compair && compair.constructor === Object && Object.keys(compair).length > 0) return;
-
-            // 처음 진입이거나 새로고침 일 경우 signalinServer에 compair 데이터 호출
-            safeWsSend({
-              type: 'requestStorage',
-              gameName: VARIABLE.gameName,
-              initRole: STATE.initRole,
-            });
-            // await FNS.startGame();
-          });
+          await ensurePeerConnectionStarted();
         }
 
         break;
       }
+      case 'resume-rejected': {
+        STATE.resumeRejected = T;
+        storageMethod('s', 'REMOVE_ITEM', 'resumeToken');
+        storageMethod('s', 'REMOVE_ITEM', 'roomId');
+        console.warn(
+          'Signaling resume rejected.',
+          msg?.reason ?? 'unknown',
+        );
+        break;
+      }
       case 'partner-left': {
         if (msg.roomId !== STATE.roomId) return;
+        storageMethod('s', 'REMOVE_ITEM', 'resumeToken');
+        storageMethod('s', 'REMOVE_ITEM', 'roomId');
         console.log('Partner Lefted...');
         cleanupPeerConnection();
         break;
       }
       case 'signal': {
+        if (
+          BOOTSTRAP.requiresStorage &&
+          !BOOTSTRAP.storageReady
+        ) {
+          // 상대가 storage 응답보다 먼저 offer/candidate를 보낸 경우
+          // keypair 준비 전 DataChannel이 열리지 않도록 signaling만 잠시 보관한다.
+          if (BOOTSTRAP.pendingSignals.length < 256) {
+            BOOTSTRAP.pendingSignals.push(msg);
+          } else {
+            console.warn(
+              'Too many pending signaling messages before storage bootstrap.',
+            );
+          }
+          break;
+        }
+
         if (!STATE.pc) {
           await startPeerConnection();
+          watchPeerReady();
         }
+
         await handleRemoveSignal(msg);
         break;
       }
       case 'responseStorage': {
-        if (msg?.storageData && msg?.keypair) {
+        if (
+          msg?.storageData &&
+          msg?.keypair &&
+          !BOOTSTRAP.storageReady
+        ) {
           KEY.puk = msg.keypair.puk;
           KEY.prk = msg.keypair.prk;
 
           await insertStorageDate(msg.storageData);
-          await FNS.startGame();
+
+          BOOTSTRAP.storageReady = T;
+          BOOTSTRAP.storageRequested = F;
+
+          await ensurePeerConnectionStarted();
+          await flushPendingSignals();
+          await maybeStartGameWhenReady();
         }
+        break;
+      }
+      case 'storage-unavailable': {
+        BOOTSTRAP.storageRequested = F;
+        console.warn(
+          'Signaling storage bootstrap unavailable.',
+          msg?.gameName ?? VARIABLE.gameName,
+        );
         break;
       }
       default: {
@@ -953,7 +1465,19 @@ export function connectSignaling(connected = F, fns) {
   });
   ws.addEventListener('close', (ev) => {
     log('WS closed. Try reconnecting...', ev.code, ev.reason);
+
+    if (
+      BOOTSTRAP.requiresStorage &&
+      !BOOTSTRAP.storageReady
+    ) {
+      BOOTSTRAP.storageRequested = F;
+    }
+
     if (ev.code === 4000 && ev.reason === 'remote_peer_left') {
+      return;
+    }
+    if (STATE.resumeRejected) {
+      STATE.resumeRejected = F;
       return;
     }
     scheduleWsReconnect();
