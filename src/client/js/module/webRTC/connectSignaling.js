@@ -908,8 +908,6 @@ export function connectSignaling(connected = F, fns) {
         if (msg?.storageData && msg?.keypair) {
           KEY.puk = msg.keypair.puk;
           KEY.prk = msg.keypair.prk;
-          console.log('PUBLIC KEY :::: ', KEY.puk);
-          console.log('PRIVATE KEY ::: ', KEY.prk);
 
           await insertStorageDate(msg.storageData);
           await FNS.startGame();
