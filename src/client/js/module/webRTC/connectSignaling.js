@@ -785,26 +785,49 @@ export function connectSignaling(connected = F, fns) {
     }
 
     // ★ 이전 roomId가 있으면 힌트로 보낸다.
-    // const roomHint = window.sessionStorage.getItem('roomId') || null;
     const roomHint = () => {
-      const roomId = window.sessionStorage.getItem('roomId');
-      if (roomId) {
-        if (roomId.length === 11) {
-          const lastChar = roomId.at(-1);
-          const offset = lastChar.charCodeAt(0) - 'a'.charCodeAt(0);
-          if (offset % 2 === 0) {
-            // 최초 할당받은 role = impolite
-            STATE.initRole = 'impolite';
-          } else {
-            // 최초 할당받은 role = polite
-            STATE.initRole = 'polite';
-          }
-          return roomId.slice(0, -1);
-        } else if (roomId.length === 10) {
-          return roomId;
-        }
+      const storedRoomId = window.sessionStorage.getItem('roomId');
+      if (!storedRoomId) return null;
+
+      const uuidRoomIdPattern =
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+      let baseRoomId = null;
+      let roleMarker = null;
+
+      // 현재 형식: UUID(36) + 최초 role 표시 문자(1)
+      if (
+        storedRoomId.length === 37 &&
+        uuidRoomIdPattern.test(storedRoomId.slice(0, -1))
+      ) {
+        baseRoomId = storedRoomId.slice(0, -1);
+        roleMarker = storedRoomId.at(-1);
+      // 이전 형식: roomId(10) + 최초 role 표시 문자(1)
+      } else if (storedRoomId.length === 11) {
+        baseRoomId = storedRoomId.slice(0, -1);
+        roleMarker = storedRoomId.at(-1);
+      // role 표시 문자가 없던 저장값도 roomHint로는 사용할 수 있다.
+      } else if (
+        storedRoomId.length === 10 ||
+        (storedRoomId.length === 36 && uuidRoomIdPattern.test(storedRoomId))
+      ) {
+        return storedRoomId;
+      } else {
+        return null;
       }
-      return null;
+
+      const offset =
+        roleMarker.toLowerCase().charCodeAt(0) -
+        'a'.charCodeAt(0);
+
+      if (offset >= 0 && offset < 26) {
+        STATE.initRole =
+          offset % 2 === 0
+            ? 'impolite'
+            : 'polite';
+      }
+
+      return baseRoomId;
     };
 
     safeWsSend({
@@ -845,15 +868,24 @@ export function connectSignaling(connected = F, fns) {
           STATE.role = msg.you.role;
           STATE.partnerId = msg.partner.peerId;
 
-          // ★ 안전 위해 여기서도 다시 저장(경합 대비)
-          if (window.sessionStorage.getItem('roomId') === null && STATE.initRole === null) {
-            // 최초 연결 시
+          // ★ 최초 role 복원에 실패했거나 최초 연결이면 현재 role로 복구한다.
+          if (STATE.initRole !== 'impolite' && STATE.initRole !== 'polite') {
             STATE.initRole = STATE.role;
+          }
 
-            const pool = STATE.initRole === 'impolite' ? createChars('a') : createChars('b');
-            const randomChar = pool[Math.floor(Math.random() * pool.length)];
+          // 현재 roomId + 최초 role 형식으로 항상 정규화해 저장한다.
+          if (STATE.initRole === 'impolite' || STATE.initRole === 'polite') {
+            const pool =
+              STATE.initRole === 'impolite'
+                ? createChars('a')
+                : createChars('b');
+            const randomChar =
+              pool[Math.floor(Math.random() * pool.length)];
 
-            window.sessionStorage.setItem('roomId', `${msg.roomId}${randomChar}`);
+            window.sessionStorage.setItem(
+              'roomId',
+              `${msg.roomId}${randomChar}`,
+            );
           }
           log(`Paired! me(${STATE.role}) <-> partner(${msg.partner.peerId}/${msg.partner.role})`);
 
