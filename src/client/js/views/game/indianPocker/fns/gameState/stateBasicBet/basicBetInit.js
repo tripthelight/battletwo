@@ -8,6 +8,7 @@ import { request } from '@/client/js/network/indianPocker/request';
 import gameEnd from '@/client/js/views/game/indianPocker/fns/common/gameEnd';
 import sessionInit from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/sessionInit';
 import basicBetMainCheck from '@/client/js/views/game/indianPocker/fns/common/basicBetMainCheck';
+import { RESULT_RELOAD_STATE } from '@/client/js/network/indianPocker/fns/resultReloadSync';
 
 export default () => {
   const encodeKey = [98, 97, 115, 105, 99, 66, 101, 116]; // basicBet
@@ -22,6 +23,9 @@ export default () => {
   ]);
 
   if (basicBetMainCheck()) {
+    // 결과 화면에서 상대가 새로고침해 대기 중일 수 있으므로
+    // gameOver 진입도 basicBet과 동일하게 명시적으로 통지한다.
+    request('remoteReloadBasicBet', RESULT_RELOAD_STATE.GAME_OVER);
     return gameEnd();
   } else {
     const encryptKey1 = findCharCode([70, 77, 80, 88, 87, 86, 83, 89, 75, 65]); // betState
@@ -38,7 +42,7 @@ export default () => {
 
       // playing 결과 animation 화면에서, 나는 새로고침 안했고, 상대는 새로고침해서 대기중일 경우,
       // 상대를 기본배팅 시키기 위해 request 보내야 됨
-      request('remoteReloadBasicBet', encodeKey);
+      request('remoteReloadBasicBet', RESULT_RELOAD_STATE.BASIC_BET);
 
     } else {
       console.log("choiceCard 결과 안내팝업 누르고 진입 ------------> ");

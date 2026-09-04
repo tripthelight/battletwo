@@ -137,10 +137,13 @@ export const BASIC_BET_DATA_HANDLER = {
     const tv = M[v1];
     if (tv === void 0) throw T('sessionStorageLoss', `basicBet - ${D([98, 101, 116, 83, 116, 97, 116, 101])} sessionStorage value failed.`);
 
-    // ─────────────────── betUser / betUserFirst 일치성 검증
+    // ─────────────────── betUser / betUserFirst 개별 복원
+    // betUser는 현재 턴/라운드 결과에 따라 바뀌지만,
+    // betUserFirst는 choiceCard에서 정해진 최초 선/후 기준값을 유지한다.
+    // 따라서 두 값의 로컬 동등성은 불변조건이 아니다.
+    // 조작 여부는 requestCompairBasicBet에서 두 값을 상대 Peer와 각각 검증한다.
     const bU  = H([72,70,85,67,83,68,89,82,77,88], `basicBet - ${D([98, 101, 116, 85, 115, 101, 114])} sessionStorage key failed.`),
           bUF = H([90,89,80,70,68,84,65,77,74,78], `basicBet - ${D([98, 101, 116, 85, 115, 101, 114, 70, 105, 114, 115, 116])} sessionStorage key failed.`);
-    if (bU !== bUF) throw T('sessionStorageLoss', `basicBet - ${D([98, 101, 116, 85, 115, 101, 114, 47, 98, 101, 116, 85, 115, 101, 114, 70, 105, 114, 115, 116])} sessionStorage value compair failed.`);
 
     // ─────────────────── 파라미터 구성 (삼항으로 분기 최소 연산)
     const P = {

@@ -1,6 +1,8 @@
 import { getDeviceType } from '@/client/js/module/isPC';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import insertStorageDate from '@/client/js/functions/insertStorageDate';
+import errorModal from '@/client/components/popup/modal/errorModal';
+import { text } from '@/client/js/functions/language';
 
 /**
  * ———————————————————————————————————————————————————————————————————
@@ -516,15 +518,166 @@ export function maybeResolveReady() {
 let WS_RETRY = { tries: 0, timer: null };
 const WS_RETRY_MAX = 6;
 const WS_RETRY_BASE = 200;
+const PAGE_EXIT = Object.freeze({
+  UNKNOWN: 'unknown',
+  RELOAD: 'reload',
+  LEAVE: 'leave',
+});
+export const SESSION_END_REASON = Object.freeze({
+  LEAVE: 'leave',
+  INVALID_LOCAL: 'invalid-local',
+  INVALID_REMOTE: 'invalid-remote',
+  NETWORK_LOST: 'network-lost',
+});
+const SESSION_END_REASONS = new Set(
+  Object.values(SESSION_END_REASON),
+);
+let PAGE_EXIT_MODE = PAGE_EXIT.UNKNOWN;
+let PAGE_LEAVING = F;
+let SESSION_TERMINATED = F;
+let SESSION_END_NOTICE_SENT = F;
+
+function clearWsReconnectTimer() {
+  if (!WS_RETRY.timer) return;
+
+  clearTimeout(WS_RETRY.timer);
+  WS_RETRY.timer = null;
+}
 
 function scheduleWsReconnect() {
-  if (WS_RETRY.timer) return;
+  if (PAGE_LEAVING || WS_RETRY.timer) return;
   const t = Math.min(WS_RETRY_MAX, WS_RETRY.tries++);
   const delay = WS_RETRY_BASE * Math.pow(2, t);
   WS_RETRY.timer = setTimeout(() => {
     WS_RETRY.timer = null;
     connectSignaling(T);
   }, delay);
+}
+
+function clearResumeSessionState() {
+  storageMethod('s', 'REMOVE_ITEM', 'reload');
+  storageMethod('s', 'REMOVE_ITEM', 'resumeToken');
+  storageMethod('s', 'REMOVE_ITEM', 'roomId');
+}
+
+function normalizeSessionEndReason(reason) {
+  return SESSION_END_REASONS.has(reason)
+    ? reason
+    : SESSION_END_REASON.LEAVE;
+}
+
+function sendSessionEndNotice(reason) {
+  if (
+    SESSION_END_NOTICE_SENT ||
+    !STATE.dc ||
+    STATE.dc.readyState !== 'open'
+  ) {
+    return F;
+  }
+
+  try {
+    STATE.dc.send(
+      JSON.stringify({
+        v: 1,
+        t: 'SESSION_END',
+        ts: Date.now(),
+        payload: {
+          reason: normalizeSessionEndReason(reason),
+        },
+      }),
+    );
+
+    SESSION_END_NOTICE_SENT = T;
+    return T;
+  } catch {
+    return F;
+  }
+}
+
+function closeSessionRealtime(reason) {
+  clearWsReconnectTimer();
+  clearFastRejoin();
+  clearStalePeerReplacement();
+
+  if (STATE.reloadTimer) {
+    clearTimeout(STATE.reloadTimer);
+    STATE.reloadTimer = null;
+  }
+
+  cleanupPeerConnection(F);
+
+  const ws = STATE.ws;
+  STATE.ws = null;
+
+  if (!ws) return;
+
+  try {
+    if (
+      ws.readyState === WebSocket.OPEN ||
+      ws.readyState === WebSocket.CONNECTING
+    ) {
+      ws.close(4000, normalizeSessionEndReason(reason));
+    }
+  } catch {}
+}
+
+export function terminateGameSession({
+  reason = SESSION_END_REASON.INVALID_LOCAL,
+  notifyPeer = T,
+} = {}) {
+  if (SESSION_TERMINATED) {
+    return F;
+  }
+
+  const normalizedReason =
+    normalizeSessionEndReason(reason);
+
+  if (notifyPeer) {
+    sendSessionEndNotice(normalizedReason);
+  }
+
+  SESSION_TERMINATED = T;
+  PAGE_LEAVING = T;
+  PAGE_EXIT_MODE = PAGE_EXIT.LEAVE;
+
+  clearResumeSessionState();
+  closeSessionRealtime(normalizedReason);
+
+  return T;
+}
+
+function handleRemoteSessionEnd(reason) {
+  if (PAGE_LEAVING || SESSION_TERMINATED) {
+    return;
+  }
+
+  const normalizedReason =
+    normalizeSessionEndReason(reason);
+
+  terminateGameSession({
+    reason: normalizedReason,
+    notifyPeer: F,
+  });
+
+  errorModal(
+    normalizedReason === SESSION_END_REASON.INVALID_REMOTE
+      ? text.err
+      : text.leaveRoom,
+    '/selectGame',
+  );
+}
+
+function handleLocalNetworkOffline() {
+  if (PAGE_LEAVING || SESSION_TERMINATED) {
+    return;
+  }
+
+  terminateGameSession({
+    reason: SESSION_END_REASON.NETWORK_LOST,
+    notifyPeer: T,
+  });
+
+  errorModal(text.networkLost, '/selectGame');
 }
 
 /**
@@ -965,13 +1118,7 @@ export function sendGame(payload, { reliable = T, id = undefined } = {}) {
  */
 function channelClose() {
   console.log('Remote Peer Left...');
-  cleanupPeerConnection(F);
-  if (STATE.ws) {
-    try {
-      STATE.ws.close(4000, 'remote_peer_left');
-    } catch {}
-    STATE.ws = null;
-  }
+  handleRemoteSessionEnd(SESSION_END_REASON.LEAVE);
 }
 function reloadConnectCheck() {
   STATE.reloadTimer = setTimeout(() => {
@@ -986,21 +1133,88 @@ function reloadConnectCheck() {
 
 /**
  * ———————————————————————————————————————————————————————————————————
- * BROWSER RELOAD EVENT
+ * BROWSER PAGE LIFECYCLE
  */
-function leavePage() {
-  if (STATE.partnerId && STATE.dc) {
-    // 상대 PEER와 매칭이 되었을 때만 새로고침 상태를 저장한다.
-    // resumeToken은 room-assigned 수신 시 sessionStorage에 저장되어
-    // 브라우저 새로고침 후에도 그대로 유지된다.
-    storageMethod('s', 'SET_ITEM', "reload", T);
+function markReloadExit() {
+  PAGE_EXIT_MODE = PAGE_EXIT.RELOAD;
+
+  if (
+    STATE.partnerId ||
+    window.sessionStorage.getItem('resumeToken')
+  ) {
+    // DataChannel이 아직 재개되지 않은 순간에 연속 새로고침을 해도
+    // resumeToken이 남아 있으면 기존 게임 상태를 reload 복구로 취급한다.
+    storageMethod('s', 'SET_ITEM', 'reload', T);
   }
-};
+}
+
+function markLeaveExit() {
+  PAGE_EXIT_MODE = PAGE_EXIT.LEAVE;
+
+  // 새로고침이 아닌 실제 페이지 이탈은 DataChannel이 살아 있는 동안
+  // 상대에게 즉시 알려 server grace/ICE timeout을 기다리지 않게 한다.
+  sendSessionEndNotice(SESSION_END_REASON.LEAVE);
+
+  // 뒤로가기/다른 페이지 이동은 기존 room을 다시 resume하면 안 된다.
+  // 게임별 나머지 세션 상태는 목적지 페이지의 clearStorage()가 정리한다.
+  clearResumeSessionState();
+}
+
+function closeRealtimeConnectionsForPageHide() {
+  PAGE_LEAVING = T;
+  clearWsReconnectTimer();
+
+  // BFCache에 들어가는 페이지가 이전 WebRTC/DataChannel을
+  // 그대로 보유하지 않도록 즉시 정리한다.
+  cleanupPeerConnection(F);
+
+  const ws = STATE.ws;
+  STATE.ws = null;
+
+  if (!ws) return;
+
+  try {
+    if (
+      ws.readyState === WebSocket.OPEN ||
+      ws.readyState === WebSocket.CONNECTING
+    ) {
+      ws.close(1000, PAGE_EXIT_MODE);
+    }
+  } catch {}
+}
+
+window.addEventListener('offline', handleLocalNetworkOffline);
+
 if (getDeviceType() === 'PC') {
-  window.addEventListener('beforeunload', () => {
-    leavePage();
+  // Navigation API는 reload와 back/forward(traverse)를 정확히 구분한다.
+  // 지원 브라우저에서는 페이지가 사라지기 전에 exit 의도를 먼저 기록한다.
+  if (window.navigation) {
+    window.navigation.addEventListener('navigate', (event) => {
+      if (event.hashChange) return;
+
+      if (event.navigationType === 'reload') {
+        markReloadExit();
+        return;
+      }
+
+      markLeaveExit();
+    });
+  }
+
+  window.addEventListener('pagehide', (event) => {
+    // Navigation API 미지원 브라우저용 fallback.
+    // BFCache 진입은 명백한 페이지 이탈이고, 그 외에는 기존 reload 복구를 보존한다.
+    if (PAGE_EXIT_MODE === PAGE_EXIT.UNKNOWN) {
+      if (event.persisted) {
+        markLeaveExit();
+      } else {
+        markReloadExit();
+      }
+    }
+
+    closeRealtimeConnectionsForPageHide();
   });
-};
+}
 
 /**
  * ———————————————————————————————————————————————————————————————————
@@ -1025,6 +1239,7 @@ function attachDataChannelHandlers(dc, tag) {
     READY.myHelloSent = T;
     // sendEnvelope({ t: 'HELLO', payload: { from: STATE.peerId } });
     sendGame({ type: 'ROUND/START', from: STATE.peerId }, { reliable: F });
+    maybeResolveReady();
   };
   dc.onmessage = (ev) => {
     let msg;
@@ -1033,6 +1248,11 @@ function attachDataChannelHandlers(dc, tag) {
     } catch {
       return;
     }
+    if (msg?.v === 1 && msg.t === 'SESSION_END') {
+      handleRemoteSessionEnd(msg?.payload?.reason);
+      return;
+    }
+
     // handleEnvelope(msg);
     FNS.handleEnvelope(msg);
   };
@@ -1175,6 +1395,10 @@ async function startPeerConnection() {
     };
     pc.onconnectionstatechange = () => {
       log('connectionState', pc.connectionState);
+
+      if (pc.connectionState === 'connected') {
+        maybeResolveReady();
+      }
     };
     pc.oniceconnectionstatechange = () => {
       log('iceConnectionState', pc.iceConnectionState);
@@ -1272,6 +1496,41 @@ async function handleRemoveSignal(msg) {
  * CONNECT SIGNALING
  */
 export function connectSignaling(connected = F, fns) {
+  const restoredAfterPageLeave = PAGE_LEAVING;
+
+  PAGE_LEAVING = F;
+  PAGE_EXIT_MODE = PAGE_EXIT.UNKNOWN;
+  SESSION_TERMINATED = F;
+  SESSION_END_NOTICE_SENT = F;
+
+  if (
+    restoredAfterPageLeave &&
+    !window.sessionStorage.getItem('resumeToken')
+  ) {
+    // BFCache로 이전 game document 자체가 복원된 경우에도
+    // 새 room join에 이전 document의 peer identity가 섞이지 않게 한다.
+    STATE.roomId = null;
+    STATE.peerId = null;
+    STATE.role = null;
+    STATE.initRole = null;
+    STATE.partnerId = null;
+    STATE.resumeRejected = F;
+    STATE.peerConnectionStale = F;
+
+    KEY.puk = null;
+    KEY.prk = null;
+
+    BOOTSTRAP.storageRequested = F;
+    BOOTSTRAP.storageReady = F;
+    BOOTSTRAP.gameStarting = F;
+    BOOTSTRAP.gameStarted = F;
+    BOOTSTRAP.pendingSignals.length = 0;
+
+    PEER_CONNECTION_START_PROMISE = null;
+    R.set(F);
+    resetReliableLayer();
+  }
+
   if (fns && fns.deliverToGame && fns.handleEnvelope) {
     FNS.deliverToGame = fns.deliverToGame;
     FNS.handleEnvelope = fns.handleEnvelope;
@@ -1280,7 +1539,15 @@ export function connectSignaling(connected = F, fns) {
     BOOTSTRAP.requiresStorage = fns.requiresStorage !== F;
   }
 
-  if (STATE.ws && STATE.ws.readyState === WebSocket.OPEN) return;
+  if (
+    STATE.ws &&
+    (
+      STATE.ws.readyState === WebSocket.OPEN ||
+      STATE.ws.readyState === WebSocket.CONNECTING
+    )
+  ) {
+    return;
+  }
 
   // ----- WebSocket signaling -----
   const WS_URL = getSignalingUrl();
@@ -1398,11 +1665,10 @@ export function connectSignaling(connected = F, fns) {
         break;
       }
       case 'partner-left': {
-        if (msg.roomId !== STATE.roomId) return;
-        storageMethod('s', 'REMOVE_ITEM', 'resumeToken');
-        storageMethod('s', 'REMOVE_ITEM', 'roomId');
+        if (msg.roomId !== STATE.roomId || PAGE_LEAVING) return;
+
         console.log('Partner Lefted...');
-        cleanupPeerConnection();
+        handleRemoteSessionEnd(SESSION_END_REASON.LEAVE);
         break;
       }
       case 'signal': {
@@ -1464,7 +1730,13 @@ export function connectSignaling(connected = F, fns) {
     }
   });
   ws.addEventListener('close', (ev) => {
-    log('WS closed. Try reconnecting...', ev.code, ev.reason);
+    const isCurrentSocket = STATE.ws === ws;
+
+    if (isCurrentSocket) {
+      STATE.ws = null;
+    }
+
+    log('WS closed.', ev.code, ev.reason);
 
     if (
       BOOTSTRAP.requiresStorage &&
@@ -1473,13 +1745,30 @@ export function connectSignaling(connected = F, fns) {
       BOOTSTRAP.storageRequested = F;
     }
 
-    if (ev.code === 4000 && ev.reason === 'remote_peer_left') {
+    // pagehide에서 의도적으로 닫았거나 이미 교체된 stale socket이면
+    // BFCache 안의 이전 페이지가 다시 매칭 대기열에 들어오지 않게 한다.
+    if (!isCurrentSocket || PAGE_LEAVING) {
       return;
     }
+
+    if (!navigator.onLine) {
+      handleLocalNetworkOffline();
+      return;
+    }
+
+    if (
+      ev.code === 4000 &&
+      SESSION_END_REASONS.has(ev.reason)
+    ) {
+      return;
+    }
+
     if (STATE.resumeRejected) {
       STATE.resumeRejected = F;
       return;
     }
+
+    log('Scheduling WS reconnect...', ev.code, ev.reason);
     scheduleWsReconnect();
   });
   ws.addEventListener('error', () => {

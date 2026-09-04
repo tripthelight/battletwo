@@ -1,15 +1,11 @@
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
-import renameSessionStorageKeys from '@/client/js/module/errorHandler/renameSessionStorageKeys';
 
 /**
- * CARDS[i].onclick = ...은 등록만 해두는 것이고
- * 실제로 onclick 함수는 나중에 브라우저(이벤트 시스템)가 호출합니다.
- * → 그래서 choiceCardsClick()의 호출 컨텍스트와는 완전히 별개입니다.
- * 따라서 choiceCardsClick()을 try-catch로 감싸도,
- * 그 안에서 등록된 이벤트 핸들러의 예외는 절대 못 잡습니다.
+ * 브라우저 이벤트 콜백 안에서 발생한 오류를 공용 오류 처리기로 전달한다.
+ *
+ * 오류가 확정되면 connectSignaling의 공용 종료 루틴이 실시간 연결을
+ * 정리하므로 sessionStorage key를 무작위로 바꾸는 추가 작업은 하지 않는다.
  */
 export default (error) => {
-  // 파울 받음
-  renameSessionStorageKeys();
   errorManagement(error);
 };

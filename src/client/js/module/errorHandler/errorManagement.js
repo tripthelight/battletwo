@@ -1,150 +1,152 @@
 import errorModal from '@/client/components/popup/modal/errorModal';
 import { text } from '@/client/js/functions/language';
-import renameSessionStorageKeys from '@/client/js/module/errorHandler/renameSessionStorageKeys';
+import {
+  SESSION_END_REASON,
+  terminateGameSession,
+} from '@/client/js/module/webRTC/connectSignaling';
+
+const GAME_FATAL_CASES = new Set([
+  'dataManipulation',
+  'sessionStorageLoss',
+  'cardNum',
+  'errorComn',
+  'elementLoss',
+  'cookies',
+]);
+
+function showGameFatalModal(message, redirectPath = '/selectGame') {
+  errorModal(message, redirectPath);
+}
+
+function handleGameFatal(errCase, target) {
+  if (target === 'peer-notice') {
+    terminateGameSession({
+      reason: SESSION_END_REASON.INVALID_REMOTE,
+      notifyPeer: false,
+    });
+
+    showGameFatalModal(text.err);
+    return true;
+  }
+
+  if (errCase === 'foul') {
+    // 상대가 보낸 값이 검증에 실패한 경우:
+    // 검증한 Peer는 상대 이탈 팝업을 보고,
+    // 잘못된 값을 보낸 Peer에게는 invalid-remote를 전달한다.
+    terminateGameSession({
+      reason: SESSION_END_REASON.INVALID_REMOTE,
+      notifyPeer: true,
+    });
+
+    showGameFatalModal(text.leaveRoom);
+    return true;
+  }
+
+  if (GAME_FATAL_CASES.has(errCase)) {
+    // 내 sessionStorage/로컬 상태가 손상된 경우:
+    // 나는 잘못된 접근 팝업, 상대는 상대방 이탈 팝업을 본다.
+    terminateGameSession({
+      reason: SESSION_END_REASON.INVALID_LOCAL,
+      notifyPeer: true,
+    });
+
+    showGameFatalModal(text.err);
+    return true;
+  }
+
+  return false;
+}
 
 // UI 알림 표시 함수
 function showErrorNotification(errCase, component, message, target) {
+  if (handleGameFatal(errCase, target)) {
+    return;
+  }
+
   if (errCase === 'webRTC') {
-    // CASE : webRTC error
     switch (component) {
       case 'signalingServer':
-        // socket error
-        errorModal(text.serverProblem);
+        terminateGameSession({
+          reason: SESSION_END_REASON.NETWORK_LOST,
+          notifyPeer: false,
+        });
+        showGameFatalModal(text.serverProblem);
         break;
       case 'peerConnection':
-        // 상대방이 새로고침하면 나는 여기를 두번째로 탐
-        // rtc remote peer left
-        errorModal(text.leaveRoom);
-        break;
       case 'dataChannel':
-        // 상대방이 새로고침하면 나는 여기를 첫번째로 탐
-        // channel error
-        errorModal(text.leaveRoom);
-        break;
       case 'initConnect':
-        // peerConnection / dataChannel error
-        errorModal(text.leaveRoom);
-        break;
       case 'candidate':
-        // peerConnection / dataChannel error
-        errorModal(text.leaveRoom);
-        break;
       case 'peerConnectionEvent':
-        // peerConnection / dataChannel error
-        errorModal(text.leaveRoom);
-        break;
       case 'dataChannelEvent':
-        // peerConnection / dataChannel error
-        errorModal(text.leaveRoom);
-        break;
       case 'cecandidateEvent':
-        // peerConnection / dataChannel error
-        errorModal(text.leaveRoom);
+        terminateGameSession({
+          reason: SESSION_END_REASON.LEAVE,
+          notifyPeer: false,
+        });
+        showGameFatalModal(text.leaveRoom);
         break;
       case 'messageHandler':
-        // socket message error - offer/answer/candidate
-        errorModal(text.serverProblem);
-        break;
       default:
-        errorModal(text.serverProblem);
+        terminateGameSession({
+          reason: SESSION_END_REASON.NETWORK_LOST,
+          notifyPeer: false,
+        });
+        showGameFatalModal(text.serverProblem);
         break;
     }
-  } else if (errCase === 'auth') {
-    // login / logout / auth check
+    return;
+  }
+
+  if (errCase === 'auth') {
     errorModal(text.serverProblem);
-  } else if (errCase === 'dataManipulation') {
-    // CASE : data 조작 error
+    return;
+  }
+
+  if (errCase === 'server') {
+    terminateGameSession({
+      reason: SESSION_END_REASON.LEAVE,
+      notifyPeer: false,
+    });
+
     switch (target) {
       case 'local':
-        errorModal(text.err);
+        showGameFatalModal(text.err);
         break;
       case 'remote':
-        errorModal(text.err);
-        break;
-      default:
-        errorModal(text.err);
-        break;
-    }
-    console.log('data manipulation error : ', target + ' -> ' + message);
-  } else if (errCase === 'server') {
-    // CASE : server error
-    switch (target) {
-      case 'local':
-        errorModal(text.err);
-        break;
-      case 'remote':
-        errorModal(text.leaveRoom);
+        showGameFatalModal(text.leaveRoom);
         break;
       case 'server':
-        errorModal(text.serverProblem);
-        break;
       default:
-        errorModal(text.serverProblem);
+        showGameFatalModal(text.serverProblem);
         break;
     }
+
     console.log('server error : ', target + ' -> ' + message);
-  } else if (errCase === 'foul') {
-    errorModal(text.leaveRoom);
-  } else if (errCase === 'cookies') {
-    errorModal(text.err);
-  } else if (errCase === 'elementLoss') {
-    errorModal(text.err);
-  } else if (errCase === 'sessionStorageLoss') {
-    errorModal(text.err);
-  } else if (errCase === 'cardNum') {
-    errorModal(text.error_text);
-  } else if (errCase === 'errorComn') {
-    errorModal(text.err);
-  };
-
-  renameSessionStorageKeys();
-};
-
-// 오류 복구 로직
-/* function handleRecovery(component, event) {
-  if (component === 'peerConnection' && event.includes('connectionstatechange')) {
-    console.log('재연결 시도 가능');
-    // 필요 시 재연결 로직 추가
-    errorModal(text.leaveRoom);
-  } else if (component === 'signalingServer' && event === 'onclose') {
-    console.log('Signaling 서버 재접속 로직 가능');
-    errorModal(text.networkLost);
-    // 재접속 시도 가능
+    return;
   }
-} */
 
-// 서버로 오류 로그 전송
-/* function sendErrorLogToServer(errorData) {
-  fetch('/log-error', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(errorData),
-  }).catch((err) => console.error('오류 로그 전송 실패:', err));
-} */
+  errorModal(text.error_text);
+}
 
 /**
  * error 관리 모듈
  * @param {*} errData
  */
-export function errorManagement(errData) {
-  const { component, event, message, errCase, target, errorDetails } = errData;
+export function errorManagement(errData = {}) {
+  const {
+    component,
+    event,
+    message,
+    errCase = 'errorComn',
+    target,
+  } = errData;
 
-  console.warn("ERROR : ", message);
+  console.warn('ERROR : ', message);
 
-
-  const errorMessage = `[Error] ${component} - ${event}: ${message}`;
-
-  // 1. 콘솔에 오류 출력
-  // console.error(errorMessage);
-  // if (errorDetails) console.error('Error Details:', errorDetails);
-
-  // 2. 사용자에게 오류 알림 (UI 메시지)
-  showErrorNotification(errCase, component, message, target);
-
-  // 3. 특정 오류 대응 (자동 복구, 재연결)
-  // handleRecovery(component, event);
-
-  // 4. 서버에 오류 로그 전송 (선택 사항)
-  //  * 25.03.14 - 개인프로젝트에서 서버 과부하 이슈로 닫음
-  // sendErrorLogToServer({ component, event, message, errorDetails });
+  showErrorNotification(
+    errCase,
+    component,
+    message,
+    target,
+  );
 }

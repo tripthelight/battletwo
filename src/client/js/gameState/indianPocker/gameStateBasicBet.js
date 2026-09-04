@@ -4,6 +4,8 @@ import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import _t from '@/client/js/module/crypts/textDE';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import STATE_BASIC_BET from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/init';
+import { request } from '@/client/js/network/indianPocker/request';
+import { RESULT_RELOAD_STATE } from '@/client/js/network/indianPocker/fns/resultReloadSync';
 
 export default (reloadState) => {
   const deleteParams = [
@@ -83,6 +85,12 @@ export default (reloadState) => {
         ''
       );
     }
+
+    // FOLD 결과 애니메이션 도중 새로고침한 경우에는 여기서 basicBet 화면을
+    // 먼저 그리지 않는다. 상대의 결과 처리가 끝난 뒤 remoteReloadBasicBet을
+    // 받거나, 양쪽 모두 새로고침했다면 requestDoubleReload로 다음 상태를 합의한다.
+    request('requestDoubleReload', RESULT_RELOAD_STATE.BASIC_BET);
+    return;
   } else {
     // 이전에 FOLD한 PLAYER 가 있는데, 둘 다 새로고침 안하고 진입한 경우
     // const D_FOLD_ARR = ['coinsEnemyLocalFold', 'coinsPlayerLocalFold', 'coinsEnemyRemoteFold', 'coinsPlayerRemoteFold', 'foldUser', 'foldState'];

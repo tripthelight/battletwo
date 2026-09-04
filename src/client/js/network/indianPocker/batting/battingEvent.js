@@ -1,4 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import { dec } from '@/client/js/module/crypts/obf8lower';
 import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
@@ -16,20 +17,25 @@ import { request } from '@/client/js/network/indianPocker/request';
 import findRemoteCard from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/findRemoteCard';
 import playingEndData from '@/client/js/views/game/indianPocker/fns/gameState/statePlaying/playingEndData';
 
+function decodeBettingNumber(key, name) {
+  const value = window.sessionStorage.getItem(key);
+
+  if (value === null) {
+    throw throwObj('sessionStorageLoss', `${name} sessionStorage key failed.`);
+  }
+
+  return value === '' ? 0 : dec(value);
+}
+
 function bettingEventSetParams() {
-  const encryptKey1 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
-  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
-  const decryptVal1 = dec(encryptVal1); // coinsPlayer value number
-  const encryptKey2 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]);  // coinsPlayerBet
-  const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
-  const decryptVal2 = dec(encryptVal2); // coinsPlayerBet value number
+  const encryptKey1 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]); // coinsPlayer
+  const encryptKey2 = findCharCode([88, 79, 86, 74, 72, 80, 71, 70, 69, 77]); // coinsPlayerBet
   const encryptKey3 = findCharCode([70, 90, 79, 67, 88, 77, 69, 82, 84, 81]); // coinsPlayerExtBet
-  const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
-  const decryptVal3 = dec(encryptVal3); // coinsPlayerExtBet value number
+
   return {
-    coinCount: decryptVal1,
-    coinBet: decryptVal2,
-    extBet: decryptVal3,
+    coinCount: decodeBettingNumber(encryptKey1, 'coinsPlayer'),
+    coinBet: decodeBettingNumber(encryptKey2, 'coinsPlayerBet'),
+    extBet: decodeBettingNumber(encryptKey3, 'coinsPlayerExtBet'),
   };
 };
 

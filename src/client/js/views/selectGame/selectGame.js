@@ -1,7 +1,7 @@
 import '@/client/assets/scss/selectGame/common';
 import '@/client/js/common/common';
 // import { debug } from '@/client/js/module/debug';
-// import clearStorage from '@/client/js/common/clearStorage';
+import clearStorage from '@/client/js/common/clearStorage';
 // import initNickName from '@/client/js/functions/initNickName';
 
 // onMounted
@@ -17,9 +17,11 @@ document.onreadystatechange = async () => {
   }
 };
 
-/* window.onpageshow = function (event) {
-  // BFCache(뒤로가기 캐시)에서 페이지가 복원될 경우
+window.addEventListener('pageshow', (event) => {
+  // /selectGame이 BFCache에서 복원되면 common.js가 다시 실행되지 않는다.
+  // 이전 game의 resumeToken/reload/gameState가 다음 매칭에 섞이지 않도록
+  // 강제 reload 대신 sessionStorage만 즉시 정리한다.
   if (event.persisted) {
-    location.reload(); // 강제로 새로고침
+    clearStorage(window.location.pathname);
   }
-}; */
+});

@@ -1,4 +1,5 @@
 import findCharCode from '@/client/js/functions/findCharCode';
+import errorManager from '@/client/js/module/errorHandler/errorManager';
 import { dec } from '@/client/js/module/crypts/obf8lower';
 // import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 // import { timeInterval_1, timeInterval_200 } from '@/client/js/functions/variable';
@@ -11,6 +12,20 @@ import { ELEMENT } from '@/client/js/views/game/indianPocker/fns/rule/element';
 import { RULES } from '@/client/js/views/game/indianPocker/fns/rule/rules';
 import changeBottomComnText from '@/client/js/views/game/indianPocker/fns/common/changeBottomComnText';
 import changeBottomComnDisabled from '@/client/js/views/game/indianPocker/fns/common/changeBottomComnDisabled';
+
+function runButtonAction(action) {
+  try {
+    const result = action();
+
+    if (result && typeof result.then === 'function') {
+      result.catch((error) => {
+        errorManager(error, true);
+      });
+    }
+  } catch (error) {
+    errorManager(error, true);
+  }
+}
 
 export const BTN_STATE = {
   SHOW: () => {
@@ -26,22 +41,26 @@ export const BTN_STATE = {
     if (BOTTOM_BUTTONS_EL) BOTTOM_BUTTONS_EL.remove();
   },
   HANDLER: (clickBtn) => {
-    request('requestPlayerCardNum', { clickBtn: clickBtn });
+    runButtonAction(() => {
+      request('requestPlayerCardNum', { clickBtn: clickBtn });
+    });
   },
   INIT: () => {
     const BTN_FOLD = ELEMENT.CHECK('.fold', 'findCheck');
     const BTN_ALLIN = ELEMENT.CHECK('.all-in', 'findCheck');
-    if (!INDIANPOCKER_SESSION('EFB') || INDIANPOCKER_SESSION('EFB') === 'false') {
+    const extFirstBet = INDIANPOCKER_SESSION('EFB');
+
+    if (!extFirstBet) {
       // 첫 배팅일 경우
       const BTN_BETTING = ELEMENT.CHECK('.betting', 'findCheck');
       // disabled
       if (INDIANPOCKER_SESSION('CPEB') > 0 && INDIANPOCKER_SESSION('CPEB') <= INDIANPOCKER_SESSION('CE')) {
         BTN_BETTING.removeAttribute('disabled');
-        BTN_BETTING.onclick = () => RULES.BETTING();
+        BTN_BETTING.onclick = () => runButtonAction(() => RULES.BETTING());
       } else {
         BTN_BETTING.setAttribute('disabled', true);
       }
-    } else if (INDIANPOCKER_SESSION('EFB') && INDIANPOCKER_SESSION('EFB') === 'true') {
+    } else {
       // 처음 이후 추가 배팅일 경우
       const BTN_CALL_RAISE = ELEMENT.CHECK('.call', 'findCheck');
       // // 문구 변경 - CALL | RAISE
@@ -57,7 +76,7 @@ export const BTN_STATE = {
       changeBottomComnDisabled(BTN_CALL_RAISE, CP, CPB, CPEB, CE, CEB, CEEB);
       // if (CPB === CEB) BTN_CALL_RAISE.onclick = () => RULES.CALL();
       if (CPB === CEB) BTN_CALL_RAISE.onclick = () => BTN_STATE.HANDLER('call');
-      if (CPB > CEB && CPB - CEB <= CE) BTN_CALL_RAISE.onclick = () => RULES.RAISE();
+      if (CPB > CEB && CPB - CEB <= CE) BTN_CALL_RAISE.onclick = () => runButtonAction(() => RULES.RAISE());
     }
     // BTN_ALLIN.onclick = () => RULES.ALLIN();
     BTN_ALLIN.onclick = () => BTN_STATE.HANDLER('allin');
@@ -66,17 +85,19 @@ export const BTN_STATE = {
   },
   CHANGE: () => {
     if (!ELEMENT.CHECK('.bottom-buttons', 'find')) return;
-    if (!INDIANPOCKER_SESSION('EFB') || String(INDIANPOCKER_SESSION('EFB')) === 'false') {
+    const extFirstBet = INDIANPOCKER_SESSION('EFB');
+
+    if (!extFirstBet) {
       // 첫 배팅일 경우
       const BTN_BETTING = ELEMENT.CHECK('.betting', 'findCheck');
       // disabled
       if (INDIANPOCKER_SESSION('CPEB') > 0 && INDIANPOCKER_SESSION('CPEB') <= INDIANPOCKER_SESSION('CE')) {
         BTN_BETTING.removeAttribute('disabled');
-        BTN_BETTING.onclick = () => RULES.BETTING();
+        BTN_BETTING.onclick = () => runButtonAction(() => RULES.BETTING());
       } else {
         BTN_BETTING.setAttribute('disabled', true);
       }
-    } else if (INDIANPOCKER_SESSION('EFB') && String(INDIANPOCKER_SESSION('EFB')) === 'true') {
+    } else {
       // 처음 이후 추가 배팅일 경우
       const BTN_CALL_RAISE = ELEMENT.CHECK('.call', 'findCheck');
       // // 문구 변경 - CALL | RAISE
@@ -93,7 +114,7 @@ export const BTN_STATE = {
       // if (CPB === CEB) BTN_CALL_RAISE.onclick = () => RULES.CALL();
 
       if (CPB === CEB) BTN_CALL_RAISE.onclick = () => BTN_STATE.HANDLER('call');
-      if (CPB > CEB && CPB - CEB <= CE) BTN_CALL_RAISE.onclick = () => RULES.RAISE();
+      if (CPB > CEB && CPB - CEB <= CE) BTN_CALL_RAISE.onclick = () => runButtonAction(() => RULES.RAISE());
     }
 
     const BTN_FOLD = ELEMENT.CHECK('.fold', 'findCheck');

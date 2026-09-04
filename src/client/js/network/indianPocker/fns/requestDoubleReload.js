@@ -1,59 +1,48 @@
-import throwObj from '@/client/js/module/errorHandler/throwObj';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
-import findCharCode from '@/client/js/functions/findCharCode';
-import X from '@/client/js/module/crypts/bool-obf';
-import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
-import _t from '@/client/js/module/crypts/textDE';
-import storageMethod from '@/client/js/module/storage/storageMethod';
-import { getRL } from '@/client/js/module/webRTC/connectSignaling';
+import throwObj from '@/client/js/module/errorHandler/throwObj';
 import { request } from '@/client/js/network/indianPocker/request';
-import sessionInit from '@/client/js/views/game/indianPocker/fns/gameState/stateBasicBet/sessionInit';
-import reloadBasicBetComn from '@/client/js/network/indianPocker/fns/reloadBasicBetComn';
+import basicBetMainCheck from '@/client/js/views/game/indianPocker/fns/common/basicBetMainCheck';
+import gameEnd from '@/client/js/views/game/indianPocker/fns/common/gameEnd';
+import {
+  RESULT_RELOAD_STATE,
+  isGameOverResultState,
+  isResultReloadUser,
+  prepareResultReload,
+} from '@/client/js/network/indianPocker/fns/resultReloadSync';
 
-// _data 배열이 두자리 숫자 8개의 배열인지 아닌지 확인
-const isTwoDigitArrayOf8 = (arr) =>
-  Array.isArray(arr) &&
-  arr.length === 8 &&
-  arr.every((n) => Number.isInteger(n) && n >= 10 && n <= 116);
+function isBasicBetProbe(value) {
+  const expected = RESULT_RELOAD_STATE.BASIC_BET;
+  return (
+    Array.isArray(value) &&
+    value.length === expected.length &&
+    value.every((item, index) => item === expected[index])
+  );
+}
 
 /**
- * playing 결과 animation 중 새로고침 한 peer > 상대도 역시 새로고침
- * 여기를 왔다는 건, 내가 새로고침 했는데, 상대도 새로고침 해서 상대 역시 대기중임
- * 마지막 새로고침 당한 PEER가 받아서, 다음 단계로 진행시킴
- * 상대의 새로고침을 받았을 때, 나는
- * @param {Array<number>} _data basicBet storage key
- * @returns null
+ * 결과 화면에서 양 Peer가 모두 새로고침한 경우의 동기화 요청.
+ * 각 Peer의 확정된 코인 상태를 기준으로 다음 상태(basicBet/gameOver)를 결정한다.
  */
 export default (_data) => {
-  const PROMISE = new Promise((resolve, reject) => {
-    if (isTwoDigitArrayOf8(_data)) {
-      resolve(_data);
-    } else {
-      reject(throwObj('dataManipulation', 'requestDoubleReload - _data validate failed.'));
+  try {
+    if (!isBasicBetProbe(_data)) {
+      throw throwObj('dataManipulation', 'requestDoubleReload - probe failed.');
     }
-  });
-  PROMISE.then((_data) => {
-    // basicBet
-    if (JSON.stringify(_data) === JSON.stringify([98, 97, 115, 105, 99, 66, 101, 116])) {
-      const encryptKey1 = findCharCode([75, 81, 83, 80, 89, 88, 86, 72, 82, 77]); // playingReloadUser
-      const encryptVal1 = storageMethod("s", "GET_ITEM", encryptKey1);
 
-      if (
-        encryptVal1 !== null
-        && encryptVal1 !== ''
-        && X.dec(encryptVal1)
-      ) {
-        request(
-          'responseDoubleReload',
-          [98, 97, 115, 105, 99, 66, 101, 116], // basicBet
-        );
-        reloadBasicBetComn();
-        sessionInit(true);
-      }
-    } else {
-      throw throwObj('dataManipulation', 'requestDoubleReload - basicBet key failed.');
-    };
-  }).catch((error) => {
+    if (!isResultReloadUser()) {
+      return;
+    }
+
+    const nextState = basicBetMainCheck()
+      ? RESULT_RELOAD_STATE.GAME_OVER
+      : RESULT_RELOAD_STATE.BASIC_BET;
+
+    request('responseDoubleReload', nextState);
+
+    if (prepareResultReload(nextState) && isGameOverResultState(nextState)) {
+      gameEnd();
+    }
+  } catch (error) {
     errorManager(error, true);
-  });
+  }
 };

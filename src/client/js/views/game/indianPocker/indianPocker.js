@@ -17,6 +17,11 @@ import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
 import textDE from '@/client/js/module/crypts/textDE';
 import indianPockerGameState from '@/client/js/gameState/indianPocker';
 import storageMethod from '@/client/js/module/storage/storageMethod';
+import { request } from '@/client/js/network/indianPocker/request';
+import {
+  RESULT_RELOAD_STATE,
+  isResultReloadUser,
+} from '@/client/js/network/indianPocker/fns/resultReloadSync';
 
 
 
@@ -29,6 +34,7 @@ const GAME_NAME = 'indianPocker';
 // —————————————————————————————————————————————
 async function startGame() {
   try {
+    let keepLoading = false;
     waitPeer(2);
     await makeCard();
     makePayload(); // 카드 선택 시 보여지는 카드의 svg > path의 number/T payload
@@ -54,11 +60,22 @@ async function startGame() {
         // case 'basicBet':
         case findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]):
           console.log("새로고침 후 : basicBet");
-          indianPockerGameState.basicBet();
+
+          // 결과 화면에서 새로고침한 뒤 상대의 next-state 신호를 기다리는 중
+          // 다시 새로고침해도 basicBet 검증을 먼저 시작하지 않고 계속 동기화를 기다린다.
+          if (isResultReloadUser()) {
+            keepLoading = true;
+            LOADING_EVENT.show();
+            request('requestDoubleReload', RESULT_RELOAD_STATE.BASIC_BET);
+          } else {
+            indianPockerGameState.basicBet();
+          }
           break;
         // case 'playing':
         case findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]):
           console.log("새로고침 후 : playing");
+          keepLoading = true;
+          LOADING_EVENT.show();
           // playing 중 새로고침 한 사용자
           storageMethod(
             's',
@@ -109,7 +126,9 @@ async function startGame() {
       indianPockerGameState.choiceCard();
     }
 
-    LOADING_EVENT.hide();
+    if (!keepLoading) {
+      LOADING_EVENT.hide();
+    }
   } catch (error) {
     errorManager(error, false);
   }

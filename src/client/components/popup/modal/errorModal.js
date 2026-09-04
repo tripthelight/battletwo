@@ -1,7 +1,7 @@
 import createModal from '@/client/components/popup/modal/createModal';
 import { text } from '@/client/js/functions/language';
 
-export default function errorModal(str) {
+export default function errorModal(str, redirectPath = '/') {
   const MODAL_POPUP = document.querySelector('.error-modal');
   if (MODAL_POPUP) return;
 
@@ -23,6 +23,6 @@ export default function errorModal(str) {
 
   MODAL_OK.addEventListener('click', () => {
     MODAL_POP_WRAP.remove();
-    location.href = '/';
+    location.href = redirectPath;
   });
 }

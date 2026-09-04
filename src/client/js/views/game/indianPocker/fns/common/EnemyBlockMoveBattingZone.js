@@ -294,7 +294,7 @@ export default (_case) => {
           [
             KS[0], // betState : end
             KS[1], // host : enemy
-            o(TARGET.length - 1), // index
+            o(COINS.length - 1), // index
             o(x), // translateX
             o(y), // translateY
             o(leftEl), // offsetLeft
