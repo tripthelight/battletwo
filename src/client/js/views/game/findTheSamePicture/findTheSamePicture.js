@@ -1,5 +1,9 @@
 import '@/client/assets/scss/game/findTheSamePicture/common';
 import '@/client/js/common/common';
+import {
+  markGameHistoryEntry,
+  skipRetiredGameHistoryEntry,
+} from '@/client/js/module/navigation/gameHistory';
 
 import {
   connectSignaling,
@@ -47,9 +51,12 @@ function init() {
   );
 }
 
+markGameHistoryEntry();
+
 window.addEventListener(
   'pageshow',
-  () => {
+  (event) => {
+    if (skipRetiredGameHistoryEntry(event)) return;
     init();
   },
 );

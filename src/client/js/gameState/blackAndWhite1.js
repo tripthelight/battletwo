@@ -5,6 +5,7 @@ import gameStateWaitEnemyShuffle from '@/client/js/gameState/blackAndWhite1/game
 import gameStateSetOrder from '@/client/js/gameState/blackAndWhite1/gameStateSetOrder';
 import gameStatePlaying from '@/client/js/gameState/blackAndWhite1/gameStatePlaying';
 import gameStateGameOver from '@/client/js/gameState/blackAndWhite1/gameStateGameOver';
+import { markGameSessionCompleted } from '@/client/js/module/webRTC/connectSignaling';
 
 export default {
   waitEnemy: () => {
@@ -36,6 +37,10 @@ export default {
   gameOver: () => {
     const encryptKey = findCharCode([89, 79, 69, 71, 82, 83, 87, 75, 86, 85]); // gameState
     storageMethod('s', 'SET_ITEM', encryptKey, findCharCode([67, 68, 72, 69, 90, 77, 80, 81, 75, 85])); // gameOver
+
+    // 양쪽 Peer가 정상적으로 게임 종료 상태에 도달했음을 WebRTC 계층에 알린다.
+    // 이후의 상대 페이지 이탈은 중도 이탈 오류로 취급하지 않는다.
+    markGameSessionCompleted();
     gameStateGameOver();
   },
 };

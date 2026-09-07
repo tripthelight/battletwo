@@ -1,59 +1,66 @@
-import clearSelectedCard from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/clearSelectedCard";
-import disabledSelectInit from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/disabledSelectInit";
-import hideInnerSquare from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/hideInnerSquare";
-import sendComn from "@/client/js/views/game/blackAndWhite1/fns/common/sendComn";
-import { reactiveState } from "@/client/js/views/game/blackAndWhite1/fns/common/variable";
+import disabledSelectInit from '@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/disabledSelectInit';
+import hideInnerSquare from '@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/hideInnerSquare';
+import cubeListStyle from '@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/cubeListStyle';
+import sendComn from '@/client/js/views/game/blackAndWhite1/fns/common/sendComn';
+import {
+  cancelTouchDrag,
+  finishTouchDrag,
+} from '@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/touchDragState';
 
-export default (e) => {
-  const BLOCK_SQUARE = document.querySelector(".black-square");
-  if (BLOCK_SQUARE) {
-    reactiveState.selectX = 0;
-    reactiveState.selectY = 0;
-    e.target.style.zIndex = "1";
-    if (BLOCK_SQUARE.classList.contains("over")) {
-      const S_NUM = Number(e.target.innerHTML);
-      BLOCK_SQUARE.classList.remove("over");
-      let numEl = document.createElement("span");
-      numEl.innerText = S_NUM;
-      if (S_NUM % 2 === 0) {
-        BLOCK_SQUARE.classList.remove("odd");
-        BLOCK_SQUARE.classList.add("even");
-      } else {
-        BLOCK_SQUARE.classList.remove("even");
-        BLOCK_SQUARE.classList.add("odd");
-      }
+function renderSelectedCube(blackSquare, num) {
+  blackSquare.classList.remove('even', 'odd');
+  blackSquare.classList.add(num % 2 === 0 ? 'even' : 'odd');
 
-      const SPAN_EL = BLOCK_SQUARE.querySelectorAll("span");
-      if (SPAN_EL.length === 0) {
-        BLOCK_SQUARE.appendChild(numEl);
-      }
-      if (SPAN_EL.length > 0) {
-        for (let i = 0; i < SPAN_EL.length; i++) {
-          SPAN_EL[i].remove();
-        }
-        BLOCK_SQUARE.appendChild(numEl);
-      }
+  const numEl = document.createElement('span');
+  numEl.innerText = String(num);
 
-      if (e.target.classList.contains("in")) {
-        const CUBE = document.querySelector(".cube.ready.start");
-        if (CUBE) {
-          // hide inner-square
-          hideInnerSquare();
-          const CUBE_WRAP = Array.from(CUBE.children);
-          const INDEX = CUBE_WRAP.indexOf(e.target);
+  blackSquare.querySelectorAll('span').forEach((span) => span.remove());
+  blackSquare.appendChild(numEl);
+}
 
-          sendComn(S_NUM, INDEX);
-
-          // disabled select
-          disabledSelectInit();
-
-          clearSelectedCard(CUBE, S_NUM);
-        }
-      } else {
-        e.target.style.transform = "translate(" + reactiveState.selectX + "px, " + reactiveState.selectY + "px)";
-      }
-    } else {
-      e.target.style.transform = "translate(" + reactiveState.selectX + "px, " + reactiveState.selectY + "px)";
-    }
+export default (event) => {
+  // OS/browser가 gesture를 취소한 경우에는 절대 Cube를 제출하지 않는다.
+  if (event?.type === 'touchcancel') {
+    cancelTouchDrag(event);
+    return;
   }
+
+  const result = finishTouchDrag(event);
+  if (!result) return;
+
+  const { card, blackSquare, isInside } = result;
+
+  if (!isInside || !card.isConnected || !blackSquare.isConnected) {
+    card.style.transform = '';
+    return;
+  }
+
+  const cube = card.closest('ul.cube.ready.start');
+  if (!cube) {
+    card.style.transform = '';
+    return;
+  }
+
+  const cubeItems = Array.from(cube.children);
+  const index = cubeItems.indexOf(card);
+  const num = Number(card.textContent);
+
+  if (index < 0 || !Number.isInteger(num) || num < 0 || num > 8) {
+    card.style.transform = '';
+    return;
+  }
+
+  // Turn 검증 및 Peer 전송이 성공한 경우에만 화면/DOM을 commit한다.
+  if (!sendComn(num, index)) {
+    card.style.transform = '';
+    return;
+  }
+
+  renderSelectedCube(blackSquare, num);
+  hideInnerSquare();
+
+  // 남아 있는 Cube의 입력 이벤트를 먼저 해제한 뒤 선택 Cube를 제거한다.
+  disabledSelectInit();
+  card.remove();
+  cubeListStyle();
 };

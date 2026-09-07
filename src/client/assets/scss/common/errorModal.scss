@@ -1,5 +1,9 @@
 .modal-popup {
   &.error-modal {
+    // 현재 프로젝트의 모든 gameState/overlay보다 항상 위에 표시한다.
+    // 최고 사용값은 9,999,999이므로 critical modal은 그보다 한 단계 높인다.
+    z-index: 10000000;
+
     .modal-container {
       .modal-body {
         .modal-form-wrap {

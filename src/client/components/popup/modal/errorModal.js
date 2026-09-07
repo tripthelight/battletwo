@@ -1,5 +1,6 @@
 import createModal from '@/client/components/popup/modal/createModal';
 import { text } from '@/client/js/functions/language';
+import { returnToSelectGame } from '@/client/js/module/navigation/gameHistory';
 
 export default function errorModal(str, redirectPath = '/') {
   const MODAL_POPUP = document.querySelector('.error-modal');
@@ -23,6 +24,15 @@ export default function errorModal(str, redirectPath = '/') {
 
   MODAL_OK.addEventListener('click', () => {
     MODAL_POP_WRAP.remove();
+
+    if (
+      redirectPath === '/selectGame' &&
+      window.location.pathname.startsWith('/game/')
+    ) {
+      returnToSelectGame();
+      return;
+    }
+
     location.href = redirectPath;
   });
 }

@@ -1,34 +1,26 @@
-import findCharCode from '@/client/js/functions/findCharCode';
-import storageMethod from '@/client/js/module/storage/storageMethod';
 import errorManager from '@/client/js/module/errorHandler/errorManager';
-import enterPlaying from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/enterPlaying";
+import enterPlaying from '@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/enterPlaying';
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
-import { request } from '@/client/js/network/blackAndWhite1/request';
 
-/** @typedef {{ enter: boolean }} EnterPlayingSendInterface */
+/** @typedef {{ enter: boolean }} EnterPlayingRecvInterface */
 /**
- * 내가 waitEnemyShuffle 단게에서 새로고침했으면, playing 진입 못하고 있는 상태일 수 있음
- * 상대 peer가 gameState Playing으로 진입하면, 나에게 진입했다고 보냄
- * 상대 peer가 gameState Playing으로 진입하는 순간 동시에 나도 gameState Playing으로 진입해야 됨
- * @param {EnterPlayingSendInterface} _data true
+ * 상대 Peer가 "양쪽 모두 playing 상태"임을 확인해 준 응답을 처리한다.
+ * true인 경우에만 playing UI를 구성한다.
+ *
+ * enterPlaying() 자체가 idempotent하므로 양쪽의 동기화 메시지가
+ * 거의 동시에 교차하더라도 UI 및 이벤트가 중복 초기화되지 않는다.
+ *
+ * @param {EnterPlayingRecvInterface} data
  */
-export default (_data) => {
-  const PROMISE = new Promise((resolve, reject) => {
-    resolve(_data);
-  });
-  PROMISE
-    .then((_data) => {
-      console.log("enterPlayingRecv DATA ::::::: ", _data);
-      const { enter } = _data;
-      if (enter) {
-        // 나도, 상대도 gameState playing 임
-        enterPlaying();
-        LOADING_EVENT.hide();
-      } else {
-        // 상대 peer가 새로고침 후 waitEnemyShuffle에서 대기중
-      }
-    })
-    .catch((error) => {
-      errorManager(error, true);
-    });
-};
+export default function handleEnterPlayingRecv(data) {
+  try {
+    console.log('enterPlayingRecv DATA ::::::: ', data);
+
+    if (data?.enter !== true) return;
+
+    enterPlaying();
+    LOADING_EVENT.hide();
+  } catch (error) {
+    errorManager(error, true);
+  }
+}

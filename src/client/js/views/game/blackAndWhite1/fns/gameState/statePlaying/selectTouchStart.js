@@ -1,7 +1,5 @@
-// import { selectX, selectY } from "./variable.js";
-import { reactiveState } from "@/client/js/views/game/blackAndWhite1/fns/common/variable";
+import { startTouchDrag } from '@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/touchDragState';
 
-export default (e) => {
-  reactiveState.selectX = e.targetTouches[0].clientX;
-  reactiveState.selectY = e.targetTouches[0].clientY;
+export default (event) => {
+  startTouchDrag(event);
 };

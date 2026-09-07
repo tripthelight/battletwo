@@ -12,6 +12,10 @@ export const REQUEST_HANDLERS = {
   enemyCubeOrder: (v) => ({ type: 'enemyCubeOrder', ...v }),
   enemyOrder: (v) => ({ type: 'enemyOrder', ...v }),
 
+  // gameState : setOrder reload recovery
+  setOrderResumeProbe: (v) => ({ type: 'setOrderResumeProbe', ...v }),
+  setOrderResumeAck: (v) => ({ type: 'setOrderResumeAck', ...v }),
+
   // gameState : playing
   enterPlayingSend: (v) => ({ type: 'enterPlayingSend', ...v }),
   enterPlayingRecv: (v) => ({ type: 'enterPlayingRecv', ...v }),

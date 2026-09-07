@@ -1,50 +1,36 @@
-import storageMethod from '@/client/js/module/storage/storageMethod';
-import findCharCode from '@/client/js/functions/findCharCode';
-import throwObj from '@/client/js/module/errorHandler/throwObj';
-import { dec, enc } from '@/client/js/module/crypts/obf8lower';
+import { enc } from '@/client/js/module/crypts/obf8lower';
 import { deobfuscateInt32 } from '@/client/js/module/crypts/encryptNumber';
-import _t from '@/client/js/module/crypts/textDE';
-
 import errorManager from '@/client/js/module/errorHandler/errorManager';
-import nextRoundCheck from '@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/nextRoundCheck';
-import showBattleResult from "@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/showBattleResult";
+import showBattleResult from '@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/showBattleResult';
+import { getCurrentRoundNumber } from '@/client/js/views/game/blackAndWhite1/fns/gameState/statePlaying/pendingRoundResult';
 
 /**
- * @param {string} _data 난독화된 round result 문자열 : "win", "die", "drew" 중 하나
+ * @param {{ resultSend: string, round: number }} data 난독화된 round result payload
  */
-export default (_data) => {
-  const PROMISE = new Promise((resolve, reject) => {
-    resolve(_data);
-  });
-  PROMISE
-    .then((_data) => {
-      console.log("resultRound DATA ::::::: ", _data);
-      const { resultSend } = _data;
-      // console.log("resultRound RES ::::::: ", dec(resultSend));
+export default (data) => {
+  try {
+    console.log('resultRound DATA ::::::: ', data);
 
-      /* let result = "";
-      switch (resultSend) {
-        case dec(enc(encryptNumOfStr(_t([119, 101, 101, 101, 101, 119, 119, 98])))): // "weeeewwb" : 1 : win
-          result = "win";
-          break;
-        case dec(enc(encryptNumOfStr(_t([101, 101, 119, 119, 101, 119, 119, 119])))): // "eewwewww" : 0 : die
-          result = "die";
-          break;
-        case dec(enc(encryptNumOfStr(_t([119, 119, 101, 101, 119, 101, 101, 112])))): // "wweeweep" : 2 : drew
-          result = "drew";
-          break;
-        default:
-          // error
-          throw throwObj('dataManipulation', 'resultRound - round result data failed.');
-      }; */
+    const { resultSend } = data ?? {};
+    const round = Number(data?.round);
+    const currentRound = getCurrentRoundNumber();
 
-      // showBattleResult(result);
-      // showBattleResult(resultSend);
+    if (!Number.isInteger(round) || round < 1 || round > 9) {
+      throw new Error('resultRound round failed.');
+    }
 
-      showBattleResult(enc(deobfuscateInt32(resultSend)));
-      nextRoundCheck();
-    })
-    .catch((error) => {
-      errorManager(error, true);
-    });
+    // recovery가 이전 Round 결과를 다시 보냈지만 이미 다음 Round로 간 경우는 stale duplicate다.
+    if (round < currentRound) return;
+
+    if (round !== currentRound) {
+      throw new Error('resultRound round mismatch.');
+    }
+
+    showBattleResult(
+      enc(deobfuscateInt32(resultSend)),
+      round
+    );
+  } catch (error) {
+    errorManager(error, true);
+  }
 };

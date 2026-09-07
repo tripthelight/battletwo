@@ -11,6 +11,10 @@ import handleEnvelope from '@/client/js/module/webRTC/reliable/indianPoker/handl
 import findCharCode from '@/client/js/functions/findCharCode';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import storageMethod from '@/client/js/module/storage/storageMethod';
+import {
+  markGameHistoryEntry,
+  skipRetiredGameHistoryEntry,
+} from '@/client/js/module/navigation/gameHistory';
 
 import blackAndWhite1GameState from '@/client/js/gameState/blackAndWhite1';
 
@@ -97,6 +101,9 @@ async function init() {
 // —————————————————————————————————————————————
 // PAGE SHOW ———————————————————————————————————
 // —————————————————————————————————————————————
-window.addEventListener('pageshow', async () => {
+markGameHistoryEntry();
+
+window.addEventListener('pageshow', async (event) => {
+  if (skipRetiredGameHistoryEntry(event)) return;
   await init();
 });

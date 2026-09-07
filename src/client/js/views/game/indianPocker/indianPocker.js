@@ -22,6 +22,10 @@ import {
   RESULT_RELOAD_STATE,
   isResultReloadUser,
 } from '@/client/js/network/indianPocker/fns/resultReloadSync';
+import {
+  markGameHistoryEntry,
+  skipRetiredGameHistoryEntry,
+} from '@/client/js/module/navigation/gameHistory';
 
 
 
@@ -146,6 +150,9 @@ async function init() {
 // —————————————————————————————————————————————
 // PAGE SHOW ———————————————————————————————————
 // —————————————————————————————————————————————
-window.addEventListener('pageshow', async () => {
+markGameHistoryEntry();
+
+window.addEventListener('pageshow', async (event) => {
+  if (skipRetiredGameHistoryEntry(event)) return;
   await init();
 });

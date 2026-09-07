@@ -7,6 +7,10 @@ import startState from '@/client/js/network/blackAndWhite1/fns/startState';
 import enemyCubeOrder from '@/client/js/network/blackAndWhite1/fns/enemyCubeOrder';
 import enemyOrder from '@/client/js/network/blackAndWhite1/fns/enemyOrder';
 
+// gameState : setOrder reload recovery
+import setOrderResumeProbe from '@/client/js/network/blackAndWhite1/fns/setOrderResumeProbe';
+import setOrderResumeAck from '@/client/js/network/blackAndWhite1/fns/setOrderResumeAck';
+
 // gameState : playing
 import enterPlayingSend from '@/client/js/network/blackAndWhite1/fns/enterPlayingSend';
 import enterPlayingRecv from '@/client/js/network/blackAndWhite1/fns/enterPlayingRecv';
@@ -24,6 +28,10 @@ export const RESPONSE_HANDLERS = {
   startState: (msg) => startState(msg),
   enemyCubeOrder: (msg) => enemyCubeOrder(msg),
   enemyOrder: (msg) => enemyOrder(msg),
+
+  // gameState : setOrder reload recovery
+  setOrderResumeProbe: (msg) => setOrderResumeProbe(msg),
+  setOrderResumeAck: (msg) => setOrderResumeAck(msg),
 
   // gameState : playing
   enterPlayingSend: (msg) => enterPlayingSend(msg),

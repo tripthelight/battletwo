@@ -1,8 +1,8 @@
-import { getDeviceType } from '@/client/js/module/isPC';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import insertStorageDate from '@/client/js/functions/insertStorageDate';
 import errorModal from '@/client/components/popup/modal/errorModal';
 import { text } from '@/client/js/functions/language';
+import { retireGameHistoryEntry } from '@/client/js/module/navigation/gameHistory';
 
 /**
  * ———————————————————————————————————————————————————————————————————
@@ -334,6 +334,55 @@ function safeWsSend(obj) {
     STATE.ws.send(JSON.stringify(obj));
   }
 }
+
+function acceptSignalingGameMessage(
+  ws,
+  msg,
+) {
+  if (
+    typeof VARIABLE.gameName === 'string' &&
+    msg?.gameName === VARIABLE.gameName
+  ) {
+    return T;
+  }
+
+  console.error(
+    'Signaling game mismatch.',
+    {
+      expected:
+        VARIABLE.gameName,
+      received:
+        msg?.gameName ?? null,
+    },
+  );
+
+  storageMethod(
+    's',
+    'REMOVE_ITEM',
+    'resumeToken',
+  );
+  storageMethod(
+    's',
+    'REMOVE_ITEM',
+    'roomId',
+  );
+
+  if (
+    STATE.ws === ws &&
+    (
+      ws.readyState === WebSocket.OPEN ||
+      ws.readyState === WebSocket.CONNECTING
+    )
+  ) {
+    ws.close(
+      1008,
+      'game mismatch',
+    );
+  }
+
+  return F;
+}
+
 function sendSignal(toPeerId, data) {
   if (!STATE.ws || STATE.ws.readyState !== WebSocket.OPEN) return;
   STATE.ws.send(JSON.stringify({ type: 'signal', to: toPeerId, data }));
@@ -536,6 +585,13 @@ let PAGE_EXIT_MODE = PAGE_EXIT.UNKNOWN;
 let PAGE_LEAVING = F;
 let SESSION_TERMINATED = F;
 let SESSION_END_NOTICE_SENT = F;
+let GAME_SESSION_COMPLETED = F;
+
+export function markGameSessionCompleted() {
+  GAME_SESSION_COMPLETED = T;
+  retireGameHistoryEntry();
+}
+
 
 function clearWsReconnectTimer() {
   if (!WS_RETRY.timer) return;
@@ -640,6 +696,7 @@ export function terminateGameSession({
   PAGE_LEAVING = T;
   PAGE_EXIT_MODE = PAGE_EXIT.LEAVE;
 
+  retireGameHistoryEntry();
   clearResumeSessionState();
   closeSessionRealtime(normalizedReason);
 
@@ -653,11 +710,23 @@ function handleRemoteSessionEnd(reason) {
 
   const normalizedReason =
     normalizeSessionEndReason(reason);
+  const ignoreCompletedDisconnect =
+    GAME_SESSION_COMPLETED &&
+    (
+      normalizedReason === SESSION_END_REASON.LEAVE ||
+      normalizedReason === SESSION_END_REASON.NETWORK_LOST
+    );
 
   terminateGameSession({
     reason: normalizedReason,
     notifyPeer: F,
   });
+
+  // 정상 gameOver 이후의 단순 이탈/네트워크 종료는 오류가 아니다.
+  // 데이터 무결성 오류(INVALID_*)는 gameOver 이후에도 기존 처리한다.
+  if (ignoreCompletedDisconnect) {
+    return;
+  }
 
   errorModal(
     normalizedReason === SESSION_END_REASON.INVALID_REMOTE
@@ -1151,9 +1220,15 @@ function markReloadExit() {
 function markLeaveExit() {
   PAGE_EXIT_MODE = PAGE_EXIT.LEAVE;
 
-  // 새로고침이 아닌 실제 페이지 이탈은 DataChannel이 살아 있는 동안
-  // 상대에게 즉시 알려 server grace/ICE timeout을 기다리지 않게 한다.
-  sendSessionEndNotice(SESSION_END_REASON.LEAVE);
+  // 뒤로가기/다른 페이지 이동으로 떠난 현재 game history entry는
+  // 이후 history traversal에서 다시 게임을 시작하지 않도록 폐기한다.
+  retireGameHistoryEntry();
+
+  // 게임 진행 중 이탈만 상대에게 즉시 알린다.
+  // 정상 gameOver 이후의 페이지 이동은 더 이상 상대에게 오류 상황이 아니다.
+  if (!GAME_SESSION_COMPLETED) {
+    sendSessionEndNotice(SESSION_END_REASON.LEAVE);
+  }
 
   // 뒤로가기/다른 페이지 이동은 기존 room을 다시 resume하면 안 된다.
   // 게임별 나머지 세션 상태는 목적지 페이지의 clearStorage()가 정리한다.
@@ -1185,36 +1260,56 @@ function closeRealtimeConnectionsForPageHide() {
 
 window.addEventListener('offline', handleLocalNetworkOffline);
 
-if (getDeviceType() === 'PC') {
-  // Navigation API는 reload와 back/forward(traverse)를 정확히 구분한다.
-  // 지원 브라우저에서는 페이지가 사라지기 전에 exit 의도를 먼저 기록한다.
-  if (window.navigation) {
-    window.navigation.addEventListener('navigate', (event) => {
-      if (event.hashChange) return;
+// 페이지 lifecycle은 입력 장치 종류와 무관하다.
+// Mobile/Tablet에서도 뒤로가기, 앞으로가기, 링크 이동, 새로고침을
+// 동일한 session 종료/복구 규칙으로 처리해야 한다.
+// Navigation API가 있으면 reload와 history traverse를 정확히 구분하고,
+// 지원하지 않는 브라우저에서는 pagehide.persisted를 fallback으로 사용한다.
+if (window.navigation) {
+  window.navigation.addEventListener('navigate', (event) => {
+    if (event.hashChange) return;
 
-      if (event.navigationType === 'reload') {
-        markReloadExit();
-        return;
-      }
+    // history.pushState()/replaceState()처럼 현재 document 안에서만
+    // history entry/state를 갱신하는 Navigation은 페이지 이탈이 아니다.
+    //
+    // gameHistory는 현재 game entry의 metadata를 기록/폐기할 때
+    // history.replaceState()를 사용한다. Chromium Navigation API는 그 호출도
+    // navigationType='replace', destination.sameDocument=true인 navigate event로
+    // 다시 통지하므로 이를 leave로 처리하면:
+    //
+    //   markLeaveExit()
+    //   -> retireGameHistoryEntry()
+    //   -> history.replaceState()
+    //   -> navigate
+    //   -> markLeaveExit() ...
+    //
+    // 재귀가 발생한다. 실제 document 이동만 아래 lifecycle 대상으로 삼는다.
+    // location.replace() 같은 cross-document replace는 sameDocument=false이므로
+    // 정상적으로 leave 처리된다.
+    if (event.destination?.sameDocument === true) return;
 
-      markLeaveExit();
-    });
-  }
-
-  window.addEventListener('pagehide', (event) => {
-    // Navigation API 미지원 브라우저용 fallback.
-    // BFCache 진입은 명백한 페이지 이탈이고, 그 외에는 기존 reload 복구를 보존한다.
-    if (PAGE_EXIT_MODE === PAGE_EXIT.UNKNOWN) {
-      if (event.persisted) {
-        markLeaveExit();
-      } else {
-        markReloadExit();
-      }
+    if (event.navigationType === 'reload') {
+      markReloadExit();
+      return;
     }
 
-    closeRealtimeConnectionsForPageHide();
+    markLeaveExit();
   });
 }
+
+window.addEventListener('pagehide', (event) => {
+  // Navigation API 미지원 브라우저용 fallback.
+  // BFCache 진입은 명백한 페이지 이탈이고, 그 외에는 기존 reload 복구를 보존한다.
+  if (PAGE_EXIT_MODE === PAGE_EXIT.UNKNOWN) {
+    if (event.persisted) {
+      markLeaveExit();
+    } else {
+      markReloadExit();
+    }
+  }
+
+  closeRealtimeConnectionsForPageHide();
+});
 
 /**
  * ———————————————————————————————————————————————————————————————————
@@ -1498,6 +1593,10 @@ async function handleRemoveSignal(msg) {
 export function connectSignaling(connected = F, fns) {
   const restoredAfterPageLeave = PAGE_LEAVING;
 
+  if (!connected) {
+    GAME_SESSION_COMPLETED = F;
+  }
+
   PAGE_LEAVING = F;
   PAGE_EXIT_MODE = PAGE_EXIT.UNKNOWN;
   SESSION_TERMINATED = F;
@@ -1571,6 +1670,7 @@ export function connectSignaling(connected = F, fns) {
     if (resumeToken) {
       safeWsSend({
         type: 'join',
+        gameName: VARIABLE.gameName,
         resumeToken,
       });
       return;
@@ -1578,6 +1678,7 @@ export function connectSignaling(connected = F, fns) {
 
     safeWsSend({
       type: 'join',
+      gameName: VARIABLE.gameName,
     });
   });
   ws.addEventListener('message', async (ev) => {
@@ -1589,6 +1690,8 @@ export function connectSignaling(connected = F, fns) {
     }
     switch (msg.type) {
       case 'room-assigned': {
+        if (!acceptSignalingGameMessage(ws, msg)) return;
+
         if (msg?.pairedDataChannel) {
           // 이전에 상대 peer와 DataChannel로 연결했었음
           reloadConnectCheck();
@@ -1623,6 +1726,7 @@ export function connectSignaling(connected = F, fns) {
         break;
       }
       case 'paired': {
+        if (!acceptSignalingGameMessage(ws, msg)) return;
         if (msg.roomId !== STATE.roomId) return;
         if (msg.you?.peerId === STATE.peerId) {
           STATE.role = msg.you.role;
@@ -1652,6 +1756,15 @@ export function connectSignaling(connected = F, fns) {
           await ensurePeerConnectionStarted();
         }
 
+        break;
+      }
+      case 'join-rejected': {
+        storageMethod('s', 'REMOVE_ITEM', 'resumeToken');
+        storageMethod('s', 'REMOVE_ITEM', 'roomId');
+        console.warn(
+          'Signaling join rejected.',
+          msg?.reason ?? 'unknown',
+        );
         break;
       }
       case 'resume-rejected': {

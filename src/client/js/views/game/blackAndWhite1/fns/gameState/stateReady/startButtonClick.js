@@ -11,24 +11,21 @@ import cubeNumCheck from "@/client/js/views/game/blackAndWhite1/fns/gameState/st
 import cubeReadyEnd from "@/client/js/views/game/blackAndWhite1/fns/gameState/stateReady/cubeReadyEnd";
 import saveSessionStorage from "@/client/js/views/game/blackAndWhite1/fns/common/saveSessionStorage";
 
-import { parsePayloadToHex } from '@/client/js/module/crypts/obf_u32_xor_prng_b64';
 
 export default (btnStart) => {
   btnStart.onclick = () => {
+    // 상대에게 Ready를 알리기 전에 현재 화면의 최종 shuffle 순서를 먼저 확정한다.
+    // 이렇게 해야 Peer가 setOrder로 전환되는 시점보다 Cube order 전송이 늦어지는
+    // race condition을 만들지 않는다.
+    const playerNumOrder = saveSessionStorage();
+    cubeNumCheck(playerNumOrder);
+
     // myShuffleState : true
     storageMethod("s", "SET_ITEM",
       findCharCode([80, 72, 73, 74, 89, 86, 83, 66, 69, 87]), // myShuffleState
       X.enc(decodeTF(_t([115, 119, 112, 117]))) // "swpu" : true
     );
 
-    /*
-    const nickPlain = storageMethod("l", "GET_ITEM", "localPlayer");
-    console.log("암호화 nick name >>>>>>>>>> ", nickPlain);
-    const decLocalNick = parsePayloadToHex(nickPlain);
-    console.log("복호화 nick name >>>>>>>>>> ", decLocalNick);
-    const localNickStr = decLocalNick.join(",");
-    console.log("닉네임 str >>>>>>>>>>>>>>>> ", localNickStr);
-    */
 
     // 나의 shuffle이 끝났다고 상대에게 알림
     request('startCheck', {
@@ -91,7 +88,5 @@ export default (btnStart) => {
     );
 
     cubeReadyEnd();
-    saveSessionStorage();
-    cubeNumCheck();
   };
 };
