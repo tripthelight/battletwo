@@ -6,9 +6,13 @@ import {
   setReady,
 } from '@/client/js/module/webRTC/connectSignaling';
 import remoteReload from '@/client/js/functions/remoteReload';
+import {
+  handleFindTheSamePicturePayload,
+  handleFindTheSamePicturePeerReady,
+} from '@/client/js/views/game/findTheSamePicture/fns/network/sync';
 
 /**
- * Find Same Picture의 실제 게임 payload를 처리한다.
+ * Find The Same Picture의 실제 게임 payload를 처리한다.
  */
 export function response(payload, meta) {
   if (!payload || typeof payload.type !== 'string') {
@@ -20,32 +24,27 @@ export function response(payload, meta) {
     return;
   }
 
-  switch (payload.type) {
-    case 'remoteReload':
-      remoteReload(payload.value);
-      break;
-
-    case 'enemyBodyClick':
-      console.log(
-        '[findTheSamePicture] enemy body click',
-        payload.count,
-      );
-      break;
-
-    default:
-      console.warn(
-        '[findTheSamePicture] No handler for type:',
-        payload.type,
-        payload,
-        meta,
-      );
-      break;
+  if (payload.type === 'remoteReload') {
+    remoteReload(payload.value);
+    return;
   }
+
+  if (payload.type.startsWith('FSP/')) {
+    handleFindTheSamePicturePayload(payload, meta);
+    return;
+  }
+
+  console.warn(
+    '[findTheSamePicture] No handler for type:',
+    payload.type,
+    payload,
+    meta,
+  );
 }
 
 /**
  * connectSignaling의 reliable layer가 최종적으로 호출하는
- * Find Same Picture용 payload 진입점이다.
+ * Find The Same Picture용 payload 진입점이다.
  */
 export function deliverToGame(payload, meta) {
   if (!payload || typeof payload.type !== 'string') {
@@ -54,6 +53,7 @@ export function deliverToGame(payload, meta) {
 
   if (payload.type === 'ROUND/START') {
     setReady();
+    handleFindTheSamePicturePeerReady();
     maybeResolveReady();
     return;
   }
@@ -63,7 +63,7 @@ export function deliverToGame(payload, meta) {
 
 /**
  * connectSignaling이 DataChannel message를 받은 뒤 호출하는
- * Find Same Picture 전용 envelope 처리기다.
+ * Find The Same Picture 전용 envelope 처리기다.
  */
 export function handleEnvelope(env) {
   if (!env || env.v !== 1 || !env.t) {
@@ -98,11 +98,7 @@ export function handleEnvelope(env) {
       break;
 
     case 'PONG':
-      break;
-
     case 'HELLO':
-      break;
-
     case 'STATE':
       break;
 

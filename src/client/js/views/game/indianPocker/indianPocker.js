@@ -22,13 +22,11 @@ import {
   RESULT_RELOAD_STATE,
   isResultReloadUser,
 } from '@/client/js/network/indianPocker/fns/resultReloadSync';
+import { hasGameOverSnapshot } from '@/client/js/views/game/indianPocker/fns/common/gameOverSnapshot';
 import {
   markGameHistoryEntry,
   skipRetiredGameHistoryEntry,
 } from '@/client/js/module/navigation/gameHistory';
-
-
-
 
 LOADING_EVENT.show();
 const GAME_NAME = 'indianPocker';
@@ -41,32 +39,26 @@ async function startGame() {
     let keepLoading = false;
     waitPeer(2);
     await makeCard();
-    makePayload(); // 카드 선택 시 보여지는 카드의 svg > path의 number/T payload
+    makePayload();
 
     if (getRL(false)) {
       const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
       const decryptVal = window.sessionStorage.getItem(encryptKey);
 
-      // 새로 고침 후 재연결인 경우
       switch (decryptVal) {
-        // case 'waitEnemy':
-        case findCharCode([74, 75, 71, 90, 87, 79, 85, 69, 65, 88]):
-          console.log("새로고침 후 : waitEnemy");
-
-          // choiceCard
+        case findCharCode([74, 75, 71, 90, 87, 79, 85, 69, 65, 88]): // waitEnemy
+          console.log('새로고침 후 : waitEnemy');
           indianPockerGameState.choiceCard();
           break;
-        // case 'choiceCard':
-        case findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82]):
-          console.log("새로고침 후 : choiceCard");
+
+        case findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82]): // choiceCard
+          console.log('새로고침 후 : choiceCard');
           indianPockerGameState.choiceCard();
           break;
-        // case 'basicBet':
-        case findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]):
-          console.log("새로고침 후 : basicBet");
 
-          // 결과 화면에서 새로고침한 뒤 상대의 next-state 신호를 기다리는 중
-          // 다시 새로고침해도 basicBet 검증을 먼저 시작하지 않고 계속 동기화를 기다린다.
+        case findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68]): // basicBet
+          console.log('새로고침 후 : basicBet');
+
           if (isResultReloadUser()) {
             keepLoading = true;
             LOADING_EVENT.show();
@@ -75,50 +67,48 @@ async function startGame() {
             indianPockerGameState.basicBet();
           }
           break;
-        // case 'playing':
-        case findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]):
-          console.log("새로고침 후 : playing");
+
+        case findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]): // playing
+          console.log('새로고침 후 : playing');
           keepLoading = true;
           LOADING_EVENT.show();
-          // playing 중 새로고침 한 사용자
+
           storageMethod(
             's',
             'SET_ITEM',
             findCharCode([75, 81, 83, 80, 89, 88, 86, 72, 82, 77]), // playingReloadUser
-            X.enc(decodeTF(textDE([99,119,104,117]))) // "cwhu" : true
+            X.enc(decodeTF(textDE([99, 119, 104, 117]))), // true
           );
-          const encryptKey1 = findCharCode([65, 72, 66, 75, 85, 69, 87, 79, 88, 86]); // foldState
-          const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
-          if (encryptVal1 !== null && encryptVal1 !== "") {
-            // 이전 판에서 FOLD animation 실행중 일 때 새로고침 한 경우
-            if (X.dec(encryptVal1)) { // foldState : true
 
-              console.log("foldState :::::::::: true");
+          {
+            const encryptKey1 = findCharCode([65, 72, 66, 75, 85, 69, 87, 79, 88, 86]); // foldState
+            const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
 
-              // FOLD를 실행한 PLAYER
-              const encryptKey2 = findCharCode([66, 65, 81, 76, 84, 71, 67, 86, 82, 83]); // foldUser
-              const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
-              if (encryptVal2 !== null && encryptVal2 !== "") {
-                if (X.dec(encryptVal2)) { // foldUser : true
-                  console.log("foldUser :::::::::: true");
+            if (encryptVal1 !== null && encryptVal1 !== '') {
+              if (X.dec(encryptVal1)) {
+                console.log('foldState :::::::::: true');
 
-                  // FOLD를 실행한 PLAY가 새고로침
-                  indianPockerGameState.basicBet('foldLocal');
-                } else { // foldUser : false
-                  console.log("foldUser :::::::::: false");
+                const encryptKey2 = findCharCode([66, 65, 81, 76, 84, 71, 67, 86, 82, 83]); // foldUser
+                const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
 
-                  // FOLD를 받은 PLAY가 새고로침
-                  indianPockerGameState.basicBet('foldRemote');
+                if (encryptVal2 !== null && encryptVal2 !== '') {
+                  if (X.dec(encryptVal2)) {
+                    console.log('foldUser :::::::::: true');
+                    indianPockerGameState.basicBet('foldLocal');
+                  } else {
+                    console.log('foldUser :::::::::: false');
+                    indianPockerGameState.basicBet('foldRemote');
+                  }
                 }
               }
+            } else {
+              indianPockerGameState.playing();
             }
-          } else {
-            indianPockerGameState.playing();
           }
           break;
-        // case 'gameOver':
-        case findCharCode([65, 70, 79, 73, 76, 85, 88, 87, 86, 75]):
-          console.log("새로고침 후 : gameOver");
+
+        case findCharCode([65, 70, 79, 73, 76, 85, 88, 87, 86, 75]): // gameOver
+          console.log('새로고침 후 : gameOver');
           indianPockerGameState.gameOver();
           break;
 
@@ -126,7 +116,6 @@ async function startGame() {
           throw throwObj('errorComn', 'refresh gameState failed.');
       }
     } else {
-      // choiceCard
       indianPockerGameState.choiceCard();
     }
 
@@ -136,15 +125,31 @@ async function startGame() {
   } catch (error) {
     errorManager(error, false);
   }
-};
+}
 
 // —————————————————————————————————————————————
 // INIT ————————————————————————————————————————
 // —————————————————————————————————————————————
 async function init() {
   await initNickName();
+
+  // 완료된 게임은 keypair가 없는 새 document에서도 snapshot으로 결과 화면만 복구한다.
+  // Signaling에 재진입하지 않으므로 이미 REPLAY한 이전 Peer의 새 매칭에 영향을 주지 않는다.
+  if (hasGameOverSnapshot()) {
+    storageMethod('s', 'REMOVE_ITEM', 'reload');
+    storageMethod('s', 'REMOVE_ITEM', 'resumeToken');
+    storageMethod('s', 'REMOVE_ITEM', 'roomId');
+    indianPockerGameState.gameOver({ restore: true });
+    return;
+  }
+
   waitPeer(1, findNickname('localPlayer'));
-  connectSignaling(false, { deliverToGame, handleEnvelope, startGame, gameName: GAME_NAME });
+  connectSignaling(false, {
+    deliverToGame,
+    handleEnvelope,
+    startGame,
+    gameName: GAME_NAME,
+  });
 }
 
 // —————————————————————————————————————————————

@@ -1,44 +1,46 @@
 import '@/client/assets/scss/game/findTheSamePicture/common';
 import '@/client/js/common/common';
+import initNickName from '@/client/js/functions/initNickName';
+import findTheSamePictureGameState from '@/client/js/gameState/findTheSamePicture';
+import {
+  restoreStoredGameOverState,
+} from '@/client/js/views/game/findTheSamePicture/fns/common/state';
 import {
   markGameHistoryEntry,
   skipRetiredGameHistoryEntry,
 } from '@/client/js/module/navigation/gameHistory';
-
 import {
   connectSignaling,
 } from '@/client/js/module/webRTC/connectSignaling';
-
 import {
   deliverToGame,
   handleEnvelope,
 } from '@/client/js/network/findTheSamePicture/response';
-
 import {
-  request,
-} from '@/client/js/network/findTheSamePicture/request';
+  prepareFindTheSamePicturePage,
+  startFindTheSamePictureGame,
+} from '@/client/js/views/game/findTheSamePicture/fns/common/lifecycle';
 
 const GAME_NAME = 'findTheSamePicture';
 
-/**
- * WebRTC/DataChannel 연결이 완전히 준비된 뒤
- * Find Same Picture의 현재 프로토타입 입력을 활성화한다.
- */
 async function startGame() {
   console.log('[findTheSamePicture] Peer READY. Game start.');
-
-  // 기존 프로토타입 동작을 그대로 유지한다.
-  // 로컬 body 클릭을 상대 Peer에게 전달한다.
-  document.body.onclick = () => {
-    request('bodyClick');
-  };
+  startFindTheSamePictureGame();
 }
 
-/**
- * Find Same Picture는 현재 서버 생성 storage/keypair가 필요하지 않다.
- * Peer READY 직후 바로 startGame()으로 진입한다.
- */
-function init() {
+async function init() {
+  await initNickName();
+  prepareFindTheSamePicturePage();
+
+  // 완료된 게임에서의 새로고침은 이전 Peer와 다시 매칭하지 않는다.
+  // 저장된 gameover state만 로컬에서 복구해 결과 화면을 유지한다.
+  if (restoreStoredGameOverState()) {
+    findTheSamePictureGameState.gameOver();
+    return;
+  }
+
+  findTheSamePictureGameState.waitEnemy();
+
   connectSignaling(
     false,
     {
@@ -55,8 +57,8 @@ markGameHistoryEntry();
 
 window.addEventListener(
   'pageshow',
-  (event) => {
+  async (event) => {
     if (skipRetiredGameHistoryEntry(event)) return;
-    init();
+    await init();
   },
 );

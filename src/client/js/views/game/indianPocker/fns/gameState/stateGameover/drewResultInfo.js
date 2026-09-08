@@ -1,39 +1,49 @@
-import findCharCode from '@/client/js/functions/findCharCode';
-import X from '@/client/js/module/crypts/bool-obf';
 import { timeInterval_1 } from '@/client/js/functions/variable';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
 import { comnText } from '@/client/js/functions/language';
 import storageMethod from '@/client/js/module/storage/storageMethod';
+import {
+  SESSION_END_REASON,
+  terminateGameSession,
+} from '@/client/js/module/webRTC/connectSignaling';
+import { getGameOverResult } from '@/client/js/views/game/indianPocker/fns/common/gameOverSnapshot';
+
+const GAME_PATH = '/game/indianPocker';
 
 export default () => {
-  // element | seeeion 체크
   const DREW_RESULT_INFO = document.querySelector('.drew-result-info');
   if (DREW_RESULT_INFO) return;
+
   const GAME_SCENE = document.getElementById('gameScene');
-  if (!GAME_SCENE) return errorManagement({ errCase: 'elementLoss', message: 'game over 상태에서 #gameScene 엘리먼트가 없습니다' });
+  if (!GAME_SCENE) {
+    return errorManagement({
+      errCase: 'elementLoss',
+      message: 'game over 상태에서 #gameScene 엘리먼트가 없습니다',
+    });
+  }
 
-  // const RESULT = window.sessionStorage.result;
-  // if (!RESULT) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 결과 출력 중 result 세션이 없습니다' });
-  // const RESULT_RES = RESULT === 'true' ? true : RESULT === 'false' ? false : errorManagement({ errCase: 'errorComn', message: 'game over 상태에서 result 세션이 true나 false가 아닙니다' });
-  const encryptKey1 = findCharCode([79, 85, 77, 74, 71, 78, 80, 67, 81, 72]); // result
-  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
-  if (encryptVal1 === null || (encryptVal1 !== null && encryptVal1 === '')) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 결과 출력 중 result 세션이 없습니다' });
-  const decryptVal1 = X.dec(encryptVal1);
+  const result = getGameOverResult();
+  if (typeof result !== 'boolean') {
+    return errorManagement({
+      errCase: 'sessionStorageLoss',
+      message: 'game over 상태에서 결과 출력 데이터가 없습니다',
+    });
+  }
 
-  // 명령
   setTimeout(() => {
-    let elem = document.createElement('div');
-    let inner = document.createElement('span');
-    let btnBlock = document.createElement('div');
-    let btnHome = document.createElement('a');
-    let btnReplay = document.createElement('a');
+    const elem = document.createElement('div');
+    const inner = document.createElement('span');
+    const btnBlock = document.createElement('div');
+    const btnHome = document.createElement('a');
+    const btnReplay = document.createElement('a');
 
     btnBlock.classList.add('btn-block');
+
     btnHome.setAttribute('href', '/');
     btnHome.setAttribute('title', 'move home');
     btnHome.classList.add('btn-home');
     btnHome.innerHTML = 'HOME';
-    // btnReplay.setAttribute('href', '/game/indianPocker');
+
     btnReplay.setAttribute('href', 'javascript:void(0);');
     btnReplay.setAttribute('title', 'play again');
     btnReplay.classList.add('btn-replay');
@@ -43,17 +53,26 @@ export default () => {
     btnBlock.appendChild(btnReplay);
 
     elem.classList.add('drew-result-info');
-    // inner.innerHTML = RESULT_RES ? comnText.win : comnText.die;
-    inner.innerHTML = decryptVal1 ? comnText.win : comnText.die;
+    inner.innerHTML = result ? comnText.win : comnText.die;
     elem.appendChild(inner);
     elem.appendChild(btnBlock);
 
     GAME_SCENE.appendChild(elem);
 
-    btnReplay.onclick = () => {
+    btnReplay.onclick = (event) => {
+      event.preventDefault();
+
+      btnReplay.onclick = null;
+      btnReplay.style.pointerEvents = 'none';
+      btnReplay.setAttribute('aria-disabled', 'true');
+
+      terminateGameSession({
+        reason: SESSION_END_REASON.LEAVE,
+        notifyPeer: true,
+      });
+
       storageMethod('s', 'REMOVE_ALL');
-      const baseUrl = window.location.origin;
-      location.href = baseUrl + '/game/indianPocker';
+      window.location.replace(GAME_PATH);
     };
   }, timeInterval_1);
 };

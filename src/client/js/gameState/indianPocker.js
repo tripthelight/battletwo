@@ -1,33 +1,46 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import storageMethod from '@/client/js/module/storage/storageMethod';
+import { markGameSessionCompleted } from '@/client/js/module/webRTC/connectSignaling';
 import gameStateChoiceCard from '@/client/js/gameState/indianPocker/gameStateChoiceCard';
 import gameStateBasicBet from '@/client/js/gameState/indianPocker/gameStateBasicBet';
 import gameStateGameOver from '@/client/js/gameState/indianPocker/gameStateGameOver';
 import gameStatePlaying from '@/client/js/gameState/indianPocker/gameStatePlaying';
+import { saveGameOverSnapshot } from '@/client/js/views/game/indianPocker/fns/common/gameOverSnapshot';
 
 export default {
   waitEnemy: () => {
     const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
     storageMethod('s', 'SET_ITEM', encryptKey, findCharCode([74, 75, 71, 90, 87, 79, 85, 69, 65, 88])); // waitEnemy
   },
+
   choiceCard: () => {
     const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
     storageMethod('s', 'SET_ITEM', encryptKey, findCharCode([87, 74, 65, 80, 89, 85, 90, 84, 72, 82])); // choiceCard
     gameStateChoiceCard();
   },
+
   basicBet: (reloadState) => {
     const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
     storageMethod('s', 'SET_ITEM', encryptKey, findCharCode([70, 72, 86, 88, 82, 66, 75, 89, 79, 68])); // basicBet
     gameStateBasicBet(reloadState);
   },
+
   playing: () => {
     const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
-    storageMethod('s', 'SET_ITEM', encryptKey, findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71]));
+    storageMethod('s', 'SET_ITEM', encryptKey, findCharCode([84, 88, 86, 66, 78, 73, 82, 81, 87, 71])); // playing
     gameStatePlaying();
   },
-  gameOver: () => {
-    const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
-    storageMethod('s', 'SET_ITEM', encryptKey, findCharCode([65, 70, 79, 73, 76, 85, 88, 87, 86, 75]));
+
+  gameOver: ({ restore = false } = {}) => {
+    markGameSessionCompleted();
+
+    if (!restore) {
+      saveGameOverSnapshot();
+
+      const encryptKey = findCharCode([77, 73, 75, 86, 85, 68, 75, 76, 87, 79, 68]); // gameState
+      storageMethod('s', 'SET_ITEM', encryptKey, findCharCode([65, 70, 79, 73, 76, 85, 88, 87, 86, 75])); // gameOver
+    }
+
     gameStateGameOver();
   },
 };

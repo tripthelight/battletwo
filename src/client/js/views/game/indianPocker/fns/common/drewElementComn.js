@@ -1,48 +1,81 @@
-import findCharCode from '@/client/js/functions/findCharCode';
-import { dec } from '@/client/js/module/crypts/obf8lower';
-import X from '@/client/js/module/crypts/bool-obf';
 import { errorManagement } from '@/client/js/module/errorHandler/errorManagement';
+import {
+  getGameOverCoinsEnemy,
+  getGameOverCoinsPlayer,
+  getGameOverResult,
+} from '@/client/js/views/game/indianPocker/fns/common/gameOverSnapshot';
 
 export default (_elem, _class) => {
-  // element | seeeion 체크
   const GAME_SCENE = document.getElementById('gameScene');
-  if (!GAME_SCENE) return errorManagement({ errCase: 'elementLoss', message: 'game over 상태에서 결과를 그리는 중 #gameScene 엘리먼트가 없습니다' });
 
-  // const COINS_PLAYER = window.sessionStorage.coinsPlayer;
-  // if (!COINS_PLAYER) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 결과를 그리는 중 coinsPlayer 세션이 없습니다' });
-  const encryptKey1 = findCharCode([81, 67, 69, 68, 71, 77, 83, 90, 65, 74]);  // coinsPlayer
-  const encryptVal1 = window.sessionStorage.getItem(encryptKey1);
-  if (encryptVal1 === null) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 결과를 그리는 중 coinsPlayer 세션이 없습니다' });
-  const decryptVal1 = dec(encryptVal1); // coinsPlayer value number
+  if (!GAME_SCENE) {
+    return errorManagement({
+      errCase: 'elementLoss',
+      message: 'game over 상태에서 결과를 그리는 중 #gameScene 엘리먼트가 없습니다',
+    });
+  }
 
-  // const COINS_ENEMY = window.sessionStorage.coinsEnemy;
-  // if (!COINS_ENEMY) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 결과를 그리는 중 coinsEnemy 세션이 없습니다' });
-  const encryptKey2 = findCharCode([83, 78, 84, 68, 66, 80, 71, 65, 67, 87]); // coinsEnemy
-  const encryptVal2 = window.sessionStorage.getItem(encryptKey2);
-  if (encryptVal2 === null) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 결과를 그리는 중 coinsEnemy 세션이 없습니다' });
-  const decryptVal2 = dec(encryptVal2); // coinsEnemy value number
-
-
-
-  // const RESULT = window.sessionStorage.result;
-  // if (!RESULT) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 결과를 그리는 중 result 세션이 없습니다' });
-  const encryptKey3 = findCharCode([79, 85, 77, 74, 71, 78, 80, 67, 81, 72]); // result
-  const encryptVal3 = window.sessionStorage.getItem(encryptKey3);
-  if (encryptVal3 === null || (encryptVal3 !== null && encryptVal3 === '')) return errorManagement({ errCase: 'sessionStorageLoss', message: 'game over 상태에서 결과를 그리는 중 result 세션이 없습니다' });
-  const decryptVal3 = X.dec(encryptVal3);
-
-  // const COINS_RESULT = RESULT === 'true' ? Number(COINS_PLAYER) : Number(COINS_ENEMY);
-  const COINS_RESULT = decryptVal3 ? decryptVal1 : decryptVal2;
-
-  const UL_CLASS = _class === 'enemy-block' ? 'coins-enemy' : _class === 'player-block' ? 'coins-player' : '';
-  let elem = document.createElement(_elem);
+  const elem = document.createElement(_elem);
   elem.classList.add(_class);
-  if ((_class === 'enemy-block' || _class === 'player-block') && Number(COINS_RESULT) > 0) {
-    let ulEl = document.createElement('ul');
+
+  const isCoinBlock =
+    _class === 'enemy-block' ||
+    _class === 'player-block';
+
+  // betting-zone 등 coin 데이터가 필요 없는 element는 storage를 읽지 않는다.
+  if (!isCoinBlock) {
+    GAME_SCENE.appendChild(elem);
+    return;
+  }
+
+  const result = getGameOverResult();
+  const coinsPlayer = getGameOverCoinsPlayer();
+  const coinsEnemy = getGameOverCoinsEnemy();
+
+  if (typeof result !== 'boolean') {
+    return errorManagement({
+      errCase: 'sessionStorageLoss',
+      message: 'game over 상태에서 결과를 그리는 중 result 데이터가 없습니다',
+    });
+  }
+
+  if (!Number.isInteger(coinsPlayer) || coinsPlayer < 0) {
+    return errorManagement({
+      errCase: 'sessionStorageLoss',
+      message: 'game over 상태에서 결과를 그리는 중 coinsPlayer 데이터가 없습니다',
+    });
+  }
+
+  if (!Number.isInteger(coinsEnemy) || coinsEnemy < 0) {
+    return errorManagement({
+      errCase: 'sessionStorageLoss',
+      message: 'game over 상태에서 결과를 그리는 중 coinsEnemy 데이터가 없습니다',
+    });
+  }
+
+  // 기존 Indian Poker 결과 화면과 동일하게 승리한 쪽의 coin 수를 사용한다.
+  const coinsResult = result
+    ? coinsPlayer
+    : coinsEnemy;
+
+  if (coinsResult > 0) {
+    const ulEl = document.createElement('ul');
     ulEl.classList.add('coins');
-    ulEl.classList.add(UL_CLASS);
-    for (let i = 0; i < Number(COINS_RESULT); i++) ulEl.appendChild(document.createElement('li'));
+    ulEl.classList.add(
+      _class === 'enemy-block'
+        ? 'coins-enemy'
+        : 'coins-player',
+    );
+
+    const fragment = document.createDocumentFragment();
+
+    for (let i = 0; i < coinsResult; i += 1) {
+      fragment.appendChild(document.createElement('li'));
+    }
+
+    ulEl.appendChild(fragment);
     elem.appendChild(ulEl);
   }
+
   GAME_SCENE.appendChild(elem);
 };
