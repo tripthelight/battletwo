@@ -1,6 +1,7 @@
-import '@/client/assets/scss/main/main';
+import '@/client/assets/scss/main/common';
 import '@/client/js/common/common';
-import initNickName from '@/client/js/functions/initNickName';
+
+import gameCard from "@/client/js/views/main/fns/gameCard";
 
 // onMounted
 document.onreadystatechange = async () => {
@@ -8,6 +9,6 @@ document.onreadystatechange = async () => {
   if (state === 'interactive') {
   } else if (state === 'complete') {
     console.log('main init');
-    // await initNickName();
+    await gameCard();
   }
 };
