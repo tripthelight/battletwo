@@ -1,0 +1,18 @@
+:root {
+  --main-logo-size: 0;
+}
+
+.main-logo {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: var(--main-logo-size);
+  height: var(--main-logo-size);
+  transform: translate(-50%, -50%);
+  // background-image: url('@/client/assets/images/svg/common/LOGO.png');
+  // background-size: 198px 198px;
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}

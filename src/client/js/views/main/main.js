@@ -2,6 +2,7 @@ import '@/client/assets/scss/main/common';
 import '@/client/js/common/common';
 
 import gameCard from "@/client/js/views/main/fns/gameCard";
+import mainLogo from "@/client/js/views/main/fns/mainLogo";
 
 // onMounted
 document.onreadystatechange = async () => {
@@ -10,5 +11,6 @@ document.onreadystatechange = async () => {
   } else if (state === 'complete') {
     console.log('main init');
     await gameCard();
+    mainLogo();
   }
 };
