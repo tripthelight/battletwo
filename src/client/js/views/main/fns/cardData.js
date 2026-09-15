@@ -17,7 +17,7 @@ export default () => {
     r: {
       tox: overlay, // transform-origin x
       ttx: WW / 2 - overlay, // transform translate x
-      zi: 2 // z-index r
+      zi: 3 // z-index r
     }
   }
 }

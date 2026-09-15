@@ -40,6 +40,8 @@ export default async () => {
         card.classList.add("card");
         card.classList.add(gameList[i]);
 
+        card.style.setProperty('z-index', 3);
+
         if (j === 0) {
           card.classList.add("l");
           card.style.setProperty('transform-origin', `${ l.tox }px ${ toy }px`);
@@ -51,7 +53,7 @@ export default async () => {
             `
           );
           if (i === gameList.length - 1) {
-            card.style.setProperty('z-index', l.zi);
+            // card.style.setProperty('z-index', l.zi);
           }
         } else if (j === 1) {
           card.classList.add("r");
@@ -64,7 +66,7 @@ export default async () => {
             `
           );
           if (i === 0) {
-            card.style.setProperty('z-index', r.zi);
+            // card.style.setProperty('z-index', r.zi);
           }
         }
 

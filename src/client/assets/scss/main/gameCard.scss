@@ -16,6 +16,7 @@
     // top: calc(var(--main-card-top) + 50%);
     width: calc(var(--main-card-size) / 2 + var(--main-card-overlay));
     height: var(--main-card-size);
+    // z-index: 2;
     &.l, &.r {
 
     }
@@ -34,6 +35,15 @@
     }
     &.findTheSamePicture {
       background-color: #333;
+    }
+    &.gameCardTest1 {
+      background-color: #444;
+    }
+    &.gameCardTest2 {
+      background-color: #555;
+    }
+    &.gameCardTest3 {
+      background-color: #666;
     }
   }
   &.card-rotate-ani {

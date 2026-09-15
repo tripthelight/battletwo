@@ -10,7 +10,7 @@ document.onreadystatechange = async () => {
   if (state === 'interactive') {
   } else if (state === 'complete') {
     console.log('main init');
-    await gameCard();
     mainLogo();
+    await gameCard();
   }
 };
