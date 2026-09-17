@@ -3,6 +3,7 @@ import '@/client/js/common/common';
 
 import gameCard from "@/client/js/views/main/fns/gameCard";
 import mainLogo from "@/client/js/views/main/fns/mainLogo";
+import gameCardEvent from "@/client/js/views/main/fns/gameCardEvent";
 
 // onMounted
 document.onreadystatechange = async () => {
@@ -10,7 +11,8 @@ document.onreadystatechange = async () => {
   if (state === 'interactive') {
   } else if (state === 'complete') {
     console.log('main init');
-    mainLogo();
     await gameCard();
+    mainLogo();
+    gameCardEvent();
   }
 };

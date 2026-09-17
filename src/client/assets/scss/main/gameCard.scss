@@ -1,56 +1,45 @@
 :root {
-  --main-card-top: 0;
-  --main-card-size: 0;
-  --main-card-overlay: 0;
-  --main-card-transition-duration: 0;
 }
 
 .game-cards {
+  position: fixed;
+  left: 0;
+  top: 0;
   width: 100vw;
   height: 100vh;
-  position: relative;
-  .card {
-    position: fixed;
-    // left: 50%;
-    // top: 0;
-    // top: calc(var(--main-card-top) + 50%);
-    width: calc(var(--main-card-size) / 2 + var(--main-card-overlay));
-    height: var(--main-card-size);
-    // z-index: 2;
-    &.l, &.r {
-
-    }
-    &.l {
-
-    }
-    &.r {
-
-    }
-
-    &.indianPocker {
-      background-color: #111;
-    }
-    &.blackAndWhite1 {
-      background-color: #222;
-    }
-    &.findTheSamePicture {
-      background-color: #333;
-    }
-    &.gameCardTest1 {
-      background-color: #444;
-    }
-    &.gameCardTest2 {
-      background-color: #555;
-    }
-    &.gameCardTest3 {
-      background-color: #666;
-    }
-  }
-  &.card-rotate-ani {
-    .card {
-      transition-property: transform;
-      transition-duration: var(--main-card-transition-duration);
-      transition-timing-function: ease-out;
+  overflow: hidden;
+  svg {
+    &.card {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: visible;
+      pointer-events: none;
+      /*
+      * 정확히 화면 중심 기준으로 회전
+      */
+      transform-origin: 50% 50%;
+      &.indianPocker {
+        path {
+          fill: #111;
+        }
+      }
+      &.blackAndWhite1 {
+        path {
+          fill: #222;
+        }
+      }
+      &.findTheSamePicture {
+        path {
+          fill: #333;
+        }
+      }
+      path {
+        pointer-events: visiblePainted;
+        cursor: pointer;
+      }
     }
   }
 }

@@ -1,3 +1,7 @@
 {
-  "gameList": ["indianPocker", "blackAndWhite1", "findTheSamePicture", "gameCardTest1", "gameCardTest2"]
+  "gameList": [
+    "indianPocker",
+    "blackAndWhite1",
+    "findTheSamePicture"
+  ]
 }
