@@ -21,24 +21,48 @@
       * 정확히 화면 중심 기준으로 회전
       */
       transform-origin: 50% 50%;
+      path {
+        stroke-width: 1px;
+        stroke-linejoin: round;
+        stroke-linecap: round;
+        pointer-events: visibleFill;
+        cursor: pointer;
+      }
       &.indianPocker {
         path {
           fill: #111;
+          stroke: #111;
         }
       }
       &.blackAndWhite1 {
         path {
           fill: #222;
+          stroke: #222;
         }
       }
       &.findTheSamePicture {
         path {
           fill: #333;
+          stroke: #333;
         }
       }
-      path {
-        pointer-events: visiblePainted;
-        cursor: pointer;
+      &.gameCardTest1 {
+        path {
+          fill: #444;
+          stroke: #444;
+        }
+      }
+      &.gameCardTest2 {
+        path {
+          fill: #555;
+          stroke: #555;
+        }
+      }
+      &.gameCardTest3 {
+        path {
+          fill: #666;
+          stroke: #666;
+        }
       }
     }
   }
