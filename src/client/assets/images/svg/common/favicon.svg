@@ -1,0 +1,205 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="300"
+  height="300"
+  viewBox="0 0 300 300"
+  id="LOGO_BATTLETWO"
+><!-- 22 40 => 31 -->
+  <defs>
+    <style>
+      :root {
+        --logo-fill: #000;
+        --logo-bg: #FFF;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --logo-fill: #FFF;
+          --logo-bg: #000;
+        }
+      }
+
+      #LOGO_BATTLETWO defs linearGradient stop {
+        stop-color: var(--logo-fill);
+      }
+
+      #LOGO_BATTLETWO .logo-bg {
+        fill: var(--logo-bg);
+      }
+
+      #LOGO_BATTLETWO .logo-fill {
+        fill: var(--logo-fill);
+      }
+    </style>
+
+    <linearGradient
+      id="gradient-start"
+      gradientTransform="rotate(90)"
+    >
+      <stop offset="0%"></stop>
+      <stop offset="50%"></stop>
+      <stop
+        offset="100%"
+        stop-opacity="0"
+      ></stop>
+    </linearGradient>
+
+    <linearGradient
+      id="gradient-end"
+      gradientTransform="rotate(90)"
+    >
+      <stop
+        offset="0%"
+        stop-opacity="0"
+      ></stop>
+      <stop
+        offset="30%"
+        stop-opacity="0.3"
+      ></stop>
+      <stop
+        offset="60%"
+        stop-opacity="1"
+      ></stop>
+      <stop
+        offset="100%"
+        stop-opacity="1"
+      ></stop>
+    </linearGradient>
+  </defs>
+
+  <!-- LOGO BG -->
+  <path
+    class="logo-bg"
+    d="
+      M0,80
+      A80,80 0 0,1 80,0
+      L220,0
+      A80,80 0 0,1 300,80
+      L300,220
+      A80,80 0 0,1 220,300
+      L80,300
+      A80,80 0 0,1 0,220
+      L0,80
+      Z
+    "
+  /><!-- // LOGO BG -->
+
+  <!-- <path
+    class="logo-path"
+    d="
+      M54,84
+      L54,114
+      A54,57 0 0,1 0,57
+      A54,57 0 0,1 54,0
+      L64,0
+      L64,30
+      L54,30
+      A24,28 0 0,0 30,57
+      A24,28 0 0,0 54,84
+      Z
+    "
+    fill="url(#gradient-start)"
+  /> -->
+  <path
+    class="logo-path"
+    d="
+      M105,135
+      L105,165
+      A54,57 0 0,1 51,108
+      A54,57 0 0,1 105,51
+      L115,51
+      L115,81
+      L105,81
+      A24,28 0 0,0 81,108
+      A24,28 0 0,0 105,135
+      Z
+    "
+    fill="url(#gradient-start)"
+  />
+
+  <!-- <path
+    class="logo-path"
+    d="
+      M148,168
+      A20,28 0 0,0 168,140
+      A20,28 0 0,0 148,114
+      L100,114
+      L100,84
+      L148,84
+      A50,58 0 0,1 198,140
+      A50,58 0 0,1 148,198
+      L138,198
+      L138,168
+      L148,168
+      Z
+    "
+    fill="url(#gradient-end)"
+  /> -->
+  <path
+    class="logo-path"
+    d="
+      M199,219
+      A20,28 0 0,0 219,191
+      A20,28 0 0,0 199,165
+      L151,165
+      L151,135
+      L199,135
+      A50,58 0 0,1 249,191
+      A50,58 0 0,1 199,249
+      L189,249
+      L189,219
+      L199,219
+      Z
+    "
+    fill="url(#gradient-end)"
+  />
+
+  <!-- <path
+    class="logo-path logo-fill"
+    d="
+      M54,0
+      L114,0
+      A54,57 0 0,1 168,57
+      A54,57 0 0,1 114,114
+      L54,114
+      A24,28 0 0,0 30,142
+      L30,168
+      L148,168
+      L148,198
+      L0,198
+      L0,142
+      A54,57 0 0,1 54,84
+      L114,84
+      A24,28 0 0,0 138,57
+      A24,28 0 0,0 114,30
+      L54,30
+      L54,0
+      Z
+    "
+  /> -->
+  <path
+    class="logo-path logo-fill"
+    d="
+      M105,51
+      L165,51
+      A54,57 0 0,1 219,108
+      A54,57 0 0,1 165,165
+      L105,165
+      A24,28 0 0,0 81,193
+      L81,219
+      L199,219
+      L199,249
+      L51,249
+      L51,193
+      A54,57 0 0,1 105,135
+      L165,135
+      A24,28 0 0,0 189,108
+      A24,28 0 0,0 165,81
+      L105,81
+      L105,51
+      Z
+    "
+  />
+
+</svg>
