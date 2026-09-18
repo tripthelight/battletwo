@@ -34,7 +34,6 @@ export default async () => {
     * 애니메이션 중에는 중앙 정N각형을 이루는 공통 경계선도 함께 이동시키고
     * 그 경계선을 기준으로 인접 path의 d 값을 다시 계산한다.
     */
-    const INCREASE_TIME = 200;
     const animationTime = 1000;
     const animationFunc = ["ease", "ease-in", "ease-out", "ease-in-out", "linear"];
     const selectedAnimationFunc = animationFunc[1]; // ease-in
@@ -415,32 +414,37 @@ export default async () => {
     const animationEasing = getAnimationEasing(selectedAnimationFunc);
 
     /*
-    * 순차 회전 애니메이션.
-    *
-    * INCREASE_TIME:
-    *   각 SVG가 회전을 시작하는 시점 사이의 간격
+    * 순차 시작 + 동시 종료 회전 애니메이션.
     *
     * animationTime:
-    *   각 SVG 한 개가 rotationAngle만큼 회전하는 데 걸리는 시간
+    *   모든 SVG 애니메이션이 최종적으로 함께 종료되는 전체 시간
     *
-    * selectedAnimationFunc:
-    *   SVG 회전과 path의 d 변경에 동시에 적용되는 timing-function
+    * 각 SVG의 시작 시점:
+    *   (animationTime / shapeCount) * index
     *
-    * 예:
-    *   INCREASE_TIME = 500
-    *   animationTime = 100
+    * 각 SVG의 실제 애니메이션 시간:
+    *   animationTime - 시작 시점
     *
-    *   0번 SVG : 0ms 시작    -> 100ms 종료
-    *   1번 SVG : 500ms 시작  -> 600ms 종료
-    *   2번 SVG : 1000ms 시작 -> 1100ms 종료
-    *
-    * animationTime이 INCREASE_TIME보다 커져 애니메이션이 서로 겹치는 경우도
-    * 하나의 requestAnimationFrame 흐름에서 함께 처리한다.
+    * 따라서 SVG들은 순서대로 시작하지만 모두 animationTime 시점에 함께 끝난다.
+    * selectedAnimationFunc는 각 SVG의 개별 애니메이션 구간에 동일하게 적용된다.
     */
-    const totalAnimationTime = (shapeCount - 1) * INCREASE_TIME + animationTime;
+    const totalAnimationTime = animationTime;
+    const animationStartInterval = animationTime / shapeCount;
+    const animationStartTimes = new Float64Array(shapeCount);
+    const animationDurationInverses = new Float64Array(shapeCount);
     const stepProgress = new Float64Array(shapeCount);
     const dirtyPaths = new Uint8Array(shapeCount);
     let animationStartTime = null;
+
+    /*
+    * 매 프레임 동일한 시작 시간/지속 시간 나눗셈을 반복하지 않도록
+    * 각 SVG의 시작 시점과 duration의 역수를 한 번만 계산한다.
+    */
+    for (let i = 0; i < shapeCount; i++) {
+      const startTime = animationStartInterval * i;
+      animationStartTimes[i] = startTime;
+      animationDurationInverses[i] = 1 / (animationTime - startTime);
+    }
 
     function markPathsByLine(lineIndex) {
       dirtyPaths[(lineIndex - 1 + shapeCount) % shapeCount] = 1;
@@ -476,7 +480,7 @@ export default async () => {
     function animate(now) {
       /*
       * 첫 requestAnimationFrame의 timestamp를 시작 기준으로 사용한다.
-      * 이전 v2에서 수정한 음수 elapsed 방지 방식도 그대로 유지한다.
+      * 음수 elapsed가 발생하지 않도록 0 ~ animationTime 범위로 고정한다.
       */
       if (animationStartTime === null) {
         animationStartTime = now;
@@ -487,38 +491,17 @@ export default async () => {
         totalAnimationTime
       );
 
-      let hasActiveAnimation = false;
-      let hasFutureAnimation = false;
-      let nextStartTime = Infinity;
-
       for (let i = 0; i < shapeCount; i++) {
-        const startTime = i * INCREASE_TIME;
-        const endTime = startTime + animationTime;
+        const startTime = animationStartTimes[i];
+        if (elapsed < startTime) continue;
 
-        if (elapsed < startTime) {
-          hasFutureAnimation = true;
-          if (startTime < nextStartTime) nextStartTime = startTime;
-          continue;
-        }
-
-        if (elapsed >= endTime) {
-          /*
-          * 프레임 드롭/백그라운드 탭 등으로 종료 프레임을 건너뛴 경우에도
-          * 해당 SVG를 정확한 최종 상태로 한 번만 맞춘다.
-          */
-          if (stepProgress[i] < 1) {
-            stepProgress[i] = 1;
-            renderStep(i, 1);
-          }
-          continue;
-        }
-
-        hasActiveAnimation = true;
-
-        const rawProgress = Math.min(
-          Math.max((elapsed - startTime) / animationTime, 0),
-          1
-        );
+        /*
+        * 모든 SVG의 종료 시점은 animationTime으로 동일하다.
+        * 시작 시점이 늦을수록 duration은 짧아지고, 해당 구간을 0 ~ 1로 정규화한다.
+        */
+        const rawProgress = elapsed >= totalAnimationTime
+          ? 1
+          : (elapsed - startTime) * animationDurationInverses[i];
 
         if (rawProgress !== stepProgress[i]) {
           stepProgress[i] = rawProgress;
@@ -531,30 +514,18 @@ export default async () => {
       */
       flushDirtyPaths();
 
-      if (!hasActiveAnimation && !hasFutureAnimation) {
-        /*
-        * 최종 상태에서는 모든 SVG의 상대 각도가 다시 동일하므로
-        * 기본 d 값으로 복원해 불필요한 소수 좌표를 남기지 않는다.
-        */
-        for (let i = 0; i < shapeCount; i++) {
-          paths[i].setAttribute("d", defaultPathValue);
-        }
-        return;
-      }
-
-      if (hasActiveAnimation) {
+      if (elapsed < totalAnimationTime) {
         requestAnimationFrame(animate);
         return;
       }
 
       /*
-      * animationTime < INCREASE_TIME이면 애니메이션 사이에 대기 구간이 생긴다.
-      * 그 시간 동안 requestAnimationFrame을 계속 돌리지 않고 다음 시작 직전에만 깨운다.
+      * 최종 상태에서는 모든 SVG의 상대 각도가 다시 동일하므로
+      * 기본 d 값으로 복원해 불필요한 소수 좌표를 남기지 않는다.
       */
-      const waitTime = Math.max(nextStartTime - elapsed, 0);
-      window.setTimeout(() => {
-        requestAnimationFrame(animate);
-      }, waitTime);
+      for (let i = 0; i < shapeCount; i++) {
+        paths[i].setAttribute("d", defaultPathValue);
+      }
     }
 
     requestAnimationFrame(animate);
