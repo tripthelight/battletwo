@@ -4,6 +4,7 @@ import '@/client/js/common/common';
 import gameCard from "@/client/js/views/main/fns/gameCard";
 import mainLogo from "@/client/js/views/main/fns/mainLogo";
 import gameCardEvent from "@/client/js/views/main/fns/gameCardEvent";
+import indianPocker from "@/client/js/views/main/fns/3d/indianPocker";
 
 // onMounted
 document.onreadystatechange = async () => {
@@ -14,5 +15,6 @@ document.onreadystatechange = async () => {
     await gameCard();
     mainLogo();
     gameCardEvent();
+    indianPocker();
   }
 };

@@ -73,6 +73,7 @@
     "webpack-obfuscator": "^3.5.1"
   },
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "three": "^0.186.0"
   }
 }
