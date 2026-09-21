@@ -5,5 +5,5 @@ import mainLogo from "@/client/js/views/main/fns/mainLogo";
 window.addEventListener('resize', () => {
   setInnerHeight();
   deviceCheck();
-  mainLogo();
+  // mainLogo();
 });
