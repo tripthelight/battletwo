@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { VertexNormalsHelper } from 'three/addons/helpers/VertexNormalsHelper.js';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 import { RectAreaLightUniformsLib } from 'three/addons/lights/RectAreaLightUniformsLib.js';
 import { RectAreaLight } from 'three';
@@ -29,190 +30,111 @@ export default () => {
 				const scene = new THREE.Scene();
 				this._scene = scene;
 
+				this.mouse = { x: 0, y: 0 };
+				this.defaultCameraPos = { x: 0, y: 0, z: 10 };
+
 				this._setupCamera();
 				this._setupLight();
 				this._setupModel();
 				this._setupControls();
 
 				window.onresize = this.resize.bind(this);
+				window.onmousemove = this.mousemove.bind(this);
 				this.resize();
 
 				requestAnimationFrame(this.render.bind(this));
 			}
 
 			_setupCamera() {
-				const width = window.innerWidth;
-				const height = window.innerHeight;
-
 				const camera = new THREE.PerspectiveCamera(
 					75,
-					width / height,
+					window.innerWidth / window.innerHeight,
 					0.1,
 					100
 				);
 
-				// const aspect = width / height;
-				// const camera = new THREE.OrthographicCamera(
-				// 	-1*aspect, 1*aspect, // xLeft, xRight
-				// 	1, -1, // yTop, yBottom
-				// 	0.1, 100 // zNear, zFar
-				// );
-
-				// camera.zoom = 0.1;
-
-				// camera.position.z = 2;
-				camera.position.set(7,7,0);
+				// camera.position.z = 100;
+				// camera.position.set(0,0,10);
+				camera.position.set(
+					this.defaultCameraPos.x,
+					this.defaultCameraPos.y,
+					this.defaultCameraPos.z
+				);
 				camera.lookAt(0,0,0);
-
 				this._camera = camera;
 			}
 
 			_setupLight() {
-				const auxLight = new THREE.DirectionalLight(0xffffff, 0,5);
-				auxLight.position.set(0, 5, 0);
-				auxLight.target.position.set(0 ,0, 0);
-				this._scene.add(auxLight.target);
-				this._scene.add(auxLight);
-
-				// const light = new THREE.DirectionalLight(0xffffff, 0.5);
-				// light.position.set(0, 5, 0);
-				// light.target.position.set(0 ,0, 0);
-				// this._scene.add(light.target);
-				// light.shadow.camera.top = light.shadow.camera.right = 6;
-				// light.shadow.camera.bottom = light.shadow.camera.left = -6;
-
-				// const light = new THREE.PointLight(0xffffff, 0.7);
-				// light.position.set(0, 5, 0);
-
-				const light = new THREE.SpotLight(0xffffff, 50);
-				light.position.set(0, 5, 0);
-				light.target.position.set(0 ,0, 0);
-				light.angle = THREE.MathUtils.degToRad(30);
-				light.penumbra = 1;
-				this._scene.add(light.target);
-
-				light.shadow.mapSize.width = light.shadow.mapSize.height = 2048;
-				light.shadow.radius = 1;
-
-				const cameraHelper = new THREE.CameraHelper(light.shadow.camera);
-				this._scene.add(cameraHelper);
-
+				const light = new THREE.AmbientLight("#FFF", 5);
 				this._scene.add(light);
 				this._light = light;
-				light.castShadow = true;
 			}
 
 			_setupModel() {
-				const groundGeometry = new THREE.PlaneGeometry(10, 10);
-				const groundMaterial = new THREE.MeshStandardMaterial({
-					color: "#2c3e50",
-					roughness: 0.5,
-					metalness: 0.5,
-					side: THREE.DoubleSide
-				});
+				// 2. 가로, 세로, 높이, 세그먼트(부드러움), 반지름(Radius) 설정
+				const width = 2;
+				const height = 2.8;
+				const depth = 0.01; // 아주 얇은 두께
+				const radius = 0.16;    // 모서리 반지름
 
-				const ground = new THREE.Mesh(groundGeometry, groundMaterial);
-				ground.rotation.x = THREE.MathUtils.degToRad(-90);
-				ground.receiveShadow = true;
-				this._scene.add(ground);
+				// 1. 둥근 사각형 2D Shape 그리기
+				const shape = new THREE.Shape();
 
-				// const bigSphereGeometry = new THREE.SphereGeometry(1.5, 64, 64, 0, Math.PI);
-				const bigSphereGeometry = new THREE.TorusKnotGeometry(1, 0.3, 128, 64, 2, 3);
-				const bigSphereMaterial = new THREE.MeshStandardMaterial({
-					color: "#ffffff",
-					roughness: 0.1,
-					metalness: 0.2,
-				});
-				const bigSphere = new THREE.Mesh(bigSphereGeometry, bigSphereMaterial);
-				// bigSphere.rotation.x = THREE.MathUtils.degToRad(-90);
-				bigSphere.rotation.y = 1.6;
-				bigSphere.receiveShadow = true;
-				bigSphere.castShadow = true;
-				this._scene.add(bigSphere);
+				// 왼쪽 위에서 시작하여 시계 방향으로 경로 그리기
+				shape.moveTo(-width / 2 + radius, height / 2);
+				shape.lineTo(width / 2 - radius, height / 2);
+				shape.quadraticCurveTo(width / 2, height / 2, width / 2, height / 2 - radius);
+				shape.lineTo(width / 2, -height / 2 + radius);
+				shape.quadraticCurveTo(width / 2, -height / 2, width / 2 - radius, -height / 2);
+				shape.lineTo(-width / 2 + radius, -height / 2);
+				shape.quadraticCurveTo(-width / 2, -height / 2, -width / 2, -height / 2 + radius);
+				shape.lineTo(-width / 2, height / 2 - radius);
+				shape.quadraticCurveTo(-width / 2, height / 2, -width / 2 + radius, height / 2);
 
-				const torusGeometry = new THREE.TorusGeometry(0.4, 0.1, 32, 32);
-				const torusMaterial = new THREE.MeshStandardMaterial({
-					color: "#9b59b6",
-					roughness: 0.5,
-					metalness: 0.9,
-				});
+				// 2. Extrude 옵션 설정 (앞뒤 모서리 베벨은 끄기)
+				const extrudeSettings = {
+					depth: depth,          // 카드의 두께
+					bevelEnabled: false,   // 3D 앞뒤 모서리 자체를 깎는 기능은 비활성화
+					curveSegments: 24      // 모서리 곡선의 부드러움 (세그먼트)
+				};
 
-				for (let i = 0; i < 8; i++) {
-					const torusPivot = new THREE.Object3D();
-					const torus = new THREE.Mesh(torusGeometry, torusMaterial);
-					torusPivot.rotation.y = THREE.MathUtils.degToRad(45 * i);
-					torus.position.set(3, 0.5, 0);
-					torusPivot.add(torus);
-					torus.receiveShadow = true;
-					torus.castShadow = true;
-					this._scene.add(torusPivot);
-				}
+				// 3. 지오메트리 생성
+				const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
 
-				const smallSphereGeometry = new THREE.SphereGeometry(0.3, 32, 32);
-				const smallSphereMaterial = new THREE.MeshStandardMaterial({
-					color: "#e74c3c",
-					roughness: 0.2,
-					metalness: 0.5,
-				});
-				const smallSpherePivot = new THREE.Object3D();
-				const smallSphere = new THREE.Mesh(smallSphereGeometry, smallSphereMaterial);
-				smallSpherePivot.add(smallSphere);
-				smallSpherePivot.name = "smallSpherePivot";
-				smallSphere.position.set(3, 0.5, 0);
-				smallSphere.receiveShadow = true;
-				smallSphere.castShadow = true;
-				this._scene.add(smallSpherePivot);
+				// 4. 중심점(Pivot)을 카드의 정중앙으로 맞추기
+				geometry.center();
 
-				//
-				const targetPivot = new THREE.Object3D();
-				const target = new THREE.Object3D();
-				targetPivot.add(target);
-				targetPivot.name = "targetPivot";
-				target.position.set(3, 0.5, 0);
-				this._scene.add(targetPivot);
-				//
+				const material = new THREE.MeshStandardMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+				const card = new THREE.Mesh(geometry, material);
+				card.position.set(0, 0, 0); // x, y, z 위치로 이동
+
+				this._scene.add(card);
 			}
 
 			_setupControls() {
 				new OrbitControls(this._camera, this._divController);
 			}
 
+			mousemove(event) {
+				// 마우스 좌표를 -1 ~ 1 사이의 값으로 정규화 (가운데가 0, 0)
+				this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+				this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+			}
+
 			update(time) {
 				time *= 0.001; // second unit
 
-				const smallSpherePivot = this._scene.getObjectByName("smallSpherePivot");
-				if (smallSpherePivot) {
-					smallSpherePivot.rotation.y = THREE.MathUtils.degToRad(time * 50);
+				this.defaultCameraPos.z = this._camera.position.z * 0.4;
 
-					//
-					// const smallSphere = smallSpherePivot.children[0];
-					// smallSphere.getWorldPosition(this._camera.position);
+				const targetX = this.defaultCameraPos.x - (this.mouse.x * this.defaultCameraPos.z);
+				const targetY = this.defaultCameraPos.y - (this.mouse.y * this.defaultCameraPos.z);
 
-					// const targetPivot = this._scene.getObjectByName("targetPivot");
-					// if (targetPivot) {
-					// 	targetPivot.rotation.y = THREE.MathUtils.degToRad(time*50 + 10);
+				// 부드러운 움직임(Lerp) 효과 적용 (0.05 값을 조절하여 속도 변경 가능)
+				this._camera.position.x += (targetX - this._camera.position.x) * 0.05;
+				this._camera.position.y += (targetY - this._camera.position.y) * 0.05;
 
-					// 	const target = targetPivot.children[0];
-					// 	const pt = new THREE.Vector3();
-
-					// 	target.getWorldPosition(pt);
-					// 	this._camera.lookAt(pt);
-					// }
-					//
-
-					if (this._light.target) {
-						const smallSphere = smallSpherePivot.children[0];
-						smallSphere.getWorldPosition(this._light.target.position);
-
-						if (this._lightHelper) this._lightHelper.update();
-					}
-
-					// PointLight
-					if (this._light instanceof THREE.PointLight) {
-						const smallSphere = smallSpherePivot.children[0];
-						smallSphere.getWorldPosition(this._light.position);
-					}
-				}
+				// 카메라이동 후에도 항상 화면 중심(또는 생성한 카드 mesh)을 바라보도록 설정
+				this._camera.lookAt(0, 0, 0);
 			}
 
 			render(time) {
@@ -221,7 +143,6 @@ export default () => {
 				requestAnimationFrame(this.render.bind(this));
 			}
 
-
 			resize() {
 				const width = this._divController.clientWidth;
 				const height = this._divController.clientHeight;
@@ -229,23 +150,6 @@ export default () => {
 				this._camera.updateProjectionMatrix();
 				this._renderer.setSize(width, height);
 			}
-			/*
-			resize() {
-				const width = this._divController.clientWidth;
-				const height = this._divController.clientHeight;
-				const aspect = width / height;
-
-				if (this._camera instanceof THREE.PerspectiveCamera) {
-					this._camera.aspect = aspect;
-				} else {
-					this._camera.left = -1 * aspect; // xLeft
-					this._camera.right = 1 * aspect; // xRight
-				}
-
-				this._camera.updateProjectionMatrix();
-				this._renderer.setSize(width, height);
-			}
-				*/
 		}
 
 		new App();
