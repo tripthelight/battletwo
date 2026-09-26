@@ -17,25 +17,25 @@ export default () => {
     // ======================================================
 
     // PC - Mouse Over
-    cardWrap.addEventListener("pointerover", (event) => {
-      const path = event.target.closest(".shape-path");
+    /* cardWrap.addEventListener("pointerover", (event) => {
+      const path = event.target.closest("svg.card")?.querySelector(".shape-path");
       if (!path) return;
       const index = Number(path.dataset.index);
       const shape = path.dataset.shape;
       console.log("mouse over:", index, shape);
       path.classList.add("is-hovered");
-    });
+    }); */
 
     // PC - Mouse Out
-    cardWrap.addEventListener("pointerout", (event) => {
-      const path = event.target.closest(".shape-path");
+    /* cardWrap.addEventListener("pointerout", (event) => {
+      const path = event.target.closest("svg.card")?.querySelector(".shape-path");
       if (!path) return;
       path.classList.remove("is-hovered");
-    });
+    }); */
 
     // PC, Mobile - Click
     cardWrap.addEventListener("click", (event) => {
-      const path = event.target.closest(".shape-path");
+      const path = event.target.closest("svg.card")?.querySelector(".shape-path");
       if (!path) return;
       const index = Number(path.dataset.index);
       const shape = path.dataset.shape;
