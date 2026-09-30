@@ -28,7 +28,7 @@ const TEXTURE_REFRESH_DELAY_MS = 180;
 let nextLayerId = 0;
 let activeApp = null;
 
-class App {
+class IndianPocker_3D {
   constructor() {
     // Keep the original main-screen SVG and its path as the sole hit-test surface.
     this._svg = document.querySelector('svg.card.indianPocker');
@@ -377,6 +377,20 @@ class App {
     this._controls = new OrbitControls(this._camera, this._svg);
     this._controls.minDistance = 2;
     this._controls.maxDistance = 60;
+
+    // Keep wheel zoom, but remove every pointer-drag camera gesture.
+    // Using null mouse mappings prevents OrbitControls from entering a drag
+    // state at all, including middle-button dolly and right-button pan.
+    this._controls.enableRotate = false;
+    this._controls.enablePan = false;
+    this._controls.mouseButtons.LEFT = null;
+    this._controls.mouseButtons.MIDDLE = null;
+    this._controls.mouseButtons.RIGHT = null;
+
+    // The main card should not react to touch-drag/pinch gestures either.
+    // Wheel zoom remains enabled through OrbitControls.enableZoom.
+    this._controls.touches.ONE = null;
+    this._controls.touches.TWO = null;
   }
 
   _setupObservers() {
@@ -870,7 +884,7 @@ class App {
 export default () => {
   try {
     activeApp?.dispose();
-    const app = new App();
+    const app = new IndianPocker_3D();
     activeApp = app;
     // Safe to call on view teardown; a stale disposer never tears down a new view.
     return () => {
