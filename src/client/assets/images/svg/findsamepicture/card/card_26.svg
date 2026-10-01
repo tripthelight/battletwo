@@ -1,0 +1,24 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="300"
+  height="300"
+  viewBox="0 0 300 300"
+>
+  <path
+    id="FIND_SAME_PICTURE_CARD_26"
+    d="
+      M150,17
+      L183,119
+      L290,119
+      L203,181
+      L237,283
+      L150,220
+      L63,283
+      L97,181
+      L10,119
+      L117,119
+      Z
+    "
+    fill="#98A937"
+  />
+</svg>

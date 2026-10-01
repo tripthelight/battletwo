@@ -31,6 +31,9 @@
   "editor.codeActionsOnSave": {
     // "source.fixAll": "explicit" // 저장 시 "코드 액션"으로 포맷/정리/줄바꿈
   },
+  "workbench.editorAssociations": {
+    "*.svg": "default" // SVG를 코드로 바로 열기
+  },
   "todohighlight.keywords": [
     {
       "text": "HACK:",

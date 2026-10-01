@@ -1,0 +1,25 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="300"
+  height="300"
+  viewBox="0 0 300 300"
+>
+  <defs>
+    <path
+      id="FIND_SAME_PICTURE_CARD_12"
+      d="
+        M75,75
+        L150,0
+        L225,75
+        Z
+      "
+    />
+  </defs>
+
+  <g fill="#F5B010">
+    <use href="#FIND_SAME_PICTURE_CARD_12" />
+    <use href="#FIND_SAME_PICTURE_CARD_12" transform="rotate(90 150 150)" />
+    <use href="#FIND_SAME_PICTURE_CARD_12" transform="rotate(180 150 150)" />
+    <use href="#FIND_SAME_PICTURE_CARD_12" transform="rotate(270 150 150)" />
+  </g>
+</svg>

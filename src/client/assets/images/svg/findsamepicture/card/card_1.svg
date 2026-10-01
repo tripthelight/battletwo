@@ -1,0 +1,25 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="300"
+  height="300"
+  viewBox="0 0 300 300"
+>
+  <defs>
+    <path
+      id="FIND_SAME_PICTURE_CARD_1"
+      d="
+        M0,130
+        L0,0
+        L130,0
+        Z
+      "
+    />
+  </defs>
+
+  <g fill="#EE3E42">
+    <use href="#FIND_SAME_PICTURE_CARD_1" />
+    <use href="#FIND_SAME_PICTURE_CARD_1" transform="rotate(90 150 150)" /><!-- 중심점 150, 150을 기준으로 90도 회전 -->
+    <use href="#FIND_SAME_PICTURE_CARD_1" transform="rotate(180 150 150)" /><!-- 중심점 150, 150을 기준으로 180도 회전 -->
+    <use href="#FIND_SAME_PICTURE_CARD_1" transform="rotate(270 150 150)" /><!-- 중심점 150, 150을 기준으로 270도 회전 -->
+  </g>
+</svg>
