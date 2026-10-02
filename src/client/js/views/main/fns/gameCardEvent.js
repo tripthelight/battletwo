@@ -45,6 +45,7 @@ export default () => {
 
     function handleShapeClick(index, shape, path) {
       console.log(`${index}번 도형 클릭`, shape);
+      window.location.href = `./game/${shape}`;
     }
 
     // ======================================================

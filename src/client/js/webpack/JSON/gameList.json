@@ -3,5 +3,10 @@
     "indianPocker",
     "blackAndWhite1",
     "findTheSamePicture"
-  ]
+  ],
+  "gameTitles": {
+    "indianPocker": "Indian Pocker",
+    "blackAndWhite1": "Black And White 1",
+    "findTheSamePicture": "Find Same Picture"
+  }
 }

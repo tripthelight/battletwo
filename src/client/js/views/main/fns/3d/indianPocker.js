@@ -319,10 +319,17 @@ class IndianPocker_3D {
     canvas.style.width = '100%';
     canvas.style.height = '100%';
     canvas.style.pointerEvents = 'none';
+    // Lightweight visual veil above WebGL. It is intentionally non-interactive,
+    // so the original SVG path remains the only pointer hit-test surface.
+    this._foregroundDiv = document.createElementNS(XHTML_NS, 'div');
+    this._foregroundDiv.className = 'game-card-three-foreground indianPocker-three-foreground';
+    this._foregroundDiv.style.pointerEvents = 'none';
+
     this._backgroundDiv.appendChild(canvas);
+    this._backgroundDiv.appendChild(this._foregroundDiv);
     layer.appendChild(this._backgroundDiv);
     this._svg.insertBefore(this._defs, this._svg.firstChild);
-    this._svg.appendChild(layer);
+    this._svg.insertBefore(layer, this._svg.querySelector('.game-card-title'));
 
     // OrbitControls receives bubbling events from the ORIGINAL path. The WebGL
     // layer never blocks clicks/hover on gameCardEvent.js's existing SVG surface.

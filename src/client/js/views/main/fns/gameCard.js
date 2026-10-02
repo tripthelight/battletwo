@@ -9,6 +9,7 @@ export default async () => {
     if (!cardWrap) throw throwObj('elementLoss', 'gameCard.js - .game-cards element failed.');
 
     const gameList = GAME_LIST.gameList;
+    const gameTitles = GAME_LIST.gameTitles ?? {};
     if (!gameList.length) throw throwObj('errorComn', 'gameCard.js - gameList length error.');
 
     // ============================================================================
@@ -25,6 +26,24 @@ export default async () => {
     const centerY = WH / 2;
     const angle = 360 / shapeCount;
     const DEG_TO_RAD = Math.PI / 180;
+    const RAD_TO_DEG = 180 / Math.PI;
+
+    function formatGameTitle(gameName) {
+      const customTitle = gameTitles[gameName];
+      if (typeof customTitle === 'string' && customTitle.trim()) {
+        return customTitle.trim();
+      }
+
+      return gameName
+        .replace(/[_-]+/g, ' ')
+        .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+        .replace(/([A-Za-z])(\d)/g, '$1 $2')
+        .replace(/(\d)([A-Za-z])/g, '$1 $2')
+        .trim()
+        .split(/\s+/)
+        .map(word => word ? word[0].toUpperCase() + word.slice(1) : word)
+        .join(' ');
+    }
 
     /*
     * 최초 배치 각도와 회전 애니메이션 값.
@@ -162,8 +181,25 @@ export default async () => {
     function setLineAngle(index, radian) {
       const cos = Math.cos(radian);
       const sin = Math.sin(radian);
+      let state = lineStates[index];
 
-      lineStates[index] = {
+      if (!state) {
+        state = {};
+        lineStates[index] = state;
+      }
+
+      state.radian = radian;
+      state.cos = cos;
+      state.sin = sin;
+      state.tangentX = -sin;
+      state.tangentY = cos;
+    }
+
+    function createLineState(radian) {
+      const cos = Math.cos(radian);
+      const sin = Math.sin(radian);
+      return {
+        radian,
         cos,
         sin,
         tangentX: -sin,
@@ -208,8 +244,19 @@ export default async () => {
 
     const cards = new Array(shapeCount);
     const paths = new Array(shapeCount);
+    const titleGroups = new Array(shapeCount);
+    const titleTexts = new Array(shapeCount);
+    const titleReferenceWidths = new Float64Array(shapeCount);
     const initialCardAngles = new Array(shapeCount);
     const cardStates = new Array(shapeCount);
+
+    const TITLE_REFERENCE_FONT_SIZE = 100;
+    const TITLE_LINE_WIDTH_RATIO = 0.5; // 게임 Title font size 비율 - default: 0.5
+    const TITLE_LINE_SINK_EM = 0.07;
+    const RAY_EPSILON = 0.000001;
+    let longestTitleIndex = 0;
+    let longestTitleReferenceWidth = 0;
+    let titleResizeFrame = 0;
 
     /*
     * CSS transform으로 회전된 SVG 내부에 path를 그리기 때문에,
@@ -229,6 +276,7 @@ export default async () => {
       const radian = degree * DEG_TO_RAD;
       const cardState = cardStates[index];
 
+      cardState.radian = radian;
       cardState.cos = Math.cos(radian);
       cardState.sin = Math.sin(radian);
       cards[index].style.transform = `rotate(${degree}deg)`;
@@ -243,6 +291,65 @@ export default async () => {
     * A -> B는 중앙 빈 공간의 한 변이며,
     * farPoint1 / farPoint2는 각각 두 경계선을 화면 밖까지 연장한 점이다.
     */
+    function getRayViewportEnd(originX, originY, directionX, directionY, width, height) {
+      let bestT = Infinity;
+
+      function test(t, crossValue, crossMax) {
+        if (t < 0 || !Number.isFinite(t)) return;
+        if (crossValue < -RAY_EPSILON || crossValue > crossMax + RAY_EPSILON) return;
+        if (t < bestT) bestT = t;
+      }
+
+      if (directionX > RAY_EPSILON) {
+        const t = (width - originX) / directionX;
+        test(t, originY + directionY * t, height);
+      } else if (directionX < -RAY_EPSILON) {
+        const t = -originX / directionX;
+        test(t, originY + directionY * t, height);
+      }
+
+      if (directionY > RAY_EPSILON) {
+        const t = (height - originY) / directionY;
+        test(t, originX + directionX * t, width);
+      } else if (directionY < -RAY_EPSILON) {
+        const t = -originY / directionY;
+        test(t, originX + directionX * t, width);
+      }
+
+      if (!Number.isFinite(bestT)) {
+        bestT = rayLength;
+      }
+
+      return {
+        x: originX + directionX * bestT,
+        y: originY + directionY * bestT,
+        distance: bestT,
+      };
+    }
+
+    function updateTitle(index, A, currentLine, cardState) {
+      const titleGroup = titleGroups[index];
+      if (!titleGroup) return;
+
+      const edgePoint = getRayViewportEnd(
+        A.x,
+        A.y,
+        -currentLine.tangentX,
+        -currentLine.tangentY,
+        WW,
+        WH
+      );
+      const localEdgePoint = toLocalPoint(edgePoint, cardState);
+      const localAngle = (
+        currentLine.radian - cardState.radian + Math.PI / 2
+      ) * RAD_TO_DEG;
+
+      titleGroup.setAttribute(
+        'transform',
+        `translate(${formatPathNumber(localEdgePoint.x)} ${formatPathNumber(localEdgePoint.y)}) rotate(${formatPathNumber(localAngle)})`
+      );
+    }
+
     function updatePath(index) {
       const prevLine = lineStates[(index - 1 + shapeCount) % shapeCount];
       const currentLine = lineStates[index];
@@ -274,6 +381,8 @@ export default async () => {
         `L ${formatPathNumber(localFarPoint1.x)} ${formatPathNumber(localFarPoint1.y)}`,
         "Z",
       ].join(" "));
+
+      updateTitle(index, A, currentLine, cardState);
     }
 
     /*
@@ -284,30 +393,229 @@ export default async () => {
       const increaseAngle = i * angle;
       const initialAngle = initializationAngle + increaseAngle;
       const cardSVG = document.createElementNS(svgNS, "svg");
+      const defs = document.createElementNS(svgNS, "defs");
+      const titleClipPath = document.createElementNS(svgNS, "clipPath");
+      const titleClipUse = document.createElementNS(svgNS, "use");
       const path = document.createElementNS(svgNS, "path");
+      const titleClipGroup = document.createElementNS(svgNS, "g");
+      const titleGroup = document.createElementNS(svgNS, "g");
+      const titleText = document.createElementNS(svgNS, "text");
 
       cardSVG.setAttribute("viewBox", `0 0 ${WW} ${WH}`);
       cardSVG.setAttribute("width", String(WW));
       cardSVG.setAttribute("height", String(WH));
       cardSVG.classList.add("card", gameList[i]);
 
+      path.id = `game-card-shape-${i}`;
       path.setAttribute("d", defaultPathValue);
       path.classList.add("shape-path");
       path.dataset.index = i;
       path.dataset.shape = gameList[i];
 
+      titleClipPath.id = `game-card-title-clip-${i}`;
+      titleClipPath.setAttribute('clipPathUnits', 'userSpaceOnUse');
+      titleClipUse.setAttribute('href', `#${path.id}`);
+      titleClipPath.appendChild(titleClipUse);
+      defs.appendChild(titleClipPath);
+
+      titleClipGroup.classList.add('game-card-title');
+      titleClipGroup.setAttribute('clip-path', `url(#${titleClipPath.id})`);
+      titleClipGroup.setAttribute('aria-hidden', 'true');
+
+      titleGroup.classList.add('game-card-title-position');
+      titleText.classList.add('game-card-title-text');
+      titleText.setAttribute('x', '0');
+      titleText.setAttribute('y', '0');
+      titleText.setAttribute('dy', `${TITLE_LINE_SINK_EM}em`);
+      titleText.setAttribute('text-anchor', 'start');
+      titleText.setAttribute('font-size', String(TITLE_REFERENCE_FONT_SIZE));
+      titleText.textContent = formatGameTitle(gameList[i]);
+      titleGroup.appendChild(titleText);
+      titleClipGroup.appendChild(titleGroup);
+
+      cardSVG.appendChild(defs);
       cardSVG.appendChild(path);
+      cardSVG.appendChild(titleClipGroup);
       cardWrap.appendChild(cardSVG);
 
       cards[i] = cardSVG;
       paths[i] = path;
+      titleGroups[i] = titleGroup;
+      titleTexts[i] = titleText;
       initialCardAngles[i] = initialAngle;
       cardStates[i] = {
+        radian: 0,
         cos: 1,
         sin: 0,
       };
 
       setCardAngle(i, initialAngle);
+    }
+
+    /*
+    * 실제 렌더링 폭을 기준으로 가장 긴 Title을 한 번만 찾는다.
+    * 이후 resize에서는 문자열 폭을 다시 측정하지 않고 이 값을 재사용한다.
+    */
+    for (let i = 0; i < shapeCount; i++) {
+      const measuredWidth = titleTexts[i].getComputedTextLength();
+      const referenceWidth = Number.isFinite(measuredWidth) && measuredWidth > 0
+        ? measuredWidth
+        : Math.max(1, titleTexts[i].textContent.length) * TITLE_REFERENCE_FONT_SIZE * 0.6;
+
+      titleReferenceWidths[i] = referenceWidth;
+      if (referenceWidth > longestTitleReferenceWidth) {
+        longestTitleReferenceWidth = referenceWidth;
+        longestTitleIndex = i;
+      }
+    }
+
+    function setCommonTitleFontSize(fontSize) {
+      if (!Number.isFinite(fontSize) || fontSize <= 0) return;
+      const value = String(formatPathNumber(fontSize));
+      for (let i = 0; i < shapeCount; i++) {
+        titleTexts[i].setAttribute('font-size', value);
+      }
+    }
+
+    function getFinalSeparatorLength(index) {
+      const prevIndex = (index - 1 + shapeCount) % shapeCount;
+      const prevLine = createLineState(initialLineAngles[prevIndex] + rotationRadian);
+      const currentLine = createLineState(initialLineAngles[index] + rotationRadian);
+      const A = getLineIntersection(prevLine, currentLine);
+      const edgePoint = getRayViewportEnd(
+        A.x,
+        A.y,
+        -currentLine.tangentX,
+        -currentLine.tangentY,
+        WW,
+        WH
+      );
+      return edgePoint.distance;
+    }
+
+    const initialLongestSeparatorLength = getFinalSeparatorLength(longestTitleIndex);
+    setCommonTitleFontSize(
+      TITLE_REFERENCE_FONT_SIZE
+      * initialLongestSeparatorLength
+      * TITLE_LINE_WIDTH_RATIO
+      / Math.max(longestTitleReferenceWidth, 1)
+    );
+
+    function transformPoint(matrix, x, y) {
+      return {
+        x: matrix.a * x + matrix.c * y + matrix.e,
+        y: matrix.b * x + matrix.d * y + matrix.f,
+      };
+    }
+
+    function screenPointToLocal(matrix, x, y) {
+      const determinant = matrix.a * matrix.d - matrix.b * matrix.c;
+      if (Math.abs(determinant) < RAY_EPSILON) return null;
+
+      const dx = x - matrix.e;
+      const dy = y - matrix.f;
+      return {
+        x: (matrix.d * dx - matrix.c * dy) / determinant,
+        y: (-matrix.b * dx + matrix.a * dy) / determinant,
+      };
+    }
+
+    /*
+    * resize에서는 path 자체를 다시 만들지 않는다. 현재 렌더링된 separator를
+    * screen 좌표로 변환한 뒤 실제 viewport 끝과의 교점을 구해서 Title만 맞춘다.
+    * 문자열 폭 측정은 다시 하지 않으며, Title 수만큼의 작은 행렬 계산만 수행한다.
+    */
+    function updateResponsiveTitles() {
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      let longestSeparatorLength = 0;
+
+      for (let i = 0; i < shapeCount; i++) {
+        const prevLine = lineStates[(i - 1 + shapeCount) % shapeCount];
+        const currentLine = lineStates[i];
+        const A = getLineIntersection(prevLine, currentLine);
+        const cardState = cardStates[i];
+        const localA = toLocalPoint(A, cardState);
+        const localRayPoint = toLocalPoint({
+          x: A.x - currentLine.tangentX * rayLength,
+          y: A.y - currentLine.tangentY * rayLength,
+        }, cardState);
+        const matrix = cards[i].getScreenCTM();
+        if (!matrix) continue;
+
+        const screenA = transformPoint(matrix, localA.x, localA.y);
+        const screenRayPoint = transformPoint(matrix, localRayPoint.x, localRayPoint.y);
+        let directionX = screenRayPoint.x - screenA.x;
+        let directionY = screenRayPoint.y - screenA.y;
+        const directionLength = Math.hypot(directionX, directionY);
+        if (directionLength < RAY_EPSILON) continue;
+
+        directionX /= directionLength;
+        directionY /= directionLength;
+
+        const screenEdge = getRayViewportEnd(
+          screenA.x,
+          screenA.y,
+          directionX,
+          directionY,
+          viewportWidth,
+          viewportHeight
+        );
+        const localEdge = screenPointToLocal(matrix, screenEdge.x, screenEdge.y);
+        if (!localEdge) continue;
+
+        const inwardX = localA.x - localEdge.x;
+        const inwardY = localA.y - localEdge.y;
+        const localAngle = Math.atan2(inwardY, inwardX) * RAD_TO_DEG;
+
+        titleGroups[i].setAttribute(
+          'transform',
+          `translate(${formatPathNumber(localEdge.x)} ${formatPathNumber(localEdge.y)}) rotate(${formatPathNumber(localAngle)})`
+        );
+
+        if (i === longestTitleIndex) {
+          longestSeparatorLength = Math.hypot(inwardX, inwardY);
+        }
+      }
+
+      if (longestSeparatorLength > 0) {
+        setCommonTitleFontSize(
+          TITLE_REFERENCE_FONT_SIZE
+          * longestSeparatorLength
+          * TITLE_LINE_WIDTH_RATIO
+          / Math.max(longestTitleReferenceWidth, 1)
+        );
+      }
+    }
+
+    function scheduleResponsiveTitleUpdate() {
+      if (titleResizeFrame) return;
+      titleResizeFrame = requestAnimationFrame(() => {
+        titleResizeFrame = 0;
+        updateResponsiveTitles();
+      });
+    }
+
+    const previousTitleCleanup = cardWrap.__gameCardTitleCleanup;
+    if (typeof previousTitleCleanup === 'function') {
+      previousTitleCleanup();
+    }
+
+    window.addEventListener('resize', scheduleResponsiveTitleUpdate, { passive: true });
+    cardWrap.__gameCardTitleCleanup = () => {
+      window.removeEventListener('resize', scheduleResponsiveTitleUpdate);
+      if (titleResizeFrame) {
+        cancelAnimationFrame(titleResizeFrame);
+        titleResizeFrame = 0;
+      }
+    };
+
+    /*
+    * 현재 line/card 상태로 path와 Title을 한 번 맞춰 둔다.
+    * 이후 애니메이션에서는 이미 dirty가 된 path만 함께 갱신한다.
+    */
+    for (let i = 0; i < shapeCount; i++) {
+      updatePath(i);
     }
 
     /*
@@ -526,6 +834,8 @@ export default async () => {
       for (let i = 0; i < shapeCount; i++) {
         paths[i].setAttribute("d", defaultPathValue);
       }
+
+      scheduleResponsiveTitleUpdate();
     }
 
     requestAnimationFrame(animate);

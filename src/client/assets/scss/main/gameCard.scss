@@ -25,10 +25,32 @@
         pointer-events: visibleFill;
         cursor: pointer;
       }
+      .game-card-title {
+        pointer-events: none;
+        user-select: none;
+        .game-card-title-position {
+          pointer-events: none;
+        }
+        .game-card-title-text {
+          fill: rgba(255, 255, 255, 0.2);
+          stroke: none;
+          font-weight: 700;
+          letter-spacing: 0.04em;
+        }
+      }
+      .game-card-three-foreground {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+      }
       &.indianPocker {
         path {
           fill: #111;
           stroke: #111;
+        }
+        .indianPocker-three-foreground {
+          background-color: rgba(0, 0, 0, 0.95);
         }
       }
       &.blackAndWhite1 {
@@ -36,11 +58,17 @@
           fill: #222;
           stroke: #222;
         }
+        .blackAndWhite1-three-foreground {
+          background-color: rgba(0, 0, 0, 0.95);
+        }
       }
       &.findTheSamePicture {
         path {
           fill: #333;
           stroke: #333;
+        }
+        .findTheSamePicture-three-foreground {
+          background-color: rgba(0, 0, 0, 0.95);
         }
       }
       &.gameCardTest1 {
