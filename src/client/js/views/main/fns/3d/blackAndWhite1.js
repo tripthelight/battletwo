@@ -55,7 +55,7 @@ class BlackAndWhite1_3D {
     // Lighting-only depth: 0 is completely flat; larger values strengthen facet contrast.
     this._cubeDepthLightingRatio = CUBE_DEPTH_LIGHTING_RATIO;
     // Editable XHTML background below the transparent WebGL canvas.
-    this._cubeBackgroundColor = '#e9eff6';
+    this._cubeBackgroundColor = '#8A1521';
     this.defaultCameraPos = { x: 0, y: 0, z: 10 };
 
     this._disposed = false;

@@ -48,7 +48,7 @@ class IndianPocker_3D {
     this._pitchX = this._cardWidth + this._cardMargin;
     this._pitchY = this._cardHeight + this._cardMargin;
     this._cardTiltStrength = 3.0; // 0: no additional tilt; higher: stronger distance effect.
-    this._cardBackgroundColor = '#e9eff6'; // The actual XHTML div below transparent WebGL.
+    this._cardBackgroundColor = '#6FAAAD'; // The actual XHTML div below transparent WebGL.
     this._maxCardTextureWidth = 1536; // GPU memory cap per SVG face; height keeps the 2:2.8 ratio.
     this._cardTextureOversample = 1.35; // Slight extra source detail for oblique cards.
     this._canvasResolutionScale = 1.25; // card mapping SVG 선명도 - 1: screen-pixel match, >1: extra crispness (GPU cost is quadratic). 기본값: 1.25, cpu 부하로 인해 최대 1.5
