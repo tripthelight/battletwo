@@ -19,6 +19,10 @@ const pageMappings = {
     template: './src/client/views/game/blackAndWhite1.html',
     filename: 'views/game/blackAndWhite1.html',
   },
+  blackAndWhite2: {
+    template: './src/client/views/game/blackAndWhite2.html',
+    filename: 'views/game/blackAndWhite2.html',
+  },
   indianPocker: {
     template: './src/client/views/game/indianPocker.html',
     filename: 'views/game/indianPocker.html',
@@ -26,6 +30,10 @@ const pageMappings = {
   findTheSamePicture: {
     template: './src/client/views/game/findTheSamePicture.html',
     filename: 'views/game/findTheSamePicture.html',
+  },
+  memoryMaze: {
+    template: './src/client/views/game/memoryMaze.html',
+    filename: 'views/game/memoryMaze.html',
   },
 };
 

@@ -3,7 +3,9 @@ import { text } from '@/client/js/functions/language';
 import { response as taptapResponse } from '@/client/js/network/taptap/response';
 import { response as indianPockerResponse } from '@/client/js/network/indianPocker/response';
 import { response as blackAndWhite1Response } from '@/client/js/network/blackAndWhite1/response';
+import { response as blackAndWhite2Response } from '@/client/js/network/blackAndWhite2/response';
 import { response as findTheSamePictureResponse } from '@/client/js/network/findTheSamePicture/response';
+import { response as memoryMazeResponse } from '@/client/js/network/memoryMaze/response';
 
 export async function responseComn(gameName) {
   switch (gameName) {
@@ -16,8 +18,14 @@ export async function responseComn(gameName) {
     case 'blackAndWhite1':
       blackAndWhite1Response();
       break;
+    case 'blackAndWhite2':
+      blackAndWhite2Response();
+      break;
     case 'findTheSamePicture':
       findTheSamePictureResponse();
+      break;
+    case 'memoryMaze':
+      memoryMazeResponse();
       break;
     default:
       errorManagement({ errCase: 'errorComn', message: text.err });

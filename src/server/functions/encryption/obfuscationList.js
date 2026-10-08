@@ -600,6 +600,50 @@ export const obfuscationList = {
       */
     };
   },
+  blackAndWhite2: () => {
+    return {
+      /*
+      GAME_NAME: {
+        k: 'UOYKERICDL', // [85, 79, 89, 75, 69, 82, 73, 67, 68, 76]
+        v: 'LSQIDKMPYB', // blackAndWhite2 -> [76, 83, 81, 73, 68, 75, 77, 80, 89, 66]
+      },
+      GAME_STATE: {
+        k: 'HVIDSRXYEC', // [72, 86, 73, 68, 83, 82, 88, 89, 69, 67]
+        v: {
+          waitEnemy: 'QNJPVSIRKH', // [81, 78, 74, 80, 86, 83, 73, 82, 75, 72]
+          ready: 'ZIUSQJBAPX', // [90, 73, 85, 83, 81, 74, 66, 65, 80, 88]
+          playing: 'QVZYFBSKTM', // [81, 86, 90, 89, 70, 66, 83, 75, 84, 77]
+          gameOver: 'PSXAOKVLWI', // [80, 83, 88, 65, 79, 75, 86, 76, 87, 73]
+        },
+      },
+      GAME_STATE_ALL_KEYS: {
+        k: 'IEPHLNOTBG', // [73, 69, 80, 72, 76, 78, 79, 84, 66, 71]
+      },
+      */
+    };
+  },
+  memoryMaze: () => {
+    return {
+      /*
+      GAME_NAME: {
+        k: 'NSLKAODCQT', // [78, 83, 76, 75, 65, 79, 68, 67, 81, 84]
+        v: 'ANRSKQBHCW', // memoryMaze -> [65, 78, 82, 83, 75, 81, 66, 72, 67, 87]
+      },
+      GAME_STATE: {
+        k: 'WCQBDKXVGJ', // [87, 67, 81, 66, 68, 75, 88, 86, 71, 74]
+        v: {
+          waitEnemy: 'QBDPKNSAYJ', // [81, 66, 68, 80, 75, 78, 83, 65, 89, 74]
+          ready: 'HPLDZRQYKE', // [72, 80, 76, 68, 90, 82, 81, 89, 75, 69]
+          playing: 'RQOIUZBNMK', // [82, 81, 79, 73, 85, 90, 66, 78, 77, 75]
+          gameOver: 'RMJOIQVNPA', // [82, 77, 74, 79, 73, 81, 86, 78, 80, 65]
+        },
+      },
+      GAME_STATE_ALL_KEYS: {
+        k: 'RILHBSNMGZ', // [82, 73, 76, 72, 66, 83, 78, 77, 71, 90]
+      },
+      */
+    };
+  },
 };
 
 /**

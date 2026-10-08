@@ -7,7 +7,9 @@ export default function clearCookies(currentUrl) {
     taptap: '/game/taptap',
     indianPocker: '/game/indianPocker',
     blackAndWhite1: '/game/blackAndWhite1',
+    blackAndWhite2: '/game/blackAndWhite2',
     findTheSamePicture: '/game/findTheSamePicture',
+    memoryMaze: '/game/memoryMaze',
   };
   const routeKey = currentUrl.split('/').pop(); // '/game/...' 게임명을 추출
 

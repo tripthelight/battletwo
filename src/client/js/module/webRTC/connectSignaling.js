@@ -505,6 +505,9 @@ function requestBootstrapStorage() {
 
   BOOTSTRAP.storageRequested = T;
 
+  log(" >>>>>>> gameName : ", VARIABLE.gameName);
+  log(" >>>>>>> initRole : ", STATE.initRole);
+
   safeWsSend({
     type: 'requestStorage',
     gameName: VARIABLE.gameName,
@@ -1688,6 +1691,9 @@ export function connectSignaling(connected = F, fns) {
     } catch {
       return;
     }
+
+    log(" ::::::::::: msg : ", msg);
+
     switch (msg.type) {
       case 'room-assigned': {
         if (!acceptSignalingGameMessage(ws, msg)) return;
@@ -1810,6 +1816,10 @@ export function connectSignaling(connected = F, fns) {
         break;
       }
       case 'responseStorage': {
+        log(" >>>>>>>>>>>>>>> msg.storageData", msg?.storageData);
+        log(" >>>>>>>>>>>>>>> msg.keypair", msg?.keypair);
+        log(" >>>>>>>>>>>>>>> BOOTSTRAP.storageReady", BOOTSTRAP.storageReady);
+
         if (
           msg?.storageData &&
           msg?.keypair &&

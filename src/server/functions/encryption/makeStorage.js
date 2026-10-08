@@ -46,10 +46,24 @@ export const MAKE_STORAGE = {
       storageData: storageData,
     };
   },
+  blackAndWhite2: async (_keypair, _role) => {
+    const storageData = convertStructure(transformWithCRC32(obfuscationList.blackAndWhite2(), _keypair, _role));
+    return {
+      storageData: storageData,
+    };
+  },
+  memoryMaze: async (_keypair, _role) => {
+    const storageData = convertStructure(transformWithCRC32(obfuscationList.memoryMaze(), _keypair, _role));
+    return {
+      storageData: storageData,
+    };
+  },
   functions: () => {
     return {
       indianPocker: MAKE_STORAGE.indianPocker,
       blackAndWhite1: MAKE_STORAGE.blackAndWhite1,
+      blackAndWhite2: MAKE_STORAGE.blackAndWhite2,
+      memoryMaze: MAKE_STORAGE.memoryMaze,
     };
   },
   findGame: async (_gameName, _gameCode, _role) => {

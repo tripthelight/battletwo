@@ -242,8 +242,16 @@ export default (env, argv) => {
             to: '/views/game/blackAndWhite1.html',
           },
           {
+            from: /^\/game\/blackAndWhite2$/,
+            to: '/views/game/blackAndWhite2.html',
+          },
+          {
             from: /^\/game\/findTheSamePicture$/,
             to: '/views/game/findTheSamePicture.html',
+          },
+          {
+            from: /^\/game\/memoryMaze$/,
+            to: '/views/game/memoryMaze.html',
           },
         ],
       },

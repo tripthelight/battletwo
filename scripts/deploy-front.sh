@@ -89,7 +89,9 @@ verify_candidate() {
             "/" \
             "/selectGame" \
             "/game/indianPocker" \
-            "/game/blackAndWhite1"
+            "/game/blackAndWhite1" \
+            "/game/blackAndWhite2" \
+            "/game/memoryMaze"
         do
             log "checking front-${slot}-${replica}${path}"
 

@@ -1,6 +1,7 @@
 import { VARIABLE, setReady, maybeResolveReady } from '@/client/js/module/webRTC/connectSignaling';
 import { RESPONSE_HANDLERS as RH_IP } from '@/client/js/network/indianPocker/responseHandlers';
 import { RESPONSE_HANDLERS as RH_BW1 } from '@/client/js/network/blackAndWhite1/responseHandlers';
+import { RESPONSE_HANDLERS as RH_BW2 } from '@/client/js/network/blackAndWhite2/responseHandlers';
 
 // -------------------- [핵심] 게임 이벤트 라우터 --------------------
 // 컨벤션: payload = { type: '네임스페이스/이벤트', ... } 형태 권장
@@ -100,6 +101,7 @@ export function dispatchPayload(payload, meta) {
   switch (VARIABLE.gameName) {
     case "indianPocker": PAYLOAD_TYPE = RH_IP; break;
     case "blackAndWhite1": PAYLOAD_TYPE = RH_BW1; break;
+    case "blackAndWhite2": PAYLOAD_TYPE = RH_BW2; break;
     default: break;
   };
 

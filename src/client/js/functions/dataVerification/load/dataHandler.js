@@ -1,6 +1,8 @@
 import findCharCode from '@/client/js/functions/findCharCode';
 import indianPockerLoad from '@/client/js/functions/dataVerification/load/indianPocker/indianPockerLoad';
 import blackAndWhite1Load from '@/client/js/functions/dataVerification/load/blackAndWhite1/blackAndWhite1Load';
+import blackAndWhite2Load from '@/client/js/functions/dataVerification/load/blackAndWhite2/blackAndWhite2Load';
+import memoryMazeLoad from '@/client/js/functions/dataVerification/load/memoryMaze/memoryMazeLoad';
 import storageKeys from '@/client/js/functions/dataVerification/storageKeys';
 
 /**
@@ -25,5 +27,19 @@ export default (params) => {
   // ────────────────────────────────────────────────────────────────────────────────────────────────────────────
   if (p1 === findCharCode([69, 66, 77, 86, 73, 90, 71, 78, 89, 79])) {
     blackAndWhite1Load(p2, storageKeys({ p1, p2 }));
+  };
+
+  // ────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  // gameName: blackAndWhite2
+  // ────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  if (p1 === findCharCode([76, 83, 81, 73, 68, 75, 77, 80, 89, 66])) {
+    blackAndWhite2Load(p2, storageKeys({ p1, p2 }));
+  };
+
+  // ────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  // gameName: memoryMaze
+  // ────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  if (p1 === findCharCode([65, 78, 82, 83, 75, 81, 66, 72, 67, 87])) {
+    memoryMazeLoad(p2, storageKeys({ p1, p2 }));
   };
 };

@@ -2,11 +2,15 @@
   "gameList": [
     "indianPocker",
     "blackAndWhite1",
-    "findTheSamePicture"
+    "blackAndWhite2",
+    "findTheSamePicture",
+    "memoryMaze"
   ],
   "gameTitles": {
-    "indianPocker": "Indian Pocker",
-    "blackAndWhite1": "Black And White 1",
-    "findTheSamePicture": "Find Same Picture"
+    "indianPocker": "Poker Face",
+    "blackAndWhite1": "Black And White I",
+    "blackAndWhite2": "Black And White Ⅱ",
+    "findTheSamePicture": "Same Picture Hunt",
+    "memoryMaze": "Memory Maze"
   }
 }
