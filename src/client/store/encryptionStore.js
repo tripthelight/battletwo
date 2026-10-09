@@ -88,4 +88,15 @@ export const publicCardStrs = () => {
   return strList; //
 };
 
+// Black And White 2
+// pointNums
+export const pointNums = (pos) => {
+  if (!(pos === 'l' || pos === 'r')) return [];
+  const state = encryptionStore.getState();
+  const compair = state.encryptionState.compair;
+  const encryptedKey = findCharCode(pos === 'l' ? [80, 77, 87, 67, 65, 85, 89, 73, 79, 81] : [87, 73, 80, 89, 78, 68, 76, 65, 90, 79]);
+  const keyList = compair[encryptedKey] || [];
+  return keyList; // 1 ~ 20
+};
+
 export default encryptionStore;

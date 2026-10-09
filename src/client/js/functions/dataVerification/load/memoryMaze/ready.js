@@ -25,6 +25,5 @@ export const READY_HANDLER = {
     };
 
     // ready 단계에서 필요한 data insert 후 다음 단계 진행
-    //
   },
 };
