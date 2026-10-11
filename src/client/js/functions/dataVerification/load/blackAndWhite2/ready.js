@@ -2,7 +2,9 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import storageKeyDeleteCheck from '@/client/js/functions/dataVerification/load/storageKeyDeleteCheck';
 
-import { pointNums } from '@/client/store/encryptionStore';
+// import { pointNums } from '@/client/store/encryptionStore';
+import findCharCode from '@/client/js/functions/findCharCode';
+import addPointNum from '@/client/js/views/game/blackAndWhite2/fns/common/addPointNum';
 
 export const READY_HANDLER = {
   // gameState : ready 에서 reload 한 경우
@@ -29,20 +31,10 @@ export const READY_HANDLER = {
     // ready 단계에서 필요한 data insert 후 다음 단계 진행
     //
 
-    const storeDataNumL = pointNums('l');
-    if (!storeDataNumL || (storeDataNumL && storeDataNumL.length === 0)) {
-      console.log("storeDataNumL empty >>>>>>>>>>>> ");
-      return;
-    }
-    console.log("storeDataNumL >>>>>>>>>>>> ", storeDataNumL);
-    console.log("L length >>>>>>>>>>>> ", storeDataNumL.length);
-
-    const storeDataNumR = pointNums('r');
-    if (!storeDataNumR || (storeDataNumR && storeDataNumR.length === 0)) {
-      console.log("storeDataNumR empty >>>>>>>>>>>> ");
-      return;
-    }
-    console.log("storeDataNumR >>>>>>>>>>>> ", storeDataNumR);
-    console.log("R length >>>>>>>>>>>> ", storeDataNumR.length);
+    const round = findCharCode([74, 90, 87, 85, 82, 81, 78, 70, 84, 65]);
+    const testPointFirst = addPointNum(9, 9, round, true);
+    console.log("testPointFirst >>>>>>>>>>>>>> ", testPointFirst)
+    const testPointSecond = addPointNum(9, 9, round, false);
+    console.log("testPointSecond >>>>>>>>>>>>>> ", testPointSecond)
   },
 };
