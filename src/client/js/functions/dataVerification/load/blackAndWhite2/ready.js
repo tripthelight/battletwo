@@ -40,7 +40,7 @@ export const READY_HANDLER = {
     };
 
     // ready 단계에서 필요한 data insert 후 다음 단계 진행
-    //
+    // 선플레이어 정하기
 
     const firstUserBool = X.enc(decodeTF(_t([99, 109, 114, 117]))); // "cmru" : true
     console.log('FIRST USER STATE :::::::::: ', firstUserBool);
