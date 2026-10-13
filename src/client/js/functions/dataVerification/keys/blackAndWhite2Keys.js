@@ -14,19 +14,20 @@ export default (gameState) => {
   // gameState: ready
   if (gameState === findCharCode([90, 73, 85, 83, 81, 74, 66, 65, 80, 88])) {
     return [
-
+      findCharCode([86, 88, 85, 83, 90, 65, 84, 70, 78, 69]), // firstUser
+      // findCharCode([]), //
     ];
   };
   // gameState: playing
   if (gameState === findCharCode([81, 86, 90, 89, 70, 66, 83, 75, 84, 77])) {
     return [
-
+      // findCharCode([]), //
     ];
   };
   // gameState: gameOver
   if (gameState === findCharCode([80, 83, 88, 65, 79, 75, 86, 76, 87, 73])) {
     return [
-
+      // findCharCode([]), //
     ];
   };
 };

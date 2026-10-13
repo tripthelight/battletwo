@@ -6,12 +6,13 @@ import checkAvailablePoint, { isPointDigit, splitPointByBits } from '@/client/js
 import findRemainingPoint from '@/client/js/views/game/blackAndWhite2/fns/common/findRemainingPoint';
 import { readEncodedRemainingPoint, writeEncodedRemainingPoint } from '@/client/js/views/game/blackAndWhite2/fns/common/pointStorage';
 import { readPointIndicatorLevel, readEncodedPointIndicator, restoreEncodedPointIndicator, updatePointIndicator } from '@/client/js/views/game/blackAndWhite2/fns/common/pointIndicator';
+import { preparePointColor, readEncodedPointColor, writeEncodedPointColor } from '@/client/js/views/game/blackAndWhite2/fns/common/pointColor';
 
 /**
  * 실제 sessionStorage에 저장된 '내 잔여 Point'를 검증하고 사용 Point를 난독화합니다.
  *
  * [중요: 두 종류의 결과]
- * 1) 정상 선택: {status:'ok', encodedPoint, indicatorValue} 객체 반환.
+ * 1) 정상 선택: {status:'ok', encodedPoint, indicatorValue, colorValue} 객체 반환.
  * 2) 보유 포인트 초과: 예외를 던지지 않고 status가 'insufficientPoints'인 객체 반환.
  * 3) 키 누락/잔액 문자열 변조/Round 조작 등: throwObj('dataManipulation', ...)로 예외 전파.
  *
@@ -30,7 +31,7 @@ import { readPointIndicatorLevel, readEncodedPointIndicator, restoreEncodedPoint
  * @param {string} _rnd - Private Key 기반 현재 Round 식별자
  * @param {boolean} _fst - true: 선플레이어 | false: 후플레이어
  * @param {string} [_encodedRemainingPoint] - 선택적: 저장된 잔액과 대조할 문자열
- * @returns {{status:'ok',encodedPoint:string,indicatorValue:string|null}|
+ * @returns {{status:'ok',encodedPoint:string,indicatorValue:string|null,colorValue:string}|
  *           {status:'insufficientPoints',requested:number,remaining:number,shortage:number}}
  * @throws {object} throwObj로 만든 dataManipulation 예외 (공통 에러 처리기로 전달 필요)
  */
@@ -118,23 +119,36 @@ export default (_l, _r, _rnd, _fst, _encodedRemainingPoint) => {
     point.left[digits.left].concat(point.right[digits.right]),
   );
 
-  // sessionStorage 두 키는 일괄 트랜잭션 API가 없으므로 쓰기 중 예외가 발생하면
+  // Round별 흑/백 정보: Private Key 저장값과 Public Key 전달값을 쓰기 전에 준비합니다.
+  // 00~09는 검정, 10~99는 흰색. 표시등 변화와 관계없이 매 정상 선택마다 생성됩니다.
+  const color = preparePointColor(point.round, result.used);
+
+  // sessionStorage의 세 키는 일괄 트랜잭션 API가 없으므로 쓰기 중 예외가 발생하면
   // 최선의 복원을 수행합니다. 저장값/표시등의 일치성 검사 후에만 쓰기를 시작합니다.
   const oldIndicator = readEncodedPointIndicator();
+  const oldColor = readEncodedPointColor();
   try {
     writeEncodedRemainingPoint(encodedRemainingAfter);
     const indicatorValue = updatePointIndicator(remaining, after);
+    // 잔액/표시등 저장이 성공한 뒤 색상값을 마지막으로 저장합니다.
+    writeEncodedPointColor(color.encodedStorageValue);
 
     return {
       status: 'ok',
       encodedPoint,
       // 단계가 변하지 않았다면 null. 변경 시에는 Public Key 난독화 문자열입니다.
       indicatorValue,
+      // 상대에게는 Public Key 기반 흑/백 값을 전달합니다.
+      colorValue: color.colorValue,
     };
   } catch (error) {
     try {
       writeEncodedRemainingPoint(storedEncodedRemaining);
       restoreEncodedPointIndicator(oldIndicator);
+      // 과거 저장값이 있던 경우만 복원합니다. 첫 입력 전에는 색상 키가 없으므로
+      // 삭제 API가 명시되지 않은 현재 storageMethod 계약상 원복할 수 없습니다.
+      // 쓰기 후 오류라면 상위 오류 처리기가 게임을 중단해야 합니다.
+      if (oldColor !== null) writeEncodedPointColor(oldColor);
     } catch (rollbackError) {
       throw throwObj('dataManipulation', 'setPointNum.js - storage rollback failed.');
     }
