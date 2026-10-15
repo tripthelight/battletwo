@@ -43,3 +43,8 @@ export const timeInterval_4000 = 4000;
 export const timeInterval_4200 = 4200;
 export const timeInterval_5000 = 5000;
 export const timeInterval_5200 = 5200;
+
+/**
+ * SVG
+ */
+export const SVG_NS = "http://www.w3.org/2000/svg";

@@ -1,6 +1,7 @@
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
 import storageKeyDeleteCheck from '@/client/js/functions/dataVerification/load/storageKeyDeleteCheck';
+import drawDiagonalFace from '@/client/js/views/game/blackAndWhite2/fns/gameState/stateReady/drawDiagonalFace';
 
 import X from '@/client/js/module/crypts/bool-obf';
 import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
@@ -41,9 +42,12 @@ export const READY_HANDLER = {
 
     // ready 단계에서 필요한 data insert 후 다음 단계 진행
     // 선플레이어 정하기
+    drawDiagonalFace();
 
+    /*
     const firstUserBool = X.enc(decodeTF(_t([99, 109, 114, 117]))); // "cmru" : true
     console.log('FIRST USER STATE :::::::::: ', firstUserBool);
+    */
 
     /**
      * ========================================================
