@@ -7,6 +7,8 @@ export const REQUEST_COMMON_HANDLERS = {
 // 일반 메시지
 export const REQUEST_HANDLERS = {
   // gameState : ready
+  providingNick: (v) => ({ type: 'providingNick', ...v }),
+  choiceFirstPlayer: (v) => ({ type: 'choiceFirstPlayer', ...v }),
 
   // gameState : playing
 };

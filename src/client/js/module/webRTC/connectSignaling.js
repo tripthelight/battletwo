@@ -329,6 +329,11 @@ const STATE = {
   resumeRejected: F,
   peerConnectionStale: F,
 };
+export function getRole() {
+  // 내 role이 impolite일 때, 선플레이어를 만들기 위해 사용
+  // blackAndWhite2에서 사용하기 위해 추가
+  return STATE.role === 'impolite' ? true : false;
+}
 function safeWsSend(obj) {
   if (STATE.ws && STATE.ws.readyState === WebSocket.OPEN) {
     STATE.ws.send(JSON.stringify(obj));
@@ -1816,17 +1821,13 @@ export function connectSignaling(connected = F, fns) {
         break;
       }
       case 'responseStorage': {
-        log(" >>>>>>>>>>>>>>> msg.storageData", msg?.storageData);
-        log(" >>>>>>>>>>>>>>> msg.keypair", msg?.keypair);
-        log(" >>>>>>>>>>>>>>> BOOTSTRAP.storageReady", BOOTSTRAP.storageReady);
-
         if (
           msg?.storageData &&
           msg?.keypair &&
           !BOOTSTRAP.storageReady
         ) {
-          KEY.puk = msg.keypair.puk;
-          KEY.prk = msg.keypair.prk;
+          KEY.puk = msg.keypair.puk; // Public key
+          KEY.prk = msg.keypair.prk; // Private key
 
           await insertStorageDate(msg.storageData);
 

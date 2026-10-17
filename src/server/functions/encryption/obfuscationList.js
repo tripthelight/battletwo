@@ -1096,9 +1096,18 @@ export const obfuscationList = {
         ]
       },
       */
+      /**
+      * ready
+      */
+      /*
+      // s: sessionStorage keys
+      ENEMY_NICK: {
+        k: 'KEVSFRUIZW' // [75, 69, 86, 83, 70, 82, 85, 73, 90, 87]
+      },
       FIRST_USER: { // 선플레이어
         k: 'VXUSZATFNE' // [86, 88, 85, 83, 90, 65, 84, 70, 78, 69]
       },
+      */
     };
   },
   memoryMaze: () => {

@@ -15,7 +15,7 @@ export default (gameState) => {
   if (gameState === findCharCode([90, 73, 85, 83, 81, 74, 66, 65, 80, 88])) {
     return [
       findCharCode([86, 88, 85, 83, 90, 65, 84, 70, 78, 69]), // firstUser
-      // findCharCode([]), //
+      findCharCode([75, 69, 86, 83, 70, 82, 85, 73, 90, 87]), // enemyNick
     ];
   };
   // gameState: playing
