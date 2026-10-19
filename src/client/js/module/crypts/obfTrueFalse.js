@@ -75,7 +75,7 @@ export function encodeTF(plain) {
 // ──────────────────────────────────────────────────────────────────────────────
 // 참고용(가독성) 복호화 함수
 export function decodeTF_readable(obf) {
-  if (!encrypt?.keypair) throw new Error('missing keypair');
+  // if (!encrypt?.keypair) throw new Error('missing keypair');
   const groups = {
     c: 't',
     k: 't',

@@ -1,0 +1,53 @@
+:root {
+  --round-dot-line-width: 0;
+}
+
+.round-block {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 30px 10px 0 10px;
+
+  .dot-line {
+    position: absolute;
+    left: 50%;
+    top: 31px;
+    width: 100%;
+    width: var(--round-dot-line-width);
+    height: 2px;
+    transform: translateX(-50%);
+    background-color: #000;
+    z-index: 1;
+  }
+
+  dl,
+  dl dt,
+  dl dd {
+    align-items: center;
+    justify-content: center;
+  }
+  dl {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    z-index: 2;
+    dt, dd {
+      flex-grow: 1;
+    }
+    dt {
+      width: 4px;
+      height: 4px;
+      border-radius: 100%;
+      background-color: #FF0000;
+    }
+    dd {
+      font-size: 14px;
+      margin-top: 10px;
+    }
+  }
+}

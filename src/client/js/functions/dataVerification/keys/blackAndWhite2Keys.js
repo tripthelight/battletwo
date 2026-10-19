@@ -22,6 +22,14 @@ export default (gameState) => {
   if (gameState === findCharCode([81, 86, 90, 89, 70, 66, 83, 75, 84, 77])) {
     return [
       // findCharCode([]), //
+      findCharCode([71, 72, 87, 84, 69, 74, 70, 82, 66, 78]), // roundIndex
+      findCharCode([88, 82, 71, 75, 87, 65, 67, 86, 80, 66]), // pointNum
+      findCharCode([67, 81, 75, 89, 76, 87, 65, 68, 90, 71]), // indicatorLight
+      findCharCode([80, 78, 82, 65, 71, 81, 72, 84, 83, 90]), // localScore
+      findCharCode([80, 76, 67, 81, 86, 83, 84, 90, 69, 74]), // remoteScore
+      findCharCode([86, 71, 82, 80, 85, 69, 72, 90, 77, 65]), // settledRound
+      findCharCode([89, 65, 83, 66, 81, 72, 88, 73, 77, 68]), // pointColor
+      // findCharCode([]), //
     ];
   };
   // gameState: gameOver

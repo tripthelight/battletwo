@@ -13,7 +13,7 @@ import storageMethod from '@/client/js/module/storage/storageMethod';
  * - Round마다 색상 코드가 달라집니다. 다른 Round의 값을 재사용하지 마십시오.
  * - 모든 코드는 숫자 배열로 보관하며 평문 난독화 문자열을 소스에 기록하지 않습니다.
  */
-const STORAGE_KEY_CODES = [84, 81, 79, 78, 83, 73, 75, 90, 65, 72];
+const STORAGE_KEY_CODES = [89, 65, 83, 66, 81, 72, 88, 73, 77, 68];
 
 // 각 행은 [검정, 흰색], 행 인덱스는 (Round - 1)입니다.
 const ROUND_COLOR_CODES = [

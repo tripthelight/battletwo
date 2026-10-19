@@ -1102,11 +1102,17 @@ export const obfuscationList = {
       /*
       // s: sessionStorage keys
       ENEMY_NICK: {
-        k: 'KEVSFRUIZW' // [75, 69, 86, 83, 70, 82, 85, 73, 90, 87]
+        k: 'KEVSFRUIZW', // [75, 69, 86, 83, 70, 82, 85, 73, 90, 87]
       },
       FIRST_USER: { // 선플레이어
-        k: 'VXUSZATFNE' // [86, 88, 85, 83, 90, 65, 84, 70, 78, 69]
+        k: 'VXUSZATFNE', // [86, 88, 85, 83, 90, 65, 84, 70, 78, 69]
       },
+      LOCAL_READY: { // local player ready state
+        k: 'ZCBOYFVLGH', // [90, 67, 66, 79, 89, 70, 86, 76, 71, 72]
+      }
+      REMOTE_READY: { // local player ready state
+        k: 'TOPDFVRWUJ', // [84, 79, 80, 68, 70, 86, 82, 87, 85, 74]
+      }
       */
     };
   },
