@@ -1,21 +1,26 @@
 :root {
+  --round-block-w: 0;
+  --round-block-pt: 0;
   --round-dot-line-width: 0;
+  --round-allow-l: 0;
+  --round-allow-w: 0;
+  --round-allow-h: 0;
 }
 
 .round-block {
   position: relative;
-  width: 100%;
-  max-width: 500px;
+  width: var(--round-block-w);
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
   box-sizing: border-box;
-  padding: 30px 10px 0 10px;
+  padding: var(--round-block-pt) 10px 0 10px;
+  margin: 10px auto 0;
 
   .dot-line {
     position: absolute;
     left: 50%;
-    top: 31px;
+    top: calc(var(--round-block-pt) + 8);
     width: 100%;
     width: var(--round-dot-line-width);
     height: 2px;
@@ -48,6 +53,24 @@
     dd {
       font-size: 14px;
       margin-top: 10px;
+    }
+  }
+
+  .round-allow {
+    position: absolute;
+    width: var(--round-allow-w);
+    height: var(--round-allow-h);
+    left: 0;
+    top: 0;
+    transform: translate(var(--round-allow-l), 0);
+    z-index: 3;
+    path {
+      &.t {
+        fill: #ffc500;
+      }
+      &.b {
+        fill: #ffffff;
+      }
     }
   }
 }
