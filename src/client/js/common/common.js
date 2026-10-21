@@ -8,7 +8,7 @@ import { deviceCheck } from '@/client/js/module/deviceCheck';
 import '@/client/js/common/gesture';
 import '@/client/js/common/resize';
 
-clearStorage(window.location.pathname);
+// clearStorage(window.location.pathname);
 // storageEvent();
 setInnerHeight();
 deviceCheck();

@@ -1,0 +1,48 @@
+:root {
+  --nick-thumb-pl: 0;
+  --nick-thumb-pr: 0;
+  --nick-font-size: 0;
+  --score-font-size: 0;
+}
+
+.nick-thumb-block {
+  position: relative;
+  display: flex;
+  justify-content:space-between;
+  box-sizing: border-box;
+  padding-left: var(--nick-thumb-pl);
+  padding-right: var(--nick-thumb-pr);
+
+  .local,
+  .remote {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .local {
+
+  }
+
+  .remote {
+
+  }
+
+  .local-nick,
+  .remote-nick {
+    font-size: var(--nick-font-size);
+    line-height: var(--nick-font-size);
+  }
+
+  .local-score,
+  .remote-score {
+    font-size: var(--score-font-size);
+    line-height: var(--score-font-size);
+    color: #df1a22;
+    -webkit-text-stroke: 2px #fff; /* font 두께와 색상 */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+}

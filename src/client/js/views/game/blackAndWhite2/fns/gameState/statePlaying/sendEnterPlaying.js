@@ -1,9 +1,21 @@
 import { SVG_NS } from '@/client/js/functions/variable';
 import storageMethod from '@/client/js/module/storage/storageMethod';
 import throwObj from '@/client/js/module/errorHandler/throwObj';
+
+import findCharCode from '@/client/js/functions/findCharCode';
+import X from '@/client/js/module/crypts/bool-obf';
+import decodeTF from '@/client/js/module/crypts/obfTrueFalse';
+import _t from '@/client/js/module/crypts/textDE';
+
+import findNickname from '@/client/js/functions/findNickname';
+import fromUnicodePoints from '@/client/js/module/unicode/fromUnicodePoints';
+import { parsePayloadToHex } from '@/client/js/module/crypts/obf_u32_xor_prng_b64';
+
 import { LOADING_EVENT } from '@/client/components/popup/full/loading';
 import { request } from '@/client/js/network/blackAndWhite2/request';
 import { getStyle } from '@/client/js/functions/comnExport';
+import createEmptyProfileSvg from '@/client/js/views/game/blackAndWhite2/fns/gameState/statePlaying/createEmptyProfileSvg';
+import calculateFontSize from '@/client/js/views/game/blackAndWhite2/fns/gameState/statePlaying/calculateFontSize';
 
 export default function () {
   console.log("PLAYING 진입 >>>>>>>>>>>>>>>>>>>> ");
@@ -156,21 +168,122 @@ export default function () {
 
   /** =========================================================
    * 중간 -----------------------------------------------------
-   * 표시등
-   * 닉네임
+   * 표시등 // drawIndicatorLight
+   * 닉네임 // drawNickIcon
    * Score
    * 검/흰 표시
    */
   function drawGameElem() {
-    const data = {
-
-    };
-
+    // --------------------------------------------------------------------
     // 표시등 그리기
-    function drawIndicatorLight() {
+    // --------------------------------------------------------------------
 
+    const indicatorBlock = document.createElement('div');
+    indicatorBlock.classList.add('indicator-block');
+    const indicatorLocal = document.createElement('div');
+    indicatorLocal.classList.add('local');
+    const indicatorRemote = document.createElement('div');
+    indicatorRemote.classList.add('remote');
+
+    for (let i = 0; i < 5; i++) {
+      const blockEl = document.createElement('span');
+      blockEl.classList.add('active');
+      const min = 80 - i * 20;
+      const max = 99 - i * 20;
+      blockEl.textContent = `${min} ~ ${max}`;
+      indicatorLocal.appendChild(blockEl.cloneNode(true));
+      indicatorRemote.appendChild(blockEl);
     }
-    drawIndicatorLight();
+    indicatorBlock.append(indicatorLocal, indicatorRemote);
+    gameScene.appendChild(indicatorBlock);
+
+    void gameScene.offsetHeight;
+
+    // --------------------------------------------------------------------
+    // 닉네임 썸네일 그리기
+    // --------------------------------------------------------------------
+    const indicatorWrap = document.querySelector('.indicator-block');
+    const indicatorHeight = indicatorWrap.clientHeight;
+    const plEl = indicatorWrap.querySelector('.local');
+    const pl = plEl.clientWidth;
+    document.documentElement.style.setProperty('--nick-thumb-pl', `${ pl }px`);
+    const prEl = indicatorWrap.querySelector('.remote');
+    const pr = prEl.clientWidth;
+    document.documentElement.style.setProperty('--nick-thumb-pr', `${ pr }px`);
+
+    const nickBasicWidth = Math.floor((WW - pl - pr) / 2);
+    const nickMaxWidth = (indicatorHeight / 5) * 2;
+    const nickWidth = nickBasicWidth > nickMaxWidth ? nickMaxWidth : nickBasicWidth;
+
+    const nickThumbBlock = document.createElement('div');
+    nickThumbBlock.classList.add('nick-thumb-block');
+    const nickThumbLocal = document.createElement('div');
+    nickThumbLocal.classList.add('local');
+    const nickThumbRemote = document.createElement('div');
+    nickThumbRemote.classList.add('remote');
+
+    const localIconSVG = createEmptyProfileSvg(nickWidth);
+    const remoteIconSVG = createEmptyProfileSvg(nickWidth);
+
+    nickThumbLocal.appendChild(localIconSVG);
+    nickThumbRemote.appendChild(remoteIconSVG);
+
+    nickThumbBlock.append(nickThumbLocal, nickThumbRemote);
+    gameScene.appendChild(nickThumbBlock);
+
+    void gameScene.offsetHeight;
+
+    // --------------------------------------------------------------------
+    // 닉네임 텍스트
+    // --------------------------------------------------------------------
+    const nickLocal = findNickname('localPlayer'); // localNick
+    const nickRemote = fromUnicodePoints(
+      parsePayloadToHex(
+        storageMethod("s", "GET_ITEM", findCharCode([75, 69, 86, 83, 70, 82, 85, 73, 90, 87]))  // enemyNick
+      )
+    );
+    const nickTxtLocal = document.createElement('div');
+    nickTxtLocal.classList.add('local-nick');
+    nickTxtLocal.innerText = nickLocal;
+    const nickTxtRemote = document.createElement('div');
+    nickTxtRemote.classList.add('remote-nick');
+    nickTxtRemote.innerText = nickRemote;
+
+    // const nickFontSize = nickWidth / Math.max(...[nickLocal, nickRemote].map(str => str.length));
+    const nickFontSize = calculateFontSize(
+      [nickLocal, nickRemote].reduce((max, str) => str.length > max.length ? str : max), // 두 Peer 중 더 긴 nickname
+      nickWidth
+    );
+    document.documentElement.style.setProperty('--nick-font-size', `${ Math.floor(nickFontSize) }px`);
+
+    nickThumbLocal.appendChild(nickTxtLocal);
+    nickThumbRemote.appendChild(nickTxtRemote);
+
+
+    void gameScene.offsetHeight;
+
+    // --------------------------------------------------------------------
+    // Score 그리기
+    // --------------------------------------------------------------------
+    const scoreLocal = document.createElement('div');
+    scoreLocal.classList.add('local-score');
+    scoreLocal.innerHTML = 0;
+    const scoreRemote = document.createElement('div');
+    scoreRemote.classList.add('remote-score');
+    scoreRemote.innerHTML = 0;
+
+    const indicatorEl = document.querySelector('.indicator-block');
+    const nickEl = document.querySelector('.nick-thumb-block');
+
+    const scoreFontSize = Math.floor(indicatorEl.clientHeight - nickEl.clientHeight)
+    document.documentElement.style.setProperty('--score-font-size', `${ scoreFontSize }px`);
+
+
+    nickThumbLocal.appendChild(scoreLocal);
+    nickThumbRemote.appendChild(scoreRemote);
+
+
+
   };
   drawGameElem();
 

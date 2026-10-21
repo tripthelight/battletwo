@@ -1,0 +1,60 @@
+:root {
+  --indicator-font-size: 0;
+  --indicator-padding: 0 0 0 0;
+}
+@media (max-width: 767px) { /* 화면 너비 0px ~ 767px */
+  :root {
+    --indicator-font-size: 20px;
+    --indicator-padding: 10px 16px;
+  }
+}
+@media (min-width: 768px) and (max-width: 1023px) { /* 화면 너비 768px 이상 ~ 1023px */
+  :root {
+    --indicator-font-size: 30px;
+    --indicator-padding: 14px 20px;
+  }
+}
+@media (min-width: 1024px) { /* 화면 너비 1024px ~ 무한대 */
+  :root {
+    --indicator-font-size: 40px;
+    --indicator-padding: 18px 24px;
+  }
+}
+
+.indicator-block {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+
+  .local,
+  .remote {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+
+    span {
+      font-size: var(--indicator-font-size);
+      padding: var(--indicator-padding);
+      background-color: #6f5b3b;
+      color: #000;
+      box-shadow: inset 0 0 10px #2d1b00;
+      &.active {
+        background-color: #dcc690;
+      }
+    }
+  }
+
+  .local {
+
+    span {
+
+    }
+  }
+
+  .remote {
+
+    span {
+
+    }
+  }
+}

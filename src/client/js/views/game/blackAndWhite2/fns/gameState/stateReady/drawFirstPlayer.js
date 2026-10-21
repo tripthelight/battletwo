@@ -144,7 +144,6 @@ export default () => {
           storageMethod('s', 'REMOVE_ARR', '', '', [
             findCharCode([90, 67, 66, 79, 89, 70, 86, 76, 71, 72]), // localReady
             findCharCode([84, 79, 80, 68, 70, 86, 82, 87, 85, 74]), // remoteReady key
-            findCharCode([75, 69, 86, 83, 70, 82, 85, 73, 90, 87]), // enemyNick
           ]);
           // *** 다음 STEP 진행
           blackAndWhite2GameState.playing();
